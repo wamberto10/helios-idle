@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HELIOS IDLE — Prévia da base</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .preview-page { max-width: 1260px; margin: auto; padding: 24px; }
+    .preview-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .preview-head h1 { font-size: 23px; letter-spacing: .08em; }
+    .preview-head p { color: var(--muted); margin: 6px 0 0; font-size: 13px; }
+    .preview-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .preview-controls fieldset { display: flex; flex-wrap: wrap; gap: 6px; padding: 7px; border: 1px solid var(--line2); border-radius: 10px; margin: 0; }
+    .preview-controls legend { font-size: 11px; color: var(--muted); padding: 0 5px; }
+    .preview-controls label { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .preview-note { color: var(--muted); font-size: 12px; margin: 12px 0 0; }
+    #selection { min-height: 20px; color: var(--cyan); }
+    @media(max-width:600px) { .preview-page { padding: 16px 12px; } .preview-head h1 { font-size: 20px; } }
+  </style>
+</head>
+<body>
+  <main class="preview-page">
+    <header class="preview-head"><div><h1>HELIOS <span class="cyan">IDLE</span> · BASE</h1><p>Prévia visual — não altera sua partida.</p></div><a class="btn ghost sm" href="../index.html">Abrir o jogo ↗</a></header>
+    <div class="preview-controls">
+      <label>Região <select id="region"><option value="lua">Lua</option><option value="mercurio">Mercúrio</option></select></label>
+      <fieldset><legend>Estado da operação</legend><button class="btn sm" type="button" data-preset="inicio" aria-pressed="false">Início</button><button class="btn sm" type="button" data-preset="consolidada" aria-pressed="true">Consolidada</button><button class="btn sm" type="button" data-preset="extrema" aria-pressed="false">Extrema · ×120 / Nv.25</button></fieldset>
+    </div>
+    <p class="preview-note">O mesmo componente de terreno e instalações usado no jogo, com dados de demonstração em memória. No celular, deslize a base para os lados.</p>
+    <section class="base-panel" aria-labelledby="preview-title"><div class="base-toolbar"><div><span class="base-eyebrow">Área de construção</span><h2 id="preview-title">Base da Lua</h2></div><span class="base-count" id="count"></span></div><div id="preview"></div><div class="base-help"><span>Selecione uma instalação para conferir nível e quantidade.</span><span class="base-pan-hint">↔ Deslize para explorar a base</span></div></section>
+    <p class="preview-note" id="selection" aria-live="polite"></p>
+  </main>
+  <script src="../js/data.js"></script>
+  <script src="../js/engine.js"></script>
+  <script src="../assets/manifest.js"></script>
+  <script src="../js/art.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      const { DATA: D, E, A } = window.H;
+      let preset = 'consolidada', state;
+      const region = document.getElementById('region'), preview = document.getElementById('preview');
+      // A página fica um nível abaixo de index.html; corrige apenas a base dos caminhos
+      // declarados, mantendo os mesmos arquivos usados pela partida real.
+      for (const group of Object.values(H.ASSET_MANIFEST)) for (const key of Object.keys(group)) group[key] = '../' + group[key];
+      function render() {
+        const rid = region.value;
+        state = E.newState();
+        const reg = state.run.regions[rid]; reg.unlocked = true;
+        if (preset !== 'inicio') {
+          for (const r of D.regionOrder) state.run.regions[r].unlocked = true;
+          reg.phase = D.regions[rid].phases.length;
+          for (const bid of Object.keys(D.regions[rid].build)) reg.b[bid] = { n: preset === 'extrema' ? 120 : 12, lvl: preset === 'extrema' ? 25 : 2, p: 0 };
+        } else if (rid !== 'lua') {
+          reg.phase = 0;
+          reg.b = { painel: { n: 2, lvl: 1, p: 0 }, extrator: { n: 1, lvl: 1, p: 0 }, refinaria: { n: 1, lvl: 1, p: 0 } };
+        }
+        preview.innerHTML = A.scene(rid, reg, { available: E.bList(state, rid) });
+        document.getElementById('preview-title').textContent = 'Base de ' + D.regions[rid].name;
+        const built = A.baseLayout(rid).filter(({ bid }) => reg.b[bid] && reg.b[bid].n > 0).length;
+        document.getElementById('count').textContent = built + ' / ' + A.baseLayout(rid).length + ' tipos construídos';
+        document.getElementById('selection').textContent = preset === 'inicio' ? 'Início: locais futuros permanecem reservados, sem deslocar as instalações existentes.' : 'Todas as instalações: cada tipo ocupa uma única posição, independentemente da quantidade.';
+        for (const button of document.querySelectorAll('[data-preset]')) { const active = button.dataset.preset === preset; button.setAttribute('aria-pressed', active); button.classList.toggle('gold', active); }
+      }
+      document.addEventListener('click', function (event) {
+        const presetButton = event.target.closest('[data-preset]');
+        if (presetButton) { preset = presetButton.dataset.preset; render(); return; }
+        const building = event.target.closest('.base-slot'); if (!building || building.disabled) return;
+        const bid = building.dataset.bid, bs = state.run.regions[region.value].b[bid];
+        document.getElementById('selection').textContent = D.buildings[bid].name + ': ' + (bs && bs.n ? 'nível ' + bs.lvl + ', quantidade ' + bs.n + '.' : 'local disponível para construir.');
+      });
+      region.addEventListener('change', render);
+      render();
+    })();
+  </script>
+</body>
+</html>

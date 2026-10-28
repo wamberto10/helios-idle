@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060c1b">
+  <title>HELIOS IDLE — Primeiro lote gráfico</title>
+  <style>
+    :root { color-scheme: dark; --bg:#060c1b; --panel:#101c35; --line:#263b5c; --text:#eaf3ff; --muted:#96aac7; --cyan:#51e1f2; --gold:#ffd071; --purple:#b39aff; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--text); font:14px/1.45 "Segoe UI",system-ui,sans-serif; background:radial-gradient(ellipse at 85% 0,#132e4b 0,transparent 50%),radial-gradient(ellipse at 0 75%,#191638 0,transparent 45%),var(--bg); }
+    a { color:inherit; }
+    a:focus-visible { outline:3px solid var(--cyan); outline-offset:4px; }
+    .page { max-width:1200px; margin:auto; padding:28px 24px 20px; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:18px; padding-bottom:22px; border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .sun { width:34px; height:34px; flex:none; border-radius:50%; background:radial-gradient(circle at 38% 35%,#fff7d4,var(--gold) 50%,#db862a 78%); box-shadow:0 0 25px #ffc95b55; }
+    h1 { margin:0; font-size:22px; line-height:1.15; letter-spacing:.13em; }
+    h1 span { color:var(--cyan); }
+    .subtitle { margin:5px 0 0; color:var(--muted); font-size:12px; }
+    .header-actions { display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end; }
+    .badge { display:inline-flex; padding:5px 10px; border:1px solid #73603a; border-radius:99px; font-size:11px; font-weight:700; letter-spacing:.06em; color:var(--gold); background:#ffd0710a; }
+    .play { text-decoration:none; font-size:12px; padding:8px 12px; border:1px solid #315369; border-radius:8px; color:var(--cyan); }
+    .play:hover { border-color:var(--cyan); background:#51e1f20c; }
+    section { margin-top:20px; }
+    .section-head { display:flex; gap:12px; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
+    h2 { font-size:14px; letter-spacing:.09em; text-transform:uppercase; margin:0; }
+    h2::before { content:""; display:inline-block; width:5px; height:12px; border-radius:3px; margin-right:9px; background:var(--cyan); vertical-align:-1px; }
+    .section-note { color:var(--muted); font-size:11px; }
+    .grid { display:grid; gap:12px; }
+    .portraits,.objects { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .regions { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .card { display:block; border:1px solid var(--line); border-radius:13px; overflow:hidden; text-decoration:none; background:linear-gradient(160deg,#13213c,#0b1429); transition:border-color .16s,transform .16s; }
+    .card:hover { border-color:var(--accent,var(--cyan)); transform:translateY(-2px); }
+    figure { margin:0; }
+    .image { display:flex; justify-content:center; align-items:center; overflow:hidden; background:radial-gradient(ellipse at 50% 60%,var(--glow,#172949),#091225 80%); }
+    .portrait .image { height:250px; }
+    .image img { display:block; width:100%; height:100%; }
+    .portrait img { object-fit:contain; }
+    figcaption { padding:9px 12px 10px; border-top:1px solid #263b5c80; }
+    .name { display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:14px; font-weight:700; }
+    .type { font-size:9px; font-weight:600; letter-spacing:.07em; color:var(--accent,var(--cyan)); border:1px solid #52678366; border-radius:4px; padding:2px 5px; }
+    .role { font-size:11px; color:var(--muted); margin-top:3px; }
+    .region .image { height:145px; }
+    .region img { object-fit:cover; object-position:65% 50%; }
+    .region figcaption { display:flex; align-items:center; gap:14px; justify-content:space-between; }
+    .region .role { margin-top:0; text-align:right; }
+    .object .image { height:136px; padding:10px; }
+    .object img { object-fit:contain; filter:drop-shadow(0 10px 13px #0005); }
+    .object .name { font-size:12px; }
+    footer { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:22px; padding-top:14px; border-top:1px solid var(--line); font-size:11px; color:var(--muted); }
+    footer b { color:var(--gold); font-weight:600; }
+    @media (min-width:1500px) { .portrait .image { height:280px; } .region .image { height:165px; } }
+    @media (max-width:760px) { .page { padding:20px 16px; } header { align-items:flex-start; } .header-actions { max-width:150px; gap:8px; } .portraits,.objects { grid-template-columns:repeat(2,minmax(0,1fr)); } .portrait .image { height:240px; } .regions { grid-template-columns:1fr; } .region .image { height:160px; } .section-note { max-width:180px; text-align:right; } }
+    @media (max-width:440px) { .page { padding:16px 12px; } header { flex-wrap:wrap; gap:12px; padding-bottom:16px; } .header-actions { max-width:none; justify-content:flex-start; } h1 { font-size:20px; } .subtitle { font-size:11px; } .portrait .image { height:205px; } figcaption { padding:8px 9px; } .name { font-size:13px; } .type { font-size:8px; } .role { font-size:10px; } .region figcaption { gap:10px; } .object .image { height:118px; } footer { align-items:flex-start; } }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .card { transition:none; } .card:hover { transform:none; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div class="brand"><span class="sun" aria-hidden="true"></span><div><h1>HELIOS <span>IDLE</span></h1><p class="subtitle">10 artes originais para explorar o Sistema Solar</p></div></div>
+      <div class="header-actions"><a class="play" href="galeria-completa.html">Ver as 43 artes ↗</a><span class="badge">PRIMEIRO LOTE GRÁFICO</span><a class="play" href="../index.html">Abrir o jogo ↗</a></div>
+    </header>
+
+    <section aria-labelledby="tripulacao">
+      <div class="section-head"><h2 id="tripulacao">Tripulação</h2><span class="section-note">Especialistas das primeiras operações</span></div>
+      <div class="grid portraits">
+        <a class="card portrait" href="portraits/iris.png" target="_blank" rel="noopener" style="--accent:#51e1f2;--glow:#123d50"><figure><div class="image"><img src="portraits/iris.png" alt="Íris, engenheira humana em traje lunar com iluminação ciano" decoding="async"></div><figcaption><div class="name">Íris <span class="type">HUMANA</span></div><div class="role">Engenheira Lunar · Mineração</div></figcaption></figure></a>
+        <a class="card portrait" href="portraits/vulcano.png" target="_blank" rel="noopener" style="--accent:#ffb06a;--glow:#4a2d23"><figure><div class="image"><img src="portraits/vulcano.png" alt="Vulcano, robô industrial com placas de metal e luzes de fornalha" decoding="async"></div><figcaption><div class="name">Vulcano <span class="type">ROBÔ</span></div><div class="role">Mestre de Forja · Indústria</div></figcaption></figure></a>
+        <a class="card portrait" href="portraits/nix.png" target="_blank" rel="noopener" style="--accent:#b5edff;--glow:#1b3a53"><figure><div class="image"><img src="portraits/nix.png" alt="Nix, cientista de cabelo prateado com traje térmico azul-gelo" decoding="async"></div><figcaption><div class="name">Nix <span class="type">HUMANA</span></div><div class="role">Especialista Criogênica · Gelo</div></figcaption></figure></a>
+        <a class="card portrait" href="portraits/oraculo.png" target="_blank" rel="noopener" style="--accent:#b39aff;--glow:#302459"><figure><div class="image"><img src="portraits/oraculo.png" alt="Oráculo, inteligência artificial formada por um núcleo violeta e anéis orbitais" decoding="async"></div><figcaption><div class="name">Oráculo <span class="type">IA</span></div><div class="role">Inteligência de Pesquisa · Ciência</div></figcaption></figure></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="regioes">
+      <div class="section-head"><h2 id="regioes">Regiões</h2><span class="section-note">Cenários no enquadramento panorâmico do jogo</span></div>
+      <div class="grid regions">
+        <a class="card region" href="regions/lua.png" target="_blank" rel="noopener"><figure><div class="image"><img src="regions/lua.png" alt="Base lunar iluminada sobre crateras cinzentas, com a Terra ao fundo" loading="lazy" decoding="async"></div><figcaption><span class="name">Lua</span><span class="role">O começo da operação</span></figcaption></figure></a>
+        <a class="card region" href="regions/marte-v2.png" target="_blank" rel="noopener" style="--accent:#ffb06a"><figure><div class="image"><img src="regions/marte-v2.png" alt="Complexo industrial entre cânions e montanhas vermelhas de Marte" loading="lazy" decoding="async"></div><figcaption><span class="name">Marte</span><span class="role">Uma nova fronteira industrial</span></figcaption></figure></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="instalacoes">
+      <div class="section-head"><h2 id="instalacoes">Instalações e suprimentos</h2><span class="section-note">Objetos com fundo transparente</span></div>
+      <div class="grid objects">
+        <a class="card object" href="buildings/extrator.png" target="_blank" rel="noopener"><figure><div class="image"><img src="buildings/extrator.png" alt="Torre de extração lunar com broca e detalhes luminosos" loading="lazy" decoding="async"></div><figcaption><div class="name">Extrator de Minério</div><div class="role">O primeiro elo da produção</div></figcaption></figure></a>
+        <a class="card object" href="buildings/refinaria.png" target="_blank" rel="noopener" style="--accent:#ffb06a"><figure><div class="image"><img src="buildings/refinaria.png" alt="Refinaria espacial compacta com fornalha e tubulações" loading="lazy" decoding="async"></div><figcaption><div class="name">Refinaria</div><div class="role">Do minério ao metal</div></figcaption></figure></a>
+        <a class="card object" href="buildings/painel.png" target="_blank" rel="noopener" style="--accent:#ffd071"><figure><div class="image"><img src="buildings/painel.png" alt="Painel solar futurista azul montado em suporte metálico" loading="lazy" decoding="async"></div><figcaption><div class="name">Painel Solar</div><div class="role">Energia para expandir</div></figcaption></figure></a>
+        <a class="card object" href="ui/chest.png" target="_blank" rel="noopener" style="--accent:#ffd071;--glow:#3b3121"><figure><div class="image"><img src="ui/chest.png" alt="Baú de suprimentos espacial com estrutura dourada e iluminação ciano" loading="lazy" decoding="async"></div><figcaption><div class="name">Baú de Suprimentos</div><div class="role">Cartas e novas possibilidades</div></figcaption></figure></a>
+      </div>
+    </section>
+
+    <footer><span><b>Explorar. Automatizar. Atravessar.</b><br>HELIOS IDLE · Direção visual inicial</span><span>Clique em uma arte para abrir o original.</span></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060c1b">
+  <title>HELIOS IDLE — Catálogo gráfico completo</title>
+  <style>
+    :root{color-scheme:dark;--bg:#060c1b;--panel:#101c35;--line:#263b5c;--text:#eaf3ff;--muted:#96aac7;--cyan:#51e1f2;--gold:#ffd071}
+    *{box-sizing:border-box}body{margin:0;color:var(--text);font:14px/1.5 'Segoe UI',system-ui,sans-serif;background:radial-gradient(ellipse at 85% 0,#132e4b,transparent 45%),var(--bg)}
+    a{color:inherit}a:focus-visible,button:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}.page{max-width:1280px;margin:auto;padding:30px 24px}
+    header{display:flex;justify-content:space-between;align-items:center;gap:18px;border-bottom:1px solid var(--line);padding-bottom:24px}.brand{display:flex;align-items:center;gap:15px}.sun{width:42px;height:42px;flex:none;border-radius:50%;background:radial-gradient(circle at 38% 35%,#fff7d4,var(--gold) 50%,#db862a 78%);box-shadow:0 0 30px #ffc95b55}
+    h1{font-size:25px;letter-spacing:.13em;line-height:1.2;margin:0}h1 span{color:var(--cyan)}p{margin:6px 0 0;color:var(--muted)}.play{padding:10px 14px;border:1px solid #315369;border-radius:8px;text-decoration:none;color:var(--cyan);white-space:nowrap}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}.filters button{font:inherit;color:var(--muted);border:1px solid var(--line);background:#101c35;border-radius:99px;padding:7px 14px;cursor:pointer}.filters button[aria-pressed=true]{color:var(--cyan);border-color:var(--cyan);background:#51e1f212}
+    section{margin:26px 0 34px}section[hidden]{display:none}.section-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:13px}h2{font-size:15px;letter-spacing:.09em;text-transform:uppercase;margin:0}h2::before{content:'';display:inline-block;width:5px;height:13px;background:var(--cyan);border-radius:3px;margin-right:10px;vertical-align:-1px}.count{color:var(--muted);font-size:12px}
+    .grid{display:grid;gap:14px}.portrait-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.building-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.region-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ui-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+    .card{display:block;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:linear-gradient(160deg,#142440,#0b1429);transition:border-color .15s}.card:hover{border-color:var(--accent,var(--cyan))}figure{margin:0}.image{display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 65%,#1c304e,#091225 85%);overflow:hidden}.image img{display:block;width:100%;height:100%}.portrait .image{aspect-ratio:4/5}.portrait img{object-fit:cover}.object .image{aspect-ratio:1;padding:15px}.object img{object-fit:contain;filter:drop-shadow(0 8px 10px #0005)}.region .image{aspect-ratio:3/1}.region img{object-fit:cover}figcaption{padding:10px 12px;border-top:1px solid #263b5c80}.name{font-weight:700;font-size:13px}.role{font-size:11px;color:var(--muted);margin-top:3px}.object .role{color:var(--accent,var(--muted))}footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:12px}footer b{color:var(--gold)}
+    @media(max-width:1000px){.portrait-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.building-grid,.ui-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    @media(max-width:650px){.page{padding:20px 14px}header{align-items:flex-start;flex-wrap:wrap}h1{font-size:21px}.portrait-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.building-grid,.ui-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.region-grid{grid-template-columns:1fr}.name{font-size:12px}figcaption{padding:8px}.sun{width:32px;height:32px}.count{font-size:11px}}
+    @media(max-width:390px){.portrait-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(prefers-reduced-motion:reduce){.card{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header><div class="brand"><span class="sun" aria-hidden="true"></span><div><h1>HELIOS <span>IDLE</span></h1><p>Catálogo gráfico completo · <span id="total">43</span> artes</p></div></div><a class="play" href="../index.html">Abrir o jogo ↗</a></header>
+    <nav class="filters" aria-label="Filtrar artes"><button type="button" data-filter="all" aria-pressed="true">Todas</button><button type="button" data-filter="portraits" aria-pressed="false">Tripulação</button><button type="button" data-filter="buildings" aria-pressed="false">Instalações</button><button type="button" data-filter="regions" aria-pressed="false">Cenários</button><button type="button" data-filter="ui" aria-pressed="false">Suprimentos</button></nav>
+    <div id="catalogo"></div>
+    <noscript>Ative JavaScript para mostrar o catálogo. As imagens originais estão nas pastas portraits, buildings, regions e ui.</noscript>
+    <footer><b>Explorar. Automatizar. Atravessar.</b><br>Clique em uma arte para abrir o arquivo original. O catálogo não altera sua partida.</footer>
+  </main>
+  <script src="../js/data.js"></script>
+  <script src="manifest.js"></script>
+  <script>
+    (() => {
+      'use strict';
+      const {DATA:D,ASSET_MANIFEST:M}=window.H;
+      const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      const groups=[
+        {id:'portraits',title:'Tripulação',kind:'portrait',cls:'portrait',grid:'portrait-grid',keys:D.specOrder,def:key=>({name:D.specs[key].name,role:D.specs[key].role,color:D.specs[key].color})},
+        {id:'buildings',title:'Instalações',kind:'building',cls:'object',grid:'building-grid',keys:Object.keys(D.buildings),def:key=>({name:D.buildings[key].name,role:D.cats[D.buildings[key].cat].name,color:'#7fdce8'})},
+        {id:'regions',title:'Cenários das regiões',kind:'region',cls:'region',grid:'region-grid',keys:D.regionOrder,def:key=>({name:D.regions[key].name,role:D.regions[key].sub,color:D.regions[key].color})},
+        {id:'ui',title:'Suprimentos',kind:'ui',cls:'object',grid:'ui-grid',keys:['chest'],def:()=>({name:'Baú de Suprimentos',role:'Cartas, ciência e recompensas',color:'#ffd071'})}
+      ];
+      let total=0;
+      document.getElementById('catalogo').innerHTML=groups.map(g=>{
+        const keys=g.keys.filter(key=>M[g.kind][key]);total+=keys.length;
+        return `<section data-group="${g.id}" aria-labelledby="h-${g.id}"><div class="section-head"><h2 id="h-${g.id}">${g.title}</h2><span class="count">${keys.length} artes</span></div><div class="grid ${g.grid}">${keys.map(key=>{const d=g.def(key),src='../'+M[g.kind][key];return `<a class="card ${g.cls}" href="${esc(src)}" target="_blank" rel="noopener" style="--accent:${esc(d.color)}"><figure><div class="image"><img src="${esc(src)}" alt="${esc(d.name+' — '+d.role)}" decoding="async"></div><figcaption><div class="name">${esc(d.name)}</div><div class="role">${esc(d.role)}</div></figcaption></figure></a>`}).join('')}</div></section>`
+      }).join('');
+      document.getElementById('total').textContent=total;
+      document.querySelector('.filters').addEventListener('click',e=>{const b=e.target.closest('button[data-filter]');if(!b)return;document.querySelectorAll('.filters button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));document.querySelectorAll('[data-group]').forEach(x=>{x.hidden=b.dataset.filter!=='all'&&x.dataset.group!==b.dataset.filter})});
+    })();
+  </script>
+</body>
+</html>

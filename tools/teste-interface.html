@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HELIOS IDLE — testes de interface</title>
+<style>
+  :root { color-scheme: dark; }
+  body { background: #050a18; color: #e8f0ff; font: 14px/1.45 system-ui, sans-serif; margin: 0; padding: 16px; }
+  h1 { font-size: 18px; margin: 0 0 4px; } p { margin: 4px 0 12px; color: #9fb3d9; }
+  #sum { font-weight: 700; margin: 8px 0; } #sum.ok { color: #5ef2a0; } #sum.bad { color: #ff6b6b; }
+  ol { padding-left: 20px; } li { margin: 2px 0; } .ok { color: #5ef2a0; } .bad { color: #ff6b6b; } .sec { margin-top: 10px; font-weight: 700; color: #3fe0ff; list-style: none; margin-left: -20px; }
+  #stage { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  #stage iframe { border: 1px solid #2a3f6a; background: #000; }
+  button { font: inherit; padding: 6px 12px; }
+</style>
+</head>
+<body>
+<h1>HELIOS IDLE — testes de interface</h1>
+<p>Carrega o jogo real (<code>index.html</code> com <code>ui.js</code> e <code>main.js</code>) em quadros isolados com <code>?slot=</code>: o salvamento pessoal não é lido nem alterado. Abra por um servidor local (<code>iniciar.bat</code> ou <code>python -m http.server 8765</code>) em <code>http://localhost:8765/tools/teste-interface.html</code>. Duração: cerca de 40 segundos.</p>
+<button id="go">Executar novamente</button>
+<div id="sum">Executando…</div>
+<ol id="out"></ol>
+<div id="stage"></div>
+<script src="../js/data.js"></script>
+<script src="../js/engine.js"></script>
+<script>
+'use strict';
+const OUT = document.getElementById('out'), STAGE = document.getElementById('stage');
+let pass = 0, fail = 0; const PREFIX = 'helios_idle_save__ti_';
+const RUN = Date.now().toString(36);
+const ok = (c, msg) => { const li = document.createElement('li'); li.className = c ? 'ok' : 'bad'; li.textContent = (c ? '✓ ' : '✗ ') + msg; OUT.appendChild(li); if (c) pass++; else fail++; return c; };
+const sec = (t) => { const li = document.createElement('li'); li.className = 'sec'; li.textContent = t; OUT.appendChild(li); };
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+async function until(fn, ms, step) { const t0 = Date.now(); while (Date.now() - t0 < (ms || 4000)) { try { if (fn()) return true; } catch (e) { /* ainda carregando */ } await wait(step || 50); } return false; }
+function cleanup() { for (const k of Object.keys(localStorage)) if (k.startsWith(PREFIX)) localStorage.removeItem(k); }
+async function openGame(slot, w, h) {
+  const f = document.createElement('iframe'); f.width = w || 900; f.height = h || 640;
+  f.src = '../index.html?slot=ti_' + slot + '_' + RUN; STAGE.appendChild(f);
+  const ready = await until(() => f.contentWindow.H && f.contentWindow.H.ready, 6000);
+  const g = { f, w: f.contentWindow, d: f.contentDocument, H: f.contentWindow.H };
+  g.S = () => g.H.state(); g.q = (s) => g.d.querySelector(s); g.qa = (s) => Array.from(g.d.querySelectorAll(s));
+  g.click = (el) => { if (typeof el === 'string') el = g.q(el); el.click(); g.H.UI.frame(); return el; };
+  g.key = (el, key, shift) => { el = el || g.d.activeElement || g.d.body; el.dispatchEvent(new g.w.KeyboardEvent('keydown', { key, shiftKey: !!shift, bubbles: true, cancelable: true })); g.H.UI.frame(); };
+  g.toast = () => { const t = g.q('#toasts .toast'); return t ? t.textContent : ''; };
+  g.lock = () => !!g.q('#lockov.on');
+  g.modal = () => g.q('#modal.on .modal');
+  g.closeAll = async () => { for (let i = 0; i < 6 && g.H.UI.st.modalOpen; i++) { g.H.UI.closeModal(); await wait(160); } };
+  g.ready = ready; return g;
+}
+const slotKey = (slot) => 'helios_idle_save__ti_' + slot + '_' + RUN;
+const close = (g) => { g.f.remove(); };
+const errs = (g) => (g.H && g.H._errors) || [];
+
+// ---------------------------------------------------------------- cenários
+async function tModalFocus() {
+  sec('Modais: foco, Tab, Escape e retorno ao controle de origem');
+  const g = await openGame('foco'); ok(g.ready, 'jogo carrega num quadro isolado');
+  ok(await until(() => g.modal()), 'introdução aparece num diálogo');
+  await wait(80); ok(g.modal().contains(g.d.activeElement), 'o foco vai para dentro do diálogo');
+  ok(g.q('#app').hasAttribute('inert'), 'o restante da tela fica inerte enquanto o diálogo está aberto');
+  g.key(g.d.activeElement, 'Tab'); ok(g.modal().contains(g.d.activeElement), 'Tab não sai do diálogo');
+  g.key(g.d.activeElement, 'Tab', true); ok(g.modal().contains(g.d.activeElement), 'Shift+Tab não sai do diálogo');
+  g.key(g.d.activeElement, 'Escape'); ok(!g.modal(), 'Escape fecha o diálogo');
+  g.H.E.recruit(g.S(), 'iris'); g.H.UI.frame(); await until(() => g.modal()); await g.closeAll();
+  g.click('[data-a="nav|crew"]'); await wait(50);
+  const card = g.q('button.card[data-a="spec|iris"]');
+  ok(card && card.tagName === 'BUTTON' && card.tabIndex === 0, 'carta de especialista é um botão focável');
+  ok(card && /Íris/.test(card.getAttribute('aria-label') || ''), 'carta tem nome acessível (' + (card && card.getAttribute('aria-label')) + ')');
+  card.focus(); g.click(card); await wait(80);
+  ok(g.modal() && g.modal().contains(g.d.activeElement), 'abrir a carta põe o foco no painel do especialista');
+  g.key(g.d.activeElement, 'Escape'); await wait(40);
+  const back = g.d.activeElement; ok(back && back.dataset && back.dataset.a === 'spec|iris', 'ao fechar, o foco volta para a carta');
+  ok(g.qa('button button, button a, button input, button select').length === 0, 'nenhum controle interativo aninhado dentro de botão');
+  ok(errs(g).length === 0, 'sem erros de JavaScript' + (errs(g).length ? ': ' + errs(g)[0] : ''));
+  close(g);
+}
+async function tLiveSpec() {
+  sec('Painel do especialista acompanha o estado (dados chegando com o painel aberto)');
+  const g = await openGame('promo'); await until(() => g.modal()); await g.closeAll();
+  const S = g.S(); g.H.E.recruit(S, 'iris'); g.H.UI.frame(); await until(() => g.modal()); await g.closeAll();
+  const c = g.H.E.promoteCost(S, 'iris'); S.perm.specs.iris.cards = c.cards + 5; S.perm.data = c.data - 1;
+  g.click('[data-a="nav|crew"]'); g.click('button.card[data-a="spec|iris"]'); await wait(60);
+  const box = g.modal(); const btn = () => g.q('#modal [data-k="promote"]');
+  ok(btn() && btn().disabled, 'com dados insuficientes o botão Promover está desabilitado');
+  S.perm.data = c.data + 0.5; // a produção completou os dados
+  ok(await until(() => { g.H.UI.frame(); return btn() && !btn().disabled; }, 1500), 'o botão se habilita sozinho no próximo quadro, sem reabrir o painel');
+  ok(g.modal() === box, 'continua sendo o mesmo painel aberto');
+  const stale = btn().dataset.a; g.click(btn()); await wait(60);
+  ok(S.perm.specs.iris.lvl === 2, 'promove para o nível 2');
+  ok(Math.abs(S.perm.data - 0.5) < 1e-6 && S.perm.specs.iris.cards === 5, 'cobra uma vez (dados e cartas)');
+  ok(/Nv 3/.test(btn() ? btn().textContent : ''), 'o botão passa a mostrar o próximo nível (' + (btn() && btn().textContent) + ')');
+  ok(btn() && btn().disabled, 'próximo nível bloqueado por falta de recursos');
+  S.perm.specs.iris.cards = 999; S.perm.data = 1e9; const [a, sid, lvl] = stale.split('|');
+  g.H.UI.ACT[a](sid, lvl); ok(S.perm.specs.iris.lvl === 2, 'clique repetido com informação antiga não compra de novo');
+  await g.closeAll(); close(g);
+}
+async function tKeyboard() {
+  sec('Teclado: pesquisa, destino do Colapso e mapa');
+  const g = await openGame('teclado'); await until(() => g.modal()); await g.closeAll();
+  const S = g.S(); S.perm.data = 5000; S.settings.dev = true; g.H.dev('ready'); await g.closeAll();
+  g.click('[data-a="nav|research"]'); await wait(40);
+  const node = g.q('button.node'); ok(node && node.tagName === 'BUTTON' && node.getAttribute('aria-pressed') === 'false', 'projeto de pesquisa é um botão com estado');
+  node.focus(); const key = node.dataset.a; g.click(node); await wait(40);
+  const sel = g.d.activeElement; ok(sel && sel.dataset.a === key && sel.getAttribute('aria-pressed') === 'true', 'selecionar mantém o foco no mesmo projeto e marca aria-pressed');
+  const buy = g.q('[data-k="rbuy"]'); ok(buy && !buy.disabled, 'botão Pesquisar alcançável');
+  const id = key.split('|')[1]; const l0 = S.perm.research[id] || 0; const staleBuy = buy.dataset.a; g.click(buy);
+  ok((S.perm.research[id] || 0) === l0 + 1, 'pesquisa comprada');
+  const [ba, bid, blvl] = staleBuy.split('|'); g.H.UI.ACT[ba](bid, blvl); ok((S.perm.research[id] || 0) === l0 + 1, 'compra repetida com nível antigo é ignorada');
+  g.click('[data-a="nav|sing"]'); await wait(40);
+  const opts = g.qa('button.uni-opt'); ok(opts.length >= 3, 'destinos do Colapso são botões (' + opts.length + ')');
+  opts[1].focus(); const ua = opts[1].dataset.a; g.click(opts[1]); await wait(40);
+  const fo = g.d.activeElement; ok(fo && fo.dataset.a === ua && fo.getAttribute('aria-pressed') === 'true', 'escolher o destino mantém o foco e marca a opção');
+  ok(!g.q('[data-a="collapse"]').disabled, 'Iniciar Colapso habilitado após escolher o destino');
+  g.q('[data-a="collapse"]').focus(); g.click('[data-a="collapse"]'); await wait(60); // como Enter no botão focado
+  ok(g.modal() && g.modal().contains(g.d.activeElement) && /Colapso/.test(g.modal().textContent), 'confirmação do Colapso recebe o foco');
+  g.key(g.d.activeElement, 'Escape'); await wait(30); ok(!g.modal() && g.d.activeElement === g.q('[data-a="collapse"]'), 'Escape cancela e devolve o foco ao botão');
+  g.click('[data-a="nav|map"]'); await wait(40);
+  const pl = g.q('#mp-marte'); ok(pl && pl.getAttribute('tabindex') === '0' && pl.getAttribute('role') === 'button', 'planetas do mapa são focáveis');
+  pl.focus(); g.key(pl, 'Enter'); await wait(40); ok(g.H.UI.st.sel === 'marte', 'Enter seleciona o planeta');
+  ok(errs(g).length === 0, 'sem erros de JavaScript' + (errs(g).length ? ': ' + errs(g)[0] : ''));
+  close(g);
+}
+async function tSaveFailure() {
+  sec('Salvamento: sucesso, armazenamento cheio, bloqueado e recuperação');
+  const g = await openGame('salvar'); await until(() => g.modal()); await g.closeAll();
+  g.click('[data-a="nav|settings"]'); await wait(40);
+  const proto = g.w.Storage.prototype; const orig = proto.setItem; let mode = null;
+  proto.setItem = function (k, v) { if (mode && k.indexOf('helios_idle_save') === 0 && !/_(lock|req)$/.test(k)) throw new g.w.DOMException('falha simulada', mode); return orig.call(this, k, v); };
+  g.click('[data-a="save"]'); ok(g.toast() === 'Jogo salvo.', 'salvar com sucesso mostra “Jogo salvo.”');
+  const rev0 = g.H.E.peekRev(localStorage.getItem(slotKey('salvar')));
+  mode = 'QuotaExceededError'; g.click('[data-a="save"]');
+  ok(/cheio/.test(g.toast()) && !/Jogo salvo/.test(g.toast()), 'armazenamento cheio: mensagem clara, sem “Jogo salvo.” (' + g.toast().slice(0, 60) + '…)');
+  ok(!g.q('[data-u="savest"]').classList.contains('hidden'), 'indicador “Não salvo” aparece no topo');
+  ok(g.H.E.peekRev(localStorage.getItem(slotKey('salvar'))) === rev0, 'nada foi gravado durante a falha');
+  mode = 'SecurityError'; g.click('[data-a="save"]'); ok(/bloqueou/.test(g.toast()), 'armazenamento bloqueado: mensagem própria');
+  g.click('[data-a="export"]'); ok(/^HELIOS1:/.test(g.q('#io').value), 'a partida continua utilizável e pode ser exportada');
+  const t0 = g.S().run.time; await wait(400); ok(g.S().run.time > t0, 'o jogo continua rodando durante a falha');
+  mode = null; ok(await until(() => { g.H.UI.frame(); return g.q('[data-u="savest"]').classList.contains('hidden'); }, 15000, 200), 'o salvamento automático tenta de novo e se recupera');
+  ok(g.H.E.peekRev(localStorage.getItem(slotKey('salvar'))) > rev0, 'gravação efetiva após a recuperação');
+  g.click('[data-a="save"]'); ok(g.toast() === 'Jogo salvo.', '“Jogo salvo.” só depois de gravar de fato');
+  proto.setItem = orig; close(g);
+}
+async function tImport() {
+  sec('Importação: inválida, cancelada e confirmada');
+  const g = await openGame('importar'); await until(() => g.modal()); await g.closeAll();
+  const S0 = g.S(); g.click('[data-a="nav|settings"]'); await wait(40);
+  const bad = JSON.parse(g.H.E.serialize(S0)); bad.perm.specs.iris = null; bad.run.routes = {};
+  g.q('#io').value = JSON.stringify(bad); g.click('[data-a="import"]'); await wait(40);
+  ok(g.modal() && /Não foi possível importar/.test(g.modal().textContent), 'conteúdo inválido é recusado com explicação');
+  ok(g.S() === S0, 'a partida atual continua a mesma');
+  await g.closeAll(); const t0 = S0.run.time; await wait(400); ok(g.S().run.time > t0 && errs(g).length === 0, 'o jogo segue funcionando depois da recusa');
+  const other = H.E.newState(); other.perm.data = 12345; other.lastTick = Date.now();
+  g.q('#io').value = H.E.exportStr(other); g.click('[data-a="import"]'); await wait(40);
+  ok(g.modal() && /Importar progresso/.test(g.modal().textContent), 'conteúdo válido pede confirmação');
+  g.click('#modal [data-a="close"]'); await wait(40);
+  ok(g.S() === S0 && !g.H.UI.st.pendingImport, 'cancelar mantém a partida e descarta o estado validado');
+  g.click('[data-a="import"]'); await wait(40); g.click('#modal [data-a="import2"]'); await wait(60);
+  ok(g.S() !== S0 && Math.round(g.S().perm.data) === 12345, 'confirmar substitui a partida');
+  const st = JSON.parse(localStorage.getItem(slotKey('importar'))); ok(st && Math.round(st.perm.data) === 12345, 'a importação foi gravada');
+  close(g);
+}
+async function tTabs() {
+  sec('Abas: uma gravadora, leitura, importação, reinício, posse e travamento');
+  const A = await openGame('abas'); await until(() => A.modal()); await A.closeAll();
+  ok(!A.lock() && A.H.session.role === 'writer', 'a primeira aba joga e grava');
+  const B = await openGame('abas'); await wait(250);
+  ok(B.lock() && B.H.session.role === 'passive', 'a segunda aba abre em modo de leitura com aviso');
+  ok(B.q('#lockov-b') === B.d.activeElement || B.q('#lockov').contains(B.d.activeElement), 'o aviso recebe o foco');
+  B.key(B.d.activeElement, 'Escape'); ok(B.lock(), 'Escape não fecha o aviso de outra aba');
+  const key = slotKey('abas');
+  A.S().perm.data = 777; A.H.save(true); close(B); await wait(300);
+  ok(Math.round(JSON.parse(localStorage.getItem(key)).perm.data) === 777, 'avançar em A e fechar B: o avanço de A permanece');
+  const B2 = await openGame('abas'); await wait(250);
+  const ns = H.E.newState(); ns.perm.data = 4242; ns.lastTick = Date.now();
+  A.click('[data-a="nav|settings"]'); A.q('#io').value = H.E.exportStr(ns); A.click('[data-a="import"]'); await wait(40); A.click('#modal [data-a="import2"]'); await wait(60);
+  const revI = H.E.peekRev(localStorage.getItem(key));
+  B2.d.dispatchEvent(new B2.w.Event('visibilitychange')); B2.w.dispatchEvent(new B2.w.Event('focus')); await wait(500);
+  ok(Math.round(JSON.parse(localStorage.getItem(key)).perm.data) === 4242 && H.E.peekRev(localStorage.getItem(key)) === revI, 'importar em A e focar B: B não grava por cima');
+  A.click('[data-a="reset"]'); await wait(40); A.click('#modal [data-a="reset2"]'); await wait(60);
+  const revR = H.E.peekRev(localStorage.getItem(key)); close(B2); await wait(300);
+  ok(Math.round(JSON.parse(localStorage.getItem(key)).perm.data) === 0 && H.E.peekRev(localStorage.getItem(key)) === revR, 'reiniciar em A e fechar B: o reinício permanece');
+  await A.closeAll();
+  const C = await openGame('abas'); await wait(250); ok(C.lock(), 'nova aba C em leitura');
+  A.S().perm.data = 99; C.click('#lockov-b'); ok(await until(() => !C.lock() && C.H.session.role === 'writer', 3000), '“Usar esta aba”: C assume a partida');
+  ok(await until(() => A.lock(), 1500) && A.H.session.role !== 'writer', 'A passa a exibir o aviso e para de gravar');
+  ok(Math.round(C.S().perm.data) === 99, 'C continua do progresso mais recente de A (salvo na transferência)');
+  const r = A.H.save(true); ok(!r.ok && (r.status === 'readonly' || r.status === 'stale'), 'tentativa de gravar na aba antiga é recusada');
+  C.H._test.freeze(); // aba gravadora trava (sem evento de fechamento)
+  ok(await until(() => !A.lock() && A.H.session.role === 'writer', 10000, 200), 'aba gravadora travada: A assume sozinha após a expiração');
+  close(C); close(A);
+}
+async function tOfflineTwoTabs() {
+  sec('Duas abas abertas juntas depois de um período offline');
+  const key = slotKey('offline'); const S = H.E.newState(); H.E.recruit(S, 'iris'); S.events = [];
+  S.lastTick = Date.now() - 2 * 3600 * 1000; S.rev = 3; localStorage.setItem(key, H.E.serialize(S));
+  const [A, B] = await Promise.all([openGame('offline'), openGame('offline')]); await wait(600);
+  const writers = [A, B].filter((g) => g.H.session.role === 'writer'); const reports = [A, B].filter((g) => g.modal() && /Bem-vindo\(a\) de volta/.test(g.modal().textContent));
+  ok(writers.length === 1, 'exatamente uma aba fica responsável (' + writers.length + ')');
+  ok(reports.length === 1 && reports[0] === writers[0], 'só a aba responsável mostra o relatório offline');
+  const st = JSON.parse(localStorage.getItem(key)); ok(st.run.time > 7000 && st.run.time < 7300, 'o período offline foi creditado uma vez (' + Math.round(st.run.time) + 's de jogo)');
+  ok(Date.now() - st.lastTick < 5000, 'o intervalo ficou registrado como usado');
+  close(A); close(B);
+}
+async function tLayout() {
+  sec('Layout no computador e no celular (sem rolagem horizontal)');
+  for (const [w, h, label] of [[1280, 800, 'computador'], [375, 812, 'celular']]) {
+    const g = await openGame('layout' + w, w, h); await until(() => g.modal()); await g.closeAll();
+    const S = g.S(); S.settings.dev = true; for (const sid of ['iris', 'vulcano', 'vega']) g.H.E.recruit(S, sid); g.H.dev('ready'); g.H.dev('cards'); g.H.UI.frame(); await wait(200); await g.closeAll();
+    const bad = [];
+    for (const scr of ['map', 'region', 'crew', 'research', 'exp', 'sing', 'settings']) {
+      g.click('[data-a="nav|' + scr + '"]'); await wait(60);
+      const de = g.d.documentElement; if (de.scrollWidth > de.clientWidth + 1) bad.push(scr + ' (' + de.scrollWidth + 'px)');
+    }
+    g.click('[data-a="nav|region"]'); g.click('[data-a="rtab|routes"]'); await wait(60);
+    const de = g.d.documentElement; if (de.scrollWidth > de.clientWidth + 1) bad.push('rotas');
+    g.click('[data-a="nav|crew"]'); g.click('button.card'); await wait(60); const md = g.modal(); if (md && md.scrollWidth > md.clientWidth + 1) bad.push('painel do especialista');
+    ok(!bad.length, label + ' (' + w + 'px): todas as telas cabem na largura' + (bad.length ? ' — estouro em ' + bad.join(', ') : ''));
+    ok(errs(g).length === 0, label + ': sem erros de JavaScript' + (errs(g).length ? ': ' + errs(g)[0] : ''));
+    close(g);
+  }
+}
+
+async function main() {
+  document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
+  const t0 = Date.now();
+  for (const t of [tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tLayout]) {
+    try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }
+    STAGE.innerHTML = '';
+  }
+  cleanup();
+  const s = document.getElementById('sum'); s.className = fail ? 'bad' : 'ok';
+  s.textContent = (fail ? fail + ' falha(s), ' : 'Todos os testes passaram: ') + pass + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(0) + 's';
+  window.__result = { pass, fail, done: true }; document.getElementById('go').disabled = false;
+}
+document.getElementById('go').onclick = main;
+main();
+</script>
+</body>
+</html>

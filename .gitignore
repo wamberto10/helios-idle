@@ -1,0 +1,6 @@
+# configurações locais do editor/assistente
+.claude/
+# arquivos temporários
+*.tmp
+Thumbs.db
+desktop.ini
