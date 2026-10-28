@@ -4,6 +4,8 @@ Jogo idle incremental no Sistema Solar: produção em cadeia, especialistas cole
 
 Aplicação web sem etapa de build (HTML + CSS + JavaScript puro). Funciona no celular e no computador.
 
+**Jogar online:** https://wamberto10.github.io/helios-idle/ (GitHub Pages, publicado a partir da branch `main`; cada `git push` atualiza o site em 1 a 2 minutos). O progresso fica salvo no navegador de cada pessoa.
+
 ## Como iniciar
 
 **Opção 1 — mais simples:** dê dois cliques em `index.html`. O jogo abre direto no navegador e salva no armazenamento local.
