@@ -12,7 +12,7 @@
     return group && Object.prototype.hasOwnProperty.call(group, key) && typeof group[key] === 'string' ? group[key] : '';
   };
   A.paths = {};
-  for (const kind of ['portrait', 'building', 'region', 'terrain', 'planet', 'ui']) A.paths[kind] = (key) => assetPath(kind, key);
+  for (const kind of ['portrait', 'commander', 'building', 'region', 'terrain', 'planet', 'ui']) A.paths[kind] = (key) => assetPath(kind, key);
   A.imageLoaded = function (img) {
     if (img.naturalWidth && img.parentElement) img.parentElement.classList.add('has-image');
   };
@@ -72,6 +72,14 @@
     return `<svg viewBox="0 0 120 150" class="portrait-svg" aria-hidden="true">${bg}${body}</svg>`;
   };
   A.portraitBox = (sid, locked, cls) => locked ? `<span class="art ${cls || ''}">${A.portrait(sid, true)}</span>` : A.img(A.paths.portrait(sid), A.portrait(sid), cls);
+
+  // O jogador tem sua própria identidade; os especialistas continuam na tripulação.
+  A.commanderAvatar = function (avatar, cls) {
+    const key = Object.prototype.hasOwnProperty.call(D.commanderAvatars, avatar) ? avatar : 'aurora';
+    const c = D.commanderAvatars[key].color, g = id('commander-g');
+    const fallback = `<svg viewBox="0 0 120 150" aria-hidden="true"><defs><radialGradient id="${g}"><stop stop-color="${c}" stop-opacity=".35"/><stop offset="1" stop-color="#071126"/></radialGradient></defs><rect width="120" height="150" fill="url(#${g})"/><path d="M17 150l8-33 22-12h26l22 12 8 33" fill="#cbd7df" stroke="${c}" stroke-width="2"/><path d="M47 105v24h26v-24" fill="#1b2a44"/><circle cx="60" cy="64" r="34" fill="#dbe4e8" stroke="${c}" stroke-width="2"/><rect x="34" y="44" width="52" height="38" rx="17" fill="#101e37"/><path d="M42 55h36" stroke="${c}" stroke-width="3" opacity=".8"/><path d="M37 88l10 7h26l10-7" fill="none" stroke="#243a55" stroke-width="5"/></svg>`;
+    return A.img(A.paths.commander(key), fallback, 'commander-avatar ' + (cls || ''));
+  };
 
   // ---------------- ÍCONES DE INSTALAÇÕES ----------------
   const BI = {

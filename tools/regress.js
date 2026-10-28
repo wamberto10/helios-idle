@@ -286,11 +286,34 @@ function testSessions() {
   r = Z.write(fresh()); assert(!r.ok && r.reason === 'blocked', 'sem armazenamento: salvar informa bloqueio');
 }
 
+// =============== 7. EXPEDIÇÕES COM FRAGMENTO ===============
+function testExpFrags() {
+  section('Expedições com fragmento: no máximo 1 por expedição em cada universo');
+  const S = fresh(); S.run = E.newRun(S, 'ancestral'); S.run.flags.expeditions = true;
+  const go = (id, bonus) => { const uid = ++S.run.expSeq; S.run.exps.push({ id, uid, end: 0, dur: 1, bonus: bonus || [] }); return E.collectExp(S, uid, true); };
+  const f0 = S.perm.fragsTotal;
+  let r = go('ruinas');
+  assert(r.ok && r.total.frags === 1 && S.perm.fragsTotal === f0 + 1, 'Ruínas: a primeira conclusão no universo dá 1 fragmento');
+  assert(E.expFragDone(S, 'ruinas'), 'a conclusão fica registrada no universo');
+  const d0 = S.perm.data; r = go('ruinas');
+  assert(r.ok && r.total.frags === 0 && r.total.fragsDone === 1 && S.perm.fragsTotal === f0 + 1, 'Ruínas repetida: sem fragmento');
+  assert(S.perm.data > d0 && Object.keys(r.total.cards).length > 0, 'Ruínas repetida: dados e cartas continuam');
+  r = go('ruinas2', [{ frags: 1 }]); assert(r.total.frags === 1 && S.perm.fragsTotal === f0 + 2, 'Câmaras: o bônus de fragmento vale uma vez');
+  r = go('ruinas2', [{ frags: 1 }]); assert(r.total.frags === 0 && S.perm.fragsTotal === f0 + 2, 'Câmaras: bônus de fragmento repetido não conta');
+  r = go('ruinas2', []); assert(r.total.frags === 0 && !r.total.fragsDone, 'Câmaras sem bônus sorteado: nada a avisar');
+  const C = clone(S); assert(E.expFragDone(C, 'ruinas') && E.expFragDone(C, 'ruinas2'), 'o registro sobrevive ao salvar e carregar');
+  const kept = S.perm.frags; S.run = E.newRun(S, 'ancestral'); S.run.flags.expeditions = true;
+  assert(!E.expFragDone(S, 'ruinas') && S.perm.frags === kept, 'novo universo: o fragmento volta a ser possível e os já ganhos são mantidos');
+  r = go('ruinas'); assert(r.total.frags === 1, 'novo universo: primeira conclusão volta a dar 1 fragmento');
+  const old = clone(S); delete old.run.flags['frag:ruinas']; const O = clone(old);
+  assert(!E.expFragDone(O, 'ruinas') && O.perm.frags === S.perm.frags, 'salvamento antigo sem o registro carrega sem perder fragmentos');
+}
+
 let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');

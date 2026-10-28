@@ -23,8 +23,8 @@
 </head>
 <body>
   <main class="page">
-    <header><div class="brand"><span class="sun" aria-hidden="true"></span><div><h1>HELIOS <span>IDLE</span></h1><p>Catálogo gráfico completo · <span id="total">43</span> artes</p></div></div><a class="play" href="../index.html">Abrir o jogo ↗</a></header>
-    <nav class="filters" aria-label="Filtrar artes"><button type="button" data-filter="all" aria-pressed="true">Todas</button><button type="button" data-filter="portraits" aria-pressed="false">Tripulação</button><button type="button" data-filter="buildings" aria-pressed="false">Instalações</button><button type="button" data-filter="regions" aria-pressed="false">Cenários</button><button type="button" data-filter="ui" aria-pressed="false">Suprimentos</button></nav>
+    <header><div class="brand"><span class="sun" aria-hidden="true"></span><div><h1>HELIOS <span>IDLE</span></h1><p>Catálogo gráfico completo · <span id="total">47</span> artes</p></div></div><a class="play" href="../index.html">Abrir o jogo ↗</a></header>
+    <nav class="filters" aria-label="Filtrar artes"><button type="button" data-filter="all" aria-pressed="true">Todas</button><button type="button" data-filter="portraits" aria-pressed="false">Tripulação</button><button type="button" data-filter="commanders" aria-pressed="false">Comandantes</button><button type="button" data-filter="buildings" aria-pressed="false">Instalações</button><button type="button" data-filter="regions" aria-pressed="false">Cenários</button><button type="button" data-filter="ui" aria-pressed="false">Suprimentos</button></nav>
     <div id="catalogo"></div>
     <noscript>Ative JavaScript para mostrar o catálogo. As imagens originais estão nas pastas portraits, buildings, regions e ui.</noscript>
     <footer><b>Explorar. Automatizar. Atravessar.</b><br>Clique em uma arte para abrir o arquivo original. O catálogo não altera sua partida.</footer>
@@ -38,6 +38,7 @@
       const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
       const groups=[
         {id:'portraits',title:'Tripulação',kind:'portrait',cls:'portrait',grid:'portrait-grid',keys:D.specOrder,def:key=>({name:D.specs[key].name,role:D.specs[key].role,color:D.specs[key].color})},
+        {id:'commanders',title:'Seu comandante',kind:'commander',cls:'portrait',grid:'portrait-grid',keys:Object.keys(D.commanderAvatars),def:key=>({name:D.commanderAvatars[key].name,role:D.commanderAvatars[key].label,color:D.commanderAvatars[key].color})},
         {id:'buildings',title:'Instalações',kind:'building',cls:'object',grid:'building-grid',keys:Object.keys(D.buildings),def:key=>({name:D.buildings[key].name,role:D.cats[D.buildings[key].cat].name,color:'#7fdce8'})},
         {id:'regions',title:'Cenários das regiões',kind:'region',cls:'region',grid:'region-grid',keys:D.regionOrder,def:key=>({name:D.regions[key].name,role:D.regions[key].sub,color:D.regions[key].color})},
         {id:'ui',title:'Suprimentos',kind:'ui',cls:'object',grid:'ui-grid',keys:['chest'],def:()=>({name:'Baú de Suprimentos',role:'Cartas, ciência e recompensas',color:'#ffd071'})}

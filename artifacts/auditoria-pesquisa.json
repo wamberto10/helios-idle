@@ -1,0 +1,4090 @@
+{
+  "generated": "2026-10-28T18:36:39.393Z",
+  "methodology": "Ensaios controlados com energia artificialmente suficiente. Fixação de máquinas/níveis/cartas não mede o tempo ou o custo de atingi-los. Sem missões, baús, expedições nem outras fontes de dados. A cada segundo o motor real produz e compras reais respeitam req/custos. Science-first poupa primeiro para exp1 I e Telemetria V; depois compra a opção disponível mais barata.",
+  "baseBudget": {
+    "branches": {
+      "min": {
+        "total": 23162,
+        "levels": 21,
+        "nodes": 5
+      },
+      "ind": {
+        "total": 37046,
+        "levels": 23,
+        "nodes": 5
+      },
+      "en": {
+        "total": 100525,
+        "levels": 23,
+        "nodes": 5
+      },
+      "log": {
+        "total": 16884,
+        "levels": 23,
+        "nodes": 5
+      },
+      "exp": {
+        "total": 22356,
+        "levels": 21,
+        "nodes": 5
+      },
+      "frag": {
+        "total": 180,
+        "levels": 21,
+        "nodes": 7
+      }
+    },
+    "nodes": [
+      {
+        "id": "min1",
+        "name": "Brocas de Diamante",
+        "currency": "data",
+        "costs": [
+          10,
+          22,
+          49,
+          107,
+          235
+        ],
+        "total": 423,
+        "max": 5,
+        "requirements": []
+      },
+      {
+        "id": "min2",
+        "name": "Sondagem Sísmica",
+        "currency": "data",
+        "costs": [
+          40,
+          88,
+          194,
+          426,
+          938
+        ],
+        "total": 1686,
+        "max": 5,
+        "requirements": [
+          "min1"
+        ]
+      },
+      {
+        "id": "min3",
+        "name": "Criomineração",
+        "currency": "data",
+        "costs": [
+          60,
+          132,
+          291,
+          639,
+          1406
+        ],
+        "total": 2528,
+        "max": 5,
+        "requirements": [
+          "min1"
+        ]
+      },
+      {
+        "id": "min4",
+        "name": "Mineração de Precisão",
+        "currency": "data",
+        "costs": [
+          400,
+          1000,
+          2500
+        ],
+        "total": 3900,
+        "max": 3,
+        "requirements": [
+          "min2"
+        ]
+      },
+      {
+        "id": "min5",
+        "name": "Drones Autônomos",
+        "currency": "data",
+        "costs": [
+          1500,
+          3750,
+          9375
+        ],
+        "total": 14625,
+        "max": 3,
+        "requirements": [
+          "min4"
+        ]
+      },
+      {
+        "id": "ind1",
+        "name": "Fornos de Indução",
+        "currency": "data",
+        "costs": [
+          15,
+          33,
+          73,
+          160,
+          352
+        ],
+        "total": 633,
+        "max": 5,
+        "requirements": []
+      },
+      {
+        "id": "ind2",
+        "name": "Ligas Avançadas",
+        "currency": "data",
+        "costs": [
+          50,
+          111,
+          243,
+          533,
+          1172
+        ],
+        "total": 2109,
+        "max": 5,
+        "requirements": [
+          "ind1"
+        ]
+      },
+      {
+        "id": "ind3",
+        "name": "Linhas de Montagem",
+        "currency": "data",
+        "costs": [
+          120,
+          264,
+          581,
+          1278,
+          2812
+        ],
+        "total": 5055,
+        "max": 5,
+        "requirements": [
+          "ind2"
+        ]
+      },
+      {
+        "id": "ind4",
+        "name": "Engenharia Modular",
+        "currency": "data",
+        "costs": [
+          200,
+          460,
+          1058,
+          2434,
+          5597
+        ],
+        "total": 9749,
+        "max": 5,
+        "requirements": [
+          "ind1"
+        ]
+      },
+      {
+        "id": "ind5",
+        "name": "Estaleiros Orbitais",
+        "currency": "data",
+        "costs": [
+          2000,
+          5000,
+          12500
+        ],
+        "total": 19500,
+        "max": 3,
+        "requirements": [
+          "ind3"
+        ]
+      },
+      {
+        "id": "en1",
+        "name": "Painéis Bifaciais",
+        "currency": "data",
+        "costs": [
+          12,
+          27,
+          59,
+          128,
+          282
+        ],
+        "total": 508,
+        "max": 5,
+        "requirements": []
+      },
+      {
+        "id": "en2",
+        "name": "Supercapacitores",
+        "currency": "data",
+        "costs": [
+          60,
+          132,
+          291,
+          639,
+          1406
+        ],
+        "total": 2528,
+        "max": 5,
+        "requirements": [
+          "en1"
+        ]
+      },
+      {
+        "id": "en3",
+        "name": "Concentradores Solares",
+        "currency": "data",
+        "costs": [
+          300,
+          690,
+          1587,
+          3651,
+          8396
+        ],
+        "total": 14624,
+        "max": 5,
+        "requirements": [
+          "en1"
+        ]
+      },
+      {
+        "id": "en4",
+        "name": "Confinamento Magnético",
+        "currency": "data",
+        "costs": [
+          1200,
+          2760,
+          6348,
+          14601,
+          33581
+        ],
+        "total": 58490,
+        "max": 5,
+        "requirements": [
+          "en2"
+        ]
+      },
+      {
+        "id": "en5",
+        "name": "Reatores Compactos",
+        "currency": "data",
+        "costs": [
+          2500,
+          6250,
+          15625
+        ],
+        "total": 24375,
+        "max": 3,
+        "requirements": [
+          "en4"
+        ]
+      },
+      {
+        "id": "log1",
+        "name": "Contêineres Expansíveis",
+        "currency": "data",
+        "costs": [
+          15,
+          33,
+          73,
+          160,
+          352
+        ],
+        "total": 633,
+        "max": 5,
+        "requirements": []
+      },
+      {
+        "id": "log2",
+        "name": "Porões Ampliados",
+        "currency": "data",
+        "costs": [
+          40,
+          88,
+          194,
+          426,
+          938
+        ],
+        "total": 1686,
+        "max": 5,
+        "requirements": []
+      },
+      {
+        "id": "log3",
+        "name": "Trajetórias de Hohmann",
+        "currency": "data",
+        "costs": [
+          80,
+          176,
+          388,
+          852,
+          1875
+        ],
+        "total": 3371,
+        "max": 5,
+        "requirements": [
+          "log2"
+        ]
+      },
+      {
+        "id": "log4",
+        "name": "Propulsão Eficiente",
+        "currency": "data",
+        "costs": [
+          150,
+          330,
+          727,
+          1598,
+          3514
+        ],
+        "total": 6319,
+        "max": 5,
+        "requirements": [
+          "log3"
+        ]
+      },
+      {
+        "id": "log5",
+        "name": "Janelas Calculadas",
+        "currency": "data",
+        "costs": [
+          500,
+          1250,
+          3125
+        ],
+        "total": 4875,
+        "max": 3,
+        "requirements": [
+          "log3"
+        ]
+      },
+      {
+        "id": "exp1",
+        "name": "Sondas Robustas",
+        "currency": "data",
+        "costs": [
+          30,
+          66,
+          146,
+          320,
+          703
+        ],
+        "total": 1265,
+        "max": 5,
+        "requirements": []
+      },
+      {
+        "id": "exp2",
+        "name": "Sonda Adicional",
+        "currency": "data",
+        "costs": [
+          150,
+          750
+        ],
+        "total": 900,
+        "max": 2,
+        "requirements": [
+          "exp1"
+        ]
+      },
+      {
+        "id": "exp3",
+        "name": "Navegação Autônoma",
+        "currency": "data",
+        "costs": [
+          100,
+          221,
+          485,
+          1065,
+          2343
+        ],
+        "total": 4214,
+        "max": 5,
+        "requirements": [
+          "exp1"
+        ]
+      },
+      {
+        "id": "exp4",
+        "name": "Telemetria Profunda",
+        "currency": "data",
+        "costs": [
+          200,
+          460,
+          1058,
+          2434,
+          5597
+        ],
+        "total": 9749,
+        "max": 5,
+        "requirements": [
+          "exp1"
+        ]
+      },
+      {
+        "id": "exp5",
+        "name": "Retransmissor Offline",
+        "currency": "data",
+        "costs": [
+          300,
+          690,
+          1587,
+          3651
+        ],
+        "total": 6228,
+        "max": 4,
+        "requirements": [
+          "exp3"
+        ]
+      },
+      {
+        "id": "sg1",
+        "name": "Memória Quântica",
+        "currency": "frag",
+        "costs": [
+          1,
+          2,
+          4
+        ],
+        "total": 7,
+        "max": 3,
+        "requirements": []
+      },
+      {
+        "id": "sg2",
+        "name": "Atalhos de Missão",
+        "currency": "frag",
+        "costs": [
+          2,
+          4
+        ],
+        "total": 6,
+        "max": 2,
+        "requirements": []
+      },
+      {
+        "id": "sg3",
+        "name": "Eco Industrial",
+        "currency": "frag",
+        "costs": [
+          2,
+          4,
+          7,
+          12,
+          21
+        ],
+        "total": 46,
+        "max": 5,
+        "requirements": []
+      },
+      {
+        "id": "sg4",
+        "name": "Âncora Dimensional",
+        "currency": "frag",
+        "costs": [
+          3,
+          6
+        ],
+        "total": 9,
+        "max": 2,
+        "requirements": []
+      },
+      {
+        "id": "sg5",
+        "name": "Ressonância de Fragmentos",
+        "currency": "frag",
+        "costs": [
+          3,
+          6,
+          12,
+          24,
+          48
+        ],
+        "total": 93,
+        "max": 5,
+        "requirements": []
+      },
+      {
+        "id": "sg6",
+        "name": "Pré-fabricados",
+        "currency": "frag",
+        "costs": [
+          2,
+          4,
+          8
+        ],
+        "total": 14,
+        "max": 3,
+        "requirements": [
+          "sg1"
+        ]
+      },
+      {
+        "id": "sg7",
+        "name": "Mapa do Vazio",
+        "currency": "frag",
+        "costs": [
+          5
+        ],
+        "total": 5,
+        "max": 1,
+        "requirements": []
+      }
+    ],
+    "dataTotal": 199973,
+    "fragmentTotal": 180
+  },
+  "rateGrid": [
+    {
+      "n": 1,
+      "lvl": 1,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 0.07333333333333333,
+      "gained": 4.4,
+      "expected": 0.07333333333333333,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 4.4
+    },
+    {
+      "n": 1,
+      "lvl": 1,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 0.34666666666666657,
+      "gained": 20.799999999999994,
+      "expected": 0.3466666666666667,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 20.799999999999994
+    },
+    {
+      "n": 1,
+      "lvl": 1,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 0.7999999999999983,
+      "gained": 47.99999999999989,
+      "expected": 0.8,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 47.99999999999989
+    },
+    {
+      "n": 1,
+      "lvl": 1,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 6.399999999999986,
+      "gained": 383.99999999999915,
+      "expected": 6.4,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 383.99999999999915
+    },
+    {
+      "n": 1,
+      "lvl": 5,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 0.21999999999999972,
+      "gained": 13.199999999999983,
+      "expected": 0.22000000000000003,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 13.199999999999983
+    },
+    {
+      "n": 1,
+      "lvl": 5,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 1.0400000000000027,
+      "gained": 62.40000000000016,
+      "expected": 1.04,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 62.40000000000016
+    },
+    {
+      "n": 1,
+      "lvl": 5,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 2.400000000000001,
+      "gained": 144.00000000000006,
+      "expected": 2.4,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 144.00000000000006
+    },
+    {
+      "n": 1,
+      "lvl": 5,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 19.200000000000006,
+      "gained": 1152.0000000000005,
+      "expected": 19.2,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 1152.0000000000005
+    },
+    {
+      "n": 1,
+      "lvl": 10,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 0.4033333333333338,
+      "gained": 24.200000000000028,
+      "expected": 0.4033333333333334,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 24.200000000000028
+    },
+    {
+      "n": 1,
+      "lvl": 10,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 1.9066666666666665,
+      "gained": 114.39999999999999,
+      "expected": 1.9066666666666667,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 114.39999999999999
+    },
+    {
+      "n": 1,
+      "lvl": 10,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 4.399999999999991,
+      "gained": 263.99999999999943,
+      "expected": 4.4,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 263.99999999999943
+    },
+    {
+      "n": 1,
+      "lvl": 10,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 35.199999999999925,
+      "gained": 2111.9999999999955,
+      "expected": 35.2,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 2111.9999999999955
+    },
+    {
+      "n": 1,
+      "lvl": 25,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 0.9533333333333333,
+      "gained": 57.199999999999996,
+      "expected": 0.9533333333333334,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 57.199999999999996
+    },
+    {
+      "n": 1,
+      "lvl": 25,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 4.5066666666666615,
+      "gained": 270.3999999999997,
+      "expected": 4.506666666666667,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 270.3999999999997
+    },
+    {
+      "n": 1,
+      "lvl": 25,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 10.400000000000004,
+      "gained": 624.0000000000002,
+      "expected": 10.4,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 624.0000000000002
+    },
+    {
+      "n": 1,
+      "lvl": 25,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 83.20000000000003,
+      "gained": 4992.000000000002,
+      "expected": 83.2,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 4992.000000000002
+    },
+    {
+      "n": 5,
+      "lvl": 1,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 0.3666666666666671,
+      "gained": 22.000000000000025,
+      "expected": 0.36666666666666664,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 22.000000000000025
+    },
+    {
+      "n": 5,
+      "lvl": 1,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 1.7333333333333285,
+      "gained": 103.99999999999972,
+      "expected": 1.7333333333333334,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 103.99999999999972
+    },
+    {
+      "n": 5,
+      "lvl": 1,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 4,
+      "gained": 240,
+      "expected": 4,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 240
+    },
+    {
+      "n": 5,
+      "lvl": 1,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 32,
+      "gained": 1920,
+      "expected": 32,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 1920
+    },
+    {
+      "n": 5,
+      "lvl": 5,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 1.0999999999999976,
+      "gained": 65.99999999999986,
+      "expected": 1.1,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 65.99999999999986
+    },
+    {
+      "n": 5,
+      "lvl": 5,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 5.200000000000002,
+      "gained": 312.0000000000001,
+      "expected": 5.2,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 312.0000000000001
+    },
+    {
+      "n": 5,
+      "lvl": 5,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 12,
+      "gained": 720,
+      "expected": 12,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 720
+    },
+    {
+      "n": 5,
+      "lvl": 5,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 96,
+      "gained": 5760,
+      "expected": 96,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 5760
+    },
+    {
+      "n": 5,
+      "lvl": 10,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 2.0166666666666724,
+      "gained": 121.00000000000036,
+      "expected": 2.016666666666667,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 121.00000000000036
+    },
+    {
+      "n": 5,
+      "lvl": 10,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 9.533333333333323,
+      "gained": 571.9999999999993,
+      "expected": 9.533333333333333,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 571.9999999999993
+    },
+    {
+      "n": 5,
+      "lvl": 10,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 22,
+      "gained": 1320,
+      "expected": 22,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 1320
+    },
+    {
+      "n": 5,
+      "lvl": 10,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 176,
+      "gained": 10560,
+      "expected": 176,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 10560
+    },
+    {
+      "n": 5,
+      "lvl": 25,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 4.766666666666661,
+      "gained": 285.99999999999966,
+      "expected": 4.766666666666667,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 285.99999999999966
+    },
+    {
+      "n": 5,
+      "lvl": 25,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 22.533333333333307,
+      "gained": 1351.9999999999984,
+      "expected": 22.533333333333335,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 1351.9999999999984
+    },
+    {
+      "n": 5,
+      "lvl": 25,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 52,
+      "gained": 3120,
+      "expected": 52,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 3120
+    },
+    {
+      "n": 5,
+      "lvl": 25,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 416,
+      "gained": 24960,
+      "expected": 416,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 24960
+    },
+    {
+      "n": 10,
+      "lvl": 1,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 0.7333333333333342,
+      "gained": 44.00000000000005,
+      "expected": 0.7333333333333333,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 44.00000000000005
+    },
+    {
+      "n": 10,
+      "lvl": 1,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 3.466666666666657,
+      "gained": 207.99999999999943,
+      "expected": 3.466666666666667,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 207.99999999999943
+    },
+    {
+      "n": 10,
+      "lvl": 1,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 8,
+      "gained": 480,
+      "expected": 8,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 480
+    },
+    {
+      "n": 10,
+      "lvl": 1,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 64,
+      "gained": 3840,
+      "expected": 64,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 3840
+    },
+    {
+      "n": 10,
+      "lvl": 5,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 2.1999999999999953,
+      "gained": 131.99999999999972,
+      "expected": 2.2,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 131.99999999999972
+    },
+    {
+      "n": 10,
+      "lvl": 5,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 10.400000000000004,
+      "gained": 624.0000000000002,
+      "expected": 10.4,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 624.0000000000002
+    },
+    {
+      "n": 10,
+      "lvl": 5,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 24,
+      "gained": 1440,
+      "expected": 24,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 1440
+    },
+    {
+      "n": 10,
+      "lvl": 5,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 192,
+      "gained": 11520,
+      "expected": 192,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 11520
+    },
+    {
+      "n": 10,
+      "lvl": 10,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 4.033333333333345,
+      "gained": 242.0000000000007,
+      "expected": 4.033333333333334,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 242.0000000000007
+    },
+    {
+      "n": 10,
+      "lvl": 10,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 19.066666666666645,
+      "gained": 1143.9999999999986,
+      "expected": 19.066666666666666,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 1143.9999999999986
+    },
+    {
+      "n": 10,
+      "lvl": 10,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 44,
+      "gained": 2640,
+      "expected": 44,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 2640
+    },
+    {
+      "n": 10,
+      "lvl": 10,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 352,
+      "gained": 21120,
+      "expected": 352,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 21120
+    },
+    {
+      "n": 10,
+      "lvl": 25,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 9.533333333333323,
+      "gained": 571.9999999999993,
+      "expected": 9.533333333333333,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 571.9999999999993
+    },
+    {
+      "n": 10,
+      "lvl": 25,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 45.06666666666661,
+      "gained": 2703.999999999997,
+      "expected": 45.06666666666667,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 2703.999999999997
+    },
+    {
+      "n": 10,
+      "lvl": 25,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 104,
+      "gained": 6240,
+      "expected": 104,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 6240
+    },
+    {
+      "n": 10,
+      "lvl": 25,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 832,
+      "gained": 49920,
+      "expected": 832,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 49920
+    },
+    {
+      "n": 25,
+      "lvl": 1,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 1.8333333333333361,
+      "gained": 110.00000000000017,
+      "expected": 1.8333333333333335,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 110.00000000000017
+    },
+    {
+      "n": 25,
+      "lvl": 1,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 8.666666666666654,
+      "gained": 519.9999999999992,
+      "expected": 8.666666666666666,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 519.9999999999992
+    },
+    {
+      "n": 25,
+      "lvl": 1,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 20,
+      "gained": 1200,
+      "expected": 20,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 1200
+    },
+    {
+      "n": 25,
+      "lvl": 1,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 160,
+      "gained": 9600,
+      "expected": 160,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 9600
+    },
+    {
+      "n": 25,
+      "lvl": 5,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 5.5,
+      "gained": 330,
+      "expected": 5.5,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 330
+    },
+    {
+      "n": 25,
+      "lvl": 5,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 26,
+      "gained": 1560,
+      "expected": 26,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 1560
+    },
+    {
+      "n": 25,
+      "lvl": 5,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 60,
+      "gained": 3600,
+      "expected": 60,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 3600
+    },
+    {
+      "n": 25,
+      "lvl": 5,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 480,
+      "gained": 28800,
+      "expected": 480,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 28800
+    },
+    {
+      "n": 25,
+      "lvl": 10,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 10.083333333333336,
+      "gained": 605.0000000000001,
+      "expected": 10.083333333333334,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 605.0000000000001
+    },
+    {
+      "n": 25,
+      "lvl": 10,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 47.666666666666714,
+      "gained": 2860.0000000000027,
+      "expected": 47.666666666666664,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 2860.0000000000027
+    },
+    {
+      "n": 25,
+      "lvl": 10,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 110,
+      "gained": 6600,
+      "expected": 110,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 6600
+    },
+    {
+      "n": 25,
+      "lvl": 10,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 880,
+      "gained": 52800,
+      "expected": 880,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 52800
+    },
+    {
+      "n": 25,
+      "lvl": 25,
+      "oraculo": 1,
+      "seconds": 60,
+      "rate": 23.833333333333357,
+      "gained": 1430.0000000000014,
+      "expected": 23.833333333333336,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 1430.0000000000014
+    },
+    {
+      "n": 25,
+      "lvl": 25,
+      "oraculo": 3,
+      "seconds": 60,
+      "rate": 112.6666666666665,
+      "gained": 6759.99999999999,
+      "expected": 112.66666666666667,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 6759.99999999999
+    },
+    {
+      "n": 25,
+      "lvl": 25,
+      "oraculo": 5,
+      "seconds": 60,
+      "rate": 260,
+      "gained": 15600,
+      "expected": 260,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 15600
+    },
+    {
+      "n": 25,
+      "lvl": 25,
+      "oraculo": 10,
+      "seconds": 60,
+      "rate": 2080,
+      "gained": 124800,
+      "expected": 2080,
+      "energyRatio": 1,
+      "dataGain": 2,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 124800
+    }
+  ],
+  "offline": [
+    {
+      "label": "Primeiro observatório automatizado",
+      "n": 1,
+      "lvl": 1,
+      "oraculo": 1,
+      "seconds": 28800,
+      "rate": 0.07333333333332906,
+      "gained": 2111.9999999998768,
+      "expected": 0.07333333333333333,
+      "energyRatio": 1,
+      "dataGain": 1.1,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 2111.9999999998768,
+      "researchBudgets": 0.010561425792481986
+    },
+    {
+      "label": "Farm moderado sem prestígio",
+      "n": 5,
+      "lvl": 5,
+      "oraculo": 3,
+      "seconds": 28800,
+      "rate": 5.200000000000353,
+      "gained": 149760.00000001016,
+      "expected": 5.2,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 149760.00000001016,
+      "researchBudgets": 0.7489011016487229
+    },
+    {
+      "label": "Farm ativo sem prestígio",
+      "n": 10,
+      "lvl": 5,
+      "oraculo": 3,
+      "seconds": 28800,
+      "rate": 10.400000000000706,
+      "gained": 299520.0000000203,
+      "expected": 10.4,
+      "energyRatio": 1,
+      "dataGain": 1.3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 299520.0000000203,
+      "researchBudgets": 1.4978022032974458
+    },
+    {
+      "label": "Farm ativo com Telemetria V",
+      "n": 10,
+      "lvl": 5,
+      "oraculo": 3,
+      "telemetria": 5,
+      "seconds": 28800,
+      "rate": 15.599999999999044,
+      "gained": 449279.99999997247,
+      "expected": 15.600000000000001,
+      "energyRatio": 1,
+      "dataGain": 1.9500000000000002,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 449279.99999997247,
+      "researchBudgets": 2.246703304946163
+    },
+    {
+      "label": "Farm forte com Telemetria V",
+      "n": 10,
+      "lvl": 10,
+      "oraculo": 5,
+      "telemetria": 5,
+      "seconds": 28800,
+      "rate": 66,
+      "gained": 1900800,
+      "expected": 66,
+      "energyRatio": 1,
+      "dataGain": 2.25,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 1900800,
+      "researchBudgets": 9.505283213233787
+    },
+    {
+      "label": "Stress máximo, não campanha atingida",
+      "n": 25,
+      "lvl": 25,
+      "oraculo": 10,
+      "telemetria": 5,
+      "seconds": 28800,
+      "rate": 3120,
+      "gained": 89856000,
+      "expected": 3120,
+      "energyRatio": 1,
+      "dataGain": 3,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 89856000,
+      "researchBudgets": 449.3406609892335
+    },
+    {
+      "label": "Farm herdado ilustrativo,100 fragmentos",
+      "n": 10,
+      "lvl": 5,
+      "oraculo": 5,
+      "telemetria": 5,
+      "frags": 100,
+      "globalSpeed": 2.5875,
+      "eco": 1,
+      "seconds": 28800,
+      "rate": 372.6000000000075,
+      "gained": 10730880.000000216,
+      "expected": 372.6,
+      "energyRatio": 1,
+      "dataGain": 2.25,
+      "globalYield": 4,
+      "cap": 36000,
+      "report": 10730880.000000216,
+      "researchBudgets": 53.661644321983346
+    },
+    {
+      "label": "Profundo abastecido, cenário controlado",
+      "building": "obs_profundo",
+      "n": 2,
+      "lvl": 2,
+      "oraculo": 3,
+      "telemetria": 5,
+      "seconds": 28800,
+      "rate": 18.72000000000081,
+      "gained": 539136.0000000233,
+      "expected": 18.720000000000002,
+      "energyRatio": 1,
+      "dataGain": 1.9500000000000002,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 539136.0000000233,
+      "researchBudgets": 2.696043965935402
+    }
+  ],
+  "completion": [
+    {
+      "options": {
+        "label": "Primeiro observatório automatizado",
+        "n": 1,
+        "lvl": 1,
+        "oraculo": 1
+      },
+      "policy": "science-first",
+      "completeAt": null,
+      "initialSpent": 0,
+      "spent": 65009,
+      "produced": 65207.06866694722,
+      "bank": 198.06866666332724,
+      "snapshots": [
+        {
+          "time": 3600,
+          "levels": 2,
+          "bank": 37.395333333326604,
+          "produced": 267.3953333333219,
+          "spent": 230
+        },
+        {
+          "time": 7200,
+          "levels": 2,
+          "bank": 327.7953333333466,
+          "produced": 557.7953333333764,
+          "spent": 230
+        },
+        {
+          "time": 14400,
+          "levels": 3,
+          "bank": 489.3760000000696,
+          "produced": 1179.3759999999543,
+          "spent": 690
+        },
+        {
+          "time": 28800,
+          "levels": 4,
+          "bank": 756.7879999997751,
+          "produced": 2504.7879999992924,
+          "spent": 1748
+        },
+        {
+          "time": 86400,
+          "levels": 5,
+          "bank": 4107.365333333448,
+          "produced": 8289.365333333815,
+          "spent": 4182
+        }
+      ],
+      "maxHours": 168
+    },
+    {
+      "options": {
+        "label": "Farm moderado sem prestígio",
+        "n": 5,
+        "lvl": 5,
+        "oraculo": 3
+      },
+      "policy": "science-first",
+      "completeAt": 25808,
+      "initialSpent": 0,
+      "spent": 199973,
+      "produced": 199979.51999993162,
+      "bank": 6.519999997406558,
+      "snapshots": [
+        {
+          "time": 3600,
+          "levels": 72,
+          "bank": 807.1200000000106,
+          "produced": 26757.119999998362,
+          "spent": 25950
+        },
+        {
+          "time": 7200,
+          "levels": 92,
+          "bank": 400.11999999993685,
+          "produced": 54837.120000006034,
+          "spent": 54437
+        },
+        {
+          "time": 14400,
+          "levels": 105,
+          "bank": 5102.12000000047,
+          "produced": 110997.12000002699,
+          "spent": 105895
+        }
+      ],
+      "maxHours": 168
+    },
+    {
+      "options": {
+        "label": "Farm ativo sem prestígio",
+        "n": 10,
+        "lvl": 5,
+        "oraculo": 3
+      },
+      "policy": "science-first",
+      "completeAt": 12904,
+      "initialSpent": 0,
+      "spent": 199973,
+      "produced": 199977.44000004575,
+      "bank": 4.439999999514839,
+      "snapshots": [
+        {
+          "time": 3600,
+          "levels": 92,
+          "bank": 398.0400000000047,
+          "produced": 54835.0399999966,
+          "spent": 54437
+        },
+        {
+          "time": 7200,
+          "levels": 105,
+          "bank": 5100.0400000000045,
+          "produced": 110995.04000001257,
+          "spent": 105895
+        }
+      ],
+      "maxHours": 168
+    },
+    {
+      "options": {
+        "label": "Farm forte com Telemetria V",
+        "n": 10,
+        "lvl": 10,
+        "oraculo": 5,
+        "telemetria": 5
+      },
+      "policy": "science-first",
+      "completeAt": 2882,
+      "initialSpent": 9779,
+      "spent": 190194,
+      "produced": 190212,
+      "bank": 18,
+      "snapshots": [],
+      "maxHours": 168
+    },
+    {
+      "options": {
+        "label": "Farm herdado ilustrativo,100 fragmentos",
+        "n": 10,
+        "lvl": 5,
+        "oraculo": 5,
+        "telemetria": 5,
+        "frags": 100,
+        "globalSpeed": 5,
+        "eco": 1
+      },
+      "policy": "science-first",
+      "completeAt": 511,
+      "initialSpent": 9779,
+      "spent": 190194,
+      "produced": 190398.60000000175,
+      "bank": 204.59999999996944,
+      "snapshots": [],
+      "maxHours": 168
+    }
+  ],
+  "proposals": [
+    {
+      "name": "ciencia-isolada",
+      "budget": {
+        "branches": {
+          "min": {
+            "total": 23162,
+            "levels": 21,
+            "nodes": 5
+          },
+          "ind": {
+            "total": 37046,
+            "levels": 23,
+            "nodes": 5
+          },
+          "en": {
+            "total": 100525,
+            "levels": 23,
+            "nodes": 5
+          },
+          "log": {
+            "total": 16884,
+            "levels": 23,
+            "nodes": 5
+          },
+          "exp": {
+            "total": 22356,
+            "levels": 21,
+            "nodes": 5
+          },
+          "frag": {
+            "total": 180,
+            "levels": 21,
+            "nodes": 7
+          }
+        },
+        "nodes": [
+          {
+            "id": "min1",
+            "name": "Brocas de Diamante",
+            "currency": "data",
+            "costs": [
+              10,
+              22,
+              49,
+              107,
+              235
+            ],
+            "total": 423,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "min2",
+            "name": "Sondagem Sísmica",
+            "currency": "data",
+            "costs": [
+              40,
+              88,
+              194,
+              426,
+              938
+            ],
+            "total": 1686,
+            "max": 5,
+            "requirements": [
+              "min1"
+            ]
+          },
+          {
+            "id": "min3",
+            "name": "Criomineração",
+            "currency": "data",
+            "costs": [
+              60,
+              132,
+              291,
+              639,
+              1406
+            ],
+            "total": 2528,
+            "max": 5,
+            "requirements": [
+              "min1"
+            ]
+          },
+          {
+            "id": "min4",
+            "name": "Mineração de Precisão",
+            "currency": "data",
+            "costs": [
+              400,
+              1000,
+              2500
+            ],
+            "total": 3900,
+            "max": 3,
+            "requirements": [
+              "min2"
+            ]
+          },
+          {
+            "id": "min5",
+            "name": "Drones Autônomos",
+            "currency": "data",
+            "costs": [
+              1500,
+              3750,
+              9375
+            ],
+            "total": 14625,
+            "max": 3,
+            "requirements": [
+              "min4"
+            ]
+          },
+          {
+            "id": "ind1",
+            "name": "Fornos de Indução",
+            "currency": "data",
+            "costs": [
+              15,
+              33,
+              73,
+              160,
+              352
+            ],
+            "total": 633,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "ind2",
+            "name": "Ligas Avançadas",
+            "currency": "data",
+            "costs": [
+              50,
+              111,
+              243,
+              533,
+              1172
+            ],
+            "total": 2109,
+            "max": 5,
+            "requirements": [
+              "ind1"
+            ]
+          },
+          {
+            "id": "ind3",
+            "name": "Linhas de Montagem",
+            "currency": "data",
+            "costs": [
+              120,
+              264,
+              581,
+              1278,
+              2812
+            ],
+            "total": 5055,
+            "max": 5,
+            "requirements": [
+              "ind2"
+            ]
+          },
+          {
+            "id": "ind4",
+            "name": "Engenharia Modular",
+            "currency": "data",
+            "costs": [
+              200,
+              460,
+              1058,
+              2434,
+              5597
+            ],
+            "total": 9749,
+            "max": 5,
+            "requirements": [
+              "ind1"
+            ]
+          },
+          {
+            "id": "ind5",
+            "name": "Estaleiros Orbitais",
+            "currency": "data",
+            "costs": [
+              2000,
+              5000,
+              12500
+            ],
+            "total": 19500,
+            "max": 3,
+            "requirements": [
+              "ind3"
+            ]
+          },
+          {
+            "id": "en1",
+            "name": "Painéis Bifaciais",
+            "currency": "data",
+            "costs": [
+              12,
+              27,
+              59,
+              128,
+              282
+            ],
+            "total": 508,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "en2",
+            "name": "Supercapacitores",
+            "currency": "data",
+            "costs": [
+              60,
+              132,
+              291,
+              639,
+              1406
+            ],
+            "total": 2528,
+            "max": 5,
+            "requirements": [
+              "en1"
+            ]
+          },
+          {
+            "id": "en3",
+            "name": "Concentradores Solares",
+            "currency": "data",
+            "costs": [
+              300,
+              690,
+              1587,
+              3651,
+              8396
+            ],
+            "total": 14624,
+            "max": 5,
+            "requirements": [
+              "en1"
+            ]
+          },
+          {
+            "id": "en4",
+            "name": "Confinamento Magnético",
+            "currency": "data",
+            "costs": [
+              1200,
+              2760,
+              6348,
+              14601,
+              33581
+            ],
+            "total": 58490,
+            "max": 5,
+            "requirements": [
+              "en2"
+            ]
+          },
+          {
+            "id": "en5",
+            "name": "Reatores Compactos",
+            "currency": "data",
+            "costs": [
+              2500,
+              6250,
+              15625
+            ],
+            "total": 24375,
+            "max": 3,
+            "requirements": [
+              "en4"
+            ]
+          },
+          {
+            "id": "log1",
+            "name": "Contêineres Expansíveis",
+            "currency": "data",
+            "costs": [
+              15,
+              33,
+              73,
+              160,
+              352
+            ],
+            "total": 633,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "log2",
+            "name": "Porões Ampliados",
+            "currency": "data",
+            "costs": [
+              40,
+              88,
+              194,
+              426,
+              938
+            ],
+            "total": 1686,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "log3",
+            "name": "Trajetórias de Hohmann",
+            "currency": "data",
+            "costs": [
+              80,
+              176,
+              388,
+              852,
+              1875
+            ],
+            "total": 3371,
+            "max": 5,
+            "requirements": [
+              "log2"
+            ]
+          },
+          {
+            "id": "log4",
+            "name": "Propulsão Eficiente",
+            "currency": "data",
+            "costs": [
+              150,
+              330,
+              727,
+              1598,
+              3514
+            ],
+            "total": 6319,
+            "max": 5,
+            "requirements": [
+              "log3"
+            ]
+          },
+          {
+            "id": "log5",
+            "name": "Janelas Calculadas",
+            "currency": "data",
+            "costs": [
+              500,
+              1250,
+              3125
+            ],
+            "total": 4875,
+            "max": 3,
+            "requirements": [
+              "log3"
+            ]
+          },
+          {
+            "id": "exp1",
+            "name": "Sondas Robustas",
+            "currency": "data",
+            "costs": [
+              30,
+              66,
+              146,
+              320,
+              703
+            ],
+            "total": 1265,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "exp2",
+            "name": "Sonda Adicional",
+            "currency": "data",
+            "costs": [
+              150,
+              750
+            ],
+            "total": 900,
+            "max": 2,
+            "requirements": [
+              "exp1"
+            ]
+          },
+          {
+            "id": "exp3",
+            "name": "Navegação Autônoma",
+            "currency": "data",
+            "costs": [
+              100,
+              221,
+              485,
+              1065,
+              2343
+            ],
+            "total": 4214,
+            "max": 5,
+            "requirements": [
+              "exp1"
+            ]
+          },
+          {
+            "id": "exp4",
+            "name": "Telemetria Profunda",
+            "currency": "data",
+            "costs": [
+              200,
+              460,
+              1058,
+              2434,
+              5597
+            ],
+            "total": 9749,
+            "max": 5,
+            "requirements": [
+              "exp1"
+            ]
+          },
+          {
+            "id": "exp5",
+            "name": "Retransmissor Offline",
+            "currency": "data",
+            "costs": [
+              300,
+              690,
+              1587,
+              3651
+            ],
+            "total": 6228,
+            "max": 4,
+            "requirements": [
+              "exp3"
+            ]
+          },
+          {
+            "id": "sg1",
+            "name": "Memória Quântica",
+            "currency": "frag",
+            "costs": [
+              1,
+              2,
+              4
+            ],
+            "total": 7,
+            "max": 3,
+            "requirements": []
+          },
+          {
+            "id": "sg2",
+            "name": "Atalhos de Missão",
+            "currency": "frag",
+            "costs": [
+              2,
+              4
+            ],
+            "total": 6,
+            "max": 2,
+            "requirements": []
+          },
+          {
+            "id": "sg3",
+            "name": "Eco Industrial",
+            "currency": "frag",
+            "costs": [
+              2,
+              4,
+              7,
+              12,
+              21
+            ],
+            "total": 46,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "sg4",
+            "name": "Âncora Dimensional",
+            "currency": "frag",
+            "costs": [
+              3,
+              6
+            ],
+            "total": 9,
+            "max": 2,
+            "requirements": []
+          },
+          {
+            "id": "sg5",
+            "name": "Ressonância de Fragmentos",
+            "currency": "frag",
+            "costs": [
+              3,
+              6,
+              12,
+              24,
+              48
+            ],
+            "total": 93,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "sg6",
+            "name": "Pré-fabricados",
+            "currency": "frag",
+            "costs": [
+              2,
+              4,
+              8
+            ],
+            "total": 14,
+            "max": 3,
+            "requirements": [
+              "sg1"
+            ]
+          },
+          {
+            "id": "sg7",
+            "name": "Mapa do Vazio",
+            "currency": "frag",
+            "costs": [
+              5
+            ],
+            "total": 5,
+            "max": 1,
+            "requirements": []
+          }
+        ],
+        "dataTotal": 199973,
+        "fragmentTotal": 180
+      },
+      "completion": [
+        {
+          "options": {
+            "label": "Farm moderado sem prestígio",
+            "n": 5,
+            "lvl": 5,
+            "oraculo": 3
+          },
+          "policy": "science-first",
+          "completeAt": 51615,
+          "initialSpent": 0,
+          "spent": 199973,
+          "produced": 199976.65999981677,
+          "bank": 3.6600000022081076,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 40,
+              "bank": 174.16000000013494,
+              "produced": 12718.159999999398,
+              "spent": 12544
+            },
+            {
+              "time": 7200,
+              "levels": 72,
+              "bank": 808.1600000001079,
+              "produced": 26758.16000000293,
+              "spent": 25950
+            },
+            {
+              "time": 14400,
+              "levels": 92,
+              "bank": 401.16000000022507,
+              "produced": 54838.160000013406,
+              "spent": 54437
+            },
+            {
+              "time": 28800,
+              "levels": 105,
+              "bank": 5103.160000000238,
+              "produced": 110998.15999994955,
+              "spent": 105895
+            }
+          ],
+          "maxHours": 168
+        },
+        {
+          "options": {
+            "label": "Farm ativo sem prestígio",
+            "n": 10,
+            "lvl": 5,
+            "oraculo": 3
+          },
+          "policy": "science-first",
+          "completeAt": 25808,
+          "initialSpent": 0,
+          "spent": 199973,
+          "produced": 199979.51999993162,
+          "bank": 6.519999997406558,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 72,
+              "bank": 807.1200000000106,
+              "produced": 26757.119999998362,
+              "spent": 25950
+            },
+            {
+              "time": 7200,
+              "levels": 92,
+              "bank": 400.11999999993685,
+              "produced": 54837.120000006034,
+              "spent": 54437
+            },
+            {
+              "time": 14400,
+              "levels": 105,
+              "bank": 5102.12000000047,
+              "produced": 110997.12000002699,
+              "spent": 105895
+            }
+          ],
+          "maxHours": 168
+        },
+        {
+          "options": {
+            "label": "Farm forte com Telemetria V",
+            "n": 10,
+            "lvl": 10,
+            "oraculo": 5,
+            "telemetria": 5
+          },
+          "policy": "science-first",
+          "completeAt": 7685,
+          "initialSpent": 9779,
+          "spent": 190194,
+          "produced": 190203.75,
+          "bank": 9.75,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 103,
+              "bank": 5582,
+              "produced": 89100,
+              "spent": 83518
+            },
+            {
+              "time": 7200,
+              "levels": 110,
+              "bank": 21587,
+              "produced": 178200,
+              "spent": 156613
+            }
+          ],
+          "maxHours": 168
+        },
+        {
+          "options": {
+            "label": "Farm herdado ilustrativo,100 fragmentos",
+            "n": 10,
+            "lvl": 5,
+            "oraculo": 5,
+            "telemetria": 5,
+            "frags": 100,
+            "globalSpeed": 5,
+            "eco": 1
+          },
+          "policy": "science-first",
+          "completeAt": 8759,
+          "initialSpent": 9779,
+          "spent": 190194,
+          "produced": 190207.8664181136,
+          "bank": 13.866418089935905,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 102,
+              "bank": 255.54059882673832,
+              "produced": 78176.54059882619,
+              "spent": 77921
+            },
+            {
+              "time": 7200,
+              "levels": 109,
+              "bank": 15365.08119765311,
+              "produced": 156353.0811976699,
+              "spent": 140988
+            }
+          ],
+          "maxHours": 168
+        }
+      ],
+      "offline": [
+        {
+          "label": "Farm moderado sem prestígio",
+          "n": 5,
+          "lvl": 5,
+          "oraculo": 3,
+          "seconds": 28800,
+          "rate": 2.6000000000001764,
+          "gained": 74880.00000000508,
+          "expected": 2.6,
+          "energyRatio": 1,
+          "dataGain": 1.3,
+          "globalYield": 1,
+          "globalSpeed": 1,
+          "cap": 28800,
+          "report": 74880.00000000508
+        },
+        {
+          "label": "Farm ativo sem prestígio",
+          "n": 10,
+          "lvl": 5,
+          "oraculo": 3,
+          "seconds": 28800,
+          "rate": 5.200000000000353,
+          "gained": 149760.00000001016,
+          "expected": 5.2,
+          "energyRatio": 1,
+          "dataGain": 1.3,
+          "globalYield": 1,
+          "globalSpeed": 1,
+          "cap": 28800,
+          "report": 149760.00000001016
+        },
+        {
+          "label": "Farm forte com Telemetria V",
+          "n": 10,
+          "lvl": 10,
+          "oraculo": 5,
+          "telemetria": 5,
+          "seconds": 28800,
+          "rate": 24.75,
+          "gained": 712800,
+          "expected": 24.75,
+          "energyRatio": 1,
+          "dataGain": 2.25,
+          "globalYield": 1,
+          "globalSpeed": 1,
+          "cap": 28800,
+          "report": 712800
+        },
+        {
+          "label": "Farm herdado ilustrativo,100 fragmentos",
+          "n": 10,
+          "lvl": 5,
+          "oraculo": 5,
+          "telemetria": 5,
+          "frags": 100,
+          "globalSpeed": 2.5875,
+          "eco": 1,
+          "seconds": 28800,
+          "rate": 21.715705721896164,
+          "gained": 625412.3247906095,
+          "expected": 21.715705721896306,
+          "energyRatio": 1,
+          "dataGain": 2.25,
+          "globalYield": 4,
+          "cap": 36000,
+          "report": 625412.3247906095
+        }
+      ]
+    },
+    {
+      "name": "ciencia-e-custos",
+      "budget": {
+        "branches": {
+          "min": {
+            "total": 35161,
+            "levels": 21,
+            "nodes": 5
+          },
+          "ind": {
+            "total": 62602,
+            "levels": 23,
+            "nodes": 5
+          },
+          "en": {
+            "total": 181936,
+            "levels": 23,
+            "nodes": 5
+          },
+          "log": {
+            "total": 33597,
+            "levels": 23,
+            "nodes": 5
+          },
+          "exp": {
+            "total": 42351,
+            "levels": 21,
+            "nodes": 5
+          },
+          "frag": {
+            "total": 180,
+            "levels": 21,
+            "nodes": 7
+          }
+        },
+        "nodes": [
+          {
+            "id": "min1",
+            "name": "Brocas de Diamante",
+            "currency": "data",
+            "costs": [
+              10,
+              28,
+              79,
+              220,
+              615
+            ],
+            "total": 952,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "min2",
+            "name": "Sondagem Sísmica",
+            "currency": "data",
+            "costs": [
+              40,
+              112,
+              314,
+              879,
+              2459
+            ],
+            "total": 3804,
+            "max": 5,
+            "requirements": [
+              "min1"
+            ]
+          },
+          {
+            "id": "min3",
+            "name": "Criomineração",
+            "currency": "data",
+            "costs": [
+              60,
+              168,
+              471,
+              1318,
+              3688
+            ],
+            "total": 5705,
+            "max": 5,
+            "requirements": [
+              "min1"
+            ]
+          },
+          {
+            "id": "min4",
+            "name": "Mineração de Precisão",
+            "currency": "data",
+            "costs": [
+              400,
+              1200,
+              3600
+            ],
+            "total": 5200,
+            "max": 3,
+            "requirements": [
+              "min2"
+            ]
+          },
+          {
+            "id": "min5",
+            "name": "Drones Autônomos",
+            "currency": "data",
+            "costs": [
+              1500,
+              4500,
+              13500
+            ],
+            "total": 19500,
+            "max": 3,
+            "requirements": [
+              "min4"
+            ]
+          },
+          {
+            "id": "ind1",
+            "name": "Fornos de Indução",
+            "currency": "data",
+            "costs": [
+              15,
+              42,
+              118,
+              330,
+              922
+            ],
+            "total": 1427,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "ind2",
+            "name": "Ligas Avançadas",
+            "currency": "data",
+            "costs": [
+              50,
+              140,
+              392,
+              1098,
+              3074
+            ],
+            "total": 4754,
+            "max": 5,
+            "requirements": [
+              "ind1"
+            ]
+          },
+          {
+            "id": "ind3",
+            "name": "Linhas de Montagem",
+            "currency": "data",
+            "costs": [
+              120,
+              336,
+              941,
+              2635,
+              7376
+            ],
+            "total": 11408,
+            "max": 5,
+            "requirements": [
+              "ind2"
+            ]
+          },
+          {
+            "id": "ind4",
+            "name": "Engenharia Modular",
+            "currency": "data",
+            "costs": [
+              200,
+              560,
+              1568,
+              4391,
+              12294
+            ],
+            "total": 19013,
+            "max": 5,
+            "requirements": [
+              "ind1"
+            ]
+          },
+          {
+            "id": "ind5",
+            "name": "Estaleiros Orbitais",
+            "currency": "data",
+            "costs": [
+              2000,
+              6000,
+              18000
+            ],
+            "total": 26000,
+            "max": 3,
+            "requirements": [
+              "ind3"
+            ]
+          },
+          {
+            "id": "en1",
+            "name": "Painéis Bifaciais",
+            "currency": "data",
+            "costs": [
+              12,
+              34,
+              95,
+              264,
+              738
+            ],
+            "total": 1143,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "en2",
+            "name": "Supercapacitores",
+            "currency": "data",
+            "costs": [
+              60,
+              168,
+              471,
+              1318,
+              3688
+            ],
+            "total": 5705,
+            "max": 5,
+            "requirements": [
+              "en1"
+            ]
+          },
+          {
+            "id": "en3",
+            "name": "Concentradores Solares",
+            "currency": "data",
+            "costs": [
+              300,
+              840,
+              2352,
+              6586,
+              18440
+            ],
+            "total": 28518,
+            "max": 5,
+            "requirements": [
+              "en1"
+            ]
+          },
+          {
+            "id": "en4",
+            "name": "Confinamento Magnético",
+            "currency": "data",
+            "costs": [
+              1200,
+              3360,
+              9408,
+              26343,
+              73759
+            ],
+            "total": 114070,
+            "max": 5,
+            "requirements": [
+              "en2"
+            ]
+          },
+          {
+            "id": "en5",
+            "name": "Reatores Compactos",
+            "currency": "data",
+            "costs": [
+              2500,
+              7500,
+              22500
+            ],
+            "total": 32500,
+            "max": 3,
+            "requirements": [
+              "en4"
+            ]
+          },
+          {
+            "id": "log1",
+            "name": "Contêineres Expansíveis",
+            "currency": "data",
+            "costs": [
+              15,
+              42,
+              118,
+              330,
+              922
+            ],
+            "total": 1427,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "log2",
+            "name": "Porões Ampliados",
+            "currency": "data",
+            "costs": [
+              40,
+              112,
+              314,
+              879,
+              2459
+            ],
+            "total": 3804,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "log3",
+            "name": "Trajetórias de Hohmann",
+            "currency": "data",
+            "costs": [
+              80,
+              224,
+              628,
+              1757,
+              4918
+            ],
+            "total": 7607,
+            "max": 5,
+            "requirements": [
+              "log2"
+            ]
+          },
+          {
+            "id": "log4",
+            "name": "Propulsão Eficiente",
+            "currency": "data",
+            "costs": [
+              150,
+              420,
+              1176,
+              3293,
+              9220
+            ],
+            "total": 14259,
+            "max": 5,
+            "requirements": [
+              "log3"
+            ]
+          },
+          {
+            "id": "log5",
+            "name": "Janelas Calculadas",
+            "currency": "data",
+            "costs": [
+              500,
+              1500,
+              4500
+            ],
+            "total": 6500,
+            "max": 3,
+            "requirements": [
+              "log3"
+            ]
+          },
+          {
+            "id": "exp1",
+            "name": "Sondas Robustas",
+            "currency": "data",
+            "costs": [
+              30,
+              84,
+              236,
+              659,
+              1844
+            ],
+            "total": 2853,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "exp2",
+            "name": "Sonda Adicional",
+            "currency": "data",
+            "costs": [
+              150,
+              750
+            ],
+            "total": 900,
+            "max": 2,
+            "requirements": [
+              "exp1"
+            ]
+          },
+          {
+            "id": "exp3",
+            "name": "Navegação Autônoma",
+            "currency": "data",
+            "costs": [
+              100,
+              280,
+              784,
+              2196,
+              6147
+            ],
+            "total": 9507,
+            "max": 5,
+            "requirements": [
+              "exp1"
+            ]
+          },
+          {
+            "id": "exp4",
+            "name": "Telemetria Profunda",
+            "currency": "data",
+            "costs": [
+              200,
+              560,
+              1568,
+              4391,
+              12294
+            ],
+            "total": 19013,
+            "max": 5,
+            "requirements": [
+              "exp1"
+            ]
+          },
+          {
+            "id": "exp5",
+            "name": "Retransmissor Offline",
+            "currency": "data",
+            "costs": [
+              300,
+              840,
+              2352,
+              6586
+            ],
+            "total": 10078,
+            "max": 4,
+            "requirements": [
+              "exp3"
+            ]
+          },
+          {
+            "id": "sg1",
+            "name": "Memória Quântica",
+            "currency": "frag",
+            "costs": [
+              1,
+              2,
+              4
+            ],
+            "total": 7,
+            "max": 3,
+            "requirements": []
+          },
+          {
+            "id": "sg2",
+            "name": "Atalhos de Missão",
+            "currency": "frag",
+            "costs": [
+              2,
+              4
+            ],
+            "total": 6,
+            "max": 2,
+            "requirements": []
+          },
+          {
+            "id": "sg3",
+            "name": "Eco Industrial",
+            "currency": "frag",
+            "costs": [
+              2,
+              4,
+              7,
+              12,
+              21
+            ],
+            "total": 46,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "sg4",
+            "name": "Âncora Dimensional",
+            "currency": "frag",
+            "costs": [
+              3,
+              6
+            ],
+            "total": 9,
+            "max": 2,
+            "requirements": []
+          },
+          {
+            "id": "sg5",
+            "name": "Ressonância de Fragmentos",
+            "currency": "frag",
+            "costs": [
+              3,
+              6,
+              12,
+              24,
+              48
+            ],
+            "total": 93,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "sg6",
+            "name": "Pré-fabricados",
+            "currency": "frag",
+            "costs": [
+              2,
+              4,
+              8
+            ],
+            "total": 14,
+            "max": 3,
+            "requirements": [
+              "sg1"
+            ]
+          },
+          {
+            "id": "sg7",
+            "name": "Mapa do Vazio",
+            "currency": "frag",
+            "costs": [
+              5
+            ],
+            "total": 5,
+            "max": 1,
+            "requirements": []
+          }
+        ],
+        "dataTotal": 355647,
+        "fragmentTotal": 180
+      },
+      "completion": [
+        {
+          "options": {
+            "label": "Farm moderado sem prestígio",
+            "n": 5,
+            "lvl": 5,
+            "oraculo": 3
+          },
+          "policy": "science-first",
+          "completeAt": 91773,
+          "initialSpent": 0,
+          "spent": 355647,
+          "produced": 355649.58000028064,
+          "bank": 2.580000005022157,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 5,
+              "bank": 5510.520000000172,
+              "produced": 12259.519999999578,
+              "spent": 6749
+            },
+            {
+              "time": 7200,
+              "levels": 49,
+              "bank": 89.87999999975798,
+              "produced": 25814.88000000102,
+              "spent": 25725
+            },
+            {
+              "time": 14400,
+              "levels": 77,
+              "bank": 1715.8799999997655,
+              "produced": 53894.88000001149,
+              "spent": 52179
+            },
+            {
+              "time": 28800,
+              "levels": 95,
+              "bank": 2984.880000000439,
+              "produced": 110054.8799999494,
+              "spent": 107070
+            },
+            {
+              "time": 86400,
+              "levels": 110,
+              "bank": 52806.88000001255,
+              "produced": 334694.88000015554,
+              "spent": 281888
+            }
+          ],
+          "maxHours": 168
+        },
+        {
+          "options": {
+            "label": "Farm ativo sem prestígio",
+            "n": 10,
+            "lvl": 5,
+            "oraculo": 3
+          },
+          "policy": "science-first",
+          "completeAt": 45887,
+          "initialSpent": 0,
+          "spent": 355647,
+          "produced": 355652.4399996996,
+          "bank": 5.440000009461073,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 49,
+              "bank": 88.84000000035454,
+              "produced": 25813.839999998745,
+              "spent": 25725
+            },
+            {
+              "time": 7200,
+              "levels": 77,
+              "bank": 1714.8400000002907,
+              "produced": 53893.84000000598,
+              "spent": 52179
+            },
+            {
+              "time": 14400,
+              "levels": 95,
+              "bank": 2983.84000000059,
+              "produced": 110053.84000002693,
+              "spent": 107070
+            },
+            {
+              "time": 28800,
+              "levels": 107,
+              "bank": 7768.840000000031,
+              "produced": 222373.8399998985,
+              "spent": 214605
+            }
+          ],
+          "maxHours": 168
+        },
+        {
+          "options": {
+            "label": "Farm forte com Telemetria V",
+            "n": 10,
+            "lvl": 10,
+            "oraculo": 5,
+            "telemetria": 5
+          },
+          "policy": "science-first",
+          "completeAt": 13601,
+          "initialSpent": 19043,
+          "spent": 336604,
+          "produced": 336624.75,
+          "bank": 20.75,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 95,
+              "bank": 1073,
+              "produced": 89100,
+              "spent": 88027
+            },
+            {
+              "time": 7200,
+              "levels": 106,
+              "bank": 638,
+              "produced": 178200,
+              "spent": 177562
+            }
+          ],
+          "maxHours": 168
+        },
+        {
+          "options": {
+            "label": "Farm herdado ilustrativo,100 fragmentos",
+            "n": 10,
+            "lvl": 5,
+            "oraculo": 5,
+            "telemetria": 5,
+            "frags": 100,
+            "globalSpeed": 5,
+            "eco": 1
+          },
+          "policy": "science-first",
+          "completeAt": 15501,
+          "initialSpent": 19043,
+          "spent": 336604,
+          "produced": 336615.1543950706,
+          "bank": 11.15439511333534,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 92,
+              "bank": 3540.5405988267266,
+              "produced": 78176.54059882619,
+              "spent": 74636
+            },
+            {
+              "time": 7200,
+              "levels": 104,
+              "bank": 4585.0811976537325,
+              "produced": 156353.0811976699,
+              "spent": 151768
+            },
+            {
+              "time": 14400,
+              "levels": 110,
+              "bank": 49861.162395305546,
+              "produced": 312706.1623952896,
+              "spent": 262845
+            }
+          ],
+          "maxHours": 168
+        }
+      ],
+      "offline": [
+        {
+          "label": "Farm moderado sem prestígio",
+          "n": 5,
+          "lvl": 5,
+          "oraculo": 3,
+          "seconds": 28800,
+          "rate": 2.6000000000001764,
+          "gained": 74880.00000000508,
+          "expected": 2.6,
+          "energyRatio": 1,
+          "dataGain": 1.3,
+          "globalYield": 1,
+          "globalSpeed": 1,
+          "cap": 28800,
+          "report": 74880.00000000508
+        },
+        {
+          "label": "Farm ativo sem prestígio",
+          "n": 10,
+          "lvl": 5,
+          "oraculo": 3,
+          "seconds": 28800,
+          "rate": 5.200000000000353,
+          "gained": 149760.00000001016,
+          "expected": 5.2,
+          "energyRatio": 1,
+          "dataGain": 1.3,
+          "globalYield": 1,
+          "globalSpeed": 1,
+          "cap": 28800,
+          "report": 149760.00000001016
+        },
+        {
+          "label": "Farm forte com Telemetria V",
+          "n": 10,
+          "lvl": 10,
+          "oraculo": 5,
+          "telemetria": 5,
+          "seconds": 28800,
+          "rate": 24.75,
+          "gained": 712800,
+          "expected": 24.75,
+          "energyRatio": 1,
+          "dataGain": 2.25,
+          "globalYield": 1,
+          "globalSpeed": 1,
+          "cap": 28800,
+          "report": 712800
+        },
+        {
+          "label": "Farm herdado ilustrativo,100 fragmentos",
+          "n": 10,
+          "lvl": 5,
+          "oraculo": 5,
+          "telemetria": 5,
+          "frags": 100,
+          "globalSpeed": 2.5875,
+          "eco": 1,
+          "seconds": 28800,
+          "rate": 21.715705721896164,
+          "gained": 625412.3247906095,
+          "expected": 21.715705721896306,
+          "energyRatio": 1,
+          "dataGain": 2.25,
+          "globalYield": 4,
+          "cap": 36000,
+          "report": 625412.3247906095
+        }
+      ]
+    },
+    {
+      "name": "apenas-tempo-120",
+      "budget": {
+        "branches": {
+          "min": {
+            "total": 23162,
+            "levels": 21,
+            "nodes": 5
+          },
+          "ind": {
+            "total": 37046,
+            "levels": 23,
+            "nodes": 5
+          },
+          "en": {
+            "total": 100525,
+            "levels": 23,
+            "nodes": 5
+          },
+          "log": {
+            "total": 16884,
+            "levels": 23,
+            "nodes": 5
+          },
+          "exp": {
+            "total": 22356,
+            "levels": 21,
+            "nodes": 5
+          },
+          "frag": {
+            "total": 180,
+            "levels": 21,
+            "nodes": 7
+          }
+        },
+        "nodes": [
+          {
+            "id": "min1",
+            "name": "Brocas de Diamante",
+            "currency": "data",
+            "costs": [
+              10,
+              22,
+              49,
+              107,
+              235
+            ],
+            "total": 423,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "min2",
+            "name": "Sondagem Sísmica",
+            "currency": "data",
+            "costs": [
+              40,
+              88,
+              194,
+              426,
+              938
+            ],
+            "total": 1686,
+            "max": 5,
+            "requirements": [
+              "min1"
+            ]
+          },
+          {
+            "id": "min3",
+            "name": "Criomineração",
+            "currency": "data",
+            "costs": [
+              60,
+              132,
+              291,
+              639,
+              1406
+            ],
+            "total": 2528,
+            "max": 5,
+            "requirements": [
+              "min1"
+            ]
+          },
+          {
+            "id": "min4",
+            "name": "Mineração de Precisão",
+            "currency": "data",
+            "costs": [
+              400,
+              1000,
+              2500
+            ],
+            "total": 3900,
+            "max": 3,
+            "requirements": [
+              "min2"
+            ]
+          },
+          {
+            "id": "min5",
+            "name": "Drones Autônomos",
+            "currency": "data",
+            "costs": [
+              1500,
+              3750,
+              9375
+            ],
+            "total": 14625,
+            "max": 3,
+            "requirements": [
+              "min4"
+            ]
+          },
+          {
+            "id": "ind1",
+            "name": "Fornos de Indução",
+            "currency": "data",
+            "costs": [
+              15,
+              33,
+              73,
+              160,
+              352
+            ],
+            "total": 633,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "ind2",
+            "name": "Ligas Avançadas",
+            "currency": "data",
+            "costs": [
+              50,
+              111,
+              243,
+              533,
+              1172
+            ],
+            "total": 2109,
+            "max": 5,
+            "requirements": [
+              "ind1"
+            ]
+          },
+          {
+            "id": "ind3",
+            "name": "Linhas de Montagem",
+            "currency": "data",
+            "costs": [
+              120,
+              264,
+              581,
+              1278,
+              2812
+            ],
+            "total": 5055,
+            "max": 5,
+            "requirements": [
+              "ind2"
+            ]
+          },
+          {
+            "id": "ind4",
+            "name": "Engenharia Modular",
+            "currency": "data",
+            "costs": [
+              200,
+              460,
+              1058,
+              2434,
+              5597
+            ],
+            "total": 9749,
+            "max": 5,
+            "requirements": [
+              "ind1"
+            ]
+          },
+          {
+            "id": "ind5",
+            "name": "Estaleiros Orbitais",
+            "currency": "data",
+            "costs": [
+              2000,
+              5000,
+              12500
+            ],
+            "total": 19500,
+            "max": 3,
+            "requirements": [
+              "ind3"
+            ]
+          },
+          {
+            "id": "en1",
+            "name": "Painéis Bifaciais",
+            "currency": "data",
+            "costs": [
+              12,
+              27,
+              59,
+              128,
+              282
+            ],
+            "total": 508,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "en2",
+            "name": "Supercapacitores",
+            "currency": "data",
+            "costs": [
+              60,
+              132,
+              291,
+              639,
+              1406
+            ],
+            "total": 2528,
+            "max": 5,
+            "requirements": [
+              "en1"
+            ]
+          },
+          {
+            "id": "en3",
+            "name": "Concentradores Solares",
+            "currency": "data",
+            "costs": [
+              300,
+              690,
+              1587,
+              3651,
+              8396
+            ],
+            "total": 14624,
+            "max": 5,
+            "requirements": [
+              "en1"
+            ]
+          },
+          {
+            "id": "en4",
+            "name": "Confinamento Magnético",
+            "currency": "data",
+            "costs": [
+              1200,
+              2760,
+              6348,
+              14601,
+              33581
+            ],
+            "total": 58490,
+            "max": 5,
+            "requirements": [
+              "en2"
+            ]
+          },
+          {
+            "id": "en5",
+            "name": "Reatores Compactos",
+            "currency": "data",
+            "costs": [
+              2500,
+              6250,
+              15625
+            ],
+            "total": 24375,
+            "max": 3,
+            "requirements": [
+              "en4"
+            ]
+          },
+          {
+            "id": "log1",
+            "name": "Contêineres Expansíveis",
+            "currency": "data",
+            "costs": [
+              15,
+              33,
+              73,
+              160,
+              352
+            ],
+            "total": 633,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "log2",
+            "name": "Porões Ampliados",
+            "currency": "data",
+            "costs": [
+              40,
+              88,
+              194,
+              426,
+              938
+            ],
+            "total": 1686,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "log3",
+            "name": "Trajetórias de Hohmann",
+            "currency": "data",
+            "costs": [
+              80,
+              176,
+              388,
+              852,
+              1875
+            ],
+            "total": 3371,
+            "max": 5,
+            "requirements": [
+              "log2"
+            ]
+          },
+          {
+            "id": "log4",
+            "name": "Propulsão Eficiente",
+            "currency": "data",
+            "costs": [
+              150,
+              330,
+              727,
+              1598,
+              3514
+            ],
+            "total": 6319,
+            "max": 5,
+            "requirements": [
+              "log3"
+            ]
+          },
+          {
+            "id": "log5",
+            "name": "Janelas Calculadas",
+            "currency": "data",
+            "costs": [
+              500,
+              1250,
+              3125
+            ],
+            "total": 4875,
+            "max": 3,
+            "requirements": [
+              "log3"
+            ]
+          },
+          {
+            "id": "exp1",
+            "name": "Sondas Robustas",
+            "currency": "data",
+            "costs": [
+              30,
+              66,
+              146,
+              320,
+              703
+            ],
+            "total": 1265,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "exp2",
+            "name": "Sonda Adicional",
+            "currency": "data",
+            "costs": [
+              150,
+              750
+            ],
+            "total": 900,
+            "max": 2,
+            "requirements": [
+              "exp1"
+            ]
+          },
+          {
+            "id": "exp3",
+            "name": "Navegação Autônoma",
+            "currency": "data",
+            "costs": [
+              100,
+              221,
+              485,
+              1065,
+              2343
+            ],
+            "total": 4214,
+            "max": 5,
+            "requirements": [
+              "exp1"
+            ]
+          },
+          {
+            "id": "exp4",
+            "name": "Telemetria Profunda",
+            "currency": "data",
+            "costs": [
+              200,
+              460,
+              1058,
+              2434,
+              5597
+            ],
+            "total": 9749,
+            "max": 5,
+            "requirements": [
+              "exp1"
+            ]
+          },
+          {
+            "id": "exp5",
+            "name": "Retransmissor Offline",
+            "currency": "data",
+            "costs": [
+              300,
+              690,
+              1587,
+              3651
+            ],
+            "total": 6228,
+            "max": 4,
+            "requirements": [
+              "exp3"
+            ]
+          },
+          {
+            "id": "sg1",
+            "name": "Memória Quântica",
+            "currency": "frag",
+            "costs": [
+              1,
+              2,
+              4
+            ],
+            "total": 7,
+            "max": 3,
+            "requirements": []
+          },
+          {
+            "id": "sg2",
+            "name": "Atalhos de Missão",
+            "currency": "frag",
+            "costs": [
+              2,
+              4
+            ],
+            "total": 6,
+            "max": 2,
+            "requirements": []
+          },
+          {
+            "id": "sg3",
+            "name": "Eco Industrial",
+            "currency": "frag",
+            "costs": [
+              2,
+              4,
+              7,
+              12,
+              21
+            ],
+            "total": 46,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "sg4",
+            "name": "Âncora Dimensional",
+            "currency": "frag",
+            "costs": [
+              3,
+              6
+            ],
+            "total": 9,
+            "max": 2,
+            "requirements": []
+          },
+          {
+            "id": "sg5",
+            "name": "Ressonância de Fragmentos",
+            "currency": "frag",
+            "costs": [
+              3,
+              6,
+              12,
+              24,
+              48
+            ],
+            "total": 93,
+            "max": 5,
+            "requirements": []
+          },
+          {
+            "id": "sg6",
+            "name": "Pré-fabricados",
+            "currency": "frag",
+            "costs": [
+              2,
+              4,
+              8
+            ],
+            "total": 14,
+            "max": 3,
+            "requirements": [
+              "sg1"
+            ]
+          },
+          {
+            "id": "sg7",
+            "name": "Mapa do Vazio",
+            "currency": "frag",
+            "costs": [
+              5
+            ],
+            "total": 5,
+            "max": 1,
+            "requirements": []
+          }
+        ],
+        "dataTotal": 199973,
+        "fragmentTotal": 180
+      },
+      "completion": [
+        {
+          "options": {
+            "label": "Farm moderado sem prestígio",
+            "n": 5,
+            "lvl": 5,
+            "oraculo": 3
+          },
+          "policy": "science-first",
+          "completeAt": 103228,
+          "initialSpent": 0,
+          "spent": 199973,
+          "produced": 199973.28000027238,
+          "bank": 0.2800000103889033,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 5,
+              "bank": 1788.770000000031,
+              "produced": 5970.769999999789,
+              "spent": 4182
+            },
+            {
+              "time": 7200,
+              "levels": 40,
+              "bank": 174.6799999999668,
+              "produced": 12718.680000000277,
+              "spent": 12544
+            },
+            {
+              "time": 14400,
+              "levels": 72,
+              "bank": 808.679999999962,
+              "produced": 26758.680000005515,
+              "spent": 25950
+            },
+            {
+              "time": 28800,
+              "levels": 92,
+              "bank": 401.68000000025893,
+              "produced": 54838.67999997482,
+              "spent": 54437
+            },
+            {
+              "time": 86400,
+              "levels": 110,
+              "bank": 766.6800000029779,
+              "produced": 167158.68000007648,
+              "spent": 166392
+            }
+          ],
+          "maxHours": 168
+        },
+        {
+          "options": {
+            "label": "Farm ativo sem prestígio",
+            "n": 10,
+            "lvl": 5,
+            "oraculo": 3
+          },
+          "policy": "science-first",
+          "completeAt": 51615,
+          "initialSpent": 0,
+          "spent": 199973,
+          "produced": 199976.65999981677,
+          "bank": 3.6600000022081076,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 40,
+              "bank": 174.16000000013494,
+              "produced": 12718.159999999398,
+              "spent": 12544
+            },
+            {
+              "time": 7200,
+              "levels": 72,
+              "bank": 808.1600000001079,
+              "produced": 26758.16000000293,
+              "spent": 25950
+            },
+            {
+              "time": 14400,
+              "levels": 92,
+              "bank": 401.16000000022507,
+              "produced": 54838.160000013406,
+              "spent": 54437
+            },
+            {
+              "time": 28800,
+              "levels": 105,
+              "bank": 5103.160000000238,
+              "produced": 110998.15999994955,
+              "spent": 105895
+            }
+          ],
+          "maxHours": 168
+        },
+        {
+          "options": {
+            "label": "Farm forte com Telemetria V",
+            "n": 10,
+            "lvl": 10,
+            "oraculo": 5,
+            "telemetria": 5
+          },
+          "policy": "science-first",
+          "completeAt": 11527,
+          "initialSpent": 9779,
+          "spent": 190194,
+          "produced": 190195.5,
+          "bank": 1.5,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 97,
+              "bank": 1045,
+              "produced": 59400,
+              "spent": 58355
+            },
+            {
+              "time": 7200,
+              "levels": 107,
+              "bank": 4913,
+              "produced": 118800,
+              "spent": 113887
+            }
+          ],
+          "maxHours": 168
+        },
+        {
+          "options": {
+            "label": "Farm herdado ilustrativo,100 fragmentos",
+            "n": 10,
+            "lvl": 5,
+            "oraculo": 5,
+            "telemetria": 5,
+            "frags": 100,
+            "globalSpeed": 5,
+            "eco": 1
+          },
+          "policy": "science-first",
+          "completeAt": 2042,
+          "initialSpent": 9779,
+          "spent": 190194,
+          "produced": 190212.29999999295,
+          "bank": 18.30000000007567,
+          "snapshots": [],
+          "maxHours": 168
+        }
+      ],
+      "offline": [
+        {
+          "label": "Farm moderado sem prestígio",
+          "n": 5,
+          "lvl": 5,
+          "oraculo": 3,
+          "seconds": 28800,
+          "rate": 1.3000000000000882,
+          "gained": 37440.00000000254,
+          "expected": 1.3,
+          "energyRatio": 1,
+          "dataGain": 1.3,
+          "globalYield": 1,
+          "globalSpeed": 1,
+          "cap": 28800,
+          "report": 37440.00000000254
+        },
+        {
+          "label": "Farm ativo sem prestígio",
+          "n": 10,
+          "lvl": 5,
+          "oraculo": 3,
+          "seconds": 28800,
+          "rate": 2.6000000000001764,
+          "gained": 74880.00000000508,
+          "expected": 2.6,
+          "energyRatio": 1,
+          "dataGain": 1.3,
+          "globalYield": 1,
+          "globalSpeed": 1,
+          "cap": 28800,
+          "report": 74880.00000000508
+        },
+        {
+          "label": "Farm forte com Telemetria V",
+          "n": 10,
+          "lvl": 10,
+          "oraculo": 5,
+          "telemetria": 5,
+          "seconds": 28800,
+          "rate": 16.5,
+          "gained": 475200,
+          "expected": 16.5,
+          "energyRatio": 1,
+          "dataGain": 2.25,
+          "globalYield": 1,
+          "globalSpeed": 1,
+          "cap": 28800,
+          "report": 475200
+        },
+        {
+          "label": "Farm herdado ilustrativo,100 fragmentos",
+          "n": 10,
+          "lvl": 5,
+          "oraculo": 5,
+          "telemetria": 5,
+          "frags": 100,
+          "globalSpeed": 2.5875,
+          "eco": 1,
+          "seconds": 28800,
+          "rate": 93.15000000000188,
+          "gained": 2682720.000000054,
+          "expected": 93.15,
+          "energyRatio": 1,
+          "dataGain": 2.25,
+          "globalYield": 4,
+          "cap": 36000,
+          "report": 2682720.000000054
+        }
+      ]
+    }
+  ],
+  "finding": "DataGain é aplicado uma única vez em produção manual/automática. A inflação decorre da composição velocidade de Oráculo, nível/rendimento, multiplicadores permanentes e produção sem insumos no observatório simples. A árvore inteira fica disponível por dinheiro sem vínculo a região/missão."
+}

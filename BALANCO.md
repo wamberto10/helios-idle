@@ -1,5 +1,7 @@
 # Balanço de recursos — HELIOS IDLE
 
+> Revisão em 28/10/2026: a [auditoria de ciência e missões](AUDITORIA-BALANCEAMENTO.md) reproduziu excesso de dados em campanhas de farm e horizontes longos. A conclusão abaixo de que dados eram equilibrados vale apenas para o cenário curto medido na época e foi revista. A nova auditoria também identifica referências históricas que já não correspondem às fórmulas atuais, como combustível fixo de cargueiro.
+
 Data: 27/10/2026. Base: código atual (`js/data.js` e `js/engine.js`). Nenhum valor do jogo foi alterado.
 
 ## Alterações aplicadas depois do balanço (recomendações 1, 3 e 4)

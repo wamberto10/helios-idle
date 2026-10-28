@@ -16,6 +16,12 @@
       eco: 'assets/portraits/eco.png',
       reliquia: 'assets/portraits/reliquia.png',
     },
+    commander: {
+      aurora: 'assets/commanders/aurora.png',
+      atlas: 'assets/commanders/atlas.png',
+      sentinela: 'assets/commanders/sentinela.png',
+      eclipse: 'assets/commanders/eclipse.png',
+    },
     building: {
       extrator: 'assets/buildings/extrator.png',
       refinaria: 'assets/buildings/refinaria.png',

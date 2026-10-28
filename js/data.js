@@ -10,6 +10,14 @@
   D.AUTOSAVE_SEC = 20;
   D.OFFLINE_BASE_H = 8;
 
+  // Identidade visual do jogador. Não concede bônus nem interfere no progresso.
+  D.commanderAvatars = {
+    aurora: { name: 'Aurora', label: 'Exploradora', color: '#3fe0ff' },
+    atlas: { name: 'Atlas', label: 'Navegante', color: '#ffd76a' },
+    sentinela: { name: 'Sentinela', label: 'Sintético', color: '#b07cff' },
+    eclipse: { name: 'Eclipse', label: 'Traje orbital', color: '#7fe0c0' },
+  };
+
   // ---------------- RECURSOS ----------------
   // v = valor usado no cálculo do Colapso; cap = armazenamento base por região
   D.res = {

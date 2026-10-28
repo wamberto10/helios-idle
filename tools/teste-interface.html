@@ -34,7 +34,8 @@ const sec = (t) => { const li = document.createElement('li'); li.className = 'se
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 async function until(fn, ms, step) { const t0 = Date.now(); while (Date.now() - t0 < (ms || 4000)) { try { if (fn()) return true; } catch (e) { /* ainda carregando */ } await wait(step || 50); } return false; }
 function cleanup() { for (const k of Object.keys(localStorage)) if (k.startsWith(PREFIX)) localStorage.removeItem(k); }
-async function openGame(slot, w, h) {
+async function openGame(slot, w, h, opts) {
+  opts = opts || {};
   const f = document.createElement('iframe'); f.width = w || 900; f.height = h || 640;
   f.src = '../index.html?slot=ti_' + slot + '_' + RUN; STAGE.appendChild(f);
   const ready = await until(() => f.contentWindow.H && f.contentWindow.H.ready, 6000);
@@ -45,14 +46,116 @@ async function openGame(slot, w, h) {
   g.toast = () => { const t = g.q('#toasts .toast'); return t ? t.textContent : ''; };
   g.lock = () => !!g.q('#lockov.on');
   g.modal = () => g.q('#modal.on .modal');
-  g.closeAll = async () => { for (let i = 0; i < 6 && g.H.UI.st.modalOpen; i++) { g.H.UI.closeModal(); await wait(160); } };
-  g.ready = ready; return g;
+  g.input = (el, value) => { if (typeof el === 'string') el = g.q(el); el.value = value; el.dispatchEvent(new g.w.Event('input', { bubbles: true })); return el; };
+  g.createProfile = async (name, avatar) => {
+    if (!g.q('#profile-form')) return false;
+    g.input('#commander-name', name || 'Comandante Teste');
+    if (avatar) g.click('[data-a="profileavatar|' + avatar + '"]');
+    g.q('#profile-form').requestSubmit();
+    return until(() => !!g.S().profile && !g.q('#profile-form'), 2000);
+  };
+  g.closeAll = async () => { for (let i = 0; i < 8 && g.H.UI.st.modalOpen; i++) { if (g.q('#profile-form')) await g.createProfile(); else g.H.UI.closeModal(); await wait(160); } };
+  g.ready = ready;
+  if (!opts.rawProfile && ready && g.q('#profile-form')) { await g.createProfile(); await wait(170); }
+  return g;
 }
 const slotKey = (slot) => 'helios_idle_save__ti_' + slot + '_' + RUN;
 const close = (g) => { g.f.remove(); };
 const errs = (g) => (g.H && g.H._errors) || [];
 
 // ---------------------------------------------------------------- cenários
+async function tProfile() {
+  sec('Comandante: criação obrigatória, validação, rascunho, edição e continuidade do save');
+  let g = await openGame('perfil', 900, 760, { rawProfile: true });
+  ok(g.ready && !!g.q('#profile-form') && !g.S().profile, 'a primeira abertura pede um comandante antes da introdução');
+  await wait(80);
+  ok(g.d.activeElement === g.q('#commander-name'), 'o nome recebe o foco inicial');
+  ok(g.q('#app').hasAttribute('inert'), 'a partida fica inerte durante a criação');
+  g.key(g.d.activeElement, 'Escape'); g.click('#modal');
+  ok(!!g.q('#profile-form'), 'Escape e clique no fundo não fecham a criação obrigatória');
+  g.input('#commander-name', 'A'); g.q('#profile-form').requestSubmit(); await wait(40);
+  ok(!g.S().profile && /2 a 24/.test(g.q('#profile-error').textContent) && g.q('#commander-name').getAttribute('aria-invalid') === 'true', 'nome curto mostra erro acessível e não cria perfil');
+  g.input('#commander-name', '  Capitã Luna  '); g.click('[data-a="profileavatar|atlas"]');
+  ok(g.q('#commander-name').value === '  Capitã Luna  ' && g.q('.profile-preview-name').textContent === 'Capitã Luna', 'selecionar avatar preserva o nome digitado e atualiza a prévia');
+  ok(g.q('[data-a="profileavatar|atlas"]').getAttribute('aria-pressed') === 'true' && g.qa('.profile-avatar[aria-pressed="true"]').length === 1, 'existe exatamente um avatar selecionado com aria-pressed');
+  g.H.UI.frame(true);
+  ok(g.q('#commander-name').value === '  Capitã Luna  ', 'atualizar a partida não recria nem apaga o formulário');
+  const setProfile = g.H.E.setProfile; let submissions = 0;
+  g.H.E.setProfile = function (S, input) { submissions++; return setProfile(S, input); };
+  const form = g.q('#profile-form');
+  ok(form.tagName === 'FORM' && form.querySelector('button[type="submit"]') && !form.querySelector('button[type="submit"]').dataset.a, 'CTA usa envio nativo do formulário, sem handler de clique duplicado');
+  form.requestSubmit(); await until(() => !g.q('#profile-form')); await wait(170);
+  ok(submissions === 1 && g.S().profile.name === 'Capitã Luna' && g.S().profile.avatar === 'atlas', 'um envio cria o perfil uma vez, normaliza o nome e guarda o avatar');
+  ok(g.modal() && /Missão Hélios/.test(g.modal().textContent), 'a introdução da missão vem depois da criação');
+  const saved = JSON.parse(localStorage.getItem(slotKey('perfil')));
+  ok(saved.profile.name === 'Capitã Luna' && saved.profile.avatar === 'atlas', 'nome e avatar são gravados junto do progresso');
+  close(g); await wait(250);
+  g = await openGame('perfil', 900, 760, { rawProfile: true });
+  ok(g.S().profile && g.S().profile.name === 'Capitã Luna' && !g.q('#profile-form'), 'reabrir o mesmo save preserva a identidade e não pede criação de novo');
+  await g.closeAll();
+  const before = JSON.stringify({ data: g.S().perm.data, stock: g.S().run.regions.lua.st, buildings: g.S().run.regions.lua.b });
+  g.q('.commander-chip').focus(); g.click('.commander-chip'); await wait(60);
+  g.input('#commander-name', 'Nome descartado'); g.click('[data-a="profileavatar|sentinela"]'); g.click('#modal [data-a="close"]');
+  ok(g.S().profile.name === 'Capitã Luna' && g.S().profile.avatar === 'atlas', 'cancelar a edição descarta nome e avatar do rascunho');
+  g.click('.commander-chip'); g.input('#commander-name', 'Tenente Sol'); g.click('[data-a="profileavatar|eclipse"]'); g.q('#profile-form').requestSubmit(); await wait(80);
+  ok(g.S().profile.name === 'Tenente Sol' && g.S().profile.avatar === 'eclipse' && /Tenente Sol/.test(g.q('.commander-chip').getAttribute('aria-label')), 'confirmar edição atualiza a identidade no topo');
+  ok(g.d.activeElement === g.q('.commander-chip'), 'salvar edição devolve o foco ao acesso do perfil');
+  ok(before === JSON.stringify({ data: g.S().perm.data, stock: g.S().run.regions.lua.st, buildings: g.S().run.regions.lua.b }), 'editar identidade não reinicia estoque, máquinas ou dados');
+  const legacy = H.E.newState(); legacy.perm.data = 9182; legacy.run.regions.lua.st.metal = 67;
+  const raw = JSON.parse(H.E.serialize(legacy)); delete raw.profile;
+  g.click('[data-a="nav|settings"]'); g.q('#io').value = JSON.stringify(raw); g.click('[data-a="import"]'); await wait(40); g.click('#modal [data-a="import2"]'); await wait(60);
+  ok(!!g.q('#profile-form') && !g.S().profile, 'importar save antigo sem perfil abre criação de comandante');
+  ok(g.S().perm.data === 9182 && g.S().run.regions.lua.st.metal === 67, 'a criação em save importado preserva os recursos recebidos');
+  await g.createProfile('Comandante Legado', 'aurora');
+  ok(g.S().profile.name === 'Comandante Legado' && g.S().perm.data === 9182, 'completar identidade mantém o progresso importado');
+  ok(errs(g).length === 0, 'perfil sem erros de JavaScript' + (errs(g).length ? ': ' + errs(g)[0] : ''));
+  close(g);
+  for (const [w, h] of [[1280, 800], [375, 812]]) {
+    const p = await openGame('perfil-layout-' + w, w, h, { rawProfile: true }); await wait(80);
+    const md = p.q('.profile-modal'), de = p.d.documentElement;
+    ok(md && de.scrollWidth <= de.clientWidth + 1 && md.scrollWidth <= md.clientWidth + 1, 'criação do comandante em ' + w + 'px cabe sem rolagem horizontal');
+    ok(p.qa('.profile-avatar').length === 4 && p.q('#commander-name').getAttribute('aria-describedby').includes('profile-error'), 'criação em ' + w + 'px oferece quatro avatares e instruções acessíveis');
+    close(p);
+  }
+}
+async function tFolderUI() {
+  sec('Pasta de saves: integração com arquivos em memória, sem seletor ou permissão real');
+  const g = await openGame('pasta-ui'); await g.closeAll();
+  function folder(name, raw) {
+    const dir = { name, raw, writes: 0, queryPermission: async () => 'granted', requestPermission: async () => 'granted' };
+    dir.getFileHandle = async (filename, options) => {
+      if (dir.raw === undefined && !options.create) throw new g.w.DOMException('ausente', 'NotFoundError');
+      return { getFile: async () => ({ size: (dir.raw || '').length, text: async () => dir.raw }), createWritable: async () => {
+        let value;
+        return { write: async text => { value = text; }, close: async () => { dir.raw = value; dir.writes++; }, abort: async () => {} };
+      } };
+    };
+    return dir;
+  }
+  const first = folder('Saves de teste'), handles = new Map(); let selected = first;
+  const memoryStore = { get: async k => handles.get(k), set: async (k, v) => handles.set(k, v), remove: async k => handles.delete(k) };
+  g.H.folderSave = g.H.makeFolderSave({ key: 'test-ui', getSnapshot: () => g.H.E.serialize(g.S()), isWriter: () => g.H.session.role === 'writer', env: { showDirectoryPicker: async () => selected, handleStore: memoryStore } });
+  await g.H.folderSave.init(); g.click('[data-a="nav|settings"]');
+  g.click('[data-a="folder|choose"]'); await until(() => first.writes > 0);
+  ok(first.writes > 0 && JSON.parse(first.raw).profile.name === g.S().profile.name, 'Escolher pasta grava comandante e progresso no arquivo');
+  g.S().perm.data = 1234; g.H.save(true, true);
+  ok(await until(() => JSON.parse(first.raw).perm.data === 1234), 'salvamento normal do jogo atualiza também a cópia da pasta');
+  const imported = g.H.E.newState(); g.H.E.setProfile(imported, { name: 'Capitã Arquivo', avatar: 'eclipse' }); imported.perm.data = 4321;
+  const original = g.H.E.serialize(imported), second = folder('Pasta anterior', original); selected = second;
+  g.click('[data-a="folder|choose"]'); await until(() => g.q('[data-a="folderrestore"]'));
+  ok(second.writes === 0 && second.raw === original && /Save encontrado/.test(g.modal().textContent), 'pasta com save pede escolha antes de sobrescrever');
+  g.click('[data-a="foldercancel"]');
+  ok(second.raw === original && g.H.folderSave.status().folder === 'Saves de teste', 'Cancelar preserva arquivo e conexão anterior');
+  g.click('[data-a="folder|choose"]'); await until(() => g.q('[data-a="folderrestore"]')); g.click('[data-a="folderrestore"]');
+  await until(() => g.S().profile.name === 'Capitã Arquivo' && second.writes > 0);
+  ok(g.S().profile.name === 'Capitã Arquivo' && g.S().perm.data === 4321, 'Restaurar recupera perfil e recursos do arquivo escolhido');
+  ok(JSON.parse(second.raw).perm.data === 4321 && g.H.folderSave.status().folder === 'Pasta anterior', 'a pasta passa a acompanhar a partida restaurada');
+  const beforeDisconnect = second.raw; g.click('[data-a="folder|disconnect"]'); await until(() => !g.H.folderSave.status().folder);
+  ok(second.raw === beforeDisconnect && !g.H.folderSave.status().folder, 'Desconectar mantém o arquivo existente');
+  g.H.folderSave = g.H.makeFolderSave({ env: { showDirectoryPicker: null, handleStore: memoryStore } }); g.H.UI.frame();
+  ok(g.q('[data-a="folder|choose"]').disabled && !g.q('.folder-save-panel [data-a="download"]').disabled, 'navegador sem API oferece download como alternativa');
+  ok(errs(g).length === 0, 'fluxo de pasta sem erros do jogo'); close(g);
+}
 async function tModalFocus() {
   sec('Modais: foco, Tab, Escape e retorno ao controle de origem');
   const g = await openGame('foco'); ok(g.ready, 'jogo carrega num quadro isolado');
@@ -150,7 +253,7 @@ async function tImport() {
   ok(g.modal() && /Não foi possível importar/.test(g.modal().textContent), 'conteúdo inválido é recusado com explicação');
   ok(g.S() === S0, 'a partida atual continua a mesma');
   await g.closeAll(); const t0 = S0.run.time; await wait(400); ok(g.S().run.time > t0 && errs(g).length === 0, 'o jogo segue funcionando depois da recusa');
-  const other = H.E.newState(); other.perm.data = 12345; other.lastTick = Date.now();
+  const other = H.E.newState(); H.E.setProfile(other, { name: 'Importado Teste', avatar: 'atlas' }); other.perm.data = 12345; other.lastTick = Date.now();
   g.q('#io').value = H.E.exportStr(other); g.click('[data-a="import"]'); await wait(40);
   ok(g.modal() && /Importar progresso/.test(g.modal().textContent), 'conteúdo válido pede confirmação');
   g.click('#modal [data-a="close"]'); await wait(40);
@@ -172,7 +275,7 @@ async function tTabs() {
   A.S().perm.data = 777; A.H.save(true); close(B); await wait(300);
   ok(Math.round(JSON.parse(localStorage.getItem(key)).perm.data) === 777, 'avançar em A e fechar B: o avanço de A permanece');
   const B2 = await openGame('abas'); await wait(250);
-  const ns = H.E.newState(); ns.perm.data = 4242; ns.lastTick = Date.now();
+  const ns = H.E.newState(); H.E.setProfile(ns, { name: 'Comandante Abas', avatar: 'sentinela' }); ns.perm.data = 4242; ns.lastTick = Date.now();
   A.click('[data-a="nav|settings"]'); A.q('#io').value = H.E.exportStr(ns); A.click('[data-a="import"]'); await wait(40); A.click('#modal [data-a="import2"]'); await wait(60);
   const revI = H.E.peekRev(localStorage.getItem(key));
   B2.d.dispatchEvent(new B2.w.Event('visibilitychange')); B2.w.dispatchEvent(new B2.w.Event('focus')); await wait(500);
@@ -193,6 +296,7 @@ async function tTabs() {
 async function tOfflineTwoTabs() {
   sec('Duas abas abertas juntas depois de um período offline');
   const key = slotKey('offline'); const S = H.E.newState(); H.E.recruit(S, 'iris'); S.events = [];
+  H.E.setProfile(S, { name: 'Comandante Offline', avatar: 'eclipse' });
   S.lastTick = Date.now() - 2 * 3600 * 1000; S.rev = 3; localStorage.setItem(key, H.E.serialize(S));
   const [A, B] = await Promise.all([openGame('offline'), openGame('offline')]); await wait(600);
   const writers = [A, B].filter((g) => g.H.session.role === 'writer'); const reports = [A, B].filter((g) => g.modal() && /Bem-vindo\(a\) de volta/.test(g.modal().textContent));
@@ -224,7 +328,7 @@ async function tLayout() {
 async function main() {
   document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
   const t0 = Date.now();
-  for (const t of [tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tLayout]) {
+  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tLayout]) {
     try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }
     STAGE.innerHTML = '';
   }

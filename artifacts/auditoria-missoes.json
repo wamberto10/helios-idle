@@ -1,0 +1,3717 @@
+{
+  "title": "HELIOS IDLE — auditoria de missões e excesso de economia permanente",
+  "sources": [
+    {
+      "file": "js/data.js",
+      "sha256": "3f09b47ee410f9fe4f440c7325ca19e00fd373cdbdb4e203b682f691686d009a"
+    },
+    {
+      "file": "js/engine.js",
+      "sha256": "2f6cb27f20c371ec13d461a06107830448efe367adfb755bb19ebfdf9ca7d7d6"
+    }
+  ],
+  "method": {
+    "changesApplied": false,
+    "horizonHours": 8,
+    "realEngineUsed": true,
+    "scope": "Orçamentos estáticos e cenários controlados. Não substitui medição de campanha em 5/10 Colapsos.",
+    "seed": "RNG determinístico do motor, seq inicial 1, collapses 1 para expedições; nenhum Math.random adicionado.",
+    "oldBalanceLimit": "BALANCO.md chamou dados de bem equilibrados usando campanha ativa até o primeiro Colapso (e depois cronometrou o segundo). Não avaliou deixar observatórios por 8 horas, completar gastos permanentes ou farm ativo de fragmentos em ruínas. Essa conclusão não pode ser estendida a esses horizontes."
+  },
+  "missionBudget": {
+    "totalMissions": 164,
+    "totalPhases": 21,
+    "baseData": 8135,
+    "onlyDataRewards": 152,
+    "otherRewardCounts": {
+      "spec": 8,
+      "unlock": 1,
+      "cards": 0,
+      "res": 3,
+      "frags": 0
+    },
+    "dataRange": {
+      "min": 5,
+      "max": 200
+    },
+    "phaseChestBaseData": 3570,
+    "phaseChestCards": 181,
+    "notes": "Baús dependem da ordem global de conclusão de fases. Soma base considera gpi 0..20, antes de multiplicador de dados e sem conversão de cartas em dados quando não há especialista."
+  },
+  "phases": [
+    {
+      "region": "lua",
+      "regionName": "Lua",
+      "phaseIndex": 0,
+      "phase": "Pouso",
+      "missions": 4,
+      "baseData": 20,
+      "onlyDataRewards": 1,
+      "nonDataRewards": {
+        "res": 2,
+        "spec": 1
+      },
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 313.637789,
+        "base-moderada": 9.615385,
+        "base-avancada-controlada": 0.150966
+      }
+    },
+    {
+      "region": "lua",
+      "regionName": "Lua",
+      "phaseIndex": 1,
+      "phase": "Posto de Extração",
+      "missions": 8,
+      "baseData": 80,
+      "onlyDataRewards": 6,
+      "nonDataRewards": {
+        "spec": 1,
+        "res": 1
+      },
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 1213.64188,
+        "base-moderada": 37.860577,
+        "base-avancada-controlada": 0.613929
+      }
+    },
+    {
+      "region": "lua",
+      "regionName": "Lua",
+      "phaseIndex": 2,
+      "phase": "Complexo Industrial",
+      "missions": 8,
+      "baseData": 100,
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "spec": 1
+      },
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 1527.279669,
+        "base-moderada": 46.574519,
+        "base-avancada-controlada": 0.761541
+      }
+    },
+    {
+      "region": "lua",
+      "regionName": "Lua",
+      "phaseIndex": 3,
+      "phase": "Base Orbital",
+      "missions": 8,
+      "baseData": 140,
+      "onlyDataRewards": 6,
+      "nonDataRewards": {
+        "unlock": 1,
+        "spec": 1
+      },
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 2113.645971,
+        "base-moderada": 65.204327,
+        "base-avancada-controlada": 1.056763
+      }
+    },
+    {
+      "region": "marte",
+      "regionName": "Marte",
+      "phaseIndex": 0,
+      "phase": "Cabeça de Ponte",
+      "missions": 8,
+      "baseData": 140,
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "spec": 1
+      },
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 2113.645971,
+        "base-moderada": 65.204327,
+        "base-avancada-controlada": 1.056763
+      }
+    },
+    {
+      "region": "marte",
+      "regionName": "Marte",
+      "phaseIndex": 1,
+      "phase": "Forjas Vermelhas",
+      "missions": 8,
+      "baseData": 210,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 3190.923595,
+        "base-moderada": 98.557692,
+        "base-avancada-controlada": 1.583468
+      }
+    },
+    {
+      "region": "marte",
+      "regionName": "Marte",
+      "phaseIndex": 2,
+      "phase": "Estaleiros de Marte",
+      "missions": 8,
+      "baseData": 255,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 3831.835599,
+        "base-moderada": 119.891827,
+        "base-avancada-controlada": 1.935722
+      }
+    },
+    {
+      "region": "cinturao",
+      "regionName": "Cinturão de Asteroides",
+      "phaseIndex": 0,
+      "phase": "Fronteira de Rocha",
+      "missions": 8,
+      "baseData": 245,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 3681.834917,
+        "base-moderada": 115.384615,
+        "base-avancada-controlada": 1.861916
+      }
+    },
+    {
+      "region": "cinturao",
+      "regionName": "Cinturão de Asteroides",
+      "phaseIndex": 1,
+      "phase": "Rede Logística",
+      "missions": 8,
+      "baseData": 295,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 4472.747603,
+        "base-moderada": 138.822115,
+        "base-avancada-controlada": 2.230945
+      }
+    },
+    {
+      "region": "mercurio",
+      "regionName": "Mercúrio",
+      "phaseIndex": 0,
+      "phase": "Margem do Sol",
+      "missions": 8,
+      "baseData": 285,
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "spec": 1
+      },
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 4281.837645,
+        "base-moderada": 132.8125,
+        "base-avancada-controlada": 2.150429
+      }
+    },
+    {
+      "region": "mercurio",
+      "regionName": "Mercúrio",
+      "phaseIndex": 1,
+      "phase": "Fundação do Enxame",
+      "missions": 8,
+      "baseData": 375,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 5672.753058,
+        "base-moderada": 175.480769,
+        "base-avancada-controlada": 2.8281
+      }
+    },
+    {
+      "region": "venus",
+      "regionName": "Vênus",
+      "phaseIndex": 0,
+      "phase": "Céus Ácidos",
+      "missions": 8,
+      "baseData": 355,
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "spec": 1
+      },
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 5331.842417,
+        "base-moderada": 166.466346,
+        "base-avancada-controlada": 2.690553
+      }
+    },
+    {
+      "region": "venus",
+      "regionName": "Vênus",
+      "phaseIndex": 1,
+      "phase": "Cidades Flutuantes",
+      "missions": 8,
+      "baseData": 455,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 6872.758513,
+        "base-moderada": 213.641827,
+        "base-avancada-controlada": 3.438674
+      }
+    },
+    {
+      "region": "jupiter",
+      "regionName": "Júpiter",
+      "phaseIndex": 0,
+      "phase": "Gigante Gasoso",
+      "missions": 8,
+      "baseData": 425,
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "spec": 1
+      },
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 6381.84719,
+        "base-moderada": 199.819712,
+        "base-avancada-controlada": 3.207193
+      }
+    },
+    {
+      "region": "jupiter",
+      "regionName": "Júpiter",
+      "phaseIndex": 1,
+      "phase": "Forja de Fusão",
+      "missions": 8,
+      "baseData": 535,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 8072.763967,
+        "base-moderada": 250,
+        "base-avancada-controlada": 4.035829
+      }
+    },
+    {
+      "region": "saturno",
+      "regionName": "Saturno",
+      "phaseIndex": 0,
+      "phase": "Anéis de Gelo",
+      "missions": 8,
+      "baseData": 565,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 8481.856736,
+        "base-moderada": 264.423077,
+        "base-avancada-controlada": 4.277375
+      }
+    },
+    {
+      "region": "saturno",
+      "regionName": "Saturno",
+      "phaseIndex": 1,
+      "phase": "Grandes Estaleiros",
+      "missions": 8,
+      "baseData": 615,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 9272.769422,
+        "base-moderada": 288.461538,
+        "base-avancada-controlada": 4.646404
+      }
+    },
+    {
+      "region": "urano",
+      "regionName": "Urano",
+      "phaseIndex": 0,
+      "phase": "Gelo Profundo",
+      "missions": 8,
+      "baseData": 645,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 9681.86219,
+        "base-moderada": 302.884615,
+        "base-avancada-controlada": 4.867821
+      }
+    },
+    {
+      "region": "urano",
+      "regionName": "Urano",
+      "phaseIndex": 1,
+      "phase": "Laboratórios Criogênicos",
+      "missions": 8,
+      "baseData": 695,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 10472.774876,
+        "base-moderada": 326.322115,
+        "base-avancada-controlada": 5.243559
+      }
+    },
+    {
+      "region": "netuno",
+      "regionName": "Netuno",
+      "phaseIndex": 0,
+      "phase": "Sinal Fantasma",
+      "missions": 8,
+      "baseData": 740,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 11100.050455,
+        "base-moderada": 346.153846,
+        "base-avancada-controlada": 5.595813
+      }
+    },
+    {
+      "region": "netuno",
+      "regionName": "Netuno",
+      "phaseIndex": 1,
+      "phase": "A Anomalia",
+      "missions": 8,
+      "baseData": 960,
+      "onlyDataRewards": 8,
+      "nonDataRewards": {},
+      "equivalentProductionSeconds": {
+        "recem-automatizado": 14400.065455,
+        "base-moderada": 449.819712,
+        "base-avancada-controlada": 7.246377
+      }
+    }
+  ],
+  "missions": [
+    {
+      "id": "lua.0.0",
+      "region": "lua",
+      "phase": "Pouso",
+      "type": "build",
+      "target": 3,
+      "resource": null,
+      "building": "extrator",
+      "title": "Construir 3 extratores",
+      "reward": {
+        "data": 5,
+        "res": {
+          "metal": 10
+        }
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "lua.0.1",
+      "region": "lua",
+      "phase": "Pouso",
+      "type": "prod",
+      "target": 60,
+      "resource": "ore",
+      "building": null,
+      "title": "Produzir 60 minérios",
+      "reward": {
+        "data": 5
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.0.2",
+      "region": "lua",
+      "phase": "Pouso",
+      "type": "pay",
+      "target": null,
+      "resource": null,
+      "building": null,
+      "title": "Restaurar a estação abandonada",
+      "reward": {
+        "data": 10,
+        "res": {
+          "ore": 30
+        }
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "lua.0.3",
+      "region": "lua",
+      "phase": "Pouso",
+      "type": "cycles",
+      "target": 12,
+      "resource": null,
+      "building": "extrator",
+      "title": "Recrutar Íris",
+      "reward": {
+        "spec": "iris"
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "lua.1.0",
+      "region": "lua",
+      "phase": "Posto de Extração",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "esc_gelo",
+      "title": "Construir 2 escavadoras de gelo",
+      "reward": {
+        "data": 10
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.1.1",
+      "region": "lua",
+      "phase": "Posto de Extração",
+      "type": "prod",
+      "target": 100,
+      "resource": "metal",
+      "building": null,
+      "title": "Produzir 100 metais",
+      "reward": {
+        "data": 10
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.1.2",
+      "region": "lua",
+      "phase": "Posto de Extração",
+      "type": "level",
+      "target": 2,
+      "resource": null,
+      "building": "extrator",
+      "title": "Melhorar extrator de minério até o nível 2",
+      "reward": {
+        "data": 10
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.1.3",
+      "region": "lua",
+      "phase": "Posto de Extração",
+      "type": "cycles",
+      "target": 20,
+      "resource": null,
+      "building": "refinaria",
+      "title": "Recrutar Vulcano",
+      "reward": {
+        "spec": "vulcano"
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "lua.1.4",
+      "region": "lua",
+      "phase": "Posto de Extração",
+      "type": "build",
+      "target": 4,
+      "resource": null,
+      "building": "painel",
+      "title": "Construir 4 painéis solares",
+      "reward": {
+        "data": 10,
+        "res": {
+          "metal": 20
+        }
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "lua.1.5",
+      "region": "lua",
+      "phase": "Posto de Extração",
+      "type": "research",
+      "target": 1,
+      "resource": null,
+      "building": null,
+      "title": "Pesquisar uma tecnologia",
+      "reward": {
+        "data": 15
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.1.6",
+      "region": "lua",
+      "phase": "Posto de Extração",
+      "type": "prod",
+      "target": 150,
+      "resource": "ice",
+      "building": null,
+      "title": "Produzir 150 unidades de gelo",
+      "reward": {
+        "data": 10
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.1.7",
+      "region": "lua",
+      "phase": "Posto de Extração",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "armazem",
+      "title": "Construir 1 armazém",
+      "reward": {
+        "data": 15
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.2.0",
+      "region": "lua",
+      "phase": "Complexo Industrial",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "forja",
+      "title": "Construir 1 forja",
+      "reward": {
+        "data": 10
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.2.1",
+      "region": "lua",
+      "phase": "Complexo Industrial",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "eletrolisador",
+      "title": "Construir 1 eletrolisador",
+      "reward": {
+        "data": 10
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.2.2",
+      "region": "lua",
+      "phase": "Complexo Industrial",
+      "type": "prod",
+      "target": 30,
+      "resource": "fuel",
+      "building": null,
+      "title": "Produzir o primeiro combustível",
+      "reward": {
+        "data": 15
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.2.3",
+      "region": "lua",
+      "phase": "Complexo Industrial",
+      "type": "cycles",
+      "target": 30,
+      "resource": null,
+      "building": "esc_gelo",
+      "title": "Recrutar Nix",
+      "reward": {
+        "spec": "nix"
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "lua.2.4",
+      "region": "lua",
+      "phase": "Complexo Industrial",
+      "type": "prod",
+      "target": 50,
+      "resource": "alloy",
+      "building": null,
+      "title": "Produzir 50 ligas",
+      "reward": {
+        "data": 15
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.2.5",
+      "region": "lua",
+      "phase": "Complexo Industrial",
+      "type": "level",
+      "target": 3,
+      "resource": null,
+      "building": "refinaria",
+      "title": "Melhorar refinaria até o nível 3",
+      "reward": {
+        "data": 15
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.2.6",
+      "region": "lua",
+      "phase": "Complexo Industrial",
+      "type": "build",
+      "target": 6,
+      "resource": null,
+      "building": "extrator",
+      "title": "Construir 6 extratores",
+      "reward": {
+        "data": 15
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.2.7",
+      "region": "lua",
+      "phase": "Complexo Industrial",
+      "type": "prod",
+      "target": 800,
+      "resource": "metal",
+      "building": null,
+      "title": "Produzir 800 metais",
+      "reward": {
+        "data": 20
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.3.0",
+      "region": "lua",
+      "phase": "Base Orbital",
+      "type": "pay",
+      "target": null,
+      "resource": null,
+      "building": null,
+      "title": "Montar a Doca Orbital",
+      "reward": {
+        "data": 20,
+        "unlock": "expeditions"
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "lua.3.1",
+      "region": "lua",
+      "phase": "Base Orbital",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "observatorio",
+      "title": "Construir 1 observatório",
+      "reward": {
+        "data": 15
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.3.2",
+      "region": "lua",
+      "phase": "Base Orbital",
+      "type": "prod",
+      "target": 200,
+      "resource": "alloy",
+      "building": null,
+      "title": "Produzir 200 ligas",
+      "reward": {
+        "data": 20
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.3.3",
+      "region": "lua",
+      "phase": "Base Orbital",
+      "type": "exped",
+      "target": 1,
+      "resource": null,
+      "building": null,
+      "title": "Concluir 1 expedição (total)",
+      "reward": {
+        "data": 20
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.3.4",
+      "region": "lua",
+      "phase": "Base Orbital",
+      "type": "cycles",
+      "target": 5,
+      "resource": null,
+      "building": "observatorio",
+      "title": "Recrutar Oráculo",
+      "reward": {
+        "spec": "oraculo"
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "lua.3.5",
+      "region": "lua",
+      "phase": "Base Orbital",
+      "type": "level",
+      "target": 2,
+      "resource": null,
+      "building": "forja",
+      "title": "Melhorar forja até o nível 2",
+      "reward": {
+        "data": 20
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.3.6",
+      "region": "lua",
+      "phase": "Base Orbital",
+      "type": "prod",
+      "target": 150,
+      "resource": "fuel",
+      "building": null,
+      "title": "Produzir 150 unidades de combustível",
+      "reward": {
+        "data": 20
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "lua.3.7",
+      "region": "lua",
+      "phase": "Base Orbital",
+      "type": "energy",
+      "target": 40,
+      "resource": null,
+      "building": null,
+      "title": "Gerar 40 MW de energia",
+      "reward": {
+        "data": 25
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.0.0",
+      "region": "marte",
+      "phase": "Cabeça de Ponte",
+      "type": "build",
+      "target": 3,
+      "resource": null,
+      "building": "extrator",
+      "title": "Construir 3 extratores",
+      "reward": {
+        "data": 15
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.0.1",
+      "region": "marte",
+      "phase": "Cabeça de Ponte",
+      "type": "route",
+      "target": 1,
+      "resource": null,
+      "building": null,
+      "title": "Estabelecer uma rota de transporte",
+      "reward": {
+        "data": 20
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.0.2",
+      "region": "marte",
+      "phase": "Cabeça de Ponte",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "fabrica",
+      "title": "Construir 1 fábrica de componentes",
+      "reward": {
+        "data": 20
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.0.3",
+      "region": "marte",
+      "phase": "Cabeça de Ponte",
+      "type": "ship",
+      "target": 3,
+      "resource": null,
+      "building": null,
+      "title": "Recrutar Vega",
+      "reward": {
+        "spec": "vega"
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "marte.0.4",
+      "region": "marte",
+      "phase": "Cabeça de Ponte",
+      "type": "prod",
+      "target": 15,
+      "resource": "comp",
+      "building": null,
+      "title": "Produzir 15 componentes",
+      "reward": {
+        "data": 20
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.0.5",
+      "region": "marte",
+      "phase": "Cabeça de Ponte",
+      "type": "build",
+      "target": 6,
+      "resource": null,
+      "building": "painel",
+      "title": "Construir 6 painéis solares",
+      "reward": {
+        "data": 20
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.0.6",
+      "region": "marte",
+      "phase": "Cabeça de Ponte",
+      "type": "deliver",
+      "target": 40,
+      "resource": "fuel",
+      "building": null,
+      "title": "Receber 40 unidades de combustível por rotas",
+      "reward": {
+        "data": 20
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.0.7",
+      "region": "marte",
+      "phase": "Cabeça de Ponte",
+      "type": "level",
+      "target": 2,
+      "resource": null,
+      "building": "fabrica",
+      "title": "Melhorar fábrica de componentes até o nível 2",
+      "reward": {
+        "data": 25
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.1.0",
+      "region": "marte",
+      "phase": "Forjas Vermelhas",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "forja",
+      "title": "Construir 2 forjas",
+      "reward": {
+        "data": 25
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.1.1",
+      "region": "marte",
+      "phase": "Forjas Vermelhas",
+      "type": "prod",
+      "target": 250,
+      "resource": "alloy",
+      "building": null,
+      "title": "Produzir 250 ligas",
+      "reward": {
+        "data": 25
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.1.2",
+      "region": "marte",
+      "phase": "Forjas Vermelhas",
+      "type": "prod",
+      "target": 100,
+      "resource": "comp",
+      "building": null,
+      "title": "Produzir 100 componentes",
+      "reward": {
+        "data": 25
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.1.3",
+      "region": "marte",
+      "phase": "Forjas Vermelhas",
+      "type": "level",
+      "target": 4,
+      "resource": null,
+      "building": "extrator",
+      "title": "Melhorar extrator de minério até o nível 4",
+      "reward": {
+        "data": 25
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.1.4",
+      "region": "marte",
+      "phase": "Forjas Vermelhas",
+      "type": "route",
+      "target": 2,
+      "resource": null,
+      "building": null,
+      "title": "Ter 2 rotas ligadas à região",
+      "reward": {
+        "data": 25
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.1.5",
+      "region": "marte",
+      "phase": "Forjas Vermelhas",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "armazem",
+      "title": "Construir 2 armazéns",
+      "reward": {
+        "data": 25
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.1.6",
+      "region": "marte",
+      "phase": "Forjas Vermelhas",
+      "type": "exped",
+      "target": 3,
+      "resource": null,
+      "building": null,
+      "title": "Concluir 3 expedições (total)",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.1.7",
+      "region": "marte",
+      "phase": "Forjas Vermelhas",
+      "type": "prod",
+      "target": 2500,
+      "resource": "metal",
+      "building": null,
+      "title": "Produzir 2,50K metais",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.2.0",
+      "region": "marte",
+      "phase": "Estaleiros de Marte",
+      "type": "build",
+      "target": 3,
+      "resource": null,
+      "building": "fabrica",
+      "title": "Construir 3 fábricas de componentes",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.2.1",
+      "region": "marte",
+      "phase": "Estaleiros de Marte",
+      "type": "level",
+      "target": 3,
+      "resource": null,
+      "building": "forja",
+      "title": "Melhorar forja até o nível 3",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.2.2",
+      "region": "marte",
+      "phase": "Estaleiros de Marte",
+      "type": "promote",
+      "target": 2,
+      "resource": null,
+      "building": null,
+      "title": "Promover um especialista ao nível 2",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.2.3",
+      "region": "marte",
+      "phase": "Estaleiros de Marte",
+      "type": "prod",
+      "target": 400,
+      "resource": "comp",
+      "building": null,
+      "title": "Produzir 400 componentes",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.2.4",
+      "region": "marte",
+      "phase": "Estaleiros de Marte",
+      "type": "energy",
+      "target": 60,
+      "resource": null,
+      "building": null,
+      "title": "Gerar 60 MW de energia",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.2.5",
+      "region": "marte",
+      "phase": "Estaleiros de Marte",
+      "type": "total",
+      "target": 25,
+      "resource": null,
+      "building": null,
+      "title": "Ter 25 instalações na região",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.2.6",
+      "region": "marte",
+      "phase": "Estaleiros de Marte",
+      "type": "research",
+      "target": 4,
+      "resource": null,
+      "building": null,
+      "title": "Ter 4 níveis de pesquisa",
+      "reward": {
+        "data": 35
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "marte.2.7",
+      "region": "marte",
+      "phase": "Estaleiros de Marte",
+      "type": "prod",
+      "target": 1200,
+      "resource": "alloy",
+      "building": null,
+      "title": "Produzir 1,20K ligas",
+      "reward": {
+        "data": 40
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.0.0",
+      "region": "cinturao",
+      "phase": "Fronteira de Rocha",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "min_ast",
+      "title": "Construir 2 mineradores de asteroides",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.0.1",
+      "region": "cinturao",
+      "phase": "Fronteira de Rocha",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "garimpo",
+      "title": "Construir 1 garimpeira de raros",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.0.2",
+      "region": "cinturao",
+      "phase": "Fronteira de Rocha",
+      "type": "prod",
+      "target": 20,
+      "resource": "rare",
+      "building": null,
+      "title": "Produzir 20 metais raros",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.0.3",
+      "region": "cinturao",
+      "phase": "Fronteira de Rocha",
+      "type": "route",
+      "target": 2,
+      "resource": null,
+      "building": null,
+      "title": "Ter 2 rotas ligadas à região",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.0.4",
+      "region": "cinturao",
+      "phase": "Fronteira de Rocha",
+      "type": "prod",
+      "target": 2500,
+      "resource": "ore",
+      "building": null,
+      "title": "Produzir 2,50K minérios",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.0.5",
+      "region": "cinturao",
+      "phase": "Fronteira de Rocha",
+      "type": "level",
+      "target": 2,
+      "resource": null,
+      "building": "min_ast",
+      "title": "Melhorar minerador de asteroides até o nível 2",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.0.6",
+      "region": "cinturao",
+      "phase": "Fronteira de Rocha",
+      "type": "deliver",
+      "target": 80,
+      "resource": "fuel",
+      "building": null,
+      "title": "Receber 80 unidades de combustível por rotas",
+      "reward": {
+        "data": 30
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.0.7",
+      "region": "cinturao",
+      "phase": "Fronteira de Rocha",
+      "type": "build",
+      "target": 10,
+      "resource": null,
+      "building": "painel",
+      "title": "Construir 10 painéis solares",
+      "reward": {
+        "data": 35
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.1.0",
+      "region": "cinturao",
+      "phase": "Rede Logística",
+      "type": "build",
+      "target": 3,
+      "resource": null,
+      "building": "garimpo",
+      "title": "Construir 3 garimpeiras de raros",
+      "reward": {
+        "data": 35
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.1.1",
+      "region": "cinturao",
+      "phase": "Rede Logística",
+      "type": "prod",
+      "target": 150,
+      "resource": "rare",
+      "building": null,
+      "title": "Produzir 150 metais raros",
+      "reward": {
+        "data": 35
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.1.2",
+      "region": "cinturao",
+      "phase": "Rede Logística",
+      "type": "level",
+      "target": 3,
+      "resource": null,
+      "building": "garimpo",
+      "title": "Melhorar garimpeira de raros até o nível 3",
+      "reward": {
+        "data": 35
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.1.3",
+      "region": "cinturao",
+      "phase": "Rede Logística",
+      "type": "ship",
+      "target": 10,
+      "resource": null,
+      "building": null,
+      "title": "Completar 10 viagens de carga",
+      "reward": {
+        "data": 35
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.1.4",
+      "region": "cinturao",
+      "phase": "Rede Logística",
+      "type": "prod",
+      "target": 1500,
+      "resource": "metal",
+      "building": null,
+      "title": "Produzir 1,50K metais",
+      "reward": {
+        "data": 35
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.1.5",
+      "region": "cinturao",
+      "phase": "Rede Logística",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "armazem",
+      "title": "Construir 2 armazéns",
+      "reward": {
+        "data": 35
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.1.6",
+      "region": "cinturao",
+      "phase": "Rede Logística",
+      "type": "exped",
+      "target": 5,
+      "resource": null,
+      "building": null,
+      "title": "Concluir 5 expedições (total)",
+      "reward": {
+        "data": 40
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "cinturao.1.7",
+      "region": "cinturao",
+      "phase": "Rede Logística",
+      "type": "prod",
+      "target": 300,
+      "resource": "rare",
+      "building": null,
+      "title": "Produzir 300 metais raros",
+      "reward": {
+        "data": 45
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.0.0",
+      "region": "mercurio",
+      "phase": "Margem do Sol",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "fotovoltaica",
+      "title": "Construir 1 fundição fotovoltaica",
+      "reward": {
+        "data": 40
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.0.1",
+      "region": "mercurio",
+      "phase": "Margem do Sol",
+      "type": "prod",
+      "target": 15,
+      "resource": "cell",
+      "building": null,
+      "title": "Produzir 15 células solares",
+      "reward": {
+        "data": 40
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.0.2",
+      "region": "mercurio",
+      "phase": "Margem do Sol",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "coletor_solar",
+      "title": "Construir 2 coletores solares",
+      "reward": {
+        "data": 40
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.0.3",
+      "region": "mercurio",
+      "phase": "Margem do Sol",
+      "type": "cycles",
+      "target": 15,
+      "resource": null,
+      "building": "fotovoltaica",
+      "title": "Recrutar Hélio",
+      "reward": {
+        "spec": "helio"
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "mercurio.0.4",
+      "region": "mercurio",
+      "phase": "Margem do Sol",
+      "type": "deliver",
+      "target": 50,
+      "resource": "rare",
+      "building": null,
+      "title": "Receber 50 metais raros por rotas",
+      "reward": {
+        "data": 40
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.0.5",
+      "region": "mercurio",
+      "phase": "Margem do Sol",
+      "type": "energy",
+      "target": 120,
+      "resource": null,
+      "building": null,
+      "title": "Gerar 120 MW de energia",
+      "reward": {
+        "data": 40
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.0.6",
+      "region": "mercurio",
+      "phase": "Margem do Sol",
+      "type": "level",
+      "target": 2,
+      "resource": null,
+      "building": "fotovoltaica",
+      "title": "Melhorar fundição fotovoltaica até o nível 2",
+      "reward": {
+        "data": 40
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.0.7",
+      "region": "mercurio",
+      "phase": "Margem do Sol",
+      "type": "prod",
+      "target": 1500,
+      "resource": "metal",
+      "building": null,
+      "title": "Produzir 1,50K metais",
+      "reward": {
+        "data": 45
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.1.0",
+      "region": "mercurio",
+      "phase": "Fundação do Enxame",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "fab_sat",
+      "title": "Construir 1 fábrica de satélites",
+      "reward": {
+        "data": 45
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.1.1",
+      "region": "mercurio",
+      "phase": "Fundação do Enxame",
+      "type": "prod",
+      "target": 5,
+      "resource": "sat",
+      "building": null,
+      "title": "Produzir 5 satélites Dyson",
+      "reward": {
+        "data": 45
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.1.2",
+      "region": "mercurio",
+      "phase": "Fundação do Enxame",
+      "type": "deliver",
+      "target": 50,
+      "resource": "comp",
+      "building": null,
+      "title": "Receber 50 componentes por rotas",
+      "reward": {
+        "data": 45
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.1.3",
+      "region": "mercurio",
+      "phase": "Fundação do Enxame",
+      "type": "dyson",
+      "target": 1,
+      "resource": null,
+      "building": null,
+      "title": "Concluir a etapa 1 do enxame de Dyson",
+      "reward": {
+        "data": 50
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.1.4",
+      "region": "mercurio",
+      "phase": "Fundação do Enxame",
+      "type": "level",
+      "target": 2,
+      "resource": null,
+      "building": "coletor_solar",
+      "title": "Melhorar coletor solar até o nível 2",
+      "reward": {
+        "data": 45
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.1.5",
+      "region": "mercurio",
+      "phase": "Fundação do Enxame",
+      "type": "prod",
+      "target": 200,
+      "resource": "cell",
+      "building": null,
+      "title": "Produzir 200 células solares",
+      "reward": {
+        "data": 45
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.1.6",
+      "region": "mercurio",
+      "phase": "Fundação do Enxame",
+      "type": "build",
+      "target": 3,
+      "resource": null,
+      "building": "fotovoltaica",
+      "title": "Construir 3 fundições fotovoltaicas",
+      "reward": {
+        "data": 45
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "mercurio.1.7",
+      "region": "mercurio",
+      "phase": "Fundação do Enxame",
+      "type": "prod",
+      "target": 15,
+      "resource": "sat",
+      "building": null,
+      "title": "Produzir 15 satélites Dyson",
+      "reward": {
+        "data": 55
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.0.0",
+      "region": "venus",
+      "phase": "Céus Ácidos",
+      "type": "build",
+      "target": 3,
+      "resource": null,
+      "building": "plataforma",
+      "title": "Construir 3 plataformas atmosféricas",
+      "reward": {
+        "data": 50
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.0.1",
+      "region": "venus",
+      "phase": "Céus Ácidos",
+      "type": "prod",
+      "target": 300,
+      "resource": "gas",
+      "building": null,
+      "title": "Produzir 300 unidades de gás",
+      "reward": {
+        "data": 50
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.0.2",
+      "region": "venus",
+      "phase": "Céus Ácidos",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "quimica",
+      "title": "Construir 2 refinarias químicas",
+      "reward": {
+        "data": 50
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.0.3",
+      "region": "venus",
+      "phase": "Céus Ácidos",
+      "type": "cycles",
+      "target": 20,
+      "resource": null,
+      "building": "plataforma",
+      "title": "Recrutar Aura",
+      "reward": {
+        "spec": "aura"
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "venus.0.4",
+      "region": "venus",
+      "phase": "Céus Ácidos",
+      "type": "prod",
+      "target": 300,
+      "resource": "fuel",
+      "building": null,
+      "title": "Produzir 300 unidades de combustível",
+      "reward": {
+        "data": 50
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.0.5",
+      "region": "venus",
+      "phase": "Céus Ácidos",
+      "type": "route",
+      "target": 1,
+      "resource": null,
+      "building": null,
+      "title": "Estabelecer uma rota de transporte",
+      "reward": {
+        "data": 50
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.0.6",
+      "region": "venus",
+      "phase": "Céus Ácidos",
+      "type": "level",
+      "target": 2,
+      "resource": null,
+      "building": "plataforma",
+      "title": "Melhorar plataforma atmosférica até o nível 2",
+      "reward": {
+        "data": 50
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.0.7",
+      "region": "venus",
+      "phase": "Céus Ácidos",
+      "type": "energy",
+      "target": 100,
+      "resource": null,
+      "building": null,
+      "title": "Gerar 100 MW de energia",
+      "reward": {
+        "data": 55
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.1.0",
+      "region": "venus",
+      "phase": "Cidades Flutuantes",
+      "type": "build",
+      "target": 6,
+      "resource": null,
+      "building": "plataforma",
+      "title": "Construir 6 plataformas atmosféricas",
+      "reward": {
+        "data": 55
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.1.1",
+      "region": "venus",
+      "phase": "Cidades Flutuantes",
+      "type": "level",
+      "target": 3,
+      "resource": null,
+      "building": "quimica",
+      "title": "Melhorar refinaria química até o nível 3",
+      "reward": {
+        "data": 55
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.1.2",
+      "region": "venus",
+      "phase": "Cidades Flutuantes",
+      "type": "prod",
+      "target": 1500,
+      "resource": "fuel",
+      "building": null,
+      "title": "Produzir 1,50K unidades de combustível",
+      "reward": {
+        "data": 55
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.1.3",
+      "region": "venus",
+      "phase": "Cidades Flutuantes",
+      "type": "dyson",
+      "target": 2,
+      "resource": null,
+      "building": null,
+      "title": "Concluir a etapa 2 do enxame de Dyson",
+      "reward": {
+        "data": 60
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.1.4",
+      "region": "venus",
+      "phase": "Cidades Flutuantes",
+      "type": "ship",
+      "target": 10,
+      "resource": null,
+      "building": null,
+      "title": "Completar 10 viagens de carga",
+      "reward": {
+        "data": 55
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.1.5",
+      "region": "venus",
+      "phase": "Cidades Flutuantes",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "armazem",
+      "title": "Construir 2 armazéns",
+      "reward": {
+        "data": 55
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.1.6",
+      "region": "venus",
+      "phase": "Cidades Flutuantes",
+      "type": "prod",
+      "target": 4000,
+      "resource": "gas",
+      "building": null,
+      "title": "Produzir 4,00K unidades de gás",
+      "reward": {
+        "data": 55
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "venus.1.7",
+      "region": "venus",
+      "phase": "Cidades Flutuantes",
+      "type": "exped",
+      "target": 8,
+      "resource": null,
+      "building": null,
+      "title": "Concluir 8 expedições (total)",
+      "reward": {
+        "data": 65
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.0.0",
+      "region": "jupiter",
+      "phase": "Gigante Gasoso",
+      "type": "build",
+      "target": 3,
+      "resource": null,
+      "building": "plataforma",
+      "title": "Construir 3 plataformas atmosféricas",
+      "reward": {
+        "data": 60
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.0.1",
+      "region": "jupiter",
+      "phase": "Gigante Gasoso",
+      "type": "prod",
+      "target": 600,
+      "resource": "gas",
+      "building": null,
+      "title": "Produzir 600 unidades de gás",
+      "reward": {
+        "data": 60
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.0.2",
+      "region": "jupiter",
+      "phase": "Gigante Gasoso",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "ref_fusao",
+      "title": "Construir 2 refinarias de fusão",
+      "reward": {
+        "data": 60
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.0.3",
+      "region": "jupiter",
+      "phase": "Gigante Gasoso",
+      "type": "cycles",
+      "target": 10,
+      "resource": null,
+      "building": "ref_fusao",
+      "title": "Recrutar Íon",
+      "reward": {
+        "spec": "ion"
+      },
+      "onlyDataReward": false
+    },
+    {
+      "id": "jupiter.0.4",
+      "region": "jupiter",
+      "phase": "Gigante Gasoso",
+      "type": "prod",
+      "target": 30,
+      "resource": "fusion",
+      "building": null,
+      "title": "Produzir 30 unidades de combustível de fusão",
+      "reward": {
+        "data": 60
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.0.5",
+      "region": "jupiter",
+      "phase": "Gigante Gasoso",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "reator",
+      "title": "Construir 2 reatores de fusão",
+      "reward": {
+        "data": 60
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.0.6",
+      "region": "jupiter",
+      "phase": "Gigante Gasoso",
+      "type": "ship",
+      "target": 6,
+      "resource": null,
+      "building": null,
+      "title": "Completar 6 viagens de carga",
+      "reward": {
+        "data": 60
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.0.7",
+      "region": "jupiter",
+      "phase": "Gigante Gasoso",
+      "type": "energy",
+      "target": 200,
+      "resource": null,
+      "building": null,
+      "title": "Gerar 200 MW de energia",
+      "reward": {
+        "data": 65
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.1.0",
+      "region": "jupiter",
+      "phase": "Forja de Fusão",
+      "type": "level",
+      "target": 3,
+      "resource": null,
+      "building": "ref_fusao",
+      "title": "Melhorar refinaria de fusão até o nível 3",
+      "reward": {
+        "data": 65
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.1.1",
+      "region": "jupiter",
+      "phase": "Forja de Fusão",
+      "type": "prod",
+      "target": 200,
+      "resource": "fusion",
+      "building": null,
+      "title": "Produzir 200 unidades de combustível de fusão",
+      "reward": {
+        "data": 65
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.1.2",
+      "region": "jupiter",
+      "phase": "Forja de Fusão",
+      "type": "build",
+      "target": 4,
+      "resource": null,
+      "building": "reator",
+      "title": "Construir 4 reatores de fusão",
+      "reward": {
+        "data": 65
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.1.3",
+      "region": "jupiter",
+      "phase": "Forja de Fusão",
+      "type": "dyson",
+      "target": 3,
+      "resource": null,
+      "building": null,
+      "title": "Concluir a etapa 3 do enxame de Dyson",
+      "reward": {
+        "data": 70
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.1.4",
+      "region": "jupiter",
+      "phase": "Forja de Fusão",
+      "type": "route",
+      "target": 2,
+      "resource": null,
+      "building": null,
+      "title": "Ter 2 rotas ligadas à região",
+      "reward": {
+        "data": 65
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.1.5",
+      "region": "jupiter",
+      "phase": "Forja de Fusão",
+      "type": "prod",
+      "target": 500,
+      "resource": "fusion",
+      "building": null,
+      "title": "Produzir 500 unidades de combustível de fusão",
+      "reward": {
+        "data": 65
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.1.6",
+      "region": "jupiter",
+      "phase": "Forja de Fusão",
+      "type": "level",
+      "target": 3,
+      "resource": null,
+      "building": "plataforma",
+      "title": "Melhorar plataforma atmosférica até o nível 3",
+      "reward": {
+        "data": 65
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "jupiter.1.7",
+      "region": "jupiter",
+      "phase": "Forja de Fusão",
+      "type": "promote",
+      "target": 3,
+      "resource": null,
+      "building": null,
+      "title": "Promover um especialista ao nível 3",
+      "reward": {
+        "data": 75
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.0.0",
+      "region": "saturno",
+      "phase": "Anéis de Gelo",
+      "type": "build",
+      "target": 4,
+      "resource": null,
+      "building": "esc_gelo",
+      "title": "Construir 4 escavadoras de gelo",
+      "reward": {
+        "data": 70
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.0.1",
+      "region": "saturno",
+      "phase": "Anéis de Gelo",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "estaleiro",
+      "title": "Construir 1 grande estaleiro",
+      "reward": {
+        "data": 70
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.0.2",
+      "region": "saturno",
+      "phase": "Anéis de Gelo",
+      "type": "prod",
+      "target": 5,
+      "resource": "hull",
+      "building": null,
+      "title": "Produzir 5 módulos estruturais",
+      "reward": {
+        "data": 70
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.0.3",
+      "region": "saturno",
+      "phase": "Anéis de Gelo",
+      "type": "deliver",
+      "target": 60,
+      "resource": "comp",
+      "building": null,
+      "title": "Receber 60 componentes por rotas",
+      "reward": {
+        "data": 70
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.0.4",
+      "region": "saturno",
+      "phase": "Anéis de Gelo",
+      "type": "prod",
+      "target": 3000,
+      "resource": "ice",
+      "building": null,
+      "title": "Produzir 3,00K unidades de gelo",
+      "reward": {
+        "data": 70
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.0.5",
+      "region": "saturno",
+      "phase": "Anéis de Gelo",
+      "type": "level",
+      "target": 2,
+      "resource": null,
+      "building": "estaleiro",
+      "title": "Melhorar grande estaleiro até o nível 2",
+      "reward": {
+        "data": 70
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.0.6",
+      "region": "saturno",
+      "phase": "Anéis de Gelo",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "eletrolisador",
+      "title": "Construir 2 eletrolisadores",
+      "reward": {
+        "data": 70
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.0.7",
+      "region": "saturno",
+      "phase": "Anéis de Gelo",
+      "type": "energy",
+      "target": 250,
+      "resource": null,
+      "building": null,
+      "title": "Gerar 250 MW de energia",
+      "reward": {
+        "data": 75
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.1.0",
+      "region": "saturno",
+      "phase": "Grandes Estaleiros",
+      "type": "build",
+      "target": 3,
+      "resource": null,
+      "building": "estaleiro",
+      "title": "Construir 3 grandes estaleiros",
+      "reward": {
+        "data": 75
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.1.1",
+      "region": "saturno",
+      "phase": "Grandes Estaleiros",
+      "type": "prod",
+      "target": 40,
+      "resource": "hull",
+      "building": null,
+      "title": "Produzir 40 módulos estruturais",
+      "reward": {
+        "data": 75
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.1.2",
+      "region": "saturno",
+      "phase": "Grandes Estaleiros",
+      "type": "dyson",
+      "target": 4,
+      "resource": null,
+      "building": null,
+      "title": "Concluir a etapa 4 do enxame de Dyson",
+      "reward": {
+        "data": 80
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.1.3",
+      "region": "saturno",
+      "phase": "Grandes Estaleiros",
+      "type": "level",
+      "target": 4,
+      "resource": null,
+      "building": "esc_gelo",
+      "title": "Melhorar escavadora de gelo até o nível 4",
+      "reward": {
+        "data": 75
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.1.4",
+      "region": "saturno",
+      "phase": "Grandes Estaleiros",
+      "type": "prod",
+      "target": 2000,
+      "resource": "fuel",
+      "building": null,
+      "title": "Produzir 2,00K unidades de combustível",
+      "reward": {
+        "data": 75
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.1.5",
+      "region": "saturno",
+      "phase": "Grandes Estaleiros",
+      "type": "build",
+      "target": 5,
+      "resource": null,
+      "building": "reator",
+      "title": "Construir 5 reatores de fusão",
+      "reward": {
+        "data": 75
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.1.6",
+      "region": "saturno",
+      "phase": "Grandes Estaleiros",
+      "type": "ship",
+      "target": 15,
+      "resource": null,
+      "building": null,
+      "title": "Completar 15 viagens de carga",
+      "reward": {
+        "data": 75
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "saturno.1.7",
+      "region": "saturno",
+      "phase": "Grandes Estaleiros",
+      "type": "prod",
+      "target": 80,
+      "resource": "hull",
+      "building": null,
+      "title": "Produzir 80 módulos estruturais",
+      "reward": {
+        "data": 85
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.0.0",
+      "region": "urano",
+      "phase": "Gelo Profundo",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "criogenico",
+      "title": "Construir 1 processador criogênico",
+      "reward": {
+        "data": 80
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.0.1",
+      "region": "urano",
+      "phase": "Gelo Profundo",
+      "type": "prod",
+      "target": 10,
+      "resource": "cryo",
+      "building": null,
+      "title": "Produzir 10 supercondutores",
+      "reward": {
+        "data": 80
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.0.2",
+      "region": "urano",
+      "phase": "Gelo Profundo",
+      "type": "deliver",
+      "target": 100,
+      "resource": "rare",
+      "building": null,
+      "title": "Receber 100 metais raros por rotas",
+      "reward": {
+        "data": 80
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.0.3",
+      "region": "urano",
+      "phase": "Gelo Profundo",
+      "type": "build",
+      "target": 5,
+      "resource": null,
+      "building": "esc_gelo",
+      "title": "Construir 5 escavadoras de gelo",
+      "reward": {
+        "data": 80
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.0.4",
+      "region": "urano",
+      "phase": "Gelo Profundo",
+      "type": "level",
+      "target": 2,
+      "resource": null,
+      "building": "criogenico",
+      "title": "Melhorar processador criogênico até o nível 2",
+      "reward": {
+        "data": 80
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.0.5",
+      "region": "urano",
+      "phase": "Gelo Profundo",
+      "type": "energy",
+      "target": 300,
+      "resource": null,
+      "building": null,
+      "title": "Gerar 300 MW de energia",
+      "reward": {
+        "data": 80
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.0.6",
+      "region": "urano",
+      "phase": "Gelo Profundo",
+      "type": "prod",
+      "target": 5000,
+      "resource": "ice",
+      "building": null,
+      "title": "Produzir 5,00K unidades de gelo",
+      "reward": {
+        "data": 80
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.0.7",
+      "region": "urano",
+      "phase": "Gelo Profundo",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "eletrolisador",
+      "title": "Construir 2 eletrolisadores",
+      "reward": {
+        "data": 85
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.1.0",
+      "region": "urano",
+      "phase": "Laboratórios Criogênicos",
+      "type": "build",
+      "target": 3,
+      "resource": null,
+      "building": "criogenico",
+      "title": "Construir 3 processadores criogênicos",
+      "reward": {
+        "data": 85
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.1.1",
+      "region": "urano",
+      "phase": "Laboratórios Criogênicos",
+      "type": "prod",
+      "target": 120,
+      "resource": "cryo",
+      "building": null,
+      "title": "Produzir 120 supercondutores",
+      "reward": {
+        "data": 85
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.1.2",
+      "region": "urano",
+      "phase": "Laboratórios Criogênicos",
+      "type": "dyson",
+      "target": 5,
+      "resource": null,
+      "building": null,
+      "title": "Concluir a etapa 5 do enxame de Dyson",
+      "reward": {
+        "data": 90
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.1.3",
+      "region": "urano",
+      "phase": "Laboratórios Criogênicos",
+      "type": "level",
+      "target": 4,
+      "resource": null,
+      "building": "criogenico",
+      "title": "Melhorar processador criogênico até o nível 4",
+      "reward": {
+        "data": 85
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.1.4",
+      "region": "urano",
+      "phase": "Laboratórios Criogênicos",
+      "type": "deliver",
+      "target": 250,
+      "resource": "rare",
+      "building": null,
+      "title": "Receber 250 metais raros por rotas",
+      "reward": {
+        "data": 85
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.1.5",
+      "region": "urano",
+      "phase": "Laboratórios Criogênicos",
+      "type": "research",
+      "target": 10,
+      "resource": null,
+      "building": null,
+      "title": "Ter 10 níveis de pesquisa",
+      "reward": {
+        "data": 85
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.1.6",
+      "region": "urano",
+      "phase": "Laboratórios Criogênicos",
+      "type": "prod",
+      "target": 250,
+      "resource": "cryo",
+      "building": null,
+      "title": "Produzir 250 supercondutores",
+      "reward": {
+        "data": 85
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "urano.1.7",
+      "region": "urano",
+      "phase": "Laboratórios Criogênicos",
+      "type": "exped",
+      "target": 12,
+      "resource": null,
+      "building": null,
+      "title": "Concluir 12 expedições (total)",
+      "reward": {
+        "data": 95
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.0.0",
+      "region": "netuno",
+      "phase": "Sinal Fantasma",
+      "type": "build",
+      "target": 2,
+      "resource": null,
+      "building": "obs_profundo",
+      "title": "Construir 2 observatórios profundos",
+      "reward": {
+        "data": 90
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.0.1",
+      "region": "netuno",
+      "phase": "Sinal Fantasma",
+      "type": "data",
+      "target": 200,
+      "resource": null,
+      "building": null,
+      "title": "Gerar 200 dados de pesquisa na região",
+      "reward": {
+        "data": 90
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.0.2",
+      "region": "netuno",
+      "phase": "Sinal Fantasma",
+      "type": "build",
+      "target": 1,
+      "resource": null,
+      "building": "lab_anomalia",
+      "title": "Construir 1 laboratório de anomalia",
+      "reward": {
+        "data": 90
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.0.3",
+      "region": "netuno",
+      "phase": "Sinal Fantasma",
+      "type": "prod",
+      "target": 5,
+      "resource": "exotic",
+      "building": null,
+      "title": "Produzir 5 unidades de matéria exótica",
+      "reward": {
+        "data": 90
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.0.4",
+      "region": "netuno",
+      "phase": "Sinal Fantasma",
+      "type": "deliver",
+      "target": 60,
+      "resource": "cryo",
+      "building": null,
+      "title": "Receber 60 supercondutores por rotas",
+      "reward": {
+        "data": 90
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.0.5",
+      "region": "netuno",
+      "phase": "Sinal Fantasma",
+      "type": "pay",
+      "target": null,
+      "resource": null,
+      "building": null,
+      "title": "Decodificar o sinal",
+      "reward": {
+        "data": 100
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.0.6",
+      "region": "netuno",
+      "phase": "Sinal Fantasma",
+      "type": "energy",
+      "target": 400,
+      "resource": null,
+      "building": null,
+      "title": "Gerar 400 MW de energia",
+      "reward": {
+        "data": 90
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.0.7",
+      "region": "netuno",
+      "phase": "Sinal Fantasma",
+      "type": "level",
+      "target": 2,
+      "resource": null,
+      "building": "obs_profundo",
+      "title": "Melhorar observatório profundo até o nível 2",
+      "reward": {
+        "data": 100
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.1.0",
+      "region": "netuno",
+      "phase": "A Anomalia",
+      "type": "prod",
+      "target": 40,
+      "resource": "exotic",
+      "building": null,
+      "title": "Produzir 40 unidades de matéria exótica",
+      "reward": {
+        "data": 100
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.1.1",
+      "region": "netuno",
+      "phase": "A Anomalia",
+      "type": "dyson",
+      "target": 6,
+      "resource": null,
+      "building": null,
+      "title": "Concluir a etapa 6 do enxame de Dyson",
+      "reward": {
+        "data": 120
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.1.2",
+      "region": "netuno",
+      "phase": "A Anomalia",
+      "type": "build",
+      "target": 3,
+      "resource": null,
+      "building": "lab_anomalia",
+      "title": "Construir 3 laboratórios de anomalia",
+      "reward": {
+        "data": 100
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.1.3",
+      "region": "netuno",
+      "phase": "A Anomalia",
+      "type": "pay",
+      "target": null,
+      "resource": null,
+      "building": null,
+      "title": "Estabilizar a anomalia",
+      "reward": {
+        "data": 120
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.1.4",
+      "region": "netuno",
+      "phase": "A Anomalia",
+      "type": "deliver",
+      "target": 100,
+      "resource": "fusion",
+      "building": null,
+      "title": "Receber 100 unidades de combustível de fusão por rotas",
+      "reward": {
+        "data": 100
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.1.5",
+      "region": "netuno",
+      "phase": "A Anomalia",
+      "type": "level",
+      "target": 3,
+      "resource": null,
+      "building": "lab_anomalia",
+      "title": "Melhorar laboratório de anomalia até o nível 3",
+      "reward": {
+        "data": 100
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.1.6",
+      "region": "netuno",
+      "phase": "A Anomalia",
+      "type": "prod",
+      "target": 100,
+      "resource": "exotic",
+      "building": null,
+      "title": "Produzir 100 unidades de matéria exótica",
+      "reward": {
+        "data": 120
+      },
+      "onlyDataReward": true
+    },
+    {
+      "id": "netuno.1.7",
+      "region": "netuno",
+      "phase": "A Anomalia",
+      "type": "core",
+      "target": 1,
+      "resource": null,
+      "building": null,
+      "title": "Construir o Núcleo da Singularidade",
+      "reward": {
+        "data": 200
+      },
+      "onlyDataReward": true
+    }
+  ],
+  "research": [
+    {
+      "id": "min1",
+      "name": "Brocas de Diamante",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        10,
+        22,
+        49,
+        107,
+        235
+      ],
+      "totalCost": 423,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "min2",
+      "name": "Sondagem Sísmica",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        40,
+        88,
+        194,
+        426,
+        938
+      ],
+      "totalCost": 1686,
+      "requirements": [
+        {
+          "id": "min1",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "min3",
+      "name": "Criomineração",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        60,
+        132,
+        291,
+        639,
+        1406
+      ],
+      "totalCost": 2528,
+      "requirements": [
+        {
+          "id": "min1",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "min4",
+      "name": "Mineração de Precisão",
+      "currency": "data",
+      "ranks": 3,
+      "rankCosts": [
+        400,
+        1000,
+        2500
+      ],
+      "totalCost": 3900,
+      "requirements": [
+        {
+          "id": "min2",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "min5",
+      "name": "Drones Autônomos",
+      "currency": "data",
+      "ranks": 3,
+      "rankCosts": [
+        1500,
+        3750,
+        9375
+      ],
+      "totalCost": 14625,
+      "requirements": [
+        {
+          "id": "min4",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "ind1",
+      "name": "Fornos de Indução",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        15,
+        33,
+        73,
+        160,
+        352
+      ],
+      "totalCost": 633,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "ind2",
+      "name": "Ligas Avançadas",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        50,
+        111,
+        243,
+        533,
+        1172
+      ],
+      "totalCost": 2109,
+      "requirements": [
+        {
+          "id": "ind1",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "ind3",
+      "name": "Linhas de Montagem",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        120,
+        264,
+        581,
+        1278,
+        2812
+      ],
+      "totalCost": 5055,
+      "requirements": [
+        {
+          "id": "ind2",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "ind4",
+      "name": "Engenharia Modular",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        200,
+        460,
+        1058,
+        2434,
+        5597
+      ],
+      "totalCost": 9749,
+      "requirements": [
+        {
+          "id": "ind1",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "ind5",
+      "name": "Estaleiros Orbitais",
+      "currency": "data",
+      "ranks": 3,
+      "rankCosts": [
+        2000,
+        5000,
+        12500
+      ],
+      "totalCost": 19500,
+      "requirements": [
+        {
+          "id": "ind3",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "en1",
+      "name": "Painéis Bifaciais",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        12,
+        27,
+        59,
+        128,
+        282
+      ],
+      "totalCost": 508,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "en2",
+      "name": "Supercapacitores",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        60,
+        132,
+        291,
+        639,
+        1406
+      ],
+      "totalCost": 2528,
+      "requirements": [
+        {
+          "id": "en1",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "en3",
+      "name": "Concentradores Solares",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        300,
+        690,
+        1587,
+        3651,
+        8396
+      ],
+      "totalCost": 14624,
+      "requirements": [
+        {
+          "id": "en1",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "en4",
+      "name": "Confinamento Magnético",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        1200,
+        2760,
+        6348,
+        14601,
+        33581
+      ],
+      "totalCost": 58490,
+      "requirements": [
+        {
+          "id": "en2",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "en5",
+      "name": "Reatores Compactos",
+      "currency": "data",
+      "ranks": 3,
+      "rankCosts": [
+        2500,
+        6250,
+        15625
+      ],
+      "totalCost": 24375,
+      "requirements": [
+        {
+          "id": "en4",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "log1",
+      "name": "Contêineres Expansíveis",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        15,
+        33,
+        73,
+        160,
+        352
+      ],
+      "totalCost": 633,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "log2",
+      "name": "Porões Ampliados",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        40,
+        88,
+        194,
+        426,
+        938
+      ],
+      "totalCost": 1686,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "log3",
+      "name": "Trajetórias de Hohmann",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        80,
+        176,
+        388,
+        852,
+        1875
+      ],
+      "totalCost": 3371,
+      "requirements": [
+        {
+          "id": "log2",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "log4",
+      "name": "Propulsão Eficiente",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        150,
+        330,
+        727,
+        1598,
+        3514
+      ],
+      "totalCost": 6319,
+      "requirements": [
+        {
+          "id": "log3",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "log5",
+      "name": "Janelas Calculadas",
+      "currency": "data",
+      "ranks": 3,
+      "rankCosts": [
+        500,
+        1250,
+        3125
+      ],
+      "totalCost": 4875,
+      "requirements": [
+        {
+          "id": "log3",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "exp1",
+      "name": "Sondas Robustas",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        30,
+        66,
+        146,
+        320,
+        703
+      ],
+      "totalCost": 1265,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "exp2",
+      "name": "Sonda Adicional",
+      "currency": "data",
+      "ranks": 2,
+      "rankCosts": [
+        150,
+        750
+      ],
+      "totalCost": 900,
+      "requirements": [
+        {
+          "id": "exp1",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "exp3",
+      "name": "Navegação Autônoma",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        100,
+        221,
+        485,
+        1065,
+        2343
+      ],
+      "totalCost": 4214,
+      "requirements": [
+        {
+          "id": "exp1",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "exp4",
+      "name": "Telemetria Profunda",
+      "currency": "data",
+      "ranks": 5,
+      "rankCosts": [
+        200,
+        460,
+        1058,
+        2434,
+        5597
+      ],
+      "totalCost": 9749,
+      "requirements": [
+        {
+          "id": "exp1",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "exp5",
+      "name": "Retransmissor Offline",
+      "currency": "data",
+      "ranks": 4,
+      "rankCosts": [
+        300,
+        690,
+        1587,
+        3651
+      ],
+      "totalCost": 6228,
+      "requirements": [
+        {
+          "id": "exp3",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "sg1",
+      "name": "Memória Quântica",
+      "currency": "frag",
+      "ranks": 3,
+      "rankCosts": [
+        1,
+        2,
+        4
+      ],
+      "totalCost": 7,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "sg2",
+      "name": "Atalhos de Missão",
+      "currency": "frag",
+      "ranks": 2,
+      "rankCosts": [
+        2,
+        4
+      ],
+      "totalCost": 6,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "sg3",
+      "name": "Eco Industrial",
+      "currency": "frag",
+      "ranks": 5,
+      "rankCosts": [
+        2,
+        4,
+        7,
+        12,
+        21
+      ],
+      "totalCost": 46,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "sg4",
+      "name": "Âncora Dimensional",
+      "currency": "frag",
+      "ranks": 2,
+      "rankCosts": [
+        3,
+        6
+      ],
+      "totalCost": 9,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "sg5",
+      "name": "Ressonância de Fragmentos",
+      "currency": "frag",
+      "ranks": 5,
+      "rankCosts": [
+        3,
+        6,
+        12,
+        24,
+        48
+      ],
+      "totalCost": 93,
+      "requirements": [],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "sg6",
+      "name": "Pré-fabricados",
+      "currency": "frag",
+      "ranks": 3,
+      "rankCosts": [
+        2,
+        4,
+        8
+      ],
+      "totalCost": 14,
+      "requirements": [
+        {
+          "id": "sg1",
+          "minLevel": 1
+        }
+      ],
+      "explicitRegionGate": null
+    },
+    {
+      "id": "sg7",
+      "name": "Mapa do Vazio",
+      "currency": "frag",
+      "ranks": 1,
+      "rankCosts": [
+        5
+      ],
+      "totalCost": 5,
+      "requirements": [],
+      "explicitRegionGate": null
+    }
+  ],
+  "finiteSinks": {
+    "dataResearchNodes": 25,
+    "dataResearchRanks": 111,
+    "totalDataResearchCost": 199973,
+    "totalFragmentResearchCost": 180,
+    "maxSpecialistLevel": 10,
+    "specialistCount": 11,
+    "dataPromotionCostPerSpecialist": 161950,
+    "dataPromotionCostAllSpecialists": 1781450,
+    "requiredCardsPerSpecialist": 1030,
+    "note": "Não há manutenção nem pesquisa infinita. Todos esses gastos de dados são permanentes, finitos e preservados no Colapso; ter dados não dispensa cartas para promoção.",
+    "totalPermanentDataSink": 1981423
+  },
+  "researchGateProof": {
+    "artificialBudget": 100000000,
+    "caution": "Orçamento injetado apenas para testar regras de acesso; não significa que esse valor surge no início de uma campanha.",
+    "pathCost": 1950,
+    "prerequisitesAfter": {
+      "min1": 1,
+      "min2": 1,
+      "min4": 1,
+      "min5": 1
+    },
+    "unlockedRegions": [
+      "lua"
+    ],
+    "luaPhase": 0,
+    "boughtAdvancedNode": "min5",
+    "results": [
+      {
+        "id": "min1",
+        "before": {
+          "lvl": 0,
+          "locked": false,
+          "cost": 10,
+          "cur": "data",
+          "can": true
+        },
+        "result": {
+          "ok": true
+        }
+      },
+      {
+        "id": "min2",
+        "before": {
+          "lvl": 0,
+          "locked": false,
+          "cost": 40,
+          "cur": "data",
+          "can": true
+        },
+        "result": {
+          "ok": true
+        }
+      },
+      {
+        "id": "min4",
+        "before": {
+          "lvl": 0,
+          "locked": false,
+          "cost": 400,
+          "cur": "data",
+          "can": true
+        },
+        "result": {
+          "ok": true
+        }
+      },
+      {
+        "id": "min5",
+        "before": {
+          "lvl": 0,
+          "locked": false,
+          "cost": 1500,
+          "cur": "data",
+          "can": true
+        },
+        "result": {
+          "ok": true
+        }
+      }
+    ]
+  },
+  "observatories": [
+    {
+      "id": "recem-automatizado",
+      "setup": {
+        "count": 1,
+        "buildingLevel": 1,
+        "oracleLevel": 1,
+        "research": {},
+        "fragsTotal": 0,
+        "ecoLevel": 0,
+        "panelsLevel1": 2
+      },
+      "powerMW": 6.155722,
+      "energyRatio": 1,
+      "dataGainMultiplier": 1.1,
+      "dataPerSecond": 0.073333,
+      "dataPerHour": 264,
+      "dataIn8Hours": 2112,
+      "reportData": 2112,
+      "assumptions": "Cenário controlado plausível, não tempo medido de campanha. Lua com somente observatórios e painéis; produção automática, energia suficiente, sem gasto durante 8 h."
+    },
+    {
+      "id": "base-moderada",
+      "setup": {
+        "count": 4,
+        "buildingLevel": 3,
+        "oracleLevel": 3,
+        "research": {
+          "exp4": 2
+        },
+        "fragsTotal": 0,
+        "ecoLevel": 0,
+        "panelsLevel1": 10
+      },
+      "powerMW": 37.32132,
+      "energyRatio": 1,
+      "dataGainMultiplier": 1.56,
+      "dataPerSecond": 3.328,
+      "dataPerHour": 11980.8,
+      "dataIn8Hours": 95846.4,
+      "reportData": 95846.4,
+      "assumptions": "Cenário controlado plausível, não tempo medido de campanha. Lua com somente observatórios e painéis; produção automática, energia suficiente, sem gasto durante 8 h."
+    },
+    {
+      "id": "base-avancada-controlada",
+      "setup": {
+        "count": 8,
+        "buildingLevel": 8,
+        "oracleLevel": 5,
+        "research": {
+          "exp4": 5,
+          "sg3": 2
+        },
+        "fragsTotal": 100,
+        "ecoLevel": 1,
+        "panelsLevel1": 28
+      },
+      "powerMW": 108.226276,
+      "energyRatio": 1,
+      "dataGainMultiplier": 2.25,
+      "dataPerSecond": 298.08,
+      "dataPerHour": 1073088,
+      "dataIn8Hours": 8584704,
+      "reportData": 8584704,
+      "assumptions": "Cenário controlado plausível, não tempo medido de campanha. Lua com somente observatórios e painéis; produção automática, energia suficiente, sem gasto durante 8 h."
+    }
+  ],
+  "exp4Feedback": {
+    "wholeResearchCost": 9749,
+    "wholeResearchDataMultiplier": 1.5,
+    "baseDataPerSecond": 2.773333,
+    "firstRankCost": 200,
+    "firstRankPaybackSecondsUsingOnlyThoseObservatories": 721.153933,
+    "wholeResearchPaybackSecondsIgnoringStagedAcquisition": 7030.529691,
+    "note": "Só produção contínua, sem crédito extra de missões, baús ou expedições. Níveis do mesmo nó somam; outros bônus multiplicam. Não é exponenciação por nível."
+  },
+  "expeditions": {
+    "relicLevel1": {
+      "mode": "reliquia1-duas-sondas",
+      "hours": 8,
+      "expected": [
+        {
+          "id": "ruinas",
+          "durationSeconds": 598.5,
+          "guaranteedData": 263,
+          "expectedData": 394.5,
+          "guaranteedFragments": 1,
+          "expectedFragments": 1,
+          "expectedDataPerHour": 2372.932331,
+          "expectedFragmentsPer8Hours": 48,
+          "expRewardMultiplier": 2.1875,
+          "dataGainMultiplier": 1,
+          "cost": {
+            "fuel": 60
+          }
+        },
+        {
+          "id": "ruinas2",
+          "durationSeconds": 798,
+          "guaranteedData": 175,
+          "expectedData": 175,
+          "guaranteedFragments": 0,
+          "expectedFragments": 0.3,
+          "expectedDataPerHour": 789.473684,
+          "expectedFragmentsPer8Hours": 10.8,
+          "expRewardMultiplier": 2.1875,
+          "dataGainMultiplier": 1,
+          "cost": {
+            "fuel": 100
+          }
+        }
+      ],
+      "completed": {
+        "ruinas": 48,
+        "ruinas2": 36
+      },
+      "actualDeterministicSeed": {
+        "data": 24184,
+        "frags": 57,
+        "cards": {
+          "reliquia": 240
+        }
+      },
+      "remainingFuel": {
+        "lua": 997120,
+        "marte": 996400
+      },
+      "fragmentsTotalGained": 57,
+      "globalYieldBefore": 2.2,
+      "globalYieldAfter": 3.9099999999999997,
+      "initialCollapses": 1,
+      "finalCollapses": 1,
+      "collapsesDuringFarm": 0,
+      "caution": "Farm ATIVO: resgate e relançamento imediatos nas chegadas. Combustível inicial controlado suficiente. Começa no Ancestral após um Colapso anterior, com 40 fragmentos iniciais. Não é medição de tempo necessário para atingir os níveis. Não é o que ocorre durante ausência: expedições não relançam sozinhas. Cartas e dados são avaliados com os bônus correntes; nenhum novo nível é comprado durante o teste."
+    },
+    "capped": {
+      "mode": "pesquisas-maximas-e-reliquia10",
+      "hours": 8,
+      "expected": [
+        {
+          "id": "ruinas",
+          "durationSeconds": 157.5,
+          "guaranteedData": 4410,
+          "expectedData": 6615,
+          "guaranteedFragments": 1,
+          "expectedFragments": 1,
+          "expectedDataPerHour": 151200,
+          "expectedFragmentsPer8Hours": 182,
+          "expRewardMultiplier": 12.25,
+          "dataGainMultiplier": 3,
+          "cost": {
+            "fuel": 60
+          }
+        },
+        {
+          "id": "ruinas2",
+          "durationSeconds": 210,
+          "guaranteedData": 2940,
+          "expectedData": 2940,
+          "guaranteedFragments": 0,
+          "expectedFragments": 0.3,
+          "expectedDataPerHour": 50400,
+          "expectedFragmentsPer8Hours": 41.1,
+          "expRewardMultiplier": 12.25,
+          "dataGainMultiplier": 3,
+          "cost": {
+            "fuel": 100
+          }
+        }
+      ],
+      "completed": {
+        "ruinas": 182,
+        "ruinas2": 137
+      },
+      "actualDeterministicSeed": {
+        "data": 1589070,
+        "frags": 218,
+        "cards": {
+          "reliquia": 5609
+        }
+      },
+      "remainingFuel": {
+        "lua": 989080,
+        "marte": 986300
+      },
+      "fragmentsTotalGained": 218,
+      "globalYieldBefore": 2.2,
+      "globalYieldAfter": 8.739999999999998,
+      "initialCollapses": 1,
+      "finalCollapses": 1,
+      "collapsesDuringFarm": 0,
+      "caution": "Farm ATIVO: resgate e relançamento imediatos nas chegadas. Combustível inicial controlado suficiente. Começa no Ancestral após um Colapso anterior, com 40 fragmentos iniciais. Não é medição de tempo necessário para atingir os níveis. Não é o que ocorre durante ausência: expedições não relançam sozinhas. Cartas e dados são avaliados com os bônus correntes; nenhum novo nível é comprado durante o teste."
+    },
+    "unattended": {
+      "hours": 8,
+      "pendingBeforeCollection": 2,
+      "rewards": [
+        {
+          "id": "ruinas",
+          "data": 4410,
+          "cards": {
+            "reliquia": 12
+          },
+          "frags": 1
+        },
+        {
+          "id": "ruinas2",
+          "data": 2940,
+          "cards": {
+            "reliquia": 25
+          },
+          "frags": 1
+        }
+      ],
+      "fragmentsTotalGained": 2,
+      "expeditionsCompleted": 2,
+      "caution": "8 horas sem interação só completam as duas expedições enviadas; não há repetição automática."
+    },
+    "fragmentScaling": "scaleRw copia rw.frags sem multiplicar expReward. O bônus de recompensa multiplica cartas/dados, mas não fragmentos; 1 garantido continua1."
+  },
+  "exports": [
+    {
+      "exportEnabled": false,
+      "oreCap": 200,
+      "oreStored": 200,
+      "oreProduced": 200,
+      "totalProducedValue": 200,
+      "data": 0,
+      "exportRate": 0,
+      "note": "Um extrator nível1, Íris1, um painel, nenhum outro consumidor ou ação."
+    },
+    {
+      "exportEnabled": true,
+      "oreCap": 200,
+      "oreStored": 200,
+      "oreProduced": 57600,
+      "totalProducedValue": 57600,
+      "data": 0,
+      "exportRate": 0,
+      "note": "Um extrator nível1, Íris1, um painel, nenhum outro consumidor ou ação."
+    }
+  ],
+  "reactor": {
+    "hours": 8,
+    "generationMW": 60,
+    "fusionBefore": 100,
+    "fusionAfter": 100,
+    "cyclicFusionConsumers": [
+      "lab_anomalia"
+    ],
+    "purchaseFusionConsumers": [
+      "reator"
+    ],
+    "note": "Reator é passivo e não possui in/fuel; o custo de fusão é de construção, não manutenção. Isolado sem outras máquinas."
+  },
+  "depthCases": [
+    {
+      "collapses": 0,
+      "missionDepthMultiplier": 1,
+      "sampleGoalBase1000": 1000,
+      "illustrativeFragmentsTotal": 0,
+      "illustrativeGlobalYield": 1,
+      "yieldDividedByGoalScale": 1,
+      "note": "40 fragmentos por Colapso é hipótese ilustrativa para isolar fórmula, não campanha medida; rendimento pode crescer sem teto, metas param de crescer em6Colapsos."
+    },
+    {
+      "collapses": 1,
+      "missionDepthMultiplier": 1.5,
+      "sampleGoalBase1000": 1500,
+      "illustrativeFragmentsTotal": 40,
+      "illustrativeGlobalYield": 2.2,
+      "yieldDividedByGoalScale": 1.466667,
+      "note": "40 fragmentos por Colapso é hipótese ilustrativa para isolar fórmula, não campanha medida; rendimento pode crescer sem teto, metas param de crescer em6Colapsos."
+    },
+    {
+      "collapses": 5,
+      "missionDepthMultiplier": 3.5,
+      "sampleGoalBase1000": 3500,
+      "illustrativeFragmentsTotal": 200,
+      "illustrativeGlobalYield": 7,
+      "yieldDividedByGoalScale": 2,
+      "note": "40 fragmentos por Colapso é hipótese ilustrativa para isolar fórmula, não campanha medida; rendimento pode crescer sem teto, metas param de crescer em6Colapsos."
+    },
+    {
+      "collapses": 6,
+      "missionDepthMultiplier": 4,
+      "sampleGoalBase1000": 4000,
+      "illustrativeFragmentsTotal": 240,
+      "illustrativeGlobalYield": 8.2,
+      "yieldDividedByGoalScale": 2.05,
+      "note": "40 fragmentos por Colapso é hipótese ilustrativa para isolar fórmula, não campanha medida; rendimento pode crescer sem teto, metas param de crescer em6Colapsos."
+    },
+    {
+      "collapses": 10,
+      "missionDepthMultiplier": 4,
+      "sampleGoalBase1000": 4000,
+      "illustrativeFragmentsTotal": 400,
+      "illustrativeGlobalYield": 13,
+      "yieldDividedByGoalScale": 3.25,
+      "note": "40 fragmentos por Colapso é hipótese ilustrativa para isolar fórmula, não campanha medida; rendimento pode crescer sem teto, metas param de crescer em6Colapsos."
+    }
+  ],
+  "problems": [
+    {
+      "priority": "P1",
+      "id": "fragments-without-collapse",
+      "finding": "Ruínas Precursoras é repetível e dá1fragmento garantido semColapso; Câmaras dáchance0,3de1. Ambos aumentam fragsTotal e rendimento global permanente, além de serem moeda gastável.",
+      "evidence": "expeditions.capped / relicLevel1 / unattended",
+      "adjustment": "Vincular a primeira recompensa de fragmento à descoberta única por universo/Colapso; repetições dão cartas e outro ganho limitado. Se quiser farm infinito, orçamento explícito por sessão/dia com retorno decrescente e sem aumentar fragsTotal de rendimento. Não remover a recompensa inicial de Relíquia."
+    },
+    {
+      "priority": "P1",
+      "id": "finite-permanent-sinks",
+      "finding": "Dados crescem continuamente e também recebem globalYield de todos os fragmentos; pesquisa e promoção têm tetos finitos permanentes e não reiniciam. O saldo sobra inevitavelmente depois dos tetos.",
+      "evidence": "finiteSinks / observatories / depthCases",
+      "adjustment": "Separar ciência de execução por universo e conhecimento permanente; ou adicionar uma pesquisa contínua controlada com retornos decrescentes. Preservar ritmo acelerado de construção e automação, sem simplesmente multiplicar todos os custos."
+    },
+    {
+      "priority": "P1",
+      "id": "research-not-tied-to-technology",
+      "finding": "Uma única compra no pré-requisito libera pesquisa avançada e não há condição de planeta/fase. Recursos sobrando permitem saltar árvore ainda naLua.",
+      "evidence": "researchGateProof / research",
+      "adjustment": "Usar marcos tecnológicos concretos para abrir ramos: primeiro componente/raros/fusão/criogenia, com pré-requisito de nível apropriado. Nunca travar min1/en1 até uma missão que já exige uma pesquisa; manter pesquisa inicial acessível pelo orçamento daLua."
+    },
+    {
+      "priority": "P2",
+      "id": "mission-cash-devaluation",
+      "finding": "A maioria das missões só entrega dados; a recompensa equivale a poucos segundos quando a base cresce. Mesmo assim missões continuam necessárias para fase/região/baú; não são removíveis sem redesenhar progressão.",
+      "evidence": "missionBudget / phases",
+      "adjustment": "Transformar objetivos-chave em desbloqueio de tecnologia/projeto, cartas direcionadas e avanço de exploração. Manter dados como ajuda previsível para próximo passo, não escalar recompensa automaticamente pela maior taxa atual que pode realimentar inflação."
+    },
+    {
+      "priority": "P2",
+      "id": "free-fusion-reactors",
+      "finding": "Reator usa fusão só na compra; depois gera energia sem combustível. Produção de fusão tem apenas um consumidor cíclico (laboratório emNetuno).",
+      "evidence": "reactor",
+      "adjustment": "Adicionar consumo operacional leve e reserva/partida de emergência, ou outros sumidouros úteis de fusão. Nunca permitir que falta de fusão paralise o único produtor do próprio combustível ou impeça relançar logística."
+    },
+    {
+      "priority": "P2",
+      "id": "storage-export-and-uncapped-value",
+      "finding": "EXP evita perda de produção com estoque cheio e continua aumentando o valor paraColapso, mas não rende dados pois exportRate=0. Armazenamento passa a importar mais para compras/reservas do que para produção contínua.",
+      "evidence": "exports",
+      "adjustment": "PreservarEXP como válvula de produção e usar armazenagem em reservas/descarga/projetos; não reativar exportação emdados antes de corrigir inflação de pesquisa. Combustível de rotas já escala com sqrt(capacidade/20), portanto não alegar custo fixo porviagem."
+    }
+  ],
+  "missionDesign": {
+    "firstSteps": [
+      "LuaPouso: manter min1(custo10) e en1(custo12) acessíveis; recompensas basePouso20, depois primeiros objetivosda fase1 ajudam a segunda compra.",
+      "LuaPosto: a missão pesquisar1 deve aceitar essas pesquisas iniciais; não exigir tecnologia trancada pela própria conclusão dafase.",
+      "BaseOrbital: doca libera expedições e cinco ciclos de observatório recrutam Oráculo; esses marcos já são bons modelos de recompensa funcional."
+    ],
+    "technologyMilestones": [
+      "Marte: primeira fábrica/componente abre engenharia e logística industrial.",
+      "Cinturão: primeira amostra de metaisraros abre mineração de precisão, depois drones.",
+      "Mercúrio: primeiro satélite abre engenharia Dyson e concentradores avançados.",
+      "Júpiter: primeira produção de fusão abre confinamento e reatores compactos.",
+      "Urano: primeiro supercondutor abre pesquisa profunda e criogenia avançada.",
+      "Netuno: decodificação daanomalia abre o núcleo/árvore de singularidade."
+    ],
+    "permanentKnowledge": "Se marcos de ciência forem permanentes, guardar descobertas emperm e permitir bônus jácomprados apósColapso; não bloquear uma campanha nova por ter reiniciado os planetas. Investigar separadamente se missões antigas de pesquisa passam a auto concluir com pesquisa permanente.",
+    "acceleration": "Reduzir repetição e espera vazia com objetivos que introduzem decisões novas; não converter todo desbloqueio em temporizador adicional nem aumentar globalmente custos como resposta ao excesso."
+  }
+}

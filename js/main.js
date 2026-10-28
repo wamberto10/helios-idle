@@ -29,6 +29,7 @@
   if (slot && /^[\w-]{1,40}$/.test(slot)) D.SAVE_KEY = D.SAVE_KEY + '__' + slot;
   const store = H.store = H.safeStorage(() => window.localStorage);
   const ses = H.session = H.makeSession({ storage: store, key: D.SAVE_KEY, onLost: (why) => { running = false; showLock(why); } });
+  H.folderSave = H.makeFolderSave({ key: D.SAVE_KEY, getSnapshot: () => E.serialize(S), isWriter: () => ses.role === 'writer' && !ses.protect });
   let lastSave = 0; let running = false;
   H.saveState = { failing: false, reason: '' };
   const SAVE_MSG = {
@@ -51,6 +52,7 @@
       if (!H.saveState.failing && !manual) UI.toast('Não foi possível salvar: ' + r.msg + '. A partida continua; use Ajustes → Exportar para guardar uma cópia.', 'err');
       H.saveState.failing = true; H.saveState.reason = r.reason;
     }
+    if (S.profile && (r.ok || r.status === 'error') && !ses.protect) H.folderSave.schedule(E.serialize(S));
     return r;
   };
   H.saveMessage = function (r) {
@@ -72,7 +74,7 @@
   // Troca a partida (importação ou reinício) — chamada só depois da validação e da confirmação.
   H.replaceState = function (ns) {
     if (ses.role !== 'writer') return { ok: false, status: 'readonly' };
-    S = ns; S.lastTick = Date.now(); H.applySettings(); UI.setState(S);
+    S = ns; S.lastTick = Date.now(); H.applySettings(); UI.setState(S); UI.ensureProfile();
     return H.save(true, true);
   };
   H.applySettings = function () {
@@ -173,6 +175,7 @@
   function begin(L) {
     running = true; lastBeat = Date.now();
     if (L.err) UI.modal(`<h2 class="bad">Salvamento inválido</h2><p>${esc(L.err)}</p><p class="small muted">${L.backup ? 'O conteúdo original foi guardado à parte neste navegador (' + esc(L.backup) + ') para recuperação. Um novo jogo foi iniciado.' : 'Não foi possível guardar uma cópia, então o salvamento original foi mantido intacto e este novo jogo não será salvo por cima dele. Exporte o que precisar.'}</p><div class="foot"><button class="btn" data-a="close">Entendi</button></div>`);
+    UI.ensureProfile();
     if (L.fresh) {
       S.lastTick = Date.now();
       UI.queueModal(() => UI.modal(`<h2>Missão Hélios</h2><p>O módulo <b>Aurora</b> pousou na Lua. Sua tarefa: extrair recursos, construir instalações, recrutar especialistas e expandir a operação por todo o Sistema Solar.</p>
@@ -278,6 +281,7 @@
     H.state = () => S; // acesso para depuração e testes
     try { H.applySettings(); } catch (e) { console.error(e); }
     UI.init(S);
+    H.folderSave.init();
     if (!store.available()) { H.saveState.failing = true; H.saveState.reason = 'blocked'; UI.toast('Este navegador bloqueou o armazenamento local. A partida funciona, mas não será salva: use Ajustes → Exportar.', 'err'); }
     // posse da sessão: confirma depois de um instante (duas abas abertas ao mesmo tempo)
     if (ses.claim(false)) setTimeout(() => { if (ses.confirm()) begin(L); else showLock('other'); H.ready = true; }, 150);

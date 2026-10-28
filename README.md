@@ -54,7 +54,19 @@ Tempos medidos pelo bot (jogo perfeito, sem pausas): primeira automação em ~50
 
 ## Catálogo gráfico
 
-Abra [assets/galeria-completa.html](assets/galeria-completa.html) para conferir as 43 artes: 11 especialistas, 22 instalações, 9 cenários e o baú. O jogo mantém o primeiro modelo, com cabeçalho panorâmico e cartões de produção; o painel experimental de construção está desativado. Os prompts exatos e o inventário dos arquivos estão em [ASSETS.md](ASSETS.md).
+Abra [assets/galeria-completa.html](assets/galeria-completa.html) para conferir as 47 artes: 11 especialistas, 4 avatares de comandante, 22 instalações, 9 cenários e o baú. O jogo mantém o primeiro modelo, com cabeçalho panorâmico e cartões de produção; o painel experimental de construção está desativado. Os prompts exatos e o inventário dos arquivos estão em [ASSETS.md](ASSETS.md).
+
+## Perfil local e pasta de saves
+
+Na primeira abertura, escolha um nome e um dos quatro avatares do comandante. Partidas antigas pedem apenas a identidade, preservando todo o progresso. O perfil pode ser editado pelo avatar no topo ou em **Ajustes → Comandante** e acompanha exportações, importações e o Colapso. Não há login online nesta etapa.
+
+Em **Ajustes → Pasta de saves → Escolher pasta**, selecione uma pasta do dispositivo e autorize a gravação pelo navegador. O arquivo `helios-idle-save.json` é atualizado junto do salvamento normal. A seleção é lembrada quando o navegador permite; se necessário, use **Autorizar e salvar cópia** ao reabrir. Em navegadores sem essa API, **Baixar cópia** mantém a exportação por arquivo disponível. O save do navegador continua independente da cópia na pasta.
+
+Ao selecionar uma pasta que já contém um save, o jogo oferece restaurar seu progresso, substituir explicitamente o arquivo pela partida atual ou cancelar. Desconectar a pasta mantém o arquivo. Para recuperar manualmente, use **Ajustes → Salvamento → Abrir arquivo** e confirme a importação.
+
+O GitHub Pages hospeda arquivos estáticos; os saves desta versão ficam no dispositivo do jogador. Conta online com e-mail, senha e recuperação exigirá um serviço de autenticação e armazenamento na etapa futura. Referências: [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages) e [File System Access API](https://developer.chrome.com/docs/capabilities/web-apis/file-system-access).
+
+Testes específicos, sem acessar partidas ou pastas reais: `node tools/profile-test.js` e `node tools/folder-save-test.js`. O teste de interface também cobre criação e edição do comandante, migração visual de partidas antigas e o fluxo de pasta com arquivos em memória.
 
 ## Regras principais
 
@@ -62,6 +74,7 @@ Abra [assets/galeria-completa.html](assets/galeria-completa.html) para conferir 
 - **Produção:** produção e consumo de cada intervalo são aplicados juntos (saldo por recurso). Um estoque intermediário cheio não faz recursos sumirem, e o resultado é o mesmo com passos grandes, pequenos ou offline.
 - **Motivos de parada:** “Sem minério”, “Armazenamento cheio”, “Energia insuficiente”, “Aguardando transporte” (quando uma rota traz o insumo). Quando falta um insumo que está sobrando em outra região, o aviso diz onde (“Sem metais raros — sobrando em Cinturão de Asteroides”) e o painel de gargalo oferece **Planejar rota**, que abre a aba de rotas com origem, destino e recurso já escolhidos.
 - **Energia:** capacidade × consumo por região. O consumo de cada instalação é energia × máquinas × velocidade^0,3 (`D.energySpeedExp`): especialistas e pesquisas de velocidade também aumentam o consumo. Com déficit, todas as instalações da região desaceleram na mesma proporção; sem material para novos geradores, pausar as instalações de transformação deixa a extração e o refino voltarem à velocidade.
+- **Fragmentos de expedição:** as expedições do Universo Ancestral que dão fragmentos (Ruínas Precursoras e o bônus das Câmaras do Guardião) dão no máximo 1 fragmento cada por universo. Repetições continuam dando cartas e dados; o fragmento volta a ser possível depois do próximo Colapso. Fragmentos já ganhos não são removidos.
 - **Exportar excedente (EXP):** botão em cada recurso. Ligado, a produção continua com o estoque cheio, os cargueiros que chegam descarregam tudo e o excesso vai para a Terra (o total exportado aparece na rota). Produção exportada conta para missões e para o Colapso, mas não rende dados (`D.exportRate = 0`, ajustável); carga exportada não conta como entrega.
 - **Bônus:** velocidade (especialistas, pesquisa, universo, Eco) multiplica entre fontes; rendimento (nível da instalação, pesquisa, universo, fragmentos) aumenta o produto por ciclo; transporte (Vega, porões, janelas) é separado. Níveis de um mesmo projeto de pesquisa somam entre si.
 - **Rotas:** estoque por região; cargueiros com origem, destino, até 3 recursos em prioridade, reserva mínima, capacidade, tempo e combustível (pagos na origem). Planetas orbitam em tempo comprimido; aproximações abrem janelas (−35% tempo e combustível).

@@ -1,0 +1,175 @@
+{
+  "budget": {
+    "min": {
+      "total": 23162,
+      "levels": 21,
+      "nodes": 5
+    },
+    "ind": {
+      "total": 37046,
+      "levels": 23,
+      "nodes": 5
+    },
+    "en": {
+      "total": 100525,
+      "levels": 23,
+      "nodes": 5
+    },
+    "log": {
+      "total": 16884,
+      "levels": 23,
+      "nodes": 5
+    },
+    "exp": {
+      "total": 22356,
+      "levels": 21,
+      "nodes": 5
+    },
+    "frag": {
+      "total": 180,
+      "levels": 21,
+      "nodes": 7
+    }
+  },
+  "offline": [
+    {
+      "label": "Primeiro observatório automatizado",
+      "rate": 0.07333333333332906,
+      "data8h": 2111.9999999998768,
+      "budgets": 0.010561425792481986
+    },
+    {
+      "label": "Farm moderado sem prestígio",
+      "rate": 5.200000000000353,
+      "data8h": 149760.00000001016,
+      "budgets": 0.7489011016487229
+    },
+    {
+      "label": "Farm ativo sem prestígio",
+      "rate": 10.400000000000706,
+      "data8h": 299520.0000000203,
+      "budgets": 1.4978022032974458
+    },
+    {
+      "label": "Farm ativo com Telemetria V",
+      "rate": 15.599999999999044,
+      "data8h": 449279.99999997247,
+      "budgets": 2.246703304946163
+    },
+    {
+      "label": "Farm forte com Telemetria V",
+      "rate": 66,
+      "data8h": 1900800,
+      "budgets": 9.505283213233787
+    },
+    {
+      "label": "Stress máximo, não campanha atingida",
+      "rate": 3120,
+      "data8h": 89856000,
+      "budgets": 449.3406609892335
+    },
+    {
+      "label": "Farm herdado ilustrativo,100 fragmentos",
+      "rate": 372.6000000000075,
+      "data8h": 10730880.000000216,
+      "budgets": 53.661644321983346
+    },
+    {
+      "label": "Profundo abastecido, cenário controlado",
+      "rate": 18.72000000000081,
+      "data8h": 539136.0000000233,
+      "budgets": 2.696043965935402
+    }
+  ],
+  "completion": [
+    {
+      "label": "Primeiro observatório automatizado",
+      "hours": null
+    },
+    {
+      "label": "Farm moderado sem prestígio",
+      "hours": 7.168888888888889
+    },
+    {
+      "label": "Farm ativo sem prestígio",
+      "hours": 3.5844444444444443
+    },
+    {
+      "label": "Farm forte com Telemetria V",
+      "hours": 0.8005555555555556
+    },
+    {
+      "label": "Farm herdado ilustrativo,100 fragmentos",
+      "hours": 0.14194444444444446
+    }
+  ],
+  "proposals": [
+    {
+      "name": "ciencia-isolada",
+      "budget": 199973,
+      "completion": [
+        {
+          "label": "Farm moderado sem prestígio",
+          "hours": 14.3375
+        },
+        {
+          "label": "Farm ativo sem prestígio",
+          "hours": 7.168888888888889
+        },
+        {
+          "label": "Farm forte com Telemetria V",
+          "hours": 2.1347222222222224
+        },
+        {
+          "label": "Farm herdado ilustrativo,100 fragmentos",
+          "hours": 2.4330555555555557
+        }
+      ]
+    },
+    {
+      "name": "ciencia-e-custos",
+      "budget": 355647,
+      "completion": [
+        {
+          "label": "Farm moderado sem prestígio",
+          "hours": 25.4925
+        },
+        {
+          "label": "Farm ativo sem prestígio",
+          "hours": 12.74638888888889
+        },
+        {
+          "label": "Farm forte com Telemetria V",
+          "hours": 3.7780555555555555
+        },
+        {
+          "label": "Farm herdado ilustrativo,100 fragmentos",
+          "hours": 4.305833333333333
+        }
+      ]
+    },
+    {
+      "name": "apenas-tempo-120",
+      "budget": 199973,
+      "completion": [
+        {
+          "label": "Farm moderado sem prestígio",
+          "hours": 28.674444444444443
+        },
+        {
+          "label": "Farm ativo sem prestígio",
+          "hours": 14.3375
+        },
+        {
+          "label": "Farm forte com Telemetria V",
+          "hours": 3.2019444444444445
+        },
+        {
+          "label": "Farm herdado ilustrativo,100 fragmentos",
+          "hours": 0.5672222222222222
+        }
+      ]
+    }
+  ],
+  "file": "C:\\Users\\Wamberto\\Desktop\\HELIOS IDLE\\artifacts\\auditoria-pesquisa.json"
+}

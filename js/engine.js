@@ -77,7 +77,7 @@
     S.run = old; return run;
   };
   E.newState = function () {
-    const S = { perm: E.newPerm(), settings: { sound: true, reduceMotion: false, sci: false, dev: false, skipAnim: false }, events: [] };
+    const S = { profile: null, perm: E.newPerm(), settings: { sound: true, reduceMotion: false, sci: false, dev: false, skipAnim: false }, events: [] };
     S.run = E.newRun(S, 'padrao');
     E.log(S, 'story', 'Missão Hélios: estabelecer uma operação na Lua e expandir pelo Sistema Solar.');
     return S;
@@ -85,6 +85,34 @@
 
   E.bs = function (reg, bid) {
     return reg.b[bid] || (reg.b[bid] = { n: 0, lvl: 1, p: 0, on: false, pause: false, why: '', blk: false });
+  };
+
+  // Perfil local: somente os campos validados entram no salvamento. Não é uma conta online.
+  E.validateProfile = function (input) {
+    try {
+      if (!input || typeof input !== 'object' || Array.isArray(input) ||
+          !Object.prototype.hasOwnProperty.call(input, 'name') || !Object.prototype.hasOwnProperty.call(input, 'avatar')) {
+        return { ok: false, err: 'Informe um nome e escolha um avatar para o comandante.' };
+      }
+      const rawName = input.name, avatar = input.avatar;
+      if (typeof rawName !== 'string') return { ok: false, err: 'O nome do comandante deve ser um texto.' };
+      // Controles, caracteres invisíveis de formatação e fragmentos HTML não pertencem a um nome.
+      if (/[\p{Cc}\p{Cf}\p{Cs}<>]/u.test(rawName)) return { ok: false, err: 'O nome não pode conter marcação HTML, controles ou caracteres invisíveis.' };
+      const name = rawName.normalize('NFC').replace(/\s+/gu, ' ').trim();
+      if ([...name].length < 2 || [...name].length > 24) return { ok: false, err: 'Use de 2 a 24 caracteres no nome do comandante.' };
+      if (typeof avatar !== 'string' || !Object.prototype.hasOwnProperty.call(D.commanderAvatars, avatar)) {
+        return { ok: false, err: 'Escolha um dos avatares disponíveis para o comandante.' };
+      }
+      return { ok: true, profile: { name, avatar } };
+    } catch (e) {
+      return { ok: false, err: 'Não foi possível ler o perfil. Informe o nome e escolha um avatar novamente.' };
+    }
+  };
+  E.setProfile = function (S, input) {
+    const result = E.validateProfile(input);
+    if (!result.ok) return result;
+    S.profile = result.profile;
+    return result;
   };
 
   // ================= EVENTOS / LOG =================
@@ -883,12 +911,18 @@
     if (!guaranteedOnly) for (const b of e.bonus) parts.push(scaleRw(b, m.expReward));
     return parts;
   };
+  // marca, no universo atual, que a expedição já deu seu fragmento (fica em run.flags: reinicia no Colapso)
+  E.expFragKey = (id) => 'frag:' + id;
+  E.expFragDone = (S, id) => !!S.run.flags[E.expFragKey(id)];
   E.collectExp = function (S, uid, force, guaranteedOnly) {
     const i = S.run.exps.findIndex((e) => e.uid === uid); if (i < 0) return { ok: false };
     const e = S.run.exps[i]; if (!force && S.run.time + EPS < e.end) return { ok: false, err: 'Em andamento' };
     S.run.exps.splice(i, 1);
     const def = D.expeditions[e.id]; const total = { data: 0, cards: {}, frags: 0 };
+    const fk = E.expFragKey(e.id);
     for (const rw of E.expReward(S, e, guaranteedOnly)) {
+      // fragmento de descoberta: no máximo 1 por expedição em cada universo (repetições dão só cartas e dados)
+      if (rw.frags) { if (S.run.flags[fk]) { total.fragsDone = (total.fragsDone || 0) + rw.frags; delete rw.frags; } else { rw.frags = 1; S.run.flags[fk] = true; } }
       if (def.recruit && rw.cards && rw.cards[def.recruit] && !S.perm.specs[def.recruit]) { E.recruit(S, def.recruit); rw.cards[def.recruit]--; total.recruit = def.recruit; }
       const got = E.grant(S, null, rw, 'exp');
       total.data += got.data; total.frags += got.frags;
@@ -1090,7 +1124,7 @@
 
   // ================= SALVAMENTO =================
   // Ordem fixa das chaves: a revisão (rev) pode ser lida sem interpretar o salvamento inteiro (E.peekRev).
-  E.serialize = (S) => JSON.stringify({ game: 'helios-idle', v: D.SAVE_VERSION, rev: S.rev || 0, at: Date.now(), lastTick: S.lastTick || Date.now(), perm: S.perm, run: S.run, settings: S.settings });
+  E.serialize = (S) => JSON.stringify({ game: 'helios-idle', v: D.SAVE_VERSION, rev: S.rev || 0, at: Date.now(), lastTick: S.lastTick || Date.now(), profile: S.profile || null, perm: S.perm, run: S.run, settings: S.settings });
   E.peekRev = function (str) {
     if (!str) return -1;
     const mm = /^\{"game":"helios-idle","v":\d+,"rev":(\d+)/.exec(str);
@@ -1196,6 +1230,13 @@
   }
   function validateSave(o) {
     const P = vObj(o, 'perm', 'salvamento'); const R = vObj(o, 'run', 'salvamento');
+    // Campo aditivo e opcional: partidas anteriores continuam sem perfil até o jogador criá-lo.
+    if (o.profile === undefined || o.profile === null) o.profile = null;
+    else {
+      const result = E.validateProfile(o.profile);
+      if (!result.ok) fail('profile', result.err);
+      o.profile = result.profile;
+    }
     // ---- progresso permanente ----
     const pp = 'perm';
     for (const k of ['data', 'frags', 'fragsTotal']) vNum(P, k, pp, { def: 0, min: 0, clamp: true });
@@ -1324,7 +1365,7 @@
     if (!isObj(o.perm) || !isObj(o.run)) return { ok: false, err: 'Salvamento incompleto: faltam dados de progresso.' };
     if (!D.universes[o.run.universe]) return { ok: false, err: 'Universo desconhecido no salvamento: ' + String(o.run.universe).slice(0, 30) };
     validateSave(o);
-    const S = { perm: o.perm, run: o.run, settings: o.settings, events: [] };
+    const S = { profile: o.profile, perm: o.perm, run: o.run, settings: o.settings, events: [] };
     S.rev = typeof o.rev === 'number' && Number.isInteger(o.rev) && o.rev >= 0 ? o.rev : 0;
     S.lastTick = typeof o.lastTick === 'number' && isFinite(o.lastTick) ? o.lastTick : typeof o.at === 'number' && isFinite(o.at) ? o.at : Date.now();
     try { trialRun(S); } catch (e) { return { ok: false, err: 'Salvamento incompatível: o jogo não consegue executá-lo (' + (e && e.message || e) + ').' }; }

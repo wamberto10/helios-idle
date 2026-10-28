@@ -6,7 +6,7 @@ Somente as imagens declaradas no manifesto são solicitadas. As demais continuam
 
 ## Primeiro lote gráfico
 
-O catálogo está concluído: **11 retratos, 22 instalações, 9 cenários e 1 baú**, totalizando **43 artes ativas**. Abra [a galeria completa](assets/galeria-completa.html) para ver todas as imagens e filtrar por categoria. O primeiro lote abaixo foi preservado como registro.
+O catálogo está concluído: **11 retratos, 4 avatares de comandante, 22 instalações, 9 cenários e 1 baú**, totalizando **47 artes ativas**. Abra [a galeria completa](assets/galeria-completa.html) para ver todas as imagens e filtrar por categoria. O primeiro lote abaixo foi preservado como registro.
 
 | Categoria | Arquivos registrados |
 |---|---|
@@ -58,6 +58,8 @@ Os planetas do mapa e os glifos pequenos da interface continuam em SVG intencion
 - Prévias salvas em `assets/preview-tripulacao-completa.jpg`, `preview-instalacoes-completas.jpg`, `preview-modelo-inicial.jpg` e `preview-modelo-inicial-celular.jpg`.
 
 ## Adicionar novas artes
+
+Os avatares próprios do jogador ficam em `assets/commanders/{aurora,atlas,sentinela,eclipse}.png`, com 1122 × 1402 e fundo opaco. Foram gerados com image_gen embutido; os [prompts exatos](assets/prompts-commanders.md) preservam as referências dos originais. O grupo `commander` do manifesto é usado pela tela de criação e pelo perfil, separado dos especialistas.
 
 1. Salve a imagem dentro de `assets/`, preferencialmente com o identificador já usado pelo jogo.
 2. Abra `assets/manifest.js` e adicione o caminho no grupo correspondente: `portrait`, `building`, `region`, `terrain`, `planet` ou `ui`.

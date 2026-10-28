@@ -1,0 +1,6049 @@
+{
+  "hypothesisOnly": true,
+  "scienceSpeed": [
+    1,
+    2,
+    2.5,
+    3,
+    4,
+    5,
+    6,
+    7.5,
+    9,
+    10.5,
+    12
+  ],
+  "scienceYieldPerLevel": 0.2,
+  "costsByRow": [
+    1,
+    1,
+    2,
+    4,
+    8
+  ],
+  "result": {
+    "universe": "padrao",
+    "strategy": "farm",
+    "variant": "custos",
+    "researchBudget": {
+      "levels": 111,
+      "nodes": 25,
+      "cost": 981580,
+      "ids": [
+        "min1",
+        "min2",
+        "min3",
+        "min4",
+        "min5",
+        "ind1",
+        "ind2",
+        "ind3",
+        "ind4",
+        "ind5",
+        "en1",
+        "en2",
+        "en3",
+        "en4",
+        "en5",
+        "log1",
+        "log2",
+        "log3",
+        "log4",
+        "log5",
+        "exp1",
+        "exp2",
+        "exp3",
+        "exp4",
+        "exp5"
+      ]
+    },
+    "cycles": [
+      {
+        "cycle": 1,
+        "universe": "padrao",
+        "collapseReady": true,
+        "time": 4160,
+        "researchLevels": 76,
+        "researchPercent": 68.468,
+        "maxNodes": 11,
+        "data": 3263.946,
+        "grossData": 62615.946,
+        "oracle": 3,
+        "fragments": 0,
+        "canCollapse": true,
+        "missions": 164,
+        "observatories": {
+          "lua/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 12.48,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "marte/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 12.48,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "netuno/obs_profundo": {
+            "n": 2,
+            "level": 2,
+            "rateTheoretical": 14.976,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          }
+        },
+        "income": {
+          "mission": 10405,
+          "chest": 4089,
+          "observatorio": 42367.008,
+          "exp": 2145,
+          "dir": 440,
+          "obs_profundo": 3169.937
+        },
+        "spent": {
+          "research": 47902,
+          "fragmentResearch": 0,
+          "promotion": 11450
+        },
+        "reconciliationError": 0,
+        "milestones": {
+          "research25": 1096,
+          "research50": 2550
+        },
+        "oracleFirst": 472,
+        "regions": {
+          "lua": 2,
+          "marte": 472,
+          "cinturao": 1054,
+          "mercurio": 1474,
+          "venus": 1768,
+          "jupiter": 2124,
+          "saturno": 2502,
+          "urano": 2732,
+          "netuno": 3294
+        },
+        "samples": [
+          {
+            "time": 300,
+            "researchLevels": 9,
+            "researchPercent": 8.108,
+            "maxNodes": 0,
+            "data": 8,
+            "grossData": 305,
+            "oracle": 0,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 20,
+            "observatories": {},
+            "income": {
+              "mission": 200,
+              "chest": 105
+            },
+            "spent": {
+              "research": 197,
+              "fragmentResearch": 0,
+              "promotion": 100
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 600,
+            "researchLevels": 16,
+            "researchPercent": 14.414,
+            "maxNodes": 0,
+            "data": 35.147,
+            "grossData": 696.147,
+            "oracle": 1,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 34,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 7,
+                "level": 1,
+                "rateTheoretical": 0.513,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 445,
+              "chest": 177,
+              "observatorio": 49.147,
+              "exp": 25
+            },
+            "spent": {
+              "research": 561,
+              "fragmentResearch": 0,
+              "promotion": 100
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 900,
+            "researchLevels": 24,
+            "researchPercent": 21.622,
+            "maxNodes": 0,
+            "data": 8.622,
+            "grossData": 1557.622,
+            "oracle": 1,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 49,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 9,
+                "level": 1,
+                "rateTheoretical": 0.66,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 1,
+                "level": 1,
+                "rateTheoretical": 0.073,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 900,
+              "chest": 370,
+              "observatorio": 232.622,
+              "exp": 55
+            },
+            "spent": {
+              "research": 1349,
+              "fragmentResearch": 0,
+              "promotion": 200
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 1200,
+            "researchLevels": 30,
+            "researchPercent": 27.027,
+            "maxNodes": 0,
+            "data": 23.942,
+            "grossData": 2580.942,
+            "oracle": 1,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 59,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 9,
+                "level": 1,
+                "rateTheoretical": 0.66,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 7,
+                "level": 1,
+                "rateTheoretical": 0.513,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 1247,
+              "chest": 491,
+              "observatorio": 519.942,
+              "exp": 103,
+              "dir": 220
+            },
+            "spent": {
+              "research": 2257,
+              "fragmentResearch": 0,
+              "promotion": 300
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 1500,
+            "researchLevels": 33,
+            "researchPercent": 29.73,
+            "maxNodes": 0,
+            "data": 158.968,
+            "grossData": 4003.968,
+            "oracle": 2,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 69,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 9,
+                "level": 1,
+                "rateTheoretical": 1.44,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 9,
+                "level": 1,
+                "rateTheoretical": 1.44,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 1656,
+              "chest": 783,
+              "observatorio": 959.968,
+              "exp": 165,
+              "dir": 440
+            },
+            "spent": {
+              "research": 2845,
+              "fragmentResearch": 0,
+              "promotion": 1000
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 1800,
+            "researchLevels": 41,
+            "researchPercent": 36.937,
+            "maxNodes": 3,
+            "data": 67.968,
+            "grossData": 6239.968,
+            "oracle": 2,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 86,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 9,
+                "level": 1,
+                "rateTheoretical": 1.44,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 9,
+                "level": 1,
+                "rateTheoretical": 1.44,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 2520,
+              "chest": 1173,
+              "observatorio": 1823.968,
+              "exp": 283,
+              "dir": 440
+            },
+            "spent": {
+              "research": 5072,
+              "fragmentResearch": 0,
+              "promotion": 1100
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 2100,
+            "researchLevels": 47,
+            "researchPercent": 42.342,
+            "maxNodes": 4,
+            "data": 139.528,
+            "grossData": 9436.528,
+            "oracle": 2,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 99,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 4.8,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 4.8,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 3306,
+              "chest": 1395,
+              "observatorio": 3914.528,
+              "exp": 381,
+              "dir": 440
+            },
+            "spent": {
+              "research": 7597,
+              "fragmentResearch": 0,
+              "promotion": 1700
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 2400,
+            "researchLevels": 53,
+            "researchPercent": 47.748,
+            "maxNodes": 5,
+            "data": 149.528,
+            "grossData": 14052.528,
+            "oracle": 2,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 115,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 4.8,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 4.8,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 4446,
+              "chest": 1893,
+              "observatorio": 6794.528,
+              "exp": 479,
+              "dir": 440
+            },
+            "spent": {
+              "research": 11253,
+              "fragmentResearch": 0,
+              "promotion": 2650
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 2700,
+            "researchLevels": 58,
+            "researchPercent": 52.252,
+            "maxNodes": 7,
+            "data": 907.768,
+            "grossData": 18973.768,
+            "oracle": 2,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 128,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 5.28,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 5.28,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 5595,
+              "chest": 2492,
+              "observatorio": 9764.768,
+              "exp": 682,
+              "dir": 440
+            },
+            "spent": {
+              "research": 15316,
+              "fragmentResearch": 0,
+              "promotion": 2750
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 3000,
+            "researchLevels": 64,
+            "researchPercent": 57.658,
+            "maxNodes": 9,
+            "data": 1113.888,
+            "grossData": 26518.888,
+            "oracle": 3,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 146,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 11.44,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 11.44,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 7591,
+              "chest": 3198,
+              "observatorio": 14361.888,
+              "exp": 928,
+              "dir": 440
+            },
+            "spent": {
+              "research": 22155,
+              "fragmentResearch": 0,
+              "promotion": 3250
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 3300,
+            "researchLevels": 67,
+            "researchPercent": 60.36,
+            "maxNodes": 10,
+            "data": 1147.368,
+            "grossData": 34438.368,
+            "oracle": 3,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 149,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 11.44,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 11.44,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "netuno/obs_profundo": {
+                "n": 2,
+                "level": 1,
+                "rateTheoretical": 9.152,
+                "energyRatio": 1,
+                "reason": "no:cryo",
+                "efficiency": 0.625
+              }
+            },
+            "income": {
+              "mission": 7964,
+              "chest": 3613,
+              "observatorio": 21225.888,
+              "exp": 1144,
+              "dir": 440,
+              "obs_profundo": 51.48
+            },
+            "spent": {
+              "research": 26541,
+              "fragmentResearch": 0,
+              "promotion": 6750
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 3600,
+            "researchLevels": 71,
+            "researchPercent": 63.964,
+            "maxNodes": 10,
+            "data": 2124.28,
+            "grossData": 43529.28,
+            "oracle": 3,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 157,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 12.48,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 12.48,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "netuno/obs_profundo": {
+                "n": 2,
+                "level": 2,
+                "rateTheoretical": 14.976,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 9095,
+              "chest": 3613,
+              "observatorio": 28389.408,
+              "exp": 1444,
+              "dir": 440,
+              "obs_profundo": 547.872
+            },
+            "spent": {
+              "research": 34055,
+              "fragmentResearch": 0,
+              "promotion": 7350
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 3900,
+            "researchLevels": 75,
+            "researchPercent": 67.568,
+            "maxNodes": 11,
+            "data": 1320.013,
+            "grossData": 53998.013,
+            "oracle": 3,
+            "fragments": 0,
+            "canCollapse": false,
+            "missions": 161,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 12.48,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 12.48,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "netuno/obs_profundo": {
+                "n": 2,
+                "level": 2,
+                "rateTheoretical": 14.976,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "mission": 9750,
+              "chest": 4089,
+              "observatorio": 35877.408,
+              "exp": 1709,
+              "dir": 440,
+              "obs_profundo": 2132.605
+            },
+            "spent": {
+              "research": 44728,
+              "fragmentResearch": 0,
+              "promotion": 7950
+            },
+            "reconciliationError": 0
+          }
+        ]
+      },
+      {
+        "cycle": 2,
+        "universe": "ancestral",
+        "collapseReady": true,
+        "time": 1808,
+        "researchLevels": 97,
+        "researchPercent": 87.387,
+        "maxNodes": 17,
+        "data": 17593.127,
+        "grossData": 226237.181,
+        "oracle": 4,
+        "fragments": 29,
+        "canCollapse": true,
+        "missions": 164,
+        "observatories": {
+          "lua/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 75.87,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "marte/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 75.87,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "netuno/obs_profundo": {
+            "n": 2,
+            "level": 2,
+            "rateTheoretical": 91.044,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          }
+        },
+        "income": {
+          "chest": 5998,
+          "mission": 13981,
+          "observatorio": 188819.818,
+          "exp": 7592,
+          "dir": 507,
+          "obs_profundo": 9339.363
+        },
+        "spent": {
+          "promotion": 35450,
+          "research": 176583,
+          "fragmentResearch": 27
+        },
+        "reconciliationError": 0,
+        "milestones": {
+          "research25": 2,
+          "research50": 2,
+          "research75": 434
+        },
+        "oracleFirst": 2,
+        "regions": {
+          "lua": 2,
+          "marte": 74,
+          "cinturao": 130,
+          "mercurio": 268,
+          "venus": 334,
+          "jupiter": 386,
+          "saturno": 528,
+          "urano": 688,
+          "netuno": 1190
+        },
+        "samples": [
+          {
+            "time": 300,
+            "researchLevels": 80,
+            "researchPercent": 72.072,
+            "maxNodes": 12,
+            "data": 3249.206,
+            "grossData": 21091.26,
+            "oracle": 3,
+            "fragments": 29,
+            "canCollapse": false,
+            "missions": 76,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 40.257,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 40.257,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "chest": 1622,
+              "mission": 2762,
+              "observatorio": 16100.26,
+              "exp": 607
+            },
+            "spent": {
+              "promotion": 5250,
+              "research": 15981,
+              "fragmentResearch": 27
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 600,
+            "researchLevels": 86,
+            "researchPercent": 77.477,
+            "maxNodes": 14,
+            "data": 2624.813,
+            "grossData": 55216.868,
+            "oracle": 3,
+            "fragments": 29,
+            "canCollapse": false,
+            "missions": 123,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 43.612,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 43.612,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "chest": 3554,
+              "mission": 7205,
+              "observatorio": 42213.868,
+              "exp": 1737,
+              "dir": 507
+            },
+            "spent": {
+              "promotion": 8750,
+              "research": 47231,
+              "fragmentResearch": 27
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 900,
+            "researchLevels": 88,
+            "researchPercent": 79.279,
+            "maxNodes": 14,
+            "data": 269.097,
+            "grossData": 85896.152,
+            "oracle": 3,
+            "fragments": 29,
+            "canCollapse": false,
+            "missions": 139,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 43.612,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 43.612,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              }
+            },
+            "income": {
+              "chest": 4407,
+              "mission": 9318,
+              "observatorio": 68381.152,
+              "exp": 3283,
+              "dir": 507
+            },
+            "spent": {
+              "promotion": 24750,
+              "research": 64266,
+              "fragmentResearch": 27
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 1200,
+            "researchLevels": 91,
+            "researchPercent": 81.982,
+            "maxNodes": 15,
+            "data": 168.242,
+            "grossData": 118229.296,
+            "oracle": 4,
+            "fragments": 29,
+            "canCollapse": false,
+            "missions": 150,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 75.87,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 75.87,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "netuno/obs_profundo": {
+                "n": 2,
+                "level": 1,
+                "rateTheoretical": 60.696,
+                "energyRatio": 1,
+                "reason": "no:cryo",
+                "efficiency": 0
+              }
+            },
+            "income": {
+              "chest": 5400,
+              "mission": 11004,
+              "observatorio": 96562.336,
+              "exp": 4656,
+              "dir": 507,
+              "obs_profundo": 99.96
+            },
+            "spent": {
+              "promotion": 27450,
+              "research": 94000,
+              "fragmentResearch": 27
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 1500,
+            "researchLevels": 94,
+            "researchPercent": 84.685,
+            "maxNodes": 15,
+            "data": 7928.697,
+            "grossData": 169725.751,
+            "oracle": 4,
+            "fragments": 29,
+            "canCollapse": false,
+            "missions": 157,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 75.87,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 75.87,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "netuno/obs_profundo": {
+                "n": 2,
+                "level": 2,
+                "rateTheoretical": 91.044,
+                "energyRatio": 1,
+                "reason": "no:cryo",
+                "efficiency": 0
+              }
+            },
+            "income": {
+              "chest": 5998,
+              "mission": 12335,
+              "observatorio": 142084.12,
+              "exp": 6381,
+              "dir": 507,
+              "obs_profundo": 2420.631
+            },
+            "spent": {
+              "promotion": 35450,
+              "research": 129736,
+              "fragmentResearch": 27
+            },
+            "reconciliationError": 0
+          },
+          {
+            "time": 1800,
+            "researchLevels": 97,
+            "researchPercent": 87.387,
+            "maxNodes": 17,
+            "data": 15114.907,
+            "grossData": 223758.962,
+            "oracle": 4,
+            "fragments": 29,
+            "canCollapse": false,
+            "missions": 162,
+            "observatories": {
+              "lua/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 75.87,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "marte/observatorio": {
+                "n": 10,
+                "level": 5,
+                "rateTheoretical": 75.87,
+                "energyRatio": 1,
+                "reason": "",
+                "efficiency": 1
+              },
+              "netuno/obs_profundo": {
+                "n": 2,
+                "level": 2,
+                "rateTheoretical": 91.044,
+                "energyRatio": 1,
+                "reason": "no:cryo",
+                "efficiency": 0
+              }
+            },
+            "income": {
+              "chest": 5998,
+              "mission": 13354,
+              "observatorio": 187605.904,
+              "exp": 7592,
+              "dir": 507,
+              "obs_profundo": 8702.058
+            },
+            "spent": {
+              "promotion": 35450,
+              "research": 176583,
+              "fragmentResearch": 27
+            },
+            "reconciliationError": 0
+          }
+        ]
+      }
+    ],
+    "firstUniverseExtended": {
+      "start": {
+        "time": 4160,
+        "researchLevels": 76,
+        "researchPercent": 68.468,
+        "maxNodes": 11,
+        "data": 3263.946,
+        "grossData": 0,
+        "oracle": 3,
+        "fragments": 0,
+        "canCollapse": true,
+        "missions": 164,
+        "observatories": {
+          "lua/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 12.48,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "marte/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 12.48,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "netuno/obs_profundo": {
+            "n": 2,
+            "level": 2,
+            "rateTheoretical": 14.976,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          }
+        },
+        "income": {},
+        "spent": {},
+        "reconciliationError": 0
+      },
+      "end": {
+        "time": 18560,
+        "researchLevels": 107,
+        "researchPercent": 96.396,
+        "maxNodes": 21,
+        "data": 8276.001,
+        "grossData": 710866.055,
+        "oracle": 3,
+        "fragments": 0,
+        "canCollapse": true,
+        "missions": 164,
+        "observatories": {
+          "lua/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 15.6,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "marte/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 15.6,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "netuno/obs_profundo": {
+            "n": 2,
+            "level": 2,
+            "rateTheoretical": 18.72,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          }
+        },
+        "income": {
+          "observatorio": 429303.68,
+          "obs_profundo": 254572.375,
+          "chest": 499,
+          "exp": 26491
+        },
+        "spent": {
+          "promotion": 206500,
+          "research": 499354,
+          "fragmentResearch": 0
+        },
+        "reconciliationError": 0
+      },
+      "milestones": {
+        "research25": 4162,
+        "research50": 4162,
+        "research75": 5032
+      },
+      "samples": [
+        {
+          "time": 4200,
+          "researchLevels": 76,
+          "researchPercent": 68.468,
+          "maxNodes": 11,
+          "data": 360.386,
+          "grossData": 2096.44,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 12.48,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 12.48,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 14.976,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 998.4,
+            "obs_profundo": 599.04,
+            "chest": 499
+          },
+          "spent": {
+            "promotion": 5000
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 4500,
+          "researchLevels": 79,
+          "researchPercent": 71.171,
+          "maxNodes": 12,
+          "data": 421.305,
+          "grossData": 13906.36,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 12.48,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 12.48,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 14.976,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 8486.4,
+            "obs_profundo": 4468.96,
+            "chest": 499,
+            "exp": 452
+          },
+          "spent": {
+            "promotion": 5000,
+            "research": 11749,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 4800,
+          "researchLevels": 81,
+          "researchPercent": 72.973,
+          "maxNodes": 12,
+          "data": 4654.873,
+          "grossData": 26603.928,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 16.224,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 16194.88,
+            "obs_profundo": 9094.048,
+            "chest": 499,
+            "exp": 816
+          },
+          "spent": {
+            "promotion": 5000,
+            "research": 20213,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 5100,
+          "researchLevels": 84,
+          "researchPercent": 75.676,
+          "maxNodes": 13,
+          "data": 3155.073,
+          "grossData": 40110.128,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 16.224,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 24306.88,
+            "obs_profundo": 13961.248,
+            "chest": 499,
+            "exp": 1343
+          },
+          "spent": {
+            "promotion": 5000,
+            "research": 35219,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 5400,
+          "researchLevels": 86,
+          "researchPercent": 77.477,
+          "maxNodes": 14,
+          "data": 4717.273,
+          "grossData": 53684.328,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 16.224,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 32418.88,
+            "obs_profundo": 18828.448,
+            "chest": 499,
+            "exp": 1938
+          },
+          "spent": {
+            "promotion": 5000,
+            "research": 47231,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 5700,
+          "researchLevels": 87,
+          "researchPercent": 78.378,
+          "maxNodes": 14,
+          "data": 7626.473,
+          "grossData": 67394.528,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 16.224,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 40530.88,
+            "obs_profundo": 23695.648,
+            "chest": 499,
+            "exp": 2669
+          },
+          "spent": {
+            "promotion": 8500,
+            "research": 54532,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 6000,
+          "researchLevels": 87,
+          "researchPercent": 78.378,
+          "maxNodes": 14,
+          "data": 5047.673,
+          "grossData": 80815.728,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 16.224,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 48642.88,
+            "obs_profundo": 28562.848,
+            "chest": 499,
+            "exp": 3111
+          },
+          "spent": {
+            "promotion": 24500,
+            "research": 54532,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 6300,
+          "researchLevels": 88,
+          "researchPercent": 79.279,
+          "maxNodes": 14,
+          "data": 8785.873,
+          "grossData": 94287.928,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 13.52,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 16.224,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 56754.88,
+            "obs_profundo": 33430.048,
+            "chest": 499,
+            "exp": 3604
+          },
+          "spent": {
+            "promotion": 24500,
+            "research": 64266,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 6600,
+          "researchLevels": 90,
+          "researchPercent": 81.081,
+          "maxNodes": 15,
+          "data": 3350.257,
+          "grossData": 108586.312,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 65445.12,
+            "obs_profundo": 38644.192,
+            "chest": 499,
+            "exp": 3998
+          },
+          "spent": {
+            "promotion": 24500,
+            "research": 84000,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 6900,
+          "researchLevels": 91,
+          "researchPercent": 81.982,
+          "maxNodes": 15,
+          "data": 7855.857,
+          "grossData": 123091.912,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 74181.12,
+            "obs_profundo": 43885.792,
+            "chest": 499,
+            "exp": 4526
+          },
+          "spent": {
+            "promotion": 24500,
+            "research": 94000,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 7200,
+          "researchLevels": 92,
+          "researchPercent": 82.883,
+          "maxNodes": 15,
+          "data": 11193.457,
+          "grossData": 137469.512,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 82917.12,
+            "obs_profundo": 49127.392,
+            "chest": 499,
+            "exp": 4926
+          },
+          "spent": {
+            "promotion": 24500,
+            "research": 105040,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 7500,
+          "researchLevels": 94,
+          "researchPercent": 84.685,
+          "maxNodes": 15,
+          "data": 930.057,
+          "grossData": 151902.112,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 91653.12,
+            "obs_profundo": 54368.992,
+            "chest": 499,
+            "exp": 5381
+          },
+          "spent": {
+            "promotion": 24500,
+            "research": 129736,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 7800,
+          "researchLevels": 94,
+          "researchPercent": 84.685,
+          "maxNodes": 15,
+          "data": 7398.657,
+          "grossData": 166370.712,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 100389.12,
+            "obs_profundo": 59610.592,
+            "chest": 499,
+            "exp": 5872
+          },
+          "spent": {
+            "promotion": 32500,
+            "research": 129736,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 8100,
+          "researchLevels": 95,
+          "researchPercent": 85.586,
+          "maxNodes": 16,
+          "data": 8012.257,
+          "grossData": 181040.312,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 109125.12,
+            "obs_profundo": 64852.192,
+            "chest": 499,
+            "exp": 6564
+          },
+          "spent": {
+            "promotion": 32500,
+            "research": 143792,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 8400,
+          "researchLevels": 96,
+          "researchPercent": 86.486,
+          "maxNodes": 16,
+          "data": 6389.857,
+          "grossData": 195417.912,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 117861.12,
+            "obs_profundo": 70093.792,
+            "chest": 499,
+            "exp": 6964
+          },
+          "spent": {
+            "promotion": 32500,
+            "research": 159792,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 8700,
+          "researchLevels": 97,
+          "researchPercent": 87.387,
+          "maxNodes": 17,
+          "data": 4177.457,
+          "grossData": 209996.512,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 126597.12,
+            "obs_profundo": 75335.392,
+            "chest": 499,
+            "exp": 7565
+          },
+          "spent": {
+            "promotion": 32500,
+            "research": 176583,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 9000,
+          "researchLevels": 97,
+          "researchPercent": 87.387,
+          "maxNodes": 17,
+          "data": 555.057,
+          "grossData": 224374.112,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 135333.12,
+            "obs_profundo": 80576.992,
+            "chest": 499,
+            "exp": 7965
+          },
+          "spent": {
+            "promotion": 50500,
+            "research": 176583,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 9300,
+          "researchLevels": 97,
+          "researchPercent": 87.387,
+          "maxNodes": 17,
+          "data": 15060.657,
+          "grossData": 238879.712,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 144069.12,
+            "obs_profundo": 85818.592,
+            "chest": 499,
+            "exp": 8493
+          },
+          "spent": {
+            "promotion": 50500,
+            "research": 176583,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 9600,
+          "researchLevels": 97,
+          "researchPercent": 87.387,
+          "maxNodes": 17,
+          "data": 11602.257,
+          "grossData": 253421.312,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 152805.12,
+            "obs_profundo": 91060.192,
+            "chest": 499,
+            "exp": 9057
+          },
+          "spent": {
+            "promotion": 68500,
+            "research": 176583,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 9900,
+          "researchLevels": 98,
+          "researchPercent": 88.288,
+          "maxNodes": 17,
+          "data": 6198.857,
+          "grossData": 268017.912,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 161541.12,
+            "obs_profundo": 96301.792,
+            "chest": 499,
+            "exp": 9676
+          },
+          "spent": {
+            "promotion": 68500,
+            "research": 196583,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 10200,
+          "researchLevels": 98,
+          "researchPercent": 88.288,
+          "maxNodes": 17,
+          "data": 20740.457,
+          "grossData": 282559.512,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 170277.12,
+            "obs_profundo": 101543.392,
+            "chest": 499,
+            "exp": 10240
+          },
+          "spent": {
+            "promotion": 68500,
+            "research": 196583,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 10500,
+          "researchLevels": 99,
+          "researchPercent": 89.189,
+          "maxNodes": 18,
+          "data": 12785.057,
+          "grossData": 296992.112,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 179013.12,
+            "obs_profundo": 106784.992,
+            "chest": 499,
+            "exp": 10695
+          },
+          "spent": {
+            "promotion": 68500,
+            "research": 218971,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 10800,
+          "researchLevels": 99,
+          "researchPercent": 89.189,
+          "maxNodes": 18,
+          "data": 9417.657,
+          "grossData": 311624.712,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 14.56,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 17.472,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 187749.12,
+            "obs_profundo": 112026.592,
+            "chest": 499,
+            "exp": 11350
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 218971,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 11100,
+          "researchLevels": 100,
+          "researchPercent": 90.09,
+          "maxNodes": 19,
+          "data": 1741.753,
+          "grossData": 326336.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 196551.68,
+            "obs_profundo": 117308.128,
+            "chest": 499,
+            "exp": 11978
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 241359,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 11400,
+          "researchLevels": 100,
+          "researchPercent": 90.09,
+          "maxNodes": 19,
+          "data": 17324.753,
+          "grossData": 341919.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 205911.68,
+            "obs_profundo": 122924.128,
+            "chest": 499,
+            "exp": 12585
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 241359,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 11700,
+          "researchLevels": 101,
+          "researchPercent": 90.991,
+          "maxNodes": 20,
+          "data": 8044.753,
+          "grossData": 357639.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 215271.68,
+            "obs_profundo": 128540.128,
+            "chest": 499,
+            "exp": 13329
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 266359,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 12000,
+          "researchLevels": 101,
+          "researchPercent": 90.991,
+          "maxNodes": 20,
+          "data": 23549.753,
+          "grossData": 373144.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 224631.68,
+            "obs_profundo": 134156.128,
+            "chest": 499,
+            "exp": 13858
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 266359,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 12300,
+          "researchLevels": 102,
+          "researchPercent": 91.892,
+          "maxNodes": 20,
+          "data": 13799.753,
+          "grossData": 388786.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 233991.68,
+            "obs_profundo": 139772.128,
+            "chest": 499,
+            "exp": 14524
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 291751,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 12600,
+          "researchLevels": 103,
+          "researchPercent": 92.793,
+          "maxNodes": 21,
+          "data": 83.753,
+          "grossData": 404271.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 243351.68,
+            "obs_profundo": 145388.128,
+            "chest": 499,
+            "exp": 15033
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 320952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 12900,
+          "researchLevels": 103,
+          "researchPercent": 92.793,
+          "maxNodes": 21,
+          "data": 15725.753,
+          "grossData": 419913.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 252711.68,
+            "obs_profundo": 151004.128,
+            "chest": 499,
+            "exp": 15699
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 320952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 13200,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 1210.753,
+          "grossData": 435398.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 262071.68,
+            "obs_profundo": 156620.128,
+            "chest": 499,
+            "exp": 16208
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 13500,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 16754.753,
+          "grossData": 450942.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 271431.68,
+            "obs_profundo": 162236.128,
+            "chest": 499,
+            "exp": 16776
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 13800,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 32239.753,
+          "grossData": 466427.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 280791.68,
+            "obs_profundo": 167852.128,
+            "chest": 499,
+            "exp": 17285
+          },
+          "spent": {
+            "promotion": 86500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 14100,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 7939.753,
+          "grossData": 482127.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 290151.68,
+            "obs_profundo": 173468.128,
+            "chest": 499,
+            "exp": 18009
+          },
+          "spent": {
+            "promotion": 126500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 14400,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 23424.753,
+          "grossData": 497612.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 299511.68,
+            "obs_profundo": 179084.128,
+            "chest": 499,
+            "exp": 18518
+          },
+          "spent": {
+            "promotion": 126500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 14700,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 39066.753,
+          "grossData": 513254.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 308871.68,
+            "obs_profundo": 184700.128,
+            "chest": 499,
+            "exp": 19184
+          },
+          "spent": {
+            "promotion": 126500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 15000,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 14551.753,
+          "grossData": 528739.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 318231.68,
+            "obs_profundo": 190316.128,
+            "chest": 499,
+            "exp": 19693
+          },
+          "spent": {
+            "promotion": 166500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 15300,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 30193.753,
+          "grossData": 544381.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 327591.68,
+            "obs_profundo": 195932.128,
+            "chest": 499,
+            "exp": 20359
+          },
+          "spent": {
+            "promotion": 166500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 15600,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 5776.753,
+          "grossData": 559964.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 336951.68,
+            "obs_profundo": 201548.128,
+            "chest": 499,
+            "exp": 20966
+          },
+          "spent": {
+            "promotion": 206500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 15900,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 21418.753,
+          "grossData": 575606.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 346311.68,
+            "obs_profundo": 207164.128,
+            "chest": 499,
+            "exp": 21632
+          },
+          "spent": {
+            "promotion": 206500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 16200,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 36825.753,
+          "grossData": 591013.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 355671.68,
+            "obs_profundo": 212780.128,
+            "chest": 499,
+            "exp": 22063
+          },
+          "spent": {
+            "promotion": 206500,
+            "research": 350952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 16500,
+          "researchLevels": 105,
+          "researchPercent": 94.595,
+          "maxNodes": 21,
+          "data": 12291.753,
+          "grossData": 606479.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 365031.68,
+            "obs_profundo": 218396.128,
+            "chest": 499,
+            "exp": 22553
+          },
+          "spent": {
+            "promotion": 206500,
+            "research": 390952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 16800,
+          "researchLevels": 105,
+          "researchPercent": 94.595,
+          "maxNodes": 21,
+          "data": 27776.753,
+          "grossData": 621964.808,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 374391.68,
+            "obs_profundo": 224012.128,
+            "chest": 499,
+            "exp": 23062
+          },
+          "spent": {
+            "promotion": 206500,
+            "research": 390952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 17100,
+          "researchLevels": 105,
+          "researchPercent": 94.595,
+          "maxNodes": 21,
+          "data": 43293.319,
+          "grossData": 637481.374,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 383751.68,
+            "obs_profundo": 229580.694,
+            "chest": 499,
+            "exp": 23650
+          },
+          "spent": {
+            "promotion": 206500,
+            "research": 390952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 17400,
+          "researchLevels": 106,
+          "researchPercent": 95.495,
+          "maxNodes": 21,
+          "data": 8718.775,
+          "grossData": 652906.829,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 393111.68,
+            "obs_profundo": 235039.149,
+            "chest": 499,
+            "exp": 24257
+          },
+          "spent": {
+            "promotion": 206500,
+            "research": 440952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 17700,
+          "researchLevels": 106,
+          "researchPercent": 95.495,
+          "maxNodes": 21,
+          "data": 23808.044,
+          "grossData": 667996.098,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 402471.68,
+            "obs_profundo": 240180.418,
+            "chest": 499,
+            "exp": 24845
+          },
+          "spent": {
+            "promotion": 206500,
+            "research": 440952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 18000,
+          "researchLevels": 106,
+          "researchPercent": 95.495,
+          "maxNodes": 21,
+          "data": 38724.061,
+          "grossData": 682912.116,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 411831.68,
+            "obs_profundo": 245207.436,
+            "chest": 499,
+            "exp": 25374
+          },
+          "spent": {
+            "promotion": 206500,
+            "research": 440952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 18300,
+          "researchLevels": 106,
+          "researchPercent": 95.495,
+          "maxNodes": 21,
+          "data": 54044.513,
+          "grossData": 698232.567,
+          "oracle": 3,
+          "fragments": 0,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 15.6,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 18.72,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 421191.68,
+            "obs_profundo": 250481.887,
+            "chest": 499,
+            "exp": 26060
+          },
+          "spent": {
+            "promotion": 206500,
+            "research": 440952,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        }
+      ]
+    },
+    "extended": {
+      "start": {
+        "time": 1808,
+        "researchLevels": 97,
+        "researchPercent": 87.387,
+        "maxNodes": 17,
+        "data": 17593.127,
+        "grossData": 0,
+        "oracle": 4,
+        "fragments": 29,
+        "canCollapse": true,
+        "missions": 164,
+        "observatories": {
+          "lua/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 75.87,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "marte/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 75.87,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "netuno/obs_profundo": {
+            "n": 2,
+            "level": 2,
+            "rateTheoretical": 91.044,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          }
+        },
+        "income": {},
+        "spent": {},
+        "reconciliationError": 0
+      },
+      "end": {
+        "time": 16208,
+        "researchLevels": 111,
+        "researchPercent": 100,
+        "maxNodes": 25,
+        "data": 2323273.382,
+        "grossData": 3506775.255,
+        "oracle": 4,
+        "fragments": 29,
+        "canCollapse": true,
+        "missions": 164,
+        "observatories": {
+          "lua/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 81.289,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "marte/observatorio": {
+            "n": 10,
+            "level": 5,
+            "rateTheoretical": 81.289,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          },
+          "netuno/obs_profundo": {
+            "n": 2,
+            "level": 2,
+            "rateTheoretical": 97.547,
+            "energyRatio": 1,
+            "reason": "",
+            "efficiency": 1
+          }
+        },
+        "income": {
+          "observatorio": 2336654.85,
+          "obs_profundo": 1095408.405,
+          "chest": 627,
+          "exp": 74085
+        },
+        "spent": {
+          "promotion": 444000,
+          "research": 757095,
+          "fragmentResearch": 0
+        },
+        "reconciliationError": 0
+      },
+      "milestones": {
+        "research25": 1810,
+        "research50": 1810,
+        "research75": 1810,
+        "research100": 6414
+      },
+      "samples": [
+        {
+          "time": 2100,
+          "researchLevels": 98,
+          "researchPercent": 88.288,
+          "maxNodes": 17,
+          "data": 20640.528,
+          "grossData": 59047.401,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 75.87,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 75.87,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 91.044,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 44307.87,
+            "obs_profundo": 12491.532,
+            "chest": 627,
+            "exp": 1621
+          },
+          "spent": {
+            "promotion": 36000,
+            "research": 20000,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 2400,
+          "researchLevels": 100,
+          "researchPercent": 90.09,
+          "maxNodes": 19,
+          "data": 20724.016,
+          "grossData": 121906.889,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0
+            }
+          },
+          "income": {
+            "observatorio": 91780.587,
+            "obs_profundo": 26483.302,
+            "chest": 627,
+            "exp": 3016
+          },
+          "spent": {
+            "promotion": 54000,
+            "research": 64776,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 2700,
+          "researchLevels": 103,
+          "researchPercent": 92.793,
+          "maxNodes": 21,
+          "data": 8950.352,
+          "grossData": 189726.226,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 140553.927,
+            "obs_profundo": 44279.298,
+            "chest": 627,
+            "exp": 4266
+          },
+          "spent": {
+            "promotion": 54000,
+            "research": 144369,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 3000,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 4869.118,
+          "grossData": 255644.992,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 189327.267,
+            "obs_profundo": 59657.724,
+            "chest": 627,
+            "exp": 6033
+          },
+          "spent": {
+            "promotion": 94000,
+            "research": 174369,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 3300,
+          "researchLevels": 104,
+          "researchPercent": 93.694,
+          "maxNodes": 21,
+          "data": 32834.674,
+          "grossData": 323610.548,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.001
+            }
+          },
+          "income": {
+            "observatorio": 238100.607,
+            "obs_profundo": 77376.94,
+            "chest": 627,
+            "exp": 7506
+          },
+          "spent": {
+            "promotion": 134000,
+            "research": 174369,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 3600,
+          "researchLevels": 106,
+          "researchPercent": 95.495,
+          "maxNodes": 21,
+          "data": 12013.128,
+          "grossData": 392789.002,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.01
+            }
+          },
+          "income": {
+            "observatorio": 286873.947,
+            "obs_profundo": 96458.055,
+            "chest": 627,
+            "exp": 8830
+          },
+          "spent": {
+            "promotion": 134000,
+            "research": 264369,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 3900,
+          "researchLevels": 107,
+          "researchPercent": 96.396,
+          "maxNodes": 21,
+          "data": 22647.461,
+          "grossData": 461825.334,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.008
+            }
+          },
+          "income": {
+            "observatorio": 335647.287,
+            "obs_profundo": 115544.047,
+            "chest": 627,
+            "exp": 10007
+          },
+          "spent": {
+            "promotion": 134000,
+            "research": 322771,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 4200,
+          "researchLevels": 108,
+          "researchPercent": 97.297,
+          "maxNodes": 22,
+          "data": 17710.462,
+          "grossData": 531888.336,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 384420.627,
+            "obs_profundo": 135509.708,
+            "chest": 627,
+            "exp": 11331
+          },
+          "spent": {
+            "promotion": 134000,
+            "research": 397771,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 4500,
+          "researchLevels": 108,
+          "researchPercent": 97.297,
+          "maxNodes": 22,
+          "data": 50162.157,
+          "grossData": 604340.031,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 433193.967,
+            "obs_profundo": 157715.063,
+            "chest": 627,
+            "exp": 12804
+          },
+          "spent": {
+            "promotion": 174000,
+            "research": 397771,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 4800,
+          "researchLevels": 108,
+          "researchPercent": 97.297,
+          "maxNodes": 22,
+          "data": 32387.782,
+          "grossData": 676565.656,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 481967.307,
+            "obs_profundo": 179547.348,
+            "chest": 627,
+            "exp": 14424
+          },
+          "spent": {
+            "promotion": 264000,
+            "research": 397771,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 5100,
+          "researchLevels": 108,
+          "researchPercent": 97.297,
+          "maxNodes": 22,
+          "data": 17603.619,
+          "grossData": 751781.492,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.436
+            }
+          },
+          "income": {
+            "observatorio": 530740.647,
+            "obs_profundo": 204407.845,
+            "chest": 627,
+            "exp": 16006
+          },
+          "spent": {
+            "promotion": 354000,
+            "research": 397771,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 5400,
+          "researchLevels": 108,
+          "researchPercent": 97.297,
+          "maxNodes": 22,
+          "data": 93153.077,
+          "grossData": 827330.951,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.662
+            }
+          },
+          "income": {
+            "observatorio": 579513.987,
+            "obs_profundo": 229748.964,
+            "chest": 627,
+            "exp": 17441
+          },
+          "spent": {
+            "promotion": 354000,
+            "research": 397771,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 5700,
+          "researchLevels": 109,
+          "researchPercent": 98.198,
+          "maxNodes": 23,
+          "data": 70082.145,
+          "grossData": 904260.018,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 628287.327,
+            "obs_profundo": 256838.691,
+            "chest": 627,
+            "exp": 18507
+          },
+          "spent": {
+            "promotion": 354000,
+            "research": 497771,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 6000,
+          "researchLevels": 110,
+          "researchPercent": 99.099,
+          "maxNodes": 24,
+          "data": 24739.489,
+          "grossData": 983917.362,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 677060.667,
+            "obs_profundo": 286102.695,
+            "chest": 627,
+            "exp": 20127
+          },
+          "spent": {
+            "promotion": 354000,
+            "research": 622771,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 6300,
+          "researchLevels": 110,
+          "researchPercent": 99.099,
+          "maxNodes": 24,
+          "data": 104285.833,
+          "grossData": 1063463.706,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 725834.007,
+            "obs_profundo": 315366.699,
+            "chest": 627,
+            "exp": 21636
+          },
+          "spent": {
+            "promotion": 354000,
+            "research": 622771,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 6600,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 49766.177,
+          "grossData": 1143268.05,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 774607.347,
+            "obs_profundo": 344630.703,
+            "chest": 627,
+            "exp": 23403
+          },
+          "spent": {
+            "promotion": 354000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 6900,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 129238.521,
+          "grossData": 1222740.394,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 823380.687,
+            "obs_profundo": 373894.707,
+            "chest": 627,
+            "exp": 24838
+          },
+          "spent": {
+            "promotion": 354000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 7200,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 209042.865,
+          "grossData": 1302544.738,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 872154.027,
+            "obs_profundo": 403158.711,
+            "chest": 627,
+            "exp": 26605
+          },
+          "spent": {
+            "promotion": 354000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 7500,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 198442.209,
+          "grossData": 1381944.082,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 920927.367,
+            "obs_profundo": 432422.715,
+            "chest": 627,
+            "exp": 27967
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 7800,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 278173.553,
+          "grossData": 1461675.426,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 969700.707,
+            "obs_profundo": 461686.719,
+            "chest": 627,
+            "exp": 29661
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 8100,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 357830.897,
+          "grossData": 1541332.77,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1018474.047,
+            "obs_profundo": 490950.723,
+            "chest": 627,
+            "exp": 31281
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 8400,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 437671.241,
+          "grossData": 1621173.114,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1067247.387,
+            "obs_profundo": 520214.727,
+            "chest": 627,
+            "exp": 33084
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 8700,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 516996.585,
+          "grossData": 1700498.458,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1116020.727,
+            "obs_profundo": 549478.731,
+            "chest": 627,
+            "exp": 34372
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 9000,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 596947.929,
+          "grossData": 1780449.802,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1164794.067,
+            "obs_profundo": 578742.735,
+            "chest": 627,
+            "exp": 36286
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 9300,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 676641.273,
+          "grossData": 1860143.146,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1213567.407,
+            "obs_profundo": 608006.739,
+            "chest": 627,
+            "exp": 37942
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 9600,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 756445.617,
+          "grossData": 1939947.49,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1262340.747,
+            "obs_profundo": 637270.743,
+            "chest": 627,
+            "exp": 39709
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 9900,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 835806.961,
+          "grossData": 2019308.834,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1311114.087,
+            "obs_profundo": 666534.747,
+            "chest": 627,
+            "exp": 41033
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 10200,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 915611.305,
+          "grossData": 2099113.178,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1359887.427,
+            "obs_profundo": 695798.751,
+            "chest": 627,
+            "exp": 42800
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 10500,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 995157.649,
+          "grossData": 2178659.522,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1408660.767,
+            "obs_profundo": 725062.755,
+            "chest": 627,
+            "exp": 44309
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 10800,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1074703.993,
+          "grossData": 2258205.866,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1457434.107,
+            "obs_profundo": 754326.759,
+            "chest": 627,
+            "exp": 45818
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 11100,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1152521.32,
+          "grossData": 2336023.194,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1506207.447,
+            "obs_profundo": 781750.746,
+            "chest": 627,
+            "exp": 47438
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 11400,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1229571.002,
+          "grossData": 2413072.875,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1554980.787,
+            "obs_profundo": 808407.088,
+            "chest": 627,
+            "exp": 49058
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 11700,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1304607.11,
+          "grossData": 2488108.983,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1603754.127,
+            "obs_profundo": 833196.856,
+            "chest": 627,
+            "exp": 50531
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 12000,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1378526.878,
+          "grossData": 2562028.751,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.065
+            }
+          },
+          "income": {
+            "observatorio": 1652527.467,
+            "obs_profundo": 856872.284,
+            "chest": 627,
+            "exp": 52002
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 12300,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1451007.617,
+          "grossData": 2634509.49,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1701300.807,
+            "obs_profundo": 879106.683,
+            "chest": 627,
+            "exp": 53475
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 12600,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1523328.85,
+          "grossData": 2706830.723,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1750074.147,
+            "obs_profundo": 900924.576,
+            "chest": 627,
+            "exp": 55205
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 12900,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1593477.876,
+          "grossData": 2776979.75,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.053
+            }
+          },
+          "income": {
+            "observatorio": 1798847.487,
+            "obs_profundo": 920495.262,
+            "chest": 627,
+            "exp": 57010
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 13200,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1663107.703,
+          "grossData": 2846609.577,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.044
+            }
+          },
+          "income": {
+            "observatorio": 1847620.827,
+            "obs_profundo": 939584.749,
+            "chest": 627,
+            "exp": 58777
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 13500,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1732518.058,
+          "grossData": 2916019.931,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.422
+            }
+          },
+          "income": {
+            "observatorio": 1896394.167,
+            "obs_profundo": 958492.764,
+            "chest": 627,
+            "exp": 60506
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 13800,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1799489.766,
+          "grossData": 2982991.64,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 1945167.507,
+            "obs_profundo": 975218.133,
+            "chest": 627,
+            "exp": 61979
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 14100,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1864868.023,
+          "grossData": 3048369.897,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0
+            }
+          },
+          "income": {
+            "observatorio": 1993940.847,
+            "obs_profundo": 990499.049,
+            "chest": 627,
+            "exp": 63303
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 14400,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1933814.408,
+          "grossData": 3117316.282,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.9
+            }
+          },
+          "income": {
+            "observatorio": 2042714.187,
+            "obs_profundo": 1009163.095,
+            "chest": 627,
+            "exp": 64812
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 14700,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 1997094.418,
+          "grossData": 3180596.292,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0
+            }
+          },
+          "income": {
+            "observatorio": 2091487.527,
+            "obs_profundo": 1022307.764,
+            "chest": 627,
+            "exp": 66174
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 15000,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 2064367.751,
+          "grossData": 3247869.625,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 2140260.867,
+            "obs_profundo": 1039225.757,
+            "chest": 627,
+            "exp": 67756
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 15300,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 2129275.254,
+          "grossData": 3312777.127,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0.014
+            }
+          },
+          "income": {
+            "observatorio": 2189034.207,
+            "obs_profundo": 1054109.92,
+            "chest": 627,
+            "exp": 69006
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 15600,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 2192730.615,
+          "grossData": 3376232.488,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "no:cryo",
+              "efficiency": 0
+            }
+          },
+          "income": {
+            "observatorio": 2237807.547,
+            "obs_profundo": 1066839.941,
+            "chest": 627,
+            "exp": 70958
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 15900,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 2256394.725,
+          "grossData": 3439896.599,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 2286580.887,
+            "obs_profundo": 1080148.712,
+            "chest": 627,
+            "exp": 72540
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        },
+        {
+          "time": 16200,
+          "researchLevels": 111,
+          "researchPercent": 100,
+          "maxNodes": 25,
+          "data": 2321192.386,
+          "grossData": 3504694.259,
+          "oracle": 4,
+          "fragments": 29,
+          "canCollapse": true,
+          "missions": 164,
+          "observatories": {
+            "lua/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "marte/observatorio": {
+              "n": 10,
+              "level": 5,
+              "rateTheoretical": 81.289,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            },
+            "netuno/obs_profundo": {
+              "n": 2,
+              "level": 2,
+              "rateTheoretical": 97.547,
+              "energyRatio": 1,
+              "reason": "",
+              "efficiency": 1
+            }
+          },
+          "income": {
+            "observatorio": 2335354.227,
+            "obs_profundo": 1094628.032,
+            "chest": 627,
+            "exp": 74085
+          },
+          "spent": {
+            "promotion": 444000,
+            "research": 757095,
+            "fragmentResearch": 0
+          },
+          "reconciliationError": 0
+        }
+      ]
+    },
+    "realSeconds": 8.96
+  }
+}

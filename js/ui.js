@@ -18,6 +18,8 @@
   const setC = (el, c, on) => el.classList.toggle(c, !!on);
   const setD = (el, d) => { if (el.disabled !== !!d) el.disabled = !!d; };
   const sfx = (n) => H.SFX && H.SFX.play(n);
+  let profileQueued = false;
+  let profileDraft = null;
 
   // ---------------- PEDAÇOS DE HTML ----------------
   const resChip = (r, amt, have) => `<span class="chip ${have !== undefined && have + 1e-9 < amt ? 'lack' : ''}">${A.rg(r)} ${F.n(amt)}</span>`;
@@ -86,16 +88,94 @@
     if (key) { const t = findKey(box, key); if (t && !t.disabled) t.focus({ preventScroll: true }); else (focusables(box)[0] || box).focus({ preventScroll: true }); }
   }
   UI.closeModal = function (reset) {
+    if (ui.folderCandidate && H.folderSave) { H.folderSave.cancelChoice(); ui.folderCandidate = null; }
     $('#modal').classList.remove('on'); $('#modal').innerHTML = ''; ui.modalOpen = false; ui.modalLock = false;
     ui.modalLive = null; ui.mnodes = []; ui.pendingImport = null; // cancelar uma importação descarta o estado validado
     $('#app').removeAttribute('inert');
-    if (reset) ui.queue = [];
+    profileDraft = null;
+    if (reset) { ui.queue = []; profileQueued = false; }
     if (ui.queue.length) { ui.returnPending = true; const q = ui.queue.shift(); setTimeout(q, 120); return; }
     const rf = ui.returnFocus; ui.returnFocus = null;
     if (rf) { const t = rf.el && rf.el.isConnected ? rf.el : findKey(document, rf.key); if (t && !t.disabled) t.focus({ preventScroll: true }); }
   };
   const enqueue = (fn) => { if (ui.modalOpen) ui.queue.push(fn); else fn(); };
   UI.queueModal = enqueue;
+
+  // ---------------- IDENTIDADE DO COMANDANTE ----------------
+  const profileWritable = () => !H.session || H.session.role === 'writer';
+  const avatarArt = (avatar, cls) => A.commanderAvatar(avatar, cls || '');
+  function profileHTML(editing) {
+    const draft = profileDraft;
+    const avatar = D.commanderAvatars[draft.avatar];
+    return `<div class="profile-layout">
+      <div class="profile-hero" style="--profile-accent:${avatar.color}">
+        <div class="profile-brand"><span class="profile-sun" aria-hidden="true"></span> HELIOS <b>IDLE</b></div>
+        <div class="profile-hero-copy"><span class="profile-eyebrow">Programa de exploração solar</span><span class="profile-mission">SEU LUGAR ENTRE AS ESTRELAS</span></div>
+        <div class="profile-preview-portrait" aria-hidden="true">${avatarArt(draft.avatar)}</div>
+        <div class="profile-pass"><span class="profile-eyebrow">Comando Hélios</span><strong class="profile-preview-name">${esc(draft.name || 'Seu comandante')}</strong><span class="profile-preview-role">${esc(avatar.label)}</span><span class="profile-pass-line" aria-hidden="true"></span><span class="profile-pass-bottom">EXPLORAR · AUTOMATIZAR · ATRAVESSAR</span></div>
+      </div>
+      <form id="profile-form" class="profile-form" novalidate>
+        <span class="profile-eyebrow">Identidade da missão</span>
+        <h2>${editing ? 'Seu comandante' : 'Crie seu comandante'}</h2>
+        <p class="profile-intro">Dê um nome ao seu comandante e escolha como aparecer na missão.</p>
+        <div class="profile-field"><label for="commander-name">Nome do comandante</label><input id="commander-name" name="commander-name" type="text" value="${esc(draft.name)}" maxlength="48" autocomplete="nickname" autocapitalize="words" spellcheck="false" enterkeyhint="go" aria-describedby="commander-name-help profile-error" required autofocus><span id="commander-name-help" class="profile-field-help"><span>De 2 a 24 caracteres</span><span id="profile-name-count">${Array.from(draft.name).length}/24</span></span></div>
+        <fieldset class="profile-avatar-field"><legend>Escolha seu avatar</legend><div class="profile-avatar-grid">${Object.entries(D.commanderAvatars).map(([id, def]) => `<button type="button" class="profile-avatar${draft.avatar === id ? ' selected' : ''}" data-a="profileavatar|${id}" aria-pressed="${draft.avatar === id}" aria-label="${esc(def.name + ', ' + def.label)}" style="--profile-accent:${def.color}">${avatarArt(id)}<span>${esc(def.name)}</span><i aria-hidden="true">✓</i></button>`).join('')}</div><p class="profile-avatar-label">Avatar selecionado: <b id="profile-avatar-label">${esc(avatar.name)}</b></p></fieldset>
+        <p id="profile-error" class="profile-error" role="alert" aria-live="polite"></p>
+        <div class="profile-actions">${editing ? '<button type="button" class="btn ghost" data-a="close">Cancelar</button>' : ''}<button type="submit" class="btn gold profile-submit">${editing ? 'Salvar comandante' : 'Iniciar missão'}<span aria-hidden="true">↗</span></button></div>
+        <p class="profile-local-note">${A.ic('lock', 14)}<span>Seu progresso fica salvo neste navegador. Em Ajustes, você pode guardar uma cópia na sua pasta de saves.</span></p>
+      </form>
+    </div>`;
+  }
+  function openProfile(editing) {
+    if (!profileWritable()) { UI.toast('Use a aba ativa da partida para editar seu comandante.', 'err'); return; }
+    profileDraft = { name: S.profile ? S.profile.name : '', avatar: S.profile ? S.profile.avatar : 'aurora' };
+    UI.modal(profileHTML(editing), 'profile-modal', { lock: !editing });
+    $('#profile-form').dataset.editing = editing ? 'true' : 'false';
+  }
+  UI.ensureProfile = function () {
+    if (!S || S.profile || profileQueued || $('#profile-form') || !profileWritable()) return;
+    profileQueued = true;
+    enqueue(() => { profileQueued = false; if (!S.profile) openProfile(false); });
+  };
+  UI.editProfile = function () {
+    if (!S.profile) { UI.ensureProfile(); return; }
+    openProfile(true);
+  };
+  function selectProfileAvatar(id) {
+    if (!profileDraft || !Object.prototype.hasOwnProperty.call(D.commanderAvatars, id)) return;
+    profileDraft.avatar = id;
+    const def = D.commanderAvatars[id];
+    $('#modal .profile-hero').style.setProperty('--profile-accent', def.color);
+    $('.profile-preview-portrait').innerHTML = avatarArt(id);
+    setT($('.profile-preview-role'), def.label);
+    setT($('#profile-avatar-label'), def.name);
+    for (const button of document.querySelectorAll('.profile-avatar')) { const selected = button.dataset.a === 'profileavatar|' + id; button.setAttribute('aria-pressed', String(selected)); button.classList.toggle('selected', selected); }
+  }
+  function submitProfile(e) {
+    if (e.target.id !== 'profile-form') return;
+    e.preventDefault();
+    if (!profileDraft || !profileWritable()) return;
+    H.audioUnlock && H.audioUnlock();
+    const field = $('#commander-name');
+    const r = E.setProfile(S, { name: field.value, avatar: profileDraft.avatar });
+    if (!r.ok) { setT($('#profile-error'), r.err); field.setAttribute('aria-invalid', 'true'); field.focus(); sfx('err'); return; }
+    const editing = e.target.dataset.editing === 'true';
+    const returnKey = ui.returnFocus && ui.returnFocus.key;
+    const name = S.profile.name;
+    const saved = H.save(true, true);
+    UI.closeModal(); renderChrome(); UI.frame(true);
+    if (editing && !ui.modalOpen && !ui.returnPending) { const target = findKey(document, returnKey); if (target) target.focus({ preventScroll: true }); }
+    if (saved.ok) { UI.toast(editing ? 'Comandante atualizado.' : 'Bem-vindo(a) à missão, ' + esc(name) + '.', 'ok'); sfx('promote'); }
+    else UI.toast(H.saveMessage(saved), 'err');
+  }
+  function profileInput(e) {
+    if (e.target.id !== 'commander-name' || !profileDraft) return;
+    profileDraft.name = e.target.value;
+    const name = e.target.value.trim().replace(/\s+/g, ' ');
+    setT($('.profile-preview-name'), name || 'Seu comandante');
+    setT($('#profile-name-count'), Array.from(e.target.value).length + '/24');
+    e.target.removeAttribute('aria-invalid'); setT($('#profile-error'), '');
+  }
   // Tab circula só dentro do diálogo aberto (modal do jogo ou aviso de outra aba)
   function trapTab(e) {
     const lock = document.getElementById('lockov');
@@ -124,6 +204,7 @@
       <span class="uni-chip" data-u="uni"></span><span class="top-spacer"></span>
       <span class="cur data" title="Dados de pesquisa (permanentes)">${A.rg('data', 16)}<span data-u="data"></span></span>
       <span class="cur frag" title="Fragmentos de Singularidade">${A.rg('frag', 16)}<span data-u="frags"></span></span>
+      <button class="commander-chip" data-a="profile" data-k="commander-profile" aria-label="${S.profile ? 'Editar comandante ' + esc(S.profile.name) : 'Criar comandante'}" title="${S.profile ? esc(S.profile.name) : 'Criar comandante'}">${S.profile ? avatarArt(S.profile.avatar) : A.ic('crew', 22)}<span>${S.profile ? esc(S.profile.name) : 'Comandante'}</span></button>
       <button class="save-warn hidden" data-a="nav|settings" data-u="savest" title="O progresso não está sendo salvo neste navegador">${A.ic('warn', 14)} Não salvo</button>
       <button class="icon-btn chest-btn hidden" data-a="openchest" data-u="chestbtn" title="Abrir Baú de Suprimentos" aria-label="Abrir Baú de Suprimentos">${A.ic('chest')}<span class="badge" data-u="chestn"></span></button>
       <button class="icon-btn" data-a="nav|settings" title="Ajustes" aria-label="Ajustes">${A.ic('settings')}</button>`;
@@ -133,7 +214,7 @@
   // ---------------- ASSINATURA (re-render quando a estrutura muda) ----------------
   function sig() {
     const run = S.run; const p = S.perm;
-    const base = [ui.screen, run.universe, p.collapses, RO.map((r) => run.regions[r].unlocked ? run.regions[r].phase : '-').join(''), Object.keys(p.specs).join(','), S.settings.dev, S.settings.sci].join('|');
+    const base = [ui.screen, run.universe, p.collapses, RO.map((r) => run.regions[r].unlocked ? run.regions[r].phase : '-').join(''), Object.keys(p.specs).join(','), S.settings.dev, S.settings.sci, S.profile && S.profile.name, S.profile && S.profile.avatar].join('|');
     switch (ui.screen) {
       case 'region': {
         const reg = run.regions[ui.rid];
@@ -142,7 +223,7 @@
       case 'map': return base + '|' + ui.sel + run.routes.map((r) => r.id).join(',') + run.dyson.stage;
       case 'crew': return base + JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
       case 'research': return base + JSON.stringify(p.research) + ui.resSel;
-      case 'exp': return base + run.exps.map((e) => e.uid).join(',') + '|' + p.chests.map((c) => c.id).join(',') + run.flags.expeditions + JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
+      case 'exp': return base + run.exps.map((e) => e.uid).join(',') + '|' + p.chests.map((c) => c.id).join(',') + run.flags.expeditions + Object.keys(run.flags).filter((k) => k.startsWith('frag:')).join(',') +JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
       case 'sing': return base + run.dyson.stage + run.core + E.canCollapse(S) + ui.uniSel + JSON.stringify(run.dirs) + (run.offer || []).join() + JSON.stringify(p.research) + Object.keys(p.ach).length;
       default: return base + JSON.stringify(S.settings);
     }
@@ -203,6 +284,25 @@
   U.uni = (el) => setH(el, `<i></i>${D.universes[S.run.universe].name}${S.perm.collapses ? ' · ' + (S.perm.collapses + 1) + 'º ciclo' : ''}`);
   U.data = (el) => setT(el, F.n(S.perm.data));
   U.frags = (el) => setT(el, F.n(S.perm.frags));
+  U.foldersave = (el) => {
+    const b = H.folderSave, st = b ? b.status() : { supported: false, phase: 'unsupported' };
+    const panel = el.closest('.folder-save-panel');
+    let text = 'Nenhuma pasta selecionada. O jogo continua salvo neste navegador.';
+    if (!st.supported) text = 'Neste navegador, use Baixar cópia para guardar o arquivo na pasta desejada.';
+    else if (st.phase === 'choosing') text = 'Escolha uma pasta na janela do navegador.';
+    else if (st.phase === 'review') text = 'Aguardando sua escolha sobre o save encontrado na pasta.';
+    else if (st.phase === 'permission') text = 'Pasta ' + st.folder + ': autorize novamente para continuar gravando.';
+    else if (st.phase === 'saving') text = 'Gravando cópia em ' + st.folder + '…';
+    else if (st.phase === 'error') text = st.error || 'Não foi possível gravar na pasta. O salvamento do navegador continua ativo.';
+    else if (st.folder) text = 'Pasta: ' + st.folder + (st.lastSaved ? ' · Cópia gravada às ' + new Date(st.lastSaved).toLocaleTimeString('pt-BR') : ' · Conectada');
+    if (st.error && st.phase !== 'error') text += ' ' + st.error;
+    setT(el, text); setC(el, 'warn', st.phase === 'permission' || st.phase === 'error' || !!st.error);
+    const busy = st.phase === 'choosing' || st.phase === 'saving' || st.phase === 'review';
+    setD(panel.querySelector('[data-a="folder|choose"]'), !st.supported || busy || !profileWritable());
+    setD(panel.querySelector('[data-a="folder|save"]'), !st.folder || busy || !profileWritable());
+    setD(panel.querySelector('[data-a="folder|disconnect"]'), !st.folder || busy || !profileWritable());
+    setT(panel.querySelector('[data-a="folder|save"]'), st.phase === 'permission' ? 'Autorizar e salvar cópia' : 'Salvar cópia agora');
+  };
   U.chestbtn = (el) => setC(el, 'hidden', !S.perm.chests.length);
   U.chestn = (el) => setT(el, String(S.perm.chests.length));
   U.savest = (el) => setC(el, 'hidden', !(H.saveState && H.saveState.failing));
@@ -774,8 +874,9 @@
       const d = D.expeditions[id]; const who = d.spec || d.recruit;
       const g = []; for (const s in (d.g.cards || {})) g.push(`<span class="chip gold">${Math.max(1, Math.round(d.g.cards[s] * m.expReward))}× ${D.specs[s].name}</span>`);
       if (d.g.data) g.push(`<span class="chip cyan">${A.rg('data')} ${F.n(Math.round(d.g.data * m.expReward))}</span>`);
-      if (d.g.frags) g.push(`<span class="chip purple">${A.rg('frag')} ${d.g.frags}</span>`);
-      const b = d.bonus.map(([p, rw]) => `<span class="chip">${F.pct(p)}: ${rw.cards ? Object.keys(rw.cards).map((s) => rw.cards[s] + '× ' + D.specs[s].name).join(', ') : ''}${rw.data ? rw.data + ' dados' : ''}${rw.frags ? rw.frags + ' fragmento' : ''}</span>`).join('');
+      const fdone = E.expFragDone(S, id);
+      if (d.g.frags) g.push(fdone ? `<span class="chip muted" title="O fragmento desta expedição vem uma vez por universo">${A.rg('frag')} já obtido neste universo</span>` : `<span class="chip purple" title="Uma vez por universo">${A.rg('frag')} ${d.g.frags} (1ª vez no universo)</span>`);
+      const b = d.bonus.map(([p, rw]) => { if (rw.frags && fdone && !rw.cards && !rw.data) return ''; return `<span class="chip">${F.pct(p)}: ${rw.cards ? Object.keys(rw.cards).map((s) => rw.cards[s] + '× ' + D.specs[s].name).join(', ') : ''}${rw.data ? rw.data + ' dados' : ''}${rw.frags ? rw.frags + ' fragmento (até 1 por universo)' : ''}</span>`; }).join('') || '<span class="muted">—</span>';
       return `<div class="exp"><div class="hd">${A.portraitBox(who, !S.perm.specs[who])}<div class="grow"><b>${d.name}</b><div class="small muted">Parte de ${D.regions[d.region].name} · ${F.t(E.expDur(S, id, m))}</div></div></div>
         <div class="row wrap small"><span class="muted">Custo:</span><span data-u="excost|${id}"></span></div>
         <div class="row wrap small"><span class="muted">Garantido:</span>${g.join('')}</div><div class="row wrap small"><span class="muted">Possível:</span>${b}</div>
@@ -834,6 +935,8 @@
     const st = S.settings;
     const sw = (k, label, desc) => `<label class="switch"><input type="checkbox" data-ch="set|${k}" ${st[k] ? 'checked' : ''}> <span>${label}${desc ? `<br><span class="tiny muted">${desc}</span>` : ''}</span></label>`;
     return `<div class="screen-title"><h2>Ajustes</h2></div><div class="sing-grid"><div class="col" style="gap:14px">
+      <div class="panel"><h3>Comandante</h3><div class="commander-settings">${S.profile ? avatarArt(S.profile.avatar) : ''}<div class="grow"><strong>${S.profile ? esc(S.profile.name) : 'Seu perfil de comandante'}</strong><p class="small muted">${S.profile ? esc(D.commanderAvatars[S.profile.avatar].label) : 'Escolha um nome e um avatar para sua missão.'}</p></div><button class="btn sm" data-a="profile" data-k="commander-edit">${S.profile ? 'Editar perfil' : 'Criar perfil'}</button></div></div>
+      <div class="panel folder-save-panel"><h3>Pasta de saves</h3><p class="small muted">Escolha uma pasta no seu dispositivo para manter uma cópia automática em <b>helios-idle-save.json</b>. Ela inclui o comandante e todo o progresso.</p><p class="small folder-save-status" data-u="foldersave" role="status" aria-live="polite"></p><div class="row wrap"><button class="btn gold" data-a="folder|choose">Escolher pasta</button><button class="btn" data-a="folder|save">Salvar cópia agora</button><button class="btn ghost" data-a="folder|disconnect">Desconectar pasta</button><button class="btn ghost" data-a="download">Baixar cópia</button></div><p class="tiny muted">Para recuperar, escolha a mesma pasta ou use Abrir arquivo abaixo. O arquivo fica no seu dispositivo. Desconectar mantém a cópia existente.</p></div>
       <div class="panel"><h3>Jogo</h3><div class="col">${sw('sound', 'Som')}${sw('reduceMotion', 'Reduzir movimento', 'Desliga animações e encurta o Colapso.')}${sw('sci', 'Notação científica', 'Mostra 1,23e15 em vez de 1,23Qa.')}${sw('skipAnim', 'Pular animação do Colapso')}</div></div>
       <div class="panel"><h3>Salvamento</h3><p class="small muted">Salvamento automático a cada ${D.AUTOSAVE_SEC}s e após ações importantes. Formato versionado (v${D.SAVE_VERSION}).</p>
         <div class="row wrap"><button class="btn" data-a="save">Salvar agora</button><button class="btn" data-a="export">Exportar</button><button class="btn" data-a="download">Baixar arquivo</button></div>
@@ -859,6 +962,40 @@
     </div></div>`;
   }
 
+  async function folderAction(action) {
+    if (!H.folderSave || !profileWritable()) { UI.toast('Use a aba ativa da partida para salvar na pasta.', 'err'); return; }
+    try {
+      const b = H.folderSave;
+      const result = action === 'choose' ? await b.choose() : action === 'disconnect' ? await b.disconnect() : await b.saveNow();
+      if (result.ok && result.existing) {
+        const parsed = E.importStr(result.raw);
+        UI.queueModal(() => {
+          UI.modal(`<h2>Save encontrado na pasta</h2><p class="small">Esta pasta já contém <b>helios-idle-save.json</b>. Escolha qual partida deseja manter.</p>${parsed.ok ? `<p class="small muted">${parsed.S.profile ? esc(parsed.S.profile.name) + ' · ' : ''}${esc(D.universes[parsed.S.run.universe].name)} · ${parsed.S.perm.collapses} Colapso(s).</p><p class="small">Restaurar troca a partida aberta pelo progresso do arquivo.</p>` : `<p class="small warn">O arquivo não pôde ser restaurado: ${esc(parsed.err)}</p>`}<div class="foot"><button class="btn ghost" data-a="foldercancel">Cancelar</button>${parsed.ok ? '<button class="btn gold" data-a="folderrestore">Restaurar save da pasta</button>' : ''}<button class="btn" data-a="foldercurrent">Substituir arquivo pela partida atual</button></div>`);
+          ui.folderCandidate = { raw: result.raw };
+        });
+      } else if (result.ok) {
+        UI.toast(action === 'disconnect' ? 'Pasta desconectada. O arquivo foi mantido.' : 'Cópia da partida gravada na pasta.', 'ok');
+      } else if (!['cancelled', 'superseded'].includes(result.reason)) UI.toast(result.error || 'Não foi possível usar a pasta. Seu save do navegador foi mantido.', 'err');
+    } catch (error) { UI.toast('Não foi possível acessar a pasta. Seu save do navegador foi mantido.', 'err'); }
+    UI.frame();
+  }
+  async function finishFolderChoice(restore) {
+    const candidate = ui.folderCandidate;
+    if (!candidate || !H.folderSave || !profileWritable()) return;
+    const parsed = restore ? E.importStr(candidate.raw) : null;
+    if (restore && !parsed.ok) { UI.toast(parsed.err, 'err'); return; }
+    ui.folderCandidate = null; UI.closeModal();
+    if (restore) {
+      const applied = H.replaceState(parsed.S);
+      if (applied.status === 'readonly' || applied.status === 'stale') { H.folderSave.cancelChoice(); UI.toast(H.saveMessage(applied), 'err'); return; }
+    }
+    try {
+      const result = await H.folderSave.confirmFolder({ overwrite: true });
+      UI.toast(result.ok ? (restore ? 'Progresso restaurado e pasta conectada.' : 'Pasta conectada à partida atual.') : result.error || 'A pasta não pôde ser conectada.', result.ok ? 'ok' : 'err');
+    } catch (error) { UI.toast('A partida está no navegador, mas não foi possível gravar na pasta.', 'err'); }
+    UI.frame();
+  }
+
   // ================= OFFLINE =================
   UI.offlineReport = function (rep) {
     const prod = Object.entries(rep.prod).filter(([, v]) => v >= 1).sort((a, b) => b[1] * D.res[b[0]].v - a[1] * D.res[a[0]].v);
@@ -873,6 +1010,12 @@
 
   // ================= AÇÕES =================
   const ACT = {
+    folder: (action) => { folderAction(action); },
+    foldercancel: () => UI.closeModal(),
+    foldercurrent: () => finishFolderChoice(false),
+    folderrestore: () => finishFolderChoice(true),
+    profile: () => UI.editProfile(),
+    profileavatar: (id) => selectProfileAvatar(id),
     close: () => UI.closeModal(),
     nav: (k) => { sfx('click'); UI.go(k); },
     reg: (r) => { ui.rid = r; sfx('click'); UI.go('region'); },
@@ -925,7 +1068,7 @@
       const r = E.collectExp(S, +uid); if (!r.ok) return UI.err(r);
       sfx('chest'); H.save();
       const t = r.total; const cards = Object.keys(t.cards);
-      enqueue(() => UI.modal(`<h2 class="gold">Expedição concluída</h2><p>${esc(r.name)}</p><div class="reveal">${cards.map((s, i) => `<div class="rc" style="--rar:${rarColor(s)};animation-delay:${i * 0.12}s">${A.portraitBox(s, false)}<b>${D.specs[s].name}</b><span class="gold">+${t.cards[s]}</span></div>`).join('')}</div><p style="text-align:center"><span class="chip cyan">${A.rg('data')} +${F.n(t.data)}</span>${t.frags ? ` <span class="chip purple">${A.rg('frag')} +${t.frags}</span>` : ''}</p><div class="foot"><button class="btn gold" data-a="close">Fechar</button></div>`));
+      enqueue(() => UI.modal(`<h2 class="gold">Expedição concluída</h2><p>${esc(r.name)}</p><div class="reveal">${cards.map((s, i) => `<div class="rc" style="--rar:${rarColor(s)};animation-delay:${i * 0.12}s">${A.portraitBox(s, false)}<b>${D.specs[s].name}</b><span class="gold">+${t.cards[s]}</span></div>`).join('')}</div><p style="text-align:center"><span class="chip cyan">${A.rg('data')} +${F.n(t.data)}</span>${t.frags ? ` <span class="chip purple">${A.rg('frag')} +${t.frags}</span>` : ''}</p>${t.fragsDone ? `<p class="small muted" style="text-align:center">O fragmento desta expedição já foi obtido neste universo. Ele volta a ser possível depois do próximo Colapso.</p>` : ''}<div class="foot"><button class="btn gold" data-a="close">Fechar</button></div>`));
     },
     chest: (id) => { const r = E.openChest(S, +id); if (r.ok) { sfx('chest'); H.save(); enqueue(() => chestModal(r)); } },
     openchest: () => { if (S.perm.chests.length) ACT.chest(S.perm.chests[0].id); },
@@ -1021,6 +1164,8 @@
     document.addEventListener('click', onClick);
     document.addEventListener('change', onChange);
     document.addEventListener('keydown', onKey);
+    document.addEventListener('input', profileInput);
+    document.addEventListener('submit', submitProfile);
     UI.frame(true);
   };
   UI.setState = function (state) { S = state; ui.sig = ''; renderChrome(); UI.frame(true); };
