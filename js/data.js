@@ -6,7 +6,7 @@
   const D = {};
 
   D.SAVE_KEY = 'helios_idle_save';
-  D.SAVE_VERSION = 2; // v2: ciclos manuais registram máquinas/nível pagos (mc), cargueiros podem aguardar descarga, revisão (rev)
+  D.SAVE_VERSION = 3; // v2: ciclos manuais registram máquinas/nível pagos (mc), cargueiros podem aguardar descarga, revisão (rev)
   D.AUTOSAVE_SEC = 20;
   D.OFFLINE_BASE_H = 8;
 
@@ -119,7 +119,7 @@
       out: { data: 1 }, cost: { metal: 60, alloy: 20 }, g: 1.5, up: [['metal', 80, 1], ['alloy', 30, 1], ['comp', 10, 2]], ug: 2,
       desc: 'Produz dados de pesquisa permanentes.' },
     obs_profundo: { name: 'Observatório Profundo', pl: 'observatórios profundos', cat: 'research', tier: 6, t: 30, e: 25,
-      in: { cryo: 1 }, out: { data: 12 }, cost: { alloy: 100, comp: 40, cryo: 5 }, g: 1.45, up: [['alloy', 120, 1], ['comp', 40, 1], ['cryo', 10, 1]], ug: 1.9,
+      in: { cryo: 1 }, out: { data: 6 }, cost: { alloy: 100, comp: 40, cryo: 5 }, g: 1.45, up: [['alloy', 120, 1], ['comp', 40, 1], ['cryo', 10, 1]], ug: 1.9,
       desc: 'Escuta o sinal vindo da borda do sistema.' },
     lab_anomalia: { name: 'Laboratório de Anomalia', pl: 'laboratórios de anomalia', cat: 'research', tier: 7, t: 25, e: 30,
       in: { cryo: 2, fusion: 2 }, out: { exotic: 1 }, cost: { alloy: 120, comp: 50, hull: 2 }, g: 1.4, up: [['alloy', 150, 1], ['comp', 60, 1], ['hull', 4, 1]], ug: 1.9,
@@ -136,6 +136,16 @@
 
   // ---------------- ESPECIALISTAS ----------------
   D.specSpeed = [1, 2, 4, 8, 12, 16, 24, 32, 48, 64, 96];          // por nível
+  // ---------------- CIÊNCIA ----------------
+  // Instalações cuja saída é "data" (Observatório e Observatório Profundo) usam esta escala própria, em vez da
+  // curva industrial (D.specSpeed) e do rendimento global dos fragmentos. O Laboratório de Anomalia (matéria
+  // exótica) continua na curva industrial. dataGain (Oráculo e Telemetria) continua aplicado uma única vez.
+  D.science = {
+    oracleSpeed: [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12],   // velocidade científica por nível do Oráculo (início igual ao industrial)
+    globalSpeedExp: 0.5,                                 // velocidade global (Eco, Eco Industrial) entra pela raiz
+    fragBonus: 0.005, fragBonusMax: 0.5,                 // +0,5% por fragmento total, até +50% (indústria: +3% sem teto)
+    levelYield: (lvl) => 1 + 0.3 * (lvl - 1),            // rendimento por nível do observatório (indústria: +50%/nível)
+  };
   D.specCards = [0, 5, 10, 20, 35, 60, 100, 150, 250, 400];         // cartas para subir do nível i para i+1
   D.specData  = [0, 100, 250, 600, 1500, 3500, 8000, 18000, 40000, 90000];
   D.specMaxLevel = 10;
@@ -600,7 +610,55 @@
     sg5: { br: 'sg', cur: 'frag', name: 'Ressonância de Fragmentos', max: 5, cost: 3, cg: 2, eff: { k: 'fragGain', v: 0.2 }, desc: '+20% de Fragmentos recebidos no Colapso por nível.' },
     sg6: { br: 'sg', cur: 'frag', name: 'Pré-fabricados', max: 3, cost: 2, cg: 2, req: ['sg1'], eff: { k: 'prefab', v: 1 }, desc: 'Novos universos começam com +2 extratores, +1 refinaria e +2 painéis na Lua por nível.' },
     sg7: { br: 'sg', cur: 'frag', name: 'Mapa do Vazio', max: 1, cost: 5, cg: 1, eff: { k: 'offers', v: 1 }, desc: 'Mostra 4 destinos possíveis no Colapso em vez de 3.' },
+    anom1: { br: 'log', name: 'Cartografia da Anomalia', opt: true, max: 10, cost: 30000, cg: 1.45, eff: { k: 'storage', v: 0.04 }, desc: 'Projeto opcional de fim de jogo: +4% de armazenamento por nível. Não é necessário para avançar e não acelera a ciência.' },
   };
+  // ---------------- DESCOBERTAS ----------------
+  // Conhecimento permanente obtido em marcos das missões (sobrevive ao Colapso). Dados continuam pagando a
+  // pesquisa; as tecnologias avançadas abaixo também exigem conhecer a descoberta correspondente.
+  // from = missão que concede (regiao.fase.indice; IDs estáveis dos saves).
+  D.discoveries = {
+    componentes:   { name: 'Engenharia de componentes', from: 'marte.0.4', desc: 'Linhas de produção de componentes em escala.' },
+    raros:         { name: 'Metalurgia de materiais raros', from: 'cinturao.0.2', desc: 'Separação e refino dos metais raros do Cinturão.' },
+    solar_orbital: { name: 'Engenharia solar orbital', from: 'mercurio.1.1', desc: 'Montagem de coletores em órbita próxima ao Sol.' },
+    fusao:         { name: 'Domínio da fusão', from: 'jupiter.0.4', desc: 'Separação de hélio-3 e confinamento estável.' },
+    estruturas:    { name: 'Engenharia de grandes estruturas', from: 'saturno.0.2', desc: 'Módulos estruturais para cascos e enxames.' },
+    criogenia:     { name: 'Ciência criogênica', from: 'urano.0.1', desc: 'Supercondutores a temperaturas extremas.' },
+    anomalia:      { name: 'Ciência da anomalia', from: 'netuno.0.5', desc: 'O sinal de Netuno decodificado.' },
+  };
+  D.discOrder = ['componentes', 'raros', 'solar_orbital', 'fusao', 'estruturas', 'criogenia', 'anomalia'];
+  // pesquisa → descoberta exigida a partir de um nível (1 = desde o primeiro). As primeiras pesquisas de cada
+  // ramo continuam livres; só os nós avançados (ou os níveis finais) dependem de descobertas.
+  D.researchDisc = {
+    ind3: { d: 'componentes', from: 1 }, min4: { d: 'raros', from: 1 }, min5: { d: 'raros', from: 1 },
+    en3: { d: 'solar_orbital', from: 4 }, en4: { d: 'fusao', from: 1 }, en5: { d: 'fusao', from: 1 },
+    ind5: { d: 'estruturas', from: 1 }, en2: { d: 'criogenia', from: 4 }, anom1: { d: 'anomalia', from: 1 },
+  };
+  for (const id in D.researchDisc) D.research[id].disc = D.researchDisc[id];
+  // ---------------- PRÊMIOS FUNCIONAIS POR FASE ----------------
+  // Fases sem recrutamento, descoberta ou desbloqueio ganham cartas direcionadas num objetivo-chave, para um
+  // especialista já recrutado em fases anteriores e útil no passo seguinte. Orçamento: 30 cartas na campanha
+  // (≈17% das 181 cartas base dos baús). Dados continuam como complemento; os IDs das missões não mudam.
+  D.phaseCards = {
+    'marte.1.1': { vulcano: 4 },  // Forjas Vermelhas: produzir 250 ligas → indústria
+    'marte.2.7': { vega: 4 },     // Estaleiros de Marte: 1,2K ligas → rotas para o Cinturão
+    'cinturao.1.7': { iris: 4 },  // Rede Logística: 300 metais raros → extração
+    'venus.1.2': { aura: 4 },     // Cidades Flutuantes: 1,5K combustível → gases de Júpiter
+    'jupiter.1.5': { ion: 4 },    // Forja de Fusão: 500 de fusão → reatores
+    'saturno.1.7': { nix: 4 },    // Grandes Estaleiros: 80 módulos → gelo e criogenia de Urano
+    'urano.1.6': { oraculo: 3 },  // Laboratórios Criogênicos: 250 supercondutores → laboratórios de Netuno
+    'netuno.1.3': { ion: 3 },     // Estabilizar a anomalia → combustível de fusão do Núcleo
+  };
+  for (const key in D.phaseCards) {
+    const [rid, p, i] = key.split('.'); const md = D.regions[rid].phases[+p].missions[+i];
+    md.rw = Object.assign({}, md.rw, { cards: D.phaseCards[key], cardsOwned: true });
+  }
+  for (const id in D.discoveries) { // a recompensa da missão-marco passa a conceder a descoberta
+    const [rid, p, i] = D.discoveries[id].from.split('.'); const md = D.regions[rid].phases[+p].missions[+i];
+    md.rw = Object.assign({}, md.rw, { disc: id });
+  }
+  // Custo dos níveis finais: os dois últimos níveis (nós de 5) ou o último (nós de até 3) custam ×mult.
+  // Os nós básicos de cada ramo e todos os níveis iniciais mantêm o preço original (tecnologias essenciais).
+  D.researchLate = { mult: 3, basic: ['min1', 'ind1', 'en1', 'log1', 'exp1', 'exp2'] };
   D.startKit = { metal: 150, ore: 100, ice: 60, alloy: 20 }; // por nível de Memória Quântica
 
   // ---------------- UNIVERSOS ----------------

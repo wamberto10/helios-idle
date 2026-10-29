@@ -526,3 +526,10 @@ button.node { align-items: stretch; }
 .bneck .btn { display: block; width: max-content; margin-top: 8px; }
 .folder-save-status { padding: 10px 12px; border: 1px solid var(--line); border-radius: 9px; background: #061024; overflow-wrap: anywhere; }
 .folder-save-panel .row { margin-top: 12px; }
+
+/* recompensas: suprimentos aguardando espaço e avisos */
+.toast.warn { border-left-color: var(--warn); }
+.chip.warn { border-color: rgba(255, 176, 74, .45); }
+.bcard .hold:empty { display: none; }
+.bcard .hold { margin-top: 6px; }
+.bcard .hold-on { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 6px 8px; border: 1px dashed rgba(255, 200, 87, .45); border-radius: 10px; }

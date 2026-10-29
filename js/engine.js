@@ -56,9 +56,9 @@
   // ================= ESTADO =================
   E.newPerm = () => ({
     data: 0, frags: 0, fragsTotal: 0, specs: {}, research: {}, ach: {}, universes: [], visited: { padrao: true },
-    collapses: 0, chests: [], seq: 1, stats: { playSec: 0, value: 0 },
+    collapses: 0, chests: [], seq: 1, stats: { playSec: 0, value: 0 }, disc: {},
   });
-  E.newRegion = () => ({ unlocked: false, phase: 0, b: {}, st: {}, rate: {}, flow: {}, exp: {}, en: { gen: 0, use: 0, ratio: 1 },
+  E.newRegion = () => ({ unlocked: false, phase: 0, b: {}, st: {}, pend: {}, rate: {}, flow: {}, exp: {}, en: { gen: 0, use: 0, ratio: 1 },
     stats: { prod: {}, cycles: {}, deliv: {}, data: 0, trips: 0 } });
   E.newRun = function (S, uni) {
     const run = { universe: uni || 'padrao', time: 0, regions: {}, missions: {}, projects: {}, routes: [], routeSeq: 0, routesBuilt: 0,
@@ -182,6 +182,10 @@
     if (um.expReward) m.expReward *= um.expReward;
     if (um.expTime) m.expTime *= um.expTime;
     m.gen *= 1 + D.dysonEnergyPerStage * run.dyson.stage;
+    // ciência: escala própria (ver D.science)
+    const orc = perm.specs.oraculo; const sc = D.science;
+    m.sciSpeed = (orc ? sc.oracleSpeed[orc.lvl] : 1) * ((um.speed && um.speed.research) || 1) * Math.pow(m.globalSpeed, sc.globalSpeedExp);
+    m.sciYield = 1 + Math.min(sc.fragBonusMax, sc.fragBonus * (perm.fragsTotal || 0));
     return m;
   };
 
@@ -229,8 +233,10 @@
     return g;
   };
   E.useOf = (def, n, m) => (def.e || 0) * n * m.use * m.useCat[def.cat] * Math.pow(Math.max(1e-9, E.speedOf(def, m)), D.energySpeedExp);
-  E.speedOf = (def, m) => m.speed[def.cat] * m.globalSpeed;
-  E.yieldOf = (def, bs, r, m) => D.levelYield(bs.lvl) * m.yieldCat[def.cat] * (m.yieldRes[r] || 1) * m.globalYield;
+  E.isSci = (def) => !!(def.out && def.out.data);
+  E.speedOf = (def, m) => E.isSci(def) ? m.sciSpeed : m.speed[def.cat] * m.globalSpeed;
+  E.yieldOf = (def, bs, r, m) => r === 'data' ? D.science.levelYield(bs.lvl) * (m.yieldRes.data || 1) * m.sciYield
+    : D.levelYield(bs.lvl) * m.yieldCat[def.cat] * (m.yieldRes[r] || 1) * m.globalYield;
   // produção teórica por segundo (sem gargalos)
   E.bRate = function (S, rid, bid, m, extraN, extraLvl) {
     const def = D.buildings[bid]; const bs = S.run.regions[rid].b[bid] || { n: 0, lvl: 1 };
@@ -292,8 +298,9 @@
   function limitCycles(S, rid, reg, def, bs, m) {
     let lim = Infinity, why = '';
     if (def.in) for (const r in def.in) {
-      const need = def.in[r] * bs.n; const c = Math.floor((reg.st[r] || 0) / need + EPS);
-      if (c < lim) { lim = c; why = 'no:' + r; }
+      const rs = E.reserved(S, rid, r, m); const need = def.in[r] * bs.n;
+      const c = Math.floor(Math.max(0, (reg.st[r] || 0) - rs) / need + EPS);
+      if (c < lim) { lim = c; why = (rs > 0 && (reg.st[r] || 0) >= need ? 'hold:' : 'no:') + r; }
     }
     for (const r in def.out) {
       if (r === 'data' || reg.exp[r]) continue;
@@ -355,8 +362,19 @@
   // Cada instalação quer rodar k = dt / T ciclos; um fator f ∈ [0,1] reduz quem ficaria sem insumo
   // ou estouraria o armazenamento. Produção e consumo do passo são aplicados juntos (saldo líquido
   // por recurso), então um estoque intermediário cheio não descarta o que é consumido no mesmo passo.
+  // suprimentos de recompensa que não couberam: entram no estoque assim que houver espaço (não contam como produção)
+  function flushPending(S, rid, m) {
+    const reg = S.run.regions[rid]; if (!reg.pend) return;
+    for (const r of Object.keys(reg.pend)) {
+      const add = Math.max(0, Math.min(reg.pend[r], E.localCap(S, rid, r, m) - (reg.st[r] || 0)));
+      if (add > 0) { reg.st[r] = (reg.st[r] || 0) + add; reg.pend[r] -= add; addFlow(reg, r, add); }
+      if (!(reg.pend[r] > EPS)) delete reg.pend[r];
+    }
+  }
+  E.pendingTotal = (reg) => Object.values(reg.pend || {}).reduce((a, b) => a + b, 0);
   function regionTick(S, rid, dt, m, rep) {
     const reg = S.run.regions[rid];
+    flushPending(S, rid, m); holdTick(S, rid, m);
     const en = E.regionEnergy(S, rid, m); reg.en = en; const ratio = en.ratio;
     const ids = Object.keys(reg.b).sort((a, b) => D.buildings[a].tier - D.buildings[b].tier);
     const auto = [];
@@ -384,6 +402,7 @@
       auto.push({ bid, bs, def, k: t / T, f: 1, why: '', y });
     }
     if (auto.length) {
+      const resv = E.holdCost(S, rid, m) || {};
       const resSet = new Set();
       for (const a of auto) { for (const r in (a.def.in || {})) resSet.add(r); for (const r in a.def.out) if (r !== 'data') resSet.add(r); }
       for (let it = 0; it < 40; it++) {
@@ -394,10 +413,10 @@
             if (a.y[r]) prod += a.y[r] * a.k * a.f;
             if (a.def.in && a.def.in[r]) cons += a.def.in[r] * a.bs.n * a.k * a.f;
           }
-          const s = reg.st[r] || 0;
-          if (cons > EPS && s + prod - cons < -1e-7) {
-            const g = Math.max(0, (s + prod) / cons);
-            for (const a of auto) if (a.def.in && a.def.in[r] && a.f > 0) { a.f *= g; a.why = 'no:' + r; changed = true; }
+          const s = reg.st[r] || 0; const floor = Math.min(resv[r] || 0, s + prod); // material reservado não é consumido
+          if (cons > EPS && s + prod - cons < floor - 1e-7) {
+            const g = Math.max(0, (s + prod - floor) / cons);
+            for (const a of auto) if (a.def.in && a.def.in[r] && a.f > 0) { a.f *= g; a.why = (floor > 0 && s + prod - (resv[r] || 0) < cons ? 'hold:' : 'no:') + r; changed = true; }
           } else if (!reg.exp[r] && prod > EPS) {
             const cap = E.localCap(S, rid, r, m);
             if (s + prod - cons > cap + 1e-7) {
@@ -450,10 +469,11 @@
   function routeDepart(S, rt, m) {
     const run = S.run; const from = run.regions[rt.from], to = run.regions[rt.to];
     const info = E.routeInfo(S, rt, m);
-    if ((from.st.fuel || 0) + EPS < info.fuel) { rt.why = 'nofuel'; return false; }
+    const rsv = (r) => E.reserved(S, rt.from, r, m);
+    if ((from.st.fuel || 0) - rsv('fuel') + EPS < info.fuel) { rt.why = 'nofuel'; return false; }
     let left = info.cap; const cargo = {}; let tot = 0, anyAvail = false;
     for (const r of rt.res) {
-      const avail = (from.st[r] || 0) - (r === 'fuel' ? info.fuel : 0) - (rt.reserve || 0);
+      const avail = (from.st[r] || 0) - (r === 'fuel' ? info.fuel : 0) - (rt.reserve || 0) - rsv(r);
       if (avail >= 1) anyAvail = true;
       // espaço livre no destino descontando cargas que já estão a caminho (reserva de capacidade)
       // destino com “Exportar excedente” ligado aceita tudo (o que não couber segue para a Terra)
@@ -546,6 +566,34 @@
     E.pay(reg, cost); const bs = E.bs(reg, bid); bs.n++; bs.blk = false;
     return { ok: true };
   };
+  // ================= RESERVA PARA MELHORIA =================
+  // Uma reserva por região: o custo da próxima melhoria da instalação escolhida vira um piso no estoque.
+  // Consumidores da região, rotas que saem dela e entregas a projetos não usam esse material; quando o custo
+  // completa, a melhoria acontece uma vez (pagando) e a reserva termina. Construir e melhorar manualmente
+  // continuam livres (são escolhas explícitas do jogador).
+  E.holdCost = function (S, rid, m) {
+    const reg = S.run.regions[rid]; const h = reg.hold; if (!h) return null;
+    const bs = reg.b[h.bid]; if (!bs || !bs.n || bs.lvl >= D.maxBuildingLevel) return null;
+    return E.uCost(S, rid, h.bid, m);
+  };
+  E.reserved = (S, rid, r, m) => { const c = E.holdCost(S, rid, m); return c && c[r] ? c[r] : 0; };
+  E.setHold = function (S, rid, bid) {
+    const reg = S.run.regions[rid]; if (!reg) return { ok: false };
+    if (reg.hold && reg.hold.bid === bid) { delete reg.hold; return { ok: true, on: false }; }
+    const bs = reg.b[bid]; if (!bs || !bs.n) return { ok: false, err: 'Construa primeiro' };
+    if (bs.lvl >= D.maxBuildingLevel) return { ok: false, err: 'Nível máximo' };
+    reg.hold = { bid }; for (const b in reg.b) reg.b[b].blk = false;
+    return { ok: true, on: true };
+  };
+  function holdTick(S, rid, m) {
+    const reg = S.run.regions[rid]; if (!reg.hold) return;
+    const bid = reg.hold.bid; const bs = reg.b[bid];
+    if (!bs || !bs.n || bs.lvl >= D.maxBuildingLevel) { delete reg.hold; return; }
+    if (E.afford(reg, E.uCost(S, rid, bid, m)) && E.upgrade(S, rid, bid).ok) {
+      delete reg.hold;
+      E.log(S, 'gold', D.buildings[bid].name + ' (' + D.regions[rid].name + ') melhorado(a) ao nível ' + bs.lvl + ' com o material reservado.');
+    }
+  }
   E.upgrade = function (S, rid, bid) {
     const reg = S.run.regions[rid]; const bs = reg.b[bid];
     if (!bs || !bs.n) return { ok: false, err: 'Construa primeiro' };
@@ -581,6 +629,7 @@
       return 'Sem ' + D.res[r].name.toLowerCase().replace('dyson', 'Dyson') + (sp ? ' — sobrando em ' + D.regions[sp.rid].name : '');
     }
     if (k === 'full') return 'Armazenamento cheio (' + D.res[r].name.toLowerCase().replace('dyson', 'Dyson') + ')';
+    if (k === 'hold') return 'Material reservado para melhoria (' + D.res[r].name.toLowerCase().replace('dyson', 'Dyson') + ')';
     return why;
   };
   // outra região com sobra do recurso (estoque acima de metade da capacidade ou exportando): fonte sugerida para uma rota
@@ -619,6 +668,7 @@
         }
         return { kind: 'input', bid, res: r, text: name + ': ' + E.whyText(S, rid, bs.why), hint: 'Aumente a produção de ' + rn + ' ou traga por rota.' };
       }
+      if (k === 'hold') { const hb = reg.hold && D.buildings[reg.hold.bid]; return { kind: 'input', bid, res: r, text: name + ': ' + E.whyText(S, rid, bs.why), hint: 'Juntando ' + D.res[r].name.toLowerCase() + ' para melhorar ' + (hb ? hb.name : 'a instalação reservada') + '. A melhoria acontece sozinha quando o custo completar; cancele a reserva no cartão para liberar o material.' }; }
       if (k === 'full') return { kind: 'full', bid, text: name + ': ' + E.whyText(S, rid, bs.why), hint: 'Construa armazéns, transporte ' + D.res[r].name.toLowerCase().replace('dyson', 'Dyson') + ' por rota ou ative “Exportar excedente” no estoque.' };
     }
     const manual = ids.filter((b) => !E.isAuto(m, D.buildings[b]));
@@ -661,12 +711,12 @@
     let gave = 0;
     for (const r in info.cost) {
       const need = info.cost[r] - (st[r] || 0); if (need <= EPS) continue;
-      const give = Math.min(need, reg.st[r] || 0); if (give <= EPS) continue;
+      const give = Math.min(need, Math.max(0, (reg.st[r] || 0) - E.reserved(S, info.rid, r))); if (give <= EPS) continue;
       reg.st[r] -= give; st[r] = (st[r] || 0) + give; gave += give;
     }
     const pr = E.projectProgress(S, key, info.cost);
     if (pr.done) E.projectComplete(S, key);
-    else if (!gave && !silent) return { ok: false, err: 'Nada disponível para entregar em ' + D.regions[info.rid].name };
+    else if (!gave && !silent) { const h = reg.hold && D.buildings[reg.hold.bid]; return { ok: false, err: 'Nada disponível para entregar em ' + D.regions[info.rid].name + (h && Object.keys(info.cost).some((r) => E.reserved(S, info.rid, r) > 0) ? ' (parte do material está reservada para melhorar ' + h.name + ')' : '') }; }
     return { ok: true, done: pr.done };
   };
   E.projectComplete = function (S, key) {
@@ -764,19 +814,50 @@
     return ph.missions.map((md, i) => ({ md, i, id: E.mid(rid, reg.phase, i), claimed: !!S.run.missions[E.mid(rid, reg.phase, i)] }));
   };
   E.activeMissions = (S, rid) => E.phaseMissions(S, rid).filter((x) => !x.claimed).slice(0, 3);
+  // ================= PRÉVIA DE RECOMPENSAS =================
+  // Sem efeitos colaterais: não gasta, não sorteia, não marca nada. Usa o mesmo arredondamento de E.grant.
+  E.rewardPreview = function (S, rid, rw, m) {
+    m = m || E.mods(S);
+    const o = { data: 0, frags: 0, cards: {}, res: {}, pend: {}, spec: null, specCard: null, disc: null, discKnown: null, unlock: (rw && rw.unlock) || null };
+    if (!rw) return o;
+    if (rw.data) o.data = Math.round(rw.data * m.dataGain);
+    if (rw.frags) o.frags = rw.frags;
+    if (rw.res && rid) {
+      const reg = S.run.regions[rid];
+      for (const r in rw.res) {
+        const fit = Math.max(0, Math.min(rw.res[r], E.localCap(S, rid, r, m) - (reg.st[r] || 0)));
+        o.res[r] = fit; if (rw.res[r] - fit > EPS) o.pend[r] = rw.res[r] - fit;
+      }
+    }
+    if (rw.spec) { if (S.perm.specs[rw.spec]) o.specCard = rw.spec; else o.spec = rw.spec; }
+    if (rw.cards) for (const s in rw.cards) if (!rw.cardsOwned || S.perm.specs[s]) o.cards[s] = rw.cards[s];
+    if (rw.disc && D.discoveries[rw.disc]) { if (E.knows(S, rw.disc)) o.discKnown = rw.disc; else o.disc = rw.disc; }
+    return o;
+  };
   E.grant = function (S, rid, rw, src) {
-    const out = { data: 0, cards: {}, res: {}, frags: 0 };
+    const out = { data: 0, cards: {}, res: {}, pend: {}, frags: 0 };
     if (!rw) return out;
     const m = E.mods(S);
     if (rw.data) { const g = Math.round(rw.data * m.dataGain); S.perm.data += g; out.data = g; }
     if (rw.frags) { S.perm.frags += rw.frags; S.perm.fragsTotal += rw.frags; out.frags = rw.frags; }
-    if (rw.res && rid) {
-      const reg = S.run.regions[rid];
-      for (const r in rw.res) { const add = Math.max(0, Math.min(rw.res[r], E.localCap(S, rid, r, m) - (reg.st[r] || 0))); reg.st[r] = (reg.st[r] || 0) + add; out.res[r] = add; }
+    if (rw.res && rid) { // o que não cabe fica aguardando espaço na região (não se perde)
+      const reg = S.run.regions[rid]; if (!reg.pend) reg.pend = {};
+      for (const r in rw.res) {
+        const add = Math.max(0, Math.min(rw.res[r], E.localCap(S, rid, r, m) - (reg.st[r] || 0)));
+        reg.st[r] = (reg.st[r] || 0) + add; out.res[r] = add;
+        const rest = rw.res[r] - add; if (rest > EPS) { reg.pend[r] = (reg.pend[r] || 0) + rest; out.pend[r] = rest; }
+      }
     }
-    if (rw.spec) { E.recruit(S, rw.spec); out.spec = rw.spec; }
-    if (rw.cards) for (const s in rw.cards) { E.addCards(S, s, rw.cards[s]); out.cards[s] = (out.cards[s] || 0) + rw.cards[s]; }
+    if (rw.spec) { // já recrutado: vira uma carta (informada em out.cards)
+      if (S.perm.specs[rw.spec]) { E.recruit(S, rw.spec); out.cards[rw.spec] = (out.cards[rw.spec] || 0) + 1; }
+      else { E.recruit(S, rw.spec); out.spec = rw.spec; }
+    }
+    if (rw.cards) for (const s in rw.cards) { if (rw.cardsOwned && !S.perm.specs[s]) continue; E.addCards(S, s, rw.cards[s]); out.cards[s] = (out.cards[s] || 0) + rw.cards[s]; }
     if (rw.unlock) { S.run.flags[rw.unlock] = true; out.unlock = rw.unlock; }
+    if (rw.disc && D.discoveries[rw.disc]) { // permanente: só a primeira vez é novidade
+      if (!E.knows(S, rw.disc)) { S.perm.disc[rw.disc] = 1; out.disc = rw.disc; E.log(S, 'gold', 'Descoberta: ' + D.discoveries[rw.disc].name + '. Novas pesquisas disponíveis.'); }
+      else out.discKnown = rw.disc;
+    }
     return out;
   };
   E.claim = function (S, rid, id) {
@@ -836,6 +917,7 @@
   };
   E.specLabel = function (sid, lvl) {
     const sp = D.specs[sid];
+    if (sid === 'oraculo') return 'Ciência ' + F.x(D.science.oracleSpeed[lvl]) + ' · Laboratório ' + F.x(D.specSpeed[lvl]);
     if (D.cats[sp.cat]) return 'Velocidade ' + F.x(D.specSpeed[lvl]);
     if (sid === 'vega') return 'Viagens ' + F.x(1 + 0.5 * lvl);
     if (sid === 'lumen') return 'Energia ' + F.x(1 + 0.2 * lvl);
@@ -852,26 +934,38 @@
   // ================= BAÚS =================
   E.makeChest = function (S, rid, gpi, title) {
     const c = D.chest(gpi); const rng = E.rng(S);
-    const owned = Object.keys(S.perm.specs);
+    // só especialistas que ainda precisam de cartas para evoluir (mesmos pesos regionais e de raridade)
+    const owned = Object.keys(S.perm.specs).filter((s) => E.cardsNeeded(S, s) > 0);
     const rel = (D.regions[rid] && D.regions[rid].specs) || [];
     const w = owned.map((s) => D.specs[s].special ? 0.3 : rel.includes(s) ? 3 : 1);
     const tot = w.reduce((a, b) => a + b, 0);
-    const cards = {}; let data = c.data;
+    const cards = {}; let data = c.data; let sup = 0;
     for (let i = 0; i < c.cards; i++) {
-      if (!owned.length) { data += 10; continue; }
+      if (!owned.length) { if (Object.keys(S.perm.specs).length) sup++; else data += 10; continue; }
       let x = rng() * tot, k = 0; while (x > w[k] && k < w.length - 1) { x -= w[k]; k++; }
       cards[owned[k]] = (cards[owned[k]] || 0) + 1;
     }
-    S.perm.chests.push({ id: S.perm.seq++, title, rid, data, cards });
+    const ch = { id: S.perm.seq++, title, rid, data, cards }; if (sup) ch.sup = sup;
+    S.perm.chests.push(ch);
   };
+  // cartas que ainda faltam para levar o especialista ao nível máximo (descontando as que já tem)
+  E.cardsNeeded = function (S, sid) {
+    const s = S.perm.specs[sid]; if (!s) return 0; let need = 0;
+    for (let l = s.lvl; l < D.specMaxLevel; l++) need += D.specCards[l];
+    return Math.max(0, need - s.cards);
+  };
+  // suprimentos de um baú sem cartas úteis: materiais para a região do baú (ou a Lua), sem dados nem fragmentos
+  E.chestSupply = (n) => ({ metal: 40 * n, alloy: 12 * n, comp: 3 * n });
   E.openChest = function (S, id) {
     const i = S.perm.chests.findIndex((c) => c.id === id); if (i < 0) return { ok: false };
     const ch = S.perm.chests.splice(i, 1)[0];
     const m = E.mods(S); const data = Math.round(ch.data * m.dataGain);
     S.perm.data += data;
     for (const s in ch.cards) E.addCards(S, s, ch.cards[s]);
+    let sup = null;
+    if (ch.sup) { const rid = ch.rid && S.run.regions[ch.rid] && S.run.regions[ch.rid].unlocked ? ch.rid : 'lua'; const got = E.grant(S, rid, { res: E.chestSupply(ch.sup) }, 'chest'); sup = { rid, res: got.res, pend: got.pend }; }
     S.perm.ach.chest1 = S.perm.ach.chest1 || Date.now();
-    return { ok: true, chest: ch, data };
+    return { ok: true, chest: ch, data, sup };
   };
 
   // ================= EXPEDIÇÕES =================
@@ -914,6 +1008,17 @@
   // marca, no universo atual, que a expedição já deu seu fragmento (fica em run.flags: reinicia no Colapso)
   E.expFragKey = (id) => 'frag:' + id;
   E.expFragDone = (S, id) => !!S.run.flags[E.expFragKey(id)];
+  // prévia sem sorteio: o garantido e cada bônus possível com sua chance, já com expReward e dataGain
+  // (mesma ordem de arredondamento do resgate) e o limite de fragmento restante no universo
+  E.expPreview = function (S, id, m) {
+    m = m || E.mods(S); const def = D.expeditions[id]; const fdone = E.expFragDone(S, id);
+    const eff = (rw) => {
+      const s = scaleRw(rw, m.expReward); const cards = Object.assign({}, s.cards || {}); let recruit = null;
+      if (def.recruit && cards[def.recruit] && !S.perm.specs[def.recruit]) { recruit = def.recruit; cards[def.recruit]--; if (!cards[def.recruit]) delete cards[def.recruit]; }
+      return { data: s.data ? Math.round(s.data * m.dataGain) : 0, cards, recruit, frags: s.frags && !fdone ? 1 : 0, fragBlocked: !!(s.frags && fdone) };
+    };
+    return { g: eff(def.g), bonus: def.bonus.map(([p, rw]) => Object.assign({ p }, eff(rw))), fragDone: fdone };
+  };
   E.collectExp = function (S, uid, force, guaranteedOnly) {
     const i = S.run.exps.findIndex((e) => e.uid === uid); if (i < 0) return { ok: false };
     const e = S.run.exps[i]; if (!force && S.run.time + EPS < e.end) return { ok: false, err: 'Em andamento' };
@@ -982,17 +1087,24 @@
   };
 
   // ================= PESQUISA =================
-  E.resCost = (id, lvl) => Math.ceil(D.research[id].cost * Math.pow(D.research[id].cg, lvl));
+  E.resLate = (id, lvl) => { const n = D.research[id]; if (n.cur === 'frag' || n.opt || D.researchLate.basic.includes(id)) return false; return lvl >= (n.max >= 5 ? n.max - 2 : n.max - 1); };
+  E.resCost = (id, lvl) => Math.ceil(D.research[id].cost * Math.pow(D.research[id].cg, lvl) * (E.resLate(id, lvl) ? D.researchLate.mult : 1));
+  E.knows = (S, did) => !!(S.perm.disc && S.perm.disc[did]);
+  // descoberta exigida para comprar o próximo nível (null se não houver)
+  E.resDiscNeed = (S, id) => { const g = D.research[id].disc; const lvl = S.perm.research[id] || 0; return g && lvl + 1 >= g.from && !E.knows(S, g.d) ? g.d : null; };
   E.resState = function (S, id) {
     const node = D.research[id]; const lvl = S.perm.research[id] || 0;
     if (lvl >= node.max) return { lvl, max: true };
-    const locked = (node.req || []).some((r) => !(S.perm.research[r] > 0));
+    const reqMiss = (node.req || []).filter((r) => !(S.perm.research[r] > 0)); const disc = E.resDiscNeed(S, id);
+    const locked = reqMiss.length > 0 || !!disc;
+    const why = reqMiss.length ? 'Requer ' + reqMiss.map((r) => D.research[r].name).join(', ') : disc ? 'Requer a descoberta “' + D.discoveries[disc].name + '” (' + E.discSource(disc) + ')' : '';
     const cost = E.resCost(id, lvl); const cur = node.cur === 'frag' ? 'frag' : 'data';
     const have = cur === 'frag' ? S.perm.frags : S.perm.data;
-    return { lvl, locked, cost, cur, can: !locked && have + EPS >= cost };
+    return { lvl, locked, why, disc, cost, cur, can: !locked && have + EPS >= cost };
   };
+  E.discSource = (did) => { const [rid, p, i] = D.discoveries[did].from.split('.'); return D.regions[rid].name + ': ' + E.mTitle(D.regions[rid].phases[+p].missions[+i]); };
   E.buyResearch = function (S, id) {
-    const st = E.resState(S, id); if (st.max || !st.can) return { ok: false, err: st.locked ? 'Requer pesquisa anterior' : 'Recursos insuficientes' };
+    const st = E.resState(S, id); if (st.max || !st.can) return { ok: false, err: st.max ? 'Pesquisa completa' : st.locked ? st.why : 'Recursos insuficientes' };
     if (st.cur === 'frag') S.perm.frags -= st.cost; else S.perm.data -= st.cost;
     S.perm.research[id] = st.lvl + 1;
     return { ok: true };
@@ -1031,7 +1143,7 @@
   };
   // pendências tratadas explicitamente antes do reinício
   E.collapsePending = function (S) {
-    const run = S.run; const out = { missions: [], expsDone: [], expsRunning: [] };
+    const run = S.run; const out = { missions: [], expsDone: [], expsRunning: [], dirs: E.dirs(S).filter((d) => !d.claimed && d.p.done) };
     for (const rid of RO) {
       if (!run.regions[rid].unlocked) continue;
       for (const x of E.activeMissions(S, rid)) if (E.mProg(S, rid, x.md, x.id).done) out.missions.push({ rid, x });
@@ -1045,11 +1157,20 @@
     const run = S.run; const perm = S.perm;
     const sum = { missions: 0, data: 0, cards: {}, exps: 0 };
     // 1) missões concluídas e não resgatadas: credita a parte permanente
+    // A lista de pendências é fixada antes de liquidar qualquer coisa (é a que a prévia mostrou): um prêmio
+    // liquidado aqui não cria nova pendência. Ordem: missões → diretrizes → expedições.
     const pend = E.collapsePending(S);
+    sum.dirs = 0; sum.frags = 0; sum.disc = [];
     for (const { rid, x } of pend.missions) {
       run.missions[x.id] = 1; const rw = x.md.rw || {};
-      const got = E.grant(S, null, { data: rw.data, spec: rw.spec, cards: rw.cards, frags: rw.frags }, 'collapse');
-      sum.missions++; sum.data += got.data;
+      // parte permanente: dados, recrutamento/cartas, fragmentos e descobertas (materiais são locais e reiniciam)
+      const got = E.grant(S, null, { data: rw.data, spec: rw.spec, cards: rw.cards, cardsOwned: rw.cardsOwned, frags: rw.frags, disc: rw.disc }, 'collapse');
+      sum.missions++; sum.data += got.data; sum.frags += got.frags; if (got.disc) sum.disc.push(got.disc);
+      for (const s in got.cards) sum.cards[s] = (sum.cards[s] || 0) + got.cards[s];
+    }
+    for (const d of pend.dirs) {
+      const r = E.claimDir(S, d.i); if (!r.ok) continue;
+      sum.dirs++; sum.data += r.got.data; sum.frags += r.got.frags;
     }
     // 2) expedições: concluídas = recompensa completa; em andamento = recompensa garantida
     for (const e of pend.expsDone.slice()) { const r = E.collectExp(S, e.uid, true, false); sum.exps++; sum.data += r.total.data; for (const s in r.total.cards) sum.cards[s] = (sum.cards[s] || 0) + r.total.cards[s]; }
@@ -1061,6 +1182,7 @@
     perm.visited[uni] = true;
     // cargas em trânsito são materiais locais: reiniciam junto com estoques e rotas (não são creditadas)
     sum.cargo = run.routes.reduce((a, rt) => a + (rt.st === 'out' || rt.st === 'wait' ? E.cargoTotal(rt) : 0), 0);
+    sum.pend = RO.reduce((a, r) => a + E.pendingTotal(run.regions[r]), 0); // suprimentos aguardando espaço: locais
     const first = perm.collapses === 1;
     // 4) novo universo
     S.run = E.newRun(S, uni);
@@ -1142,6 +1264,27 @@
       }
       o.rev = 0; o.v = 2; return o;
     },
+    // v2 → v3: descobertas permanentes (perm.disc). Reconhece só o que o salvamento comprova: qualquer Colapso
+    // anterior (campanha completa), a missão-marco resgatada ou a fase dela já concluída, ou a pesquisa
+    // avançada já comprada. Não entrega dados nem cartas: carregar várias vezes dá o mesmo resultado.
+    2: (o) => {
+      const P = isObj(o.perm) ? o.perm : null, R = isObj(o.run) ? o.run : null;
+      if (P) {
+        const disc = isObj(P.disc) ? P.disc : {};
+        const all = typeof P.collapses === 'number' && P.collapses >= 1;
+        for (const id of D.discOrder) {
+          if (disc[id]) continue;
+          const src = D.discoveries[id].from; const [rid, ph] = src.split('.');
+          const reg = R && isObj(R.regions) && isObj(R.regions[rid]) ? R.regions[rid] : null;
+          const claimed = !!(R && isObj(R.missions) && R.missions[src]);
+          const pastPhase = !!(reg && typeof reg.phase === 'number' && reg.phase > +ph);
+          const owned = isObj(P.research) && Object.keys(D.researchDisc).some((n) => D.researchDisc[n].d === id && (P.research[n] || 0) >= D.researchDisc[n].from);
+          if (all || claimed || pastPhase || owned) disc[id] = 1;
+        }
+        P.disc = disc;
+      }
+      o.v = 3; return o;
+    },
   };
   E.MIGRATIONS = MIGRATIONS;
 
@@ -1218,6 +1361,8 @@
       } else delete bs.mc;
     }
     vNumMap(reg, 'st', path, resKey);
+    vNumMap(reg, 'pend', path, resKey);
+    if (reg.hold !== undefined) { if (!isObj(reg.hold) || typeof reg.hold.bid !== 'string' || !D.buildings[reg.hold.bid]) delete reg.hold; else reg.hold = { bid: reg.hold.bid }; }
     const exp = vObj(reg, 'exp', path, DEF); for (const r of Object.keys(exp)) { if (!resKey(r) || !exp[r]) delete exp[r]; else exp[r] = true; }
     // campos derivados: refeitos se estiverem inválidos
     if (!isObj(reg.rate)) reg.rate = {}; for (const r of Object.keys(reg.rate)) if (typeof reg.rate[r] !== 'number' || !isFinite(reg.rate[r])) delete reg.rate[r];
@@ -1254,6 +1399,7 @@
       vNum(res, id, pp + '.research', { int: true, min: 0, max: D.research[id].max });
     }
     vObj(P, 'ach', pp, DEF);
+    const dsc = vObj(P, 'disc', pp, DEF); for (const k of Object.keys(dsc)) { if (!D.discoveries[k] || !dsc[k]) delete dsc[k]; else dsc[k] = 1; }
     const vis = vObj(P, 'visited', pp, () => ({ padrao: true }));
     for (const u of Object.keys(vis)) { if (!D.universes[u] || !vis[u]) delete vis[u]; else vis[u] = true; }
     vArr(P, 'universes', pp).forEach((u, i) => {
@@ -1267,6 +1413,7 @@
       vNum(c, 'id', p, { int: true }); if (ids.has(c.id)) fail(p + '.id', 'está repetido'); ids.add(c.id);
       vStr(c, 'title', p, 'Baú de Suprimentos'); vStr(c, 'rid', p, '');
       vNum(c, 'data', p, { def: 0, min: 0, clamp: true }); vNumMap(c, 'cards', p, specKey);
+      if (c.sup !== undefined) vNum(c, 'sup', p, { int: true, min: 0, max: 100, clamp: true });
     });
     const ps = vObj(P, 'stats', pp, DEF); vNum(ps, 'playSec', pp + '.stats', { def: 0, min: 0, clamp: true }); vNum(ps, 'value', pp + '.stats', { def: 0, min: 0, clamp: true });
 

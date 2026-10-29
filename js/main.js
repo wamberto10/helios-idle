@@ -207,7 +207,7 @@
       const p = r.sum;
       UI.modal(`<h2 class="purple">Bem-vindo(a) ao ${D.universes[uni].name}</h2><p>${D.universes[uni].desc}</p><ul class="small">${D.universes[uni].traits.map((t) => '<li>' + t + '</li>').join('')}</ul>
         <p><span class="chip purple">+${r.frags} Fragmentos de Singularidade</span></p>
-        ${p.missions || p.exps ? `<p class="small muted">Pendências resolvidas: ${p.missions} missão(ões) creditada(s), ${p.exps} expedição(ões) encerrada(s), +${F.n(p.data)} dados.</p>` : ''}${p.cargo >= 1 ? `<p class="small muted">${F.n(p.cargo)} unidade(s) de carga que estavam a bordo reiniciaram junto com os estoques do universo anterior.</p>` : ''}
+        ${p.missions || p.exps || p.dirs ? `<p class="small muted">Pendências resolvidas: ${p.missions} missão(ões) e ${p.dirs || 0} diretriz(es) creditada(s), ${p.exps} expedição(ões) encerrada(s), +${F.n(p.data)} dados${p.frags ? ', +' + p.frags + ' fragmento(s) de diretrizes' : ''}${p.disc && p.disc.length ? ', descoberta(s): ' + p.disc.map((d) => H.DATA.discoveries[d].name).join(', ') : ''}.</p>` : ''}${p.pend >= 1 ? `<p class="small muted">${H.F.n(p.pend)} unidade(s) de suprimentos que aguardavam espaço reiniciaram com os estoques.</p>` : ''}${p.cargo >= 1 ? `<p class="small muted">${F.n(p.cargo)} unidade(s) de carga que estavam a bordo reiniciaram junto com os estoques do universo anterior.</p>` : ''}
         <p class="small">Seus especialistas reassumem as funções automaticamente assim que as instalações voltarem a existir.</p><div class="foot"><button class="btn purple" data-a="close">Começar</button></div>`);
       UI.st.holdEvents = false; // agora o recrutamento de Eco entra na fila, depois desta tela
     };

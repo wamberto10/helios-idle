@@ -24,7 +24,7 @@ function tryCost(S, rid, cost, depth) {
     if (cost[r] > E.cap(S, rid, r, m)) { if (depth < 5) tryBuild(S, rid, 'armazem', depth + 1); continue; }
     ensureSupply(S, rid, r, depth + 1);
     // o recurso já chega por uma rota: garante que ele tenha vez no porão
-    if ((reg.st[r] || 0) + 1e-9 < cost[r] && S.run.routes.some((rt) => rt.to === rid && rt.res.includes(r))) ensureRoute(S, rid, r, depth + 1);
+    if ((reg.st[r] || 0) + 1e-9 < cost[r] && S.run.routes.some((rt) => rt.to === rid && rt.res.includes(r))) ensureRoute(S, rid, r, depth + 1, cost[r]);
   }
   return E.afford(reg, cost);
 }
@@ -112,14 +112,14 @@ function sourceFor(S, to, r) {
   return best;
 }
 const reordered = new WeakMap();
-function ensureRoute(S, to, r, depth) {
+function ensureRoute(S, to, r, depth, need) {
   if (depth > 6) return;
   const run = S.run;
   const ex = run.routes.find((rt) => rt.to === to && rt.res.includes(r));
   if (ex) {
     const from = run.regions[ex.from];
     // muda a prioridade no máximo uma vez por viagem: recursos que dividem o porão se alternam
-    if (ex.res[0] !== r && (run.regions[to].st[r] || 0) < 60 && reordered.get(ex) !== ex.trips) { reordered.set(ex, ex.trips); ex.res = [r].concat(ex.res.filter((x) => x !== r)); }
+    if (ex.res[0] !== r && (run.regions[to].st[r] || 0) < Math.max(60, need || 0) && reordered.get(ex) !== ex.trips) { reordered.set(ex, ex.trips); ex.res = [r].concat(ex.res.filter((x) => x !== r)); }
     if (ex.why === 'nofuel') { ensureSupply(S, ex.from, 'fuel', depth + 1); }
     if (ex.why === 'empty') { ensureSupply(S, ex.from, r, depth + 1); }
     if (ex.lvl < 10) { const c = E.routeUpCost(S, ex); if (E.afford(from, c) && Object.keys(c).every((k) => (from.st[k] || 0) > c[k] * 2)) E.upgradeRoute(S, ex.id); }
@@ -147,7 +147,13 @@ function botMission(S, rid, x) {
   const md = x.md; const run = S.run;
   switch (md.t) {
     case 'build': tryBuild(S, rid, md.b, 0); break;
-    case 'level': tryUpgrade(S, rid, md.b, 0); break;
+    case 'level': {
+      if (tryUpgrade(S, rid, md.b, 0)) break;
+      // a própria região consome o material da melhoria: reserva (ferramenta disponível ao jogador)
+      const reg = S.run.regions[rid]; const bs = reg.b[md.b];
+      if (bs && bs.n && !reg.hold) { const cost = E.uCost(S, rid, md.b); if (Object.keys(reg.b).some((b) => reg.b[b].n && D.buildings[b].in && Object.keys(cost).some((r) => D.buildings[b].in[r]))) E.setHold(S, rid, md.b); }
+      break;
+    }
     case 'prod': ensureSupply(S, rid, md.r, 0); break;
     case 'cycles': { const bs = run.regions[rid].b[md.b]; if (!bs || !bs.n) tryBuild(S, rid, md.b, 0); else if (bs.why && bs.why.startsWith('full:')) { if (!run.regions[rid].exp[bs.why.slice(5)]) E.toggleExport(S, rid, bs.why.slice(5)); else tryBuild(S, rid, 'armazem', 0); } else if (bs.why && bs.why.startsWith('no:')) ensureSupply(S, rid, bs.why.slice(3), 1); else if (D.buildings[md.b].in) for (const r in D.buildings[md.b].in) if ((run.regions[rid].st[r] || 0) < D.buildings[md.b].in[r] * bs.n) ensureSupply(S, rid, r, 1); break; }
     case 'pay': { const k = 'm:' + x.id; E.contribute(S, k, true); const pr = E.projectProgress(S, k, md.cost); for (const r in md.cost) if ((pr.st[r] || 0) < md.cost[r]) ensureSupply(S, rid, r, 0); break; }
@@ -161,9 +167,16 @@ function botMission(S, rid, x) {
         else if (tryCost(S, rid, E.routeCost(S, null, prev), 0)) E.createRoute(S, rid, prev, [producers(S, rid, 'metal').length ? 'metal' : Object.keys(run.regions[rid].st)[0]]);
       }
       for (const rt of run.routes) if ((rt.from === rid || rt.to === rid) && rt.why === 'destfull') unblockDest(S, rt);
+      // rota da missão parada sem combustível na origem: abastece a origem (constrói o produtor de combustível)
+      for (const rt of run.routes) if ((rt.from === rid || rt.to === rid) && rt.why === 'nofuel') ensureSupply(S, rt.from, 'fuel', 0);
       break;
     }
-    case 'deliver': ensureRoute(S, rid, md.r, 0); break;
+    case 'deliver': {
+      ensureRoute(S, rid, md.r, 0);
+      // destino cheio daquele recurso: destrava o consumidor (como já faz nas missões de rota)
+      for (const rt of run.routes) if (rt.to === rid && rt.res.includes(md.r) && rt.why === 'destfull') unblockDest(S, rt);
+      break;
+    }
     case 'research': buyResearch(S, true); break;
     case 'dyson': supplyProject(S, 'dyson'); break;
     case 'core': supplyProject(S, 'core'); break;
@@ -206,6 +219,8 @@ function botStep(S) {
   // energia
   for (const rid of RO) { const reg = run.regions[rid]; if (reg.unlocked && reg.en.ratio < 0.97) ensurePower(S, rid, 0); }
   energyRescue(S);
+  // reserva de melhoria só enquanto uma missão de nível daquela instalação estiver ativa
+  for (const rid of RO) { const reg = run.regions[rid]; if (!reg.unlocked || !reg.hold) continue; if (!E.activeMissions(S, rid).some((x) => x.md.t === 'level' && x.md.b === reg.hold.bid && !E.mProg(S, rid, x.md, x.id).done)) E.setHold(S, rid, reg.hold.bid); }
   // missões ativas
   for (const rid of RO) {
     const reg = run.regions[rid]; if (!reg.unlocked) continue;

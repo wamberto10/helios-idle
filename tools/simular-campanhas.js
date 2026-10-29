@@ -20,7 +20,7 @@ function load() {
   return c;
 }
 function researchInfo(D, E) {
-  const entries = Object.entries(D.research).filter(([, n]) => n.cur !== 'frag');
+  const entries = Object.entries(D.research).filter(([, n]) => n.cur !== 'frag' && !n.opt); // projetos opcionais (opt) ficam fora da árvore
   return { levels: entries.reduce((a, [, n]) => a + n.max, 0), nodes: entries.length, cost: entries.reduce((a, [id, n]) => a + Array.from({ length: n.max }, (_, i) => E.resCost(id, i)).reduce((s, x) => s + x, 0), 0), ids: entries.map(([id]) => id) };
 }
 function instrument(c) {

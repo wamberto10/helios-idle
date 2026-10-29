@@ -24,15 +24,19 @@
   // ---------------- PEDAÇOS DE HTML ----------------
   const resChip = (r, amt, have) => `<span class="chip ${have !== undefined && have + 1e-9 < amt ? 'lack' : ''}">${A.rg(r)} ${F.n(amt)}</span>`;
   const costHTML = (cost, reg) => '<span class="costs">' + Object.keys(cost).map((r) => resChip(r, cost[r], reg ? (reg.st[r] || 0) : undefined)).join('') + '</span>';
-  function rewardHTML(rw) {
+  // recompensa como o motor vai pagar agora (E.rewardPreview: bônus de dados, recrutamento ou carta, espaço, descoberta)
+  function rewardHTML(rw, rid, m) {
     if (!rw) return '';
-    let s = '';
-    if (rw.data) s += `<span class="chip cyan">${A.rg('data')} ${F.n(rw.data)} dados</span>`;
-    if (rw.frags) s += `<span class="chip purple">${A.rg('frag')} ${rw.frags} fragmento${rw.frags > 1 ? 's' : ''}</span>`;
-    if (rw.res) for (const r in rw.res) s += `<span class="chip">${A.rg(r)} ${F.n(rw.res[r])}</span>`;
-    if (rw.spec) s += `<span class="chip gold">★ Recruta ${D.specs[rw.spec].name}</span>`;
-    if (rw.cards) for (const c in rw.cards) s += `<span class="chip gold">${rw.cards[c]}× carta ${D.specs[c].name}</span>`;
-    if (rw.unlock === 'expeditions') s += `<span class="chip ok">Libera expedições</span>`;
+    const p = E.rewardPreview(S, rid || null, rw, m); let s = '';
+    if (p.data) s += `<span class="chip cyan" title="Já com os bônus de dados atuais">${A.rg('data')} ${F.n(p.data)} dados</span>`;
+    if (p.frags) s += `<span class="chip purple">${A.rg('frag')} ${p.frags} fragmento${p.frags > 1 ? 's' : ''}</span>`;
+    if (rw.res && rid) for (const r in rw.res) s += `<span class="chip">${A.rg(r)} ${F.n(rw.res[r])}</span>` + (p.pend[r] ? `<span class="chip warn" title="Sem espaço no estoque agora: entram assim que houver espaço">${F.n(p.pend[r])} aguardam espaço</span>` : '');
+    if (p.spec) s += `<span class="chip gold">★ Recruta ${D.specs[p.spec].name}</span>`;
+    if (p.specCard) s += `<span class="chip gold" title="${D.specs[p.specCard].name} já está na tripulação">+1 carta de ${D.specs[p.specCard].name}</span>`;
+    for (const c in p.cards) s += `<span class="chip gold">${p.cards[c]}× carta ${D.specs[c].name}</span>`;
+    if (p.disc) s += `<span class="chip purple" title="${esc(D.discoveries[p.disc].desc)}">◆ Descoberta: ${D.discoveries[p.disc].name}</span>`;
+    if (p.discKnown) s += `<span class="chip muted" title="Descobertas são permanentes">Descoberta já conhecida: ${D.discoveries[p.discKnown].name}</span>`;
+    if (p.unlock === 'expeditions') s += `<span class="chip ok">Libera expedições</span>`;
     return s;
   }
   const rarColor = (sid) => D.rarities[D.specs[sid].rarity].color;
@@ -222,8 +226,8 @@
       }
       case 'map': return base + '|' + ui.sel + run.routes.map((r) => r.id).join(',') + run.dyson.stage;
       case 'crew': return base + JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
-      case 'research': return base + JSON.stringify(p.research) + ui.resSel;
-      case 'exp': return base + run.exps.map((e) => e.uid).join(',') + '|' + p.chests.map((c) => c.id).join(',') + run.flags.expeditions + Object.keys(run.flags).filter((k) => k.startsWith('frag:')).join(',') +JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
+      case 'research': return base + JSON.stringify(p.research) + Object.keys(p.disc || {}).join() + ui.resSel;
+      case 'exp': return base + JSON.stringify(p.research) + run.exps.map((e) => e.uid).join(',') + '|' + p.chests.map((c) => c.id).join(',') + run.flags.expeditions + Object.keys(run.flags).filter((k) => k.startsWith('frag:')).join(',') +JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
       case 'sing': return base + run.dyson.stage + run.core + E.canCollapse(S) + ui.uniSel + JSON.stringify(run.dirs) + (run.offer || []).join() + JSON.stringify(p.research) + Object.keys(p.ach).length;
       default: return base + JSON.stringify(S.settings);
     }
@@ -332,6 +336,25 @@
       <div class="bar ${ok ? 'ok' : 'gold'}"><i style="width:${Math.min(100, en.gen > 0 ? en.use / en.gen * 100 : 100).toFixed(1)}%"></i></div>
       <span class="row small"><span class="num">${F.n(en.use)} MW em uso</span>${ok ? '<span class="ok">✓ suficiente</span>' : `<span class="bad">${A.ic('warn', 14)} déficit — velocidade ${F.pct(en.ratio)}</span>`}</span>`);
   };
+  // suprimentos de recompensa aguardando espaço no estoque
+  // reserva de material para a próxima melhoria (uma por região, cancelável)
+  U.bhold = (el, a, m) => {
+    const rid = a[1], bid = a[2]; const reg = S.run.regions[rid]; const bs = reg.b[bid];
+    if (!bs || !bs.n || bs.lvl >= D.maxBuildingLevel) { setH(el, ''); return; }
+    const cost = E.uCost(S, rid, bid, m); const mine = reg.hold && reg.hold.bid === bid;
+    if (mine) {
+      const miss = Object.keys(cost).filter((r) => (reg.st[r] || 0) + 1e-9 < cost[r]);
+      setH(el, `<div class="hold-on small"><span class="gold">${A.ic('lock', 12)} Reservando para o Nv ${bs.lvl + 1}</span>${miss.length ? ' — falta ' + miss.map((r) => A.rg(r) + ' ' + F.n(cost[r] - (reg.st[r] || 0))).join(' ') : ''}. Consumidores e rotas da região não usam esse material; a melhoria acontece sozinha. <button class="btn ghost sm" data-a="hold|${rid}|${bid}">Cancelar reserva</button></div>`);
+      return;
+    }
+    if (E.afford(reg, cost)) { setH(el, ''); return; }
+    const other = reg.hold && D.buildings[reg.hold.bid];
+    setH(el, `<button class="btn ghost sm" data-a="hold|${rid}|${bid}" title="Guarda o material da próxima melhoria: as instalações da região param de consumi-lo e a melhoria é feita quando o custo completar.">Reservar material para melhorar${other ? ' (substitui a reserva de ' + other.name + ')' : ''}</button>`);
+  };
+  U.pend = (el, a) => {
+    const p = S.run.regions[a[1]].pend || {}; const ks = Object.keys(p).filter((r) => p[r] >= 0.5);
+    setH(el, ks.length ? `<div class="panel small"><span class="warn">${A.ic('warn', 14)}</span> Suprimentos de recompensa aguardando espaço: ${ks.map((r) => A.rg(r) + ' ' + F.n(p[r])).join(' ')} <span class="muted">— entram no estoque assim que houver espaço (construa armazéns, use ou transporte o material).</span></div>` : '');
+  };
   U.bneck = (el, a) => {
     const b = E.bottleneck(S, a[1]);
     setC(el, 'energy', b.kind === 'energy'); setC(el, 'input', b.kind === 'input'); setC(el, 'full', b.kind === 'full'); setC(el, 'ok', b.kind === 'ok');
@@ -375,7 +398,7 @@
     const def = D.buildings[a[2]]; const bs = S.run.regions[a[1]].b[a[2]] || {};
     let h;
     if (def.passive) h = '<span class="tag passive">Passiva</span>';
-    else if (E.isAuto(m, def)) { const sid = D.cats[def.cat].spec; h = `<span class="tag auto">${bs.pause ? 'Pausada' : 'Auto'} · ${D.specs[sid].name} ${F.x(D.specSpeed[S.perm.specs[sid].lvl])}</span>`; }
+    else if (E.isAuto(m, def)) { const sid = D.cats[def.cat].spec; h = `<span class="tag auto">${bs.pause ? 'Pausada' : 'Auto'} · ${D.specs[sid].name} ${F.x((E.isSci(def) ? D.science.oracleSpeed : D.specSpeed)[S.perm.specs[sid].lvl])}</span>`; }
     else h = '<span class="tag manual">Manual</span>';
     setH(el, h);
   };
@@ -430,7 +453,7 @@
     const rid = a[1], bid = a[2]; const reg = S.run.regions[rid]; const def = D.buildings[bid]; const bs = reg.b[bid] || { n: 0, lvl: 1 };
     if (!bs.n) { setD(el, true); setH(el, '<span>Melhorar</span><span class="tiny dim">Construa primeiro</span>'); return; }
     if (bs.lvl >= D.maxBuildingLevel) { setD(el, true); setH(el, '<span>Nível máximo</span>'); return; }
-    const cost = E.uCost(S, rid, bid, m); const y0 = D.levelYield(bs.lvl), y1 = D.levelYield(bs.lvl + 1);
+    const cost = E.uCost(S, rid, bid, m); const ly = E.isSci(def) ? D.science.levelYield : D.levelYield; const y0 = ly(bs.lvl), y1 = ly(bs.lvl + 1);
     let ben = 'Rendimento ' + F.x(y0) + ' → ' + F.x(y1);
     if (def.gen) ben = '+' + F.n(E.genOf(S, rid, bid, m, bs.n, bs.lvl + 1) - E.genOf(S, rid, bid, m, bs.n, bs.lvl)) + ' MW';
     else if (!def.passive) { const d = E.bRate(S, rid, bid, m, 0, 1) - E.bRate(S, rid, bid, m); ben += ' (+' + F.n(d, d < 10 ? 2 : undefined) + '/s)'; }
@@ -453,6 +476,7 @@
     const num = el.querySelector('.pn');
     if (num) setT(num, x.md.t === 'pay' ? F.pct(Math.min(1, p.cur)) : F.n(Math.min(p.cur, p.max)) + ' / ' + F.n(p.max));
     const cl = el.querySelector('[data-a^="claim"]'); if (cl) { setD(cl, !p.done); setC(cl, 'pulse', p.done); }
+    const rwEl = el.querySelector('.rw'); if (rwEl) setH(rwEl, rewardHTML(x.md.rw, rid, m));
     if (x.md.t === 'pay') {
       const pr = E.projectProgress(S, 'm:' + id, x.md.cost); const reg = S.run.regions[rid];
       const pl = el.querySelector('.paylist'); if (pl) setH(pl, Object.keys(x.md.cost).map((r) => `<span class="chip ${(pr.st[r] || 0) >= x.md.cost[r] ? 'ok' : (reg.st[r] || 0) < 1 ? 'lack' : ''}">${A.rg(r)} ${F.n(Math.min(pr.st[r] || 0, x.md.cost[r]))}/${F.n(x.md.cost[r])}</span>`).join(''));
@@ -542,7 +566,7 @@
       <p class="small muted">Benefício de continuar: produzindo no ritmo atual por mais 1 hora, o Colapso renderia <b class="purple">${f2.total}</b> fragmentos (+${f2.total - f.total}). Gastar materiais não reduz a produção já contabilizada.</p>`);
   };
   U.dysonvis = (el) => setH(el, dysonSVG(S.run.dyson.stage));
-  U.dir = (el, a) => { const d = E.dirs(S)[+a[1]]; if (!d) return; const bar = el.querySelector('.bar > i'); if (bar) setW(bar, d.p.cur / d.p.max); const n = el.querySelector('.pn'); if (n) setT(n, F.n(Math.min(d.p.cur, d.p.max)) + '/' + F.n(d.p.max)); const b = el.querySelector('.btn'); if (b) setD(b, d.claimed || !d.p.done); };
+  U.dir = (el, a, m) => { const d = E.dirs(S)[+a[1]]; if (!d) return; const rwEl = el.querySelector('.rw'); if (rwEl) setH(rwEl, rewardHTML(d.md.rw, null, m)); const bar = el.querySelector('.bar > i'); if (bar) setW(bar, d.p.cur / d.p.max); const n = el.querySelector('.pn'); if (n) setT(n, F.n(Math.min(d.p.cur, d.p.max)) + '/' + F.n(d.p.max)); const b = el.querySelector('.btn'); if (b) setD(b, d.claimed || !d.p.done); };
   U.mapinfo = (el, a, m) => setH(el, mapInfoHTML(m));
 
   // ---------------- EVENTOS DO MOTOR ----------------
@@ -585,6 +609,7 @@
     h += `<div class="region-grid"><div class="main col" style="gap:14px">
       <div class="panel"><h3>Estoque da região <span class="r small muted">EXP = exportar excedente à Terra quando cheio</span></h3><div class="res-strip">${res.map((r) => `<div class="res"><div class="top">${A.rg(r)} ${D.res[r].name}</div><div class="val" data-u="resv|${rid}|${r}"></div><div class="rate" data-u="resr|${rid}|${r}"></div><div class="bar"><i data-u="resb|${rid}|${r}"></i></div><button class="exp" data-a="exp|${rid}|${r}" data-u="rese|${rid}|${r}" aria-label="Exportar excedente de ${D.res[r].name}" title="Exportar excedente: quando o estoque enche, a produção continua, os cargueiros descarregam e o excesso vai para a Terra"></button></div>`).join('')}</div></div>
       <div class="panel"><div class="energy" data-u="energy|${rid}"></div></div>
+      <div class="pendsup" data-u="pend|${rid}"></div>
       <div class="bneck" data-u="bneck|${rid}"></div>
       ${projectsHTML(rid)}
       <div class="bgrid">${E.bList(S, rid).map((b) => buildingCard(rid, b)).join('')}</div>
@@ -607,7 +632,7 @@
         <button class="btn gold full-w hidden" data-a="op|${rid}|${bid}" data-u="bop|${rid}|${bid}"></button>
         <button class="btn" data-a="build|${rid}|${bid}" data-u="bbuild|${rid}|${bid}"></button>
         <button class="btn" data-a="up|${rid}|${bid}" data-u="bup|${rid}|${bid}"></button>
-      </div></div>`;
+      </div><div class="hold" data-u="bhold|${rid}|${bid}"></div></div>`;
   }
   function projectsHTML(rid) {
     let h = '';
@@ -637,7 +662,7 @@
       return `<div class="mis" data-u="mis|${rid}|${x.id}"><div class="t">${esc(E.mTitle(md))}</div>${md.desc ? `<div class="d">${esc(md.desc)}</div>` : ''}
         ${pay ? `<div class="costs paylist"></div>` : ''}
         <div class="row"><div class="bar grow"><i></i></div><span class="pn small num"></span></div>
-        <div class="rw">${rewardHTML(md.rw)}</div>
+        <div class="rw">${rewardHTML(md.rw, rid)}</div>
         <div class="ma">${pay ? `<button class="btn sm" data-a="contrib|m:${x.id}">Entregar</button>` : `<button class="btn ghost sm" data-a="goto|${rid}|${x.id}">Ir</button>`}<button class="btn gold sm" data-a="claim|${rid}|${x.id}">Resgatar</button></div></div>`;
     }).join('') + '</div>';
     if (left > 0) h += `<div class="small dim" style="margin-top:8px">+${left} missão(ões) nesta fase. Recompensa da fase: Baú de Suprimentos.</div>`;
@@ -843,20 +868,22 @@
   }
   function renderResearch() {
     const sel = ui.resSel;
-    let h = `<div class="screen-title"><h2>Pesquisa</h2><span class="chip cyan">${A.rg('data')} <span data-u="data"></span> dados</span><span class="chip purple">${A.rg('frag')} <span data-u="frags"></span> fragmentos</span><span class="muted small">Projetos permanentes: são preservados no Colapso.</span></div><div class="tree">`;
+    let h = `<div class="screen-title"><h2>Pesquisa</h2><span class="chip cyan">${A.rg('data')} <span data-u="data"></span> dados</span><span class="chip purple">${A.rg('frag')} <span data-u="frags"></span> fragmentos</span><span class="muted small">Projetos permanentes: são preservados no Colapso.</span></div>`;
+    const known = D.discOrder.filter((d) => E.knows(S, d)).length;
+    h += `<div class="panel disc-panel"><h3>Descobertas <span class="r small muted">${known}/${D.discOrder.length} · obtidas em missões, permanentes</span></h3><div class="row wrap small">${D.discOrder.map((d) => { const k = E.knows(S, d); return `<span class="chip ${k ? 'ok' : 'muted'}" title="${esc(k ? D.discoveries[d].desc : 'Obtida em ' + E.discSource(d))}">${k ? '✓' : A.ic('lock', 12)} ${D.discoveries[d].name}</span>`; }).join('')}</div><p class="tiny muted">Pesquisas avançadas exigem a descoberta correspondente, além dos dados.</p></div><div class="tree">`;
     for (const br in D.branches) {
       const B = D.branches[br];
       h += `<div class="branch" style="--bc:${B.color}"><h4>${B.name}</h4>` + Object.keys(D.research).filter((id) => D.research[id].br === br).map((id) => {
         const n = D.research[id]; const st = E.resState(S, id); const lvl = st.lvl;
         return `<button type="button" class="node ${sel === id ? 'sel' : ''}" data-a="rsel|${id}" data-u="rnode|${id}" aria-pressed="${sel === id}" aria-controls="res-detail"><span class="nn">${n.name}</span><span class="pips" aria-hidden="true">${Array.from({ length: n.max }, (_, i) => `<i class="${i < lvl ? 'f' : ''}"></i>`).join('')}</span>
-          <span class="tiny muted">${st.max ? 'Completo' : st.locked ? 'Requer ' + n.req.map((r) => D.research[r].name).join(', ') : (n.cur === 'frag' ? A.rg('frag') : A.rg('data')) + ' ' + F.n(st.cost)}</span></button>`;
+          <span class="tiny muted">${st.max ? 'Completo' : st.locked ? esc(st.why) : (n.cur === 'frag' ? A.rg('frag') : A.rg('data')) + ' ' + F.n(st.cost)}</span></button>`;
       }).join('') + '</div>';
     }
     h += '</div>';
     if (sel) {
       const n = D.research[sel]; const st = E.resState(S, sel);
       h += `<div class="panel res-detail" id="res-detail" aria-live="polite"><div class="row sb wrap"><div><b>${n.name}</b> <span class="muted small">(${D.branches[n.br].name} · nível ${st.lvl}/${n.max})</span><div class="small">${esc(n.desc)}</div>
-        <div class="small">Efeito atual: <b class="cyan">${st.lvl ? effText(sel, st.lvl) : 'nenhum'}</b>${st.max ? '' : ` → próximo: <b class="gold">${effText(sel, st.lvl + 1)}</b>`}</div></div>
+        <div class="small">Efeito atual: <b class="cyan">${st.lvl ? effText(sel, st.lvl) : 'nenhum'}</b>${st.max ? '' : ` → próximo: <b class="gold">${effText(sel, st.lvl + 1)}</b>`}</div>${n.disc ? `<div class="small">${E.knows(S, n.disc.d) ? '<span class="ok">✓</span>' : A.ic('lock', 12)} Descoberta exigida${n.disc.from > 1 ? ' a partir do nível ' + n.disc.from : ''}: <b>${D.discoveries[n.disc.d].name}</b> <span class="muted">(${esc(E.discSource(n.disc.d))})</span></div>` : ''}${n.opt ? '<div class="small muted">Opcional: não é exigido para avançar.</div>' : ''}${!st.max && st.locked ? `<div class="small bad">${esc(st.why)}</div>` : ''}</div>
         ${st.max ? '<span class="chip ok">Completo</span>' : `<button class="btn ${n.cur === 'frag' ? 'purple' : ''}" data-a="rbuy|${sel}|${st.lvl}" data-k="rbuy" data-u="rbuy|${sel}">Pesquisar · ${n.cur === 'frag' ? A.rg('frag') : A.rg('data')} ${F.n(st.cost)}</button>`}</div></div>`;
     } else h += '<p class="small muted">Toque em um projeto para ver o benefício e o custo antes de confirmar.</p>';
     return h;
@@ -872,11 +899,17 @@
     const ids = Object.keys(D.expeditions).filter((id) => !E.expAvail(S, id).hidden);
     h += `<div class="panel"><h3>Destinos <span class="r small muted">recompensa mínima garantida + bônus possíveis</span></h3><div class="exp-grid">` + ids.map((id) => {
       const d = D.expeditions[id]; const who = d.spec || d.recruit;
-      const g = []; for (const s in (d.g.cards || {})) g.push(`<span class="chip gold">${Math.max(1, Math.round(d.g.cards[s] * m.expReward))}× ${D.specs[s].name}</span>`);
-      if (d.g.data) g.push(`<span class="chip cyan">${A.rg('data')} ${F.n(Math.round(d.g.data * m.expReward))}</span>`);
-      const fdone = E.expFragDone(S, id);
-      if (d.g.frags) g.push(fdone ? `<span class="chip muted" title="O fragmento desta expedição vem uma vez por universo">${A.rg('frag')} já obtido neste universo</span>` : `<span class="chip purple" title="Uma vez por universo">${A.rg('frag')} ${d.g.frags} (1ª vez no universo)</span>`);
-      const b = d.bonus.map(([p, rw]) => { if (rw.frags && fdone && !rw.cards && !rw.data) return ''; return `<span class="chip">${F.pct(p)}: ${rw.cards ? Object.keys(rw.cards).map((s) => rw.cards[s] + '× ' + D.specs[s].name).join(', ') : ''}${rw.data ? rw.data + ' dados' : ''}${rw.frags ? rw.frags + ' fragmento (até 1 por universo)' : ''}</span>`; }).join('') || '<span class="muted">—</span>';
+      // prévia do motor (E.expPreview): expReward e dataGain já aplicados; chances sem revelar o sorteio
+      const pv = E.expPreview(S, id, m);
+      const chips = (q) => { const o = [];
+        if (q.recruit) o.push(`<span class="chip gold">★ Recruta ${D.specs[q.recruit].name}</span>`);
+        for (const c in q.cards) o.push(`<span class="chip gold">${q.cards[c]}× ${D.specs[c].name}</span>`);
+        if (q.data) o.push(`<span class="chip cyan">${A.rg('data')} ${F.n(q.data)}</span>`);
+        if (q.frags) o.push(`<span class="chip purple" title="No máximo 1 por expedição em cada universo">${A.rg('frag')} 1 (1ª vez no universo)</span>`);
+        if (q.fragBlocked) o.push(`<span class="chip muted" title="Volta a ser possível depois do próximo Colapso">${A.rg('frag')} já obtido neste universo</span>`);
+        return o.join(''); };
+      const g = [chips(pv.g)];
+      const b = pv.bonus.map((q) => { const c = chips(q); return c ? `<span class="row wrap" style="gap:4px"><span class="chip">${F.pct(q.p)} de chance:</span>${c}</span>` : ''; }).join('') || '<span class="muted">—</span>';
       return `<div class="exp"><div class="hd">${A.portraitBox(who, !S.perm.specs[who])}<div class="grow"><b>${d.name}</b><div class="small muted">Parte de ${D.regions[d.region].name} · ${F.t(E.expDur(S, id, m))}</div></div></div>
         <div class="row wrap small"><span class="muted">Custo:</span><span data-u="excost|${id}"></span></div>
         <div class="row wrap small"><span class="muted">Garantido:</span>${g.join('')}</div><div class="row wrap small"><span class="muted">Possível:</span>${b}</div>
@@ -887,7 +920,7 @@
   function chestModal(res) {
     const ch = res.chest; const cards = Object.keys(ch.cards);
     UI.modal(`<h2 class="gold">${esc(ch.title)}</h2><div class="chest-anim" id="chanim">${A.img(A.paths.ui('chest'), A.chest(false))}</div><div id="chrev" class="hidden"><div class="reveal">${cards.map((s, i) => `<div class="rc" style="--rar:${rarColor(s)};animation-delay:${i * 0.12}s">${A.portraitBox(s, false)}<b>${D.specs[s].name}</b><span class="gold">+${ch.cards[s]} carta${ch.cards[s] > 1 ? 's' : ''}</span></div>`).join('')}</div>
-      <p style="text-align:center"><span class="chip cyan">${A.rg('data')} +${F.n(res.data)} dados de pesquisa</span></p></div><div class="foot"><button class="btn gold" data-a="close">Ótimo!</button></div>`);
+      <p style="text-align:center"><span class="chip cyan">${A.rg('data')} +${F.n(res.data)} dados de pesquisa</span></p>${res.sup ? `<p class="small" style="text-align:center">Toda a tripulação já tem as cartas que precisa: o baú trouxe suprimentos para ${D.regions[res.sup.rid].name}: ${Object.keys(res.sup.res).map((r) => A.rg(r) + ' ' + F.n(res.sup.res[r] + ((res.sup.pend || {})[r] || 0))).join(' ')}${Object.keys(res.sup.pend || {}).length ? ' <span class="warn">(parte aguarda espaço no estoque)</span>' : ''}.</p>` : ''}</div><div class="foot"><button class="btn gold" data-a="close">Ótimo!</button></div>`);
     const go = () => { const a = $('#chanim'); if (!a) return; a.querySelector('svg').classList.add('open'); a.classList.add('burst'); setTimeout(() => { const r = $('#chrev'); if (r) r.classList.remove('hidden'); if (a) a.classList.add('hidden'); }, S.settings.reduceMotion ? 0 : 650); };
     setTimeout(go, S.settings.reduceMotion ? 0 : 250);
   }
@@ -911,7 +944,7 @@
         ${dInfo.avail ? projCard('dyson', `Etapa ${run.dyson.stage + 1} — entregue em Mercúrio`, 'Os recursos saem do estoque de Mercúrio. Use rotas para abastecê-lo.', 'gold') : dInfo.done ? '<p class="gold">Enxame completo!</p>' : '<p class="small muted">' + A.ic('lock', 14) + ' Disponível em Mercúrio, fase “Fundação do Enxame”.</p>'}</div>
       <div class="panel"><h3>Anomalia de Netuno</h3>${run.core ? '<p class="purple">O Núcleo da Singularidade está ativo.</p>' : E.projectInfo(S, 'core').avail ? projCard('core', 'Núcleo da Singularidade', 'Entregue em Netuno.', 'purple') : `<p class="small muted">${A.ic('lock', 14)} ${run.regions.netuno.unlocked ? 'Conclua a fase “Sinal Fantasma” para revelar o projeto.' : 'Um sinal regular vem da borda do sistema. Alcance Netuno para investigá-lo.'}</p>`}</div>
       <div class="panel"><h3>${D.universes[run.universe].name}</h3><p class="small">${esc(D.universes[run.universe].desc)}</p><ul class="small muted">${D.universes[run.universe].traits.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
-        <b class="small">Diretrizes deste universo (opcionais)</b><div class="col" style="margin-top:6px">${E.dirs(S).map((d) => `<div class="mis ${d.claimed ? '' : ''}" data-u="dir|${d.i}"><div class="t">${esc(E.mTitle(d.md))}${d.claimed ? ' <span class="ok">✓</span>' : ''}</div><div class="row"><div class="bar grow"><i></i></div><span class="pn small num"></span></div><div class="row sb"><div class="rw">${rewardHTML(d.md.rw)}</div><button class="btn gold sm" data-a="dir|${d.i}">${d.claimed ? 'Resgatada' : 'Resgatar'}</button></div></div>`).join('')}</div></div>
+        <b class="small">Diretrizes deste universo (opcionais)</b><div class="col" style="margin-top:6px">${E.dirs(S).map((d) => `<div class="mis ${d.claimed ? '' : ''}" data-u="dir|${d.i}"><div class="t">${esc(E.mTitle(d.md))}${d.claimed ? ' <span class="ok">✓</span>' : ''}</div><div class="row"><div class="bar grow"><i></i></div><span class="pn small num"></span></div><div class="row sb"><div class="rw">${rewardHTML(d.md.rw, null)}</div><button class="btn gold sm" data-a="dir|${d.i}">${d.claimed ? 'Resgatada' : 'Resgatar'}</button></div></div>`).join('')}</div></div>
     </div><div class="col" style="gap:14px">
       <div class="panel" style="border-color:rgba(176,124,255,.45)"><h3 class="purple">Colapso</h3><div data-u="creq"></div><div class="sep"></div><div data-u="frag"></div><div class="sep"></div>
         <div class="lists"><div><b class="bad">Será reiniciado</b><ul><li>Instalações e níveis locais</li><li>Estoques de materiais</li><li>Rotas comerciais e cargas a bordo (são materiais locais)</li><li>Regiões liberadas</li><li>Missões locais</li><li>Enxame de Dyson</li></ul></div>
@@ -946,11 +979,13 @@
     </div><div class="col" style="gap:14px">
       <div class="panel"><h3>Regras de bônus</h3><ul class="small" style="margin:0;padding-left:18px">
         <li><b>Velocidade</b> (especialistas, pesquisa, universo, Eco): ciclos mais rápidos. Fontes diferentes se multiplicam. ×4 = quatro vezes mais ciclos, sempre respeitando insumos, energia e armazenamento.</li>
-        <li><b>Rendimento</b> (nível da instalação, pesquisa, universo, fragmentos): mais produto por ciclo sem gastar mais insumo. Cada nível de instalação soma +50%.</li>
+        <li><b>Rendimento</b> (nível da instalação, pesquisa, universo, fragmentos): mais produto por ciclo sem gastar mais insumo. Cada nível de instalação soma +50% (observatórios: +30%).</li>
         <li><b>Energia</b>: se o consumo passar da geração, todas as instalações da região desaceleram na mesma proporção.</li>
         <li><b>Transporte</b>: Vega acelera as viagens; pesquisa e melhorias do cargueiro aumentam a carga; janelas reduzem tempo e combustível.</li>
         <li><b>Escopo</b>: especialistas valem para sua categoria em todas as regiões. Níveis de um mesmo projeto de pesquisa somam entre si.</li>
-        <li><b>Fragmentos</b>: cada fragmento já recebido dá +${Math.round(D.collapse.fragYield * 100)}% de rendimento global, mesmo depois de gasto.</li>
+        <li><b>Fragmentos</b>: cada fragmento já recebido dá +${Math.round(D.collapse.fragYield * 100)}% de rendimento na indústria, mesmo depois de gasto; na ciência, +${(D.science.fragBonus * 100).toLocaleString("pt-BR")}% por fragmento, até +${Math.round(D.science.fragBonusMax * 100)}%.</li>
+        <li><b>Ciência</b>: observatórios têm escala própria. Oráculo acelera a ciência até ×${D.science.oracleSpeed[D.specMaxLevel]} (a indústria vai até ×${D.specSpeed[D.specMaxLevel]}). Pesquisas avançadas exigem descobertas obtidas em missões.</li>
+        <li><b>Reserva</b>: no cartão de uma instalação, reserve o material da próxima melhoria; a região para de consumi-lo e a melhoria acontece quando o custo completar.</li>
         <li><b>Profundidade</b>: a cada Colapso, as metas de produção das missões sobem ${Math.round(D.collapse.depthTarget * 100)}% (até ×${D.collapse.depthMax}).</li></ul></div>
       <div class="panel"><h3>Ferramentas de desenvolvimento</h3>${sw('dev', 'Ativar ferramentas', 'Para testar o jogo avançado.')}
         ${st.dev ? `<div class="row wrap" style="margin-top:10px">
@@ -1034,10 +1069,17 @@
     build: (rid, bid, el) => { const r = E.build(S, rid, bid); if (r.ok) { sfx('buy'); floatNum(el, '+1'); H.save(); } else UI.err(r); },
     up: (rid, bid, el) => { const r = E.upgrade(S, rid, bid); if (r.ok) { sfx('buy'); floatNum(el, 'Nv ' + S.run.regions[rid].b[bid].lvl); H.save(); } else UI.err(r); },
     pause: (rid, bid) => { E.togglePause(S, rid, bid); sfx('click'); },
+    hold: (rid, bid) => { const r = E.setHold(S, rid, bid); if (!r.ok) return UI.err(r); sfx('click'); UI.toast(r.on ? 'Reserva criada: o material da próxima melhoria de <b>' + D.buildings[bid].name + '</b> fica guardado.' : 'Reserva cancelada.', r.on ? 'gold' : ''); H.save(); },
     exp: (rid, r) => { E.toggleExport(S, rid, r); sfx('click'); },
     claim: (rid, id, el) => {
       const r = E.claim(S, rid, id);
-      if (r.ok) { sfx('claim'); if (r.got.data) floatNum(el, '+' + r.got.data + ' dados'); H.save(); if (S.perm.chests.length && E.activeMissions(S, rid).length === 0) {} } else UI.err(r);
+      if (r.ok) {
+        sfx('claim'); if (r.got.data) floatNum(el, '+' + r.got.data + ' dados'); H.save();
+        const g = r.got; const parts = [];
+        for (const s in g.cards) parts.push(g.cards[s] + '× carta de ' + D.specs[s].name);
+        if (parts.length) UI.toast('Recebido: ' + parts.join(', '), 'gold');
+        const pend = Object.keys(g.pend || {}); if (pend.length) UI.toast(pend.map((k) => F.n(g.pend[k]) + ' ' + D.res[k].name.toLowerCase()).join(', ') + ' aguardam espaço no estoque e entram assim que couberem.', 'warn');
+      } else UI.err(r);
     },
     contrib: (key) => { const r = E.contribute(S, key); if (r.ok) { sfx(r.done ? 'promote' : 'buy'); if (r.done) H.save(); } else UI.err(r); },
     goto: (rid, id) => {
@@ -1148,13 +1190,29 @@
     const cargo = pv.any ? '<ul class="small">' + (Object.keys(pv.toDest).length ? '<li>Para ' + regName(rt.to) + ': ' + list(pv.toDest) + '</li>' : '') + (Object.keys(pv.toOrigin).length ? '<li>De volta a ' + regName(rt.from) + ': ' + list(pv.toOrigin) + '</li>' : '') + (Object.keys(pv.lost).length ? '<li class="bad">Sem espaço em nenhuma das duas regiões (será descartado): ' + list(pv.lost) + '</li>' : '') + '</ul>' : '<p class="small muted">O cargueiro está sem carga.</p>';
     return '<h2>Desmontar cargueiro?</h2><p class="small">' + regName(rt.from) + ' → ' + regName(rt.to) + '. A carga a bordo vai para o destino até o limite do armazenamento; o restante volta à origem. O custo do cargueiro não é devolvido.</p>' + cargo + '<div class="foot"><button class="btn ghost" data-a="close">Cancelar</button><button class="btn danger" data-a="rdel2|' + id + '">Desmontar</button></div>';
   }
-  function collapseSig() { const f = E.fragCalc(S); const p = E.collapsePending(S); return [E.canCollapse(S), f.total, p.missions.length, p.expsDone.length, p.expsRunning.length].join('|'); }
+  function collapseSig() { const f = E.fragCalc(S); const p = E.collapsePending(S); return [E.canCollapse(S), f.total, p.missions.length, p.dirs.length, p.expsDone.length, p.expsRunning.length, D.regionOrder.reduce((a, r) => a + Math.round(E.pendingTotal(S.run.regions[r])), 0)].join('|'); }
+  // prévia do Colapso: o que é permanente (creditado agora) e o que é local (reinicia)
+  function collapsePendHTML(pend, cargo) {
+    const m = E.mods(S); let data = 0, frags = 0; const disc = [];
+    for (const { rid, x } of pend.missions) { const p = E.rewardPreview(S, null, x.md.rw, m); data += p.data; frags += p.frags; if (p.disc && !disc.includes(p.disc)) disc.push(p.disc); }
+    for (const d of pend.dirs) { const p = E.rewardPreview(S, null, d.md.rw, m); data += p.data; frags += p.frags; }
+    const perm = [];
+    if (pend.missions.length) perm.push(pend.missions.length + ' missão(ões) concluída(s)');
+    if (pend.dirs.length) perm.push(pend.dirs.length + ' diretriz(es) concluída(s)');
+    if (pend.expsDone.length) perm.push(pend.expsDone.length + ' expedição(ões) concluída(s)');
+    if (pend.expsRunning.length) perm.push(pend.expsRunning.length + ' em andamento (recompensa garantida)');
+    const local = []; const sup = D.regionOrder.reduce((a, r) => a + E.pendingTotal(S.run.regions[r]), 0);
+    if (cargo >= 1) local.push(F.n(cargo) + ' unidade(s) de carga a bordo');
+    if (sup >= 1) local.push(F.n(sup) + ' unidade(s) de suprimentos aguardando espaço');
+    return '<p class="small">' + (perm.length ? '<b>Creditado agora (permanente):</b> ' + perm.join(', ') + (data ? ' · +' + F.n(data) + ' dados' : '') + (frags ? ' · +' + frags + ' fragmento(s)' : '') + (disc.length ? ' · descoberta(s): ' + disc.map((d) => D.discoveries[d].name).join(', ') : '') + '.' : 'Nenhuma recompensa pendente.') + '</p>' +
+      (local.length ? '<p class="small muted"><b>Reinicia (material local):</b> ' + local.join(', ') + '.</p>' : '');
+  }
   function collapseHTML(u) {
     if (!E.canCollapse(S)) return '<h2 class="purple">Colapso indisponível</h2><p class="small">Os requisitos não estão mais cumpridos.</p><div class="foot"><button class="btn" data-a="close">Fechar</button></div>';
     const f = E.fragCalc(S); const pend = E.collapsePending(S);
     const cargo = S.run.routes.reduce((a, rt) => a + (rt.st === 'out' || rt.st === 'wait' ? E.cargoTotal(rt) : 0), 0);
     return '<h2 class="purple">Iniciar o Colapso?</h2><p>A singularidade vai engolir este universo. A sonda emergirá no <b>' + D.universes[u].name + '</b>.</p><p>Você receberá <b class="purple">' + f.total + ' Fragmentos de Singularidade</b>.</p>' +
-      '<p class="small muted">Pendências: ' + pend.missions.length + ' missão(ões) concluída(s) a creditar, ' + pend.expsDone.length + ' expedição(ões) concluída(s), ' + pend.expsRunning.length + ' em andamento (recompensa garantida).' + (cargo >= 1 ? ' ' + F.n(cargo) + ' unidade(s) de carga a bordo reiniciam junto com os estoques (são materiais locais).' : '') + '</p>' +
+      collapsePendHTML(pend, cargo) +
       '<div class="foot"><button class="btn ghost" data-a="close">Ainda não</button><button class="btn purple" data-a="collapse2|' + u + '">Atravessar</button></div>';
   }
   UI.chestModal = chestModal;

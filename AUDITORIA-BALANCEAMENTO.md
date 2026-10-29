@@ -1,5 +1,7 @@
 # HELIOS IDLE — auditoria de ciência, missões e economia permanente
 
+> **Histórico.** Diagnóstico anterior às correções. O farm de fragmentos das ruínas e a escala científica foram corrigidos depois; veja [CORRECOES-BALANCEAMENTO.md](CORRECOES-BALANCEAMENTO.md) para o estado atual.
+
 Data: 28/10/2026. Estado: diagnóstico e propostas; **nenhum valor do jogo foi alterado**. Os scripts desta auditoria usam cópias do motor em memória e não leem salvamentos pessoais.
 
 ## Conclusão

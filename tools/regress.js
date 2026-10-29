@@ -309,11 +309,165 @@ function testExpFrags() {
   assert(!E.expFragDone(O, 'ruinas') && O.perm.frags === S.perm.frags, 'salvamento antigo sem o registro carrega sem perder fragmentos');
 }
 
+// =============== 8. CIÊNCIA, DESCOBERTAS E RECOMPENSAS ===============
+// Fixtures controladas (energia e materiais fornecidos): verificam regras, não tempo de campanha.
+function withLua(S, b) { const L = S.run.regions.lua; L.phase = 3; Object.assign(L.b, b); L.b.painel = { n: 200, lvl: 1, p: 0 }; return L; }
+function readyToCollapse(S) {
+  for (const rid of RO) { const reg = S.run.regions[rid]; reg.unlocked = true; reg.phase = D.regions[rid].phases.length; }
+  S.run.dyson.stage = D.dysonRequired; S.run.core = true;
+}
+function testScience() {
+  section('Ciência: escala própria, dataGain único, manual = automático, fragmentos limitados');
+  const S = fresh(); withLua(S, { observatorio: { n: 4, lvl: 5, p: 0 } });
+  S.perm.specs.oraculo = { lvl: 10, cards: 0 }; let m = E.mods(S);
+  const def = D.buildings.observatorio;
+  assert(near(E.speedOf(def, m), D.science.oracleSpeed[10]), 'observatório usa a curva científica do Oráculo (×12), não a industrial (×96)');
+  assert(near(E.speedOf(D.buildings.lab_anomalia, m), D.specSpeed[10]), 'Laboratório de Anomalia (matéria exótica) mantém a curva industrial');
+  const rate = E.bRate(S, 'lua', 'observatorio', m);
+  const expect = def.out.data * 4 * D.science.levelYield(5) * m.sciYield * m.dataGain * m.sciSpeed / def.t;
+  assert(near(rate, expect), 'produção teórica = quantidade × nível científico × velocidade científica × dataGain (uma vez)');
+  const d0 = S.perm.data; E.simulate(S, 600); assert(near(S.perm.data - d0, rate * 600, 1e-6), 'produção real em 10 min confere com a teórica (energia suficiente)');
+  S.perm.fragsTotal = 1000; m = E.mods(S);
+  assert(near(m.sciYield, 1 + D.science.fragBonusMax) && m.globalYield > 30, 'fragmentos: ciência limitada a +' + Math.round(D.science.fragBonusMax * 100) + '%, indústria mantém +3% por fragmento');
+  S.perm.research.sg3 = 4; m = E.mods(S);
+  assert(near(m.sciSpeed, D.science.oracleSpeed[10] * Math.sqrt(m.globalSpeed)), 'velocidade global entra pela raiz na ciência');
+  // ciclo manual entrega o mesmo por ciclo que o automático
+  const M = fresh(); withLua(M, { observatorio: { n: 2, lvl: 3, p: 0 } }); const mm = E.mods(M);
+  const per = def.out.data * 2 * D.science.levelYield(3) * mm.sciYield * mm.dataGain;
+  const dm = M.perm.data; assert(E.operate(M, 'lua', 'observatorio').ok, 'operar observatório manualmente');
+  E.tick(M, def.t + 1); assert(near(M.perm.data - dm, per), 'ciclo manual entrega o produto de um ciclo (com dataGain uma vez)');
+}
+function testDiscoveries() {
+  section('Descobertas: bloqueio no motor, marco único, herança no Colapso');
+  const S = fresh(); S.perm.data = 1e7; S.perm.research = { ind1: 1, ind2: 1, en1: 1, min1: 1, min2: 1 };
+  let r = E.buyResearch(S, 'ind3'); assert(!r.ok && /descoberta/.test(r.err) && !S.perm.research.ind3, 'pesquisa avançada sem descoberta é recusada pelo motor, com motivo');
+  assert(E.resState(S, 'ind3').disc === 'componentes', 'estado da pesquisa informa a descoberta que falta');
+  for (let i = 0; i < 3; i++) assert(E.buyResearch(S, 'en3').ok, 'Concentradores Solares nível ' + (i + 1) + ' livre');
+  r = E.buyResearch(S, 'en3'); assert(!r.ok && S.perm.research.en3 === 3, 'níveis finais de Concentradores Solares exigem Engenharia solar orbital');
+  for (const id of ['min1', 'ind1', 'en1', 'log1', 'exp1']) assert(!E.resDiscNeed(fresh(), id), 'primeira pesquisa ' + id + ' não exige descoberta');
+  const md = D.regions.marte.phases[0].missions[4]; assert(md.rw.disc === 'componentes', 'marte.0.4 concede Engenharia de componentes');
+  const pv = E.rewardPreview(S, 'marte', md.rw); assert(pv.disc === 'componentes' && !E.knows(S, 'componentes'), 'prévia anuncia a descoberta sem concedê-la');
+  let got = E.grant(S, 'marte', md.rw, 'mission'); assert(got.disc === 'componentes' && E.knows(S, 'componentes'), 'resgate concede a descoberta');
+  assert(E.buyResearch(S, 'ind3').ok, 'com a descoberta, a pesquisa pode ser comprada');
+  const d0 = S.perm.data; got = E.grant(S, 'marte', md.rw, 'mission');
+  assert(!got.disc && got.discKnown === 'componentes' && E.rewardPreview(S, 'marte', md.rw).discKnown === 'componentes', 'repetição anuncia “já conhecida” e não concede de novo');
+  assert(S.perm.data - d0 === Math.round(md.rw.data * E.mods(S).dataGain), 'repetição mantém só os dados da missão');
+  const C = fresh(); C.perm.disc.fusao = 1; readyToCollapse(C); E.doCollapse(C, E.collapseOffer(C)[0]);
+  assert(E.knows(C, 'fusao'), 'descoberta sobrevive ao Colapso');
+  const P = fresh(); readyToCollapse(P); P.run.regions.marte.phase = 0; P.run.regions.marte.stats.prod.comp = 999;
+  for (let i = 0; i < 4; i++) P.run.missions['marte.0.' + i] = 1;
+  const pend = E.collapsePending(P); assert(pend.missions.some((x) => x.x.id === 'marte.0.4'), 'marco concluído e não resgatado aparece como pendência do Colapso');
+  const rc = E.doCollapse(P, E.collapseOffer(P)[0]); assert(E.knows(P, 'componentes') && rc.sum.disc.includes('componentes'), 'Colapso credita a descoberta pendente uma vez');
+}
+function testDiscMigration() {
+  section('Migração v2 → v3: descobertas reconhecidas pelo histórico, sem ganhos extras');
+  const mk = (fn) => { const S = fresh(); fn(S); const o = JSON.parse(E.serialize(S)); o.v = 2; delete o.perm.disc; return JSON.stringify(o); };
+  let r = E.deserialize(mk((S) => { S.perm.collapses = 1; S.perm.data = 123; }));
+  assert(r.ok && D.discOrder.every((d) => E.knows(r.S, d)) && r.S.perm.data === 123, 'save com Colapso anterior: todas as descobertas, saldo intacto');
+  r = E.deserialize(mk((S) => { E.unlockRegion(S, 'marte', true); S.run.regions.marte.phase = 1; }));
+  assert(r.ok && E.knows(r.S, 'componentes') && !E.knows(r.S, 'raros'), 'fase do marco concluída: só a descoberta correspondente');
+  r = E.deserialize(mk((S) => { S.run.missions['cinturao.0.2'] = 1; }));
+  assert(r.ok && E.knows(r.S, 'raros') && Object.keys(r.S.perm.disc).length === 1, 'marco resgatado: descoberta reconhecida');
+  const raw = mk((S) => { S.perm.research = { en1: 5, en2: 5, en4: 2, ind1: 1, ind2: 1, ind3: 3 }; S.perm.data = 50; });
+  r = E.deserialize(raw);
+  assert(r.ok && r.S.perm.research.en4 === 2 && r.S.perm.research.ind3 === 3 && r.S.perm.research.en2 === 5, 'pesquisas já compradas são mantidas (nenhum nível retirado)');
+  assert(E.knows(r.S, 'fusao') && E.knows(r.S, 'componentes') && E.knows(r.S, 'criogenia'), 'pesquisa avançada já comprada comprova a descoberta');
+  const r2 = E.deserialize(E.serialize(r.S)); const r3 = E.deserialize(E.serialize(r2.S));
+  assert(JSON.stringify(r3.S.perm.disc) === JSON.stringify(r.S.perm.disc) && r3.S.perm.data === 50, 'carregar várias vezes não muda descobertas nem saldo');
+  r = E.deserialize(mk((S) => { S.perm.data = 1e9; }));
+  assert(r.ok && Object.keys(r.S.perm.disc).length === 0, 'saldo alto sozinho não libera descobertas');
+  const bad = JSON.parse(E.serialize(fresh())); bad.perm.disc = { inventada: 1, fusao: 'sim', raros: 0 };
+  r = E.deserialize(JSON.stringify(bad)); assert(r.ok && !r.S.perm.disc.inventada && r.S.perm.disc.fusao === 1 && !r.S.perm.disc.raros, 'IDs desconhecidos descartados; valores normalizados');
+  bad.perm.disc = 'tudo'; r = E.deserialize(JSON.stringify(bad)); assert(!r.ok, 'tipo inválido de descobertas é recusado sem exceção');
+}
+function testRewardPreview() {
+  section('Prévia de recompensas = crédito real (missões, recrutamento, expedições)');
+  const S = fresh(); S.perm.specs.oraculo = { lvl: 3, cards: 0 }; S.perm.research.exp4 = 2;
+  const rw = { data: 100 }; const pv = E.rewardPreview(S, null, rw); const d0 = S.perm.data; const got = E.grant(S, null, rw, 'mission');
+  assert(pv.data === got.data && got.data === S.perm.data - d0 && got.data === Math.round(100 * E.mods(S).dataGain) && got.data > 100, 'missão: anuncia e paga o valor com bônus (' + got.data + ')');
+  const R = fresh(); let p = E.rewardPreview(R, null, { spec: 'iris' }); assert(p.spec === 'iris' && !p.specCard, 'recrutamento novo anunciado como recrutamento');
+  E.grant(R, null, { spec: 'iris' }, 'mission'); p = E.rewardPreview(R, null, { spec: 'iris' });
+  const g2 = E.grant(R, null, { spec: 'iris' }, 'mission');
+  assert(p.specCard === 'iris' && g2.cards.iris === 1 && R.perm.specs.iris.cards === 1 && !g2.spec, 'recrutamento repetido: anuncia e informa +1 carta');
+  const X = fresh(); X.run.flags.expeditions = true; X.perm.specs.iris = { lvl: 1, cards: 0 }; X.perm.specs.oraculo = { lvl: 4, cards: 0 }; X.perm.research.exp1 = 3;
+  const xp = E.expPreview(X, 'insp_lua'); const uid = ++X.run.expSeq; X.run.exps.push({ id: 'insp_lua', uid, end: 0, dur: 1, bonus: [] });
+  const dx = X.perm.data; const cx = X.perm.specs.iris.cards; const rx = E.collectExp(X, uid, true, true);
+  assert(rx.total.data === xp.g.data && X.perm.data - dx === xp.g.data && X.perm.specs.iris.cards - cx === xp.g.cards.iris, 'expedição: prévia garantida = crédito (dados com expReward e dataGain, cartas)');
+  const seq = X.perm.seq; E.expPreview(X, 'insp_lua'); assert(X.perm.seq === seq, 'prévia de expedição não consome sorteio');
+  const A = fresh(); A.run = E.newRun(A, 'ancestral'); A.run.flags.expeditions = true;
+  assert(E.expPreview(A, 'ruinas').g.frags === 1, 'Ruínas: prévia mostra o fragmento disponível');
+  A.run.flags['frag:ruinas'] = true; const ap = E.expPreview(A, 'ruinas'); assert(ap.g.frags === 0 && ap.g.fragBlocked && A.run.flags['frag:ruinas'], 'Ruínas: prévia mostra o limite atingido sem alterá-lo');
+  const C = fresh(); C.perm.specs.vega = { lvl: 1, cards: 0 }; const k = { cards: { vega: 4, ion: 3 }, cardsOwned: true };
+  const cp = E.rewardPreview(C, null, k); const cg = E.grant(C, null, k, 'mission');
+  assert(cp.cards.vega === 4 && !cp.cards.ion && cg.cards.vega === 4 && !C.perm.specs.ion, 'cartas de missão só para quem já está na tripulação (não recruta por carta)');
+}
+function testPendingSupplies() {
+  section('Recompensa material com estoque cheio: aguarda espaço, sem perda nem duplicação');
+  const S = fresh(); const L = S.run.regions.lua; const cap = E.cap(S, 'lua', 'metal'); L.st.metal = cap; L.b.extrator.n = 3;
+  const md = D.regions.lua.phases[0].missions[0];
+  const pv = E.rewardPreview(S, 'lua', md.rw); assert(pv.res.metal === 0 && pv.pend.metal === 10, 'prévia avisa que os 10 metais aguardam espaço');
+  const r = E.claim(S, 'lua', 'lua.0.0'); assert(r.ok && r.got.res.metal === 0 && r.got.pend.metal === 10 && near(L.pend.metal, 10), 'resgate guarda o que não coube');
+  assert(!E.claim(S, 'lua', 'lua.0.0').ok && near(L.pend.metal, 10), 'clicar de novo não duplica');
+  const C = clone(S); assert(near(C.run.regions.lua.pend.metal, 10), 'pendência sobrevive ao salvar e carregar');
+  L.st.metal = cap - 4; E.tick(S, 0.1); assert(near(L.st.metal, cap) && near(L.pend.metal, 6), 'entrega parcial quando abre espaço');
+  L.st.metal = 0; E.tick(S, 0.1); assert(!L.pend.metal && near(L.st.metal, 6), 'resto entregue; pendência zerada');
+  const P = fresh(); P.run.regions.lua.pend = { metal: 50 }; readyToCollapse(P); const rc = E.doCollapse(P, E.collapseOffer(P)[0]);
+  assert(rc.sum.pend === 50 && !E.pendingTotal(P.run.regions.lua), 'Colapso: suprimentos pendentes são locais e informados no resumo');
+}
+function testCollapseDirs() {
+  section('Colapso: diretrizes concluídas e não resgatadas são creditadas uma vez');
+  const setup = (claimFirst) => {
+    const S = fresh(); readyToCollapse(S); S.run.totals.prod.metal = 30000; S.run.counters.exped = 10; S.run.dyson.stage = 7;
+    if (claimFirst) for (const d of E.dirs(S)) E.claimDir(S, d.i);
+    return S;
+  };
+  const A = setup(false); assert(E.collapsePending(A).dirs.length === 3, 'três diretrizes prontas aparecem como pendência');
+  const ra = E.doCollapse(A, E.collapseOffer(A)[0]);
+  const B = setup(true); const rb = E.doCollapse(B, E.collapseOffer(B)[0]);
+  assert(ra.sum.dirs === 3 && rb.sum.dirs === 0, 'resgatadas antes não são pagas de novo');
+  assert(near(A.perm.data, B.perm.data) && A.perm.fragsTotal === B.perm.fragsTotal && A.perm.fragsTotal >= 1, 'resultado igual a resgatar manualmente antes do Colapso (dados e fragmentos)');
+  const I = fresh(); readyToCollapse(I); I.run.totals.prod.metal = 100; const ri = E.doCollapse(I, E.collapseOffer(I)[0]);
+  assert(ri.sum.dirs === 0, 'diretriz incompleta não é paga');
+}
+function testChests() {
+  section('Baús: cartas só para quem pode evoluir; sem cartas inúteis');
+  const S = fresh(); for (const sid of ['iris', 'vulcano']) S.perm.specs[sid] = { lvl: D.specMaxLevel, cards: 0 }; S.perm.specs.nix = { lvl: 9, cards: 0 };
+  E.makeChest(S, 'lua', 5, 't'); let ch = S.perm.chests[S.perm.chests.length - 1];
+  assert(!ch.cards.iris && !ch.cards.vulcano && ch.cards.nix > 0, 'especialistas no máximo não recebem cartas');
+  S.perm.specs.nix.cards = 400; E.makeChest(S, 'lua', 5, 't2'); ch = S.perm.chests[S.perm.chests.length - 1];
+  assert(!Object.keys(ch.cards).length && ch.sup === D.chest(5).cards, 'com todos completos, as cartas viram suprimentos limitados');
+  const d0 = S.perm.data; const m0 = S.run.regions.lua.st.metal || 0; const r = E.openChest(S, ch.id);
+  const metalGot = (S.run.regions.lua.st.metal - m0) + ((S.run.regions.lua.pend || {}).metal || 0);
+  assert(r.ok && r.sup && near(metalGot, E.chestSupply(ch.sup).metal) && S.perm.data - d0 === Math.round(ch.data * E.mods(S).dataGain), 'abrir entrega os suprimentos (sem dados extras nem fragmentos)');
+  const old = JSON.parse(E.serialize(S)); old.perm.chests.push({ id: 999, title: 'antigo', rid: 'lua', data: 10, cards: { iris: 3 } });
+  const O = E.deserialize(JSON.stringify(old)); assert(O.ok && O.S.perm.chests.find((c) => c.id === 999).cards.iris === 3, 'baú antigo preservado como foi gerado');
+}
+function testHold() {
+  section('Reserva para melhoria: material protegido, melhoria paga uma vez, cancelável');
+  const S = fresh(); E.unlockRegion(S, 'urano', true); const U = S.run.regions.urano; S.perm.specs.nix = { lvl: 3, cards: 0 };
+  U.b = { criogenico: { n: 2, lvl: 2, p: 0 }, reator: { n: 10, lvl: 1, p: 0 } }; U.st = { ice: 400, rare: 30, alloy: 500, comp: 500 };
+  const T = clone(S); E.simulate(T, 120); assert((T.run.regions.urano.st.rare || 0) < 30, 'sem reserva o processador gasta os raros');
+  const c2 = E.uCost(S, 'urano', 'criogenico'); assert(c2.rare > 0, 'melhoria do nível 2 exige metais raros (' + c2.rare + ')');
+  assert(E.setHold(S, 'urano', 'criogenico').on, 'reserva criada');
+  U.st.rare = c2.rare - 1; const lv = U.b.criogenico.lvl;
+  E.simulate(S, 60); assert(near(U.st.rare, c2.rare - 1, 1e-6) && U.b.criogenico.lvl === lv, 'consumidor automático não usa o material reservado');
+  const M = clone(S); delete M.perm.specs.nix; const om = E.operate(M, 'urano', 'criogenico');
+  assert(!om.ok && near(M.run.regions.urano.st.rare, c2.rare - 1, 1e-6), 'ciclo manual também respeita a reserva');
+  U.st.fuel = 999; const rt = E.createRoute(S, 'urano', 'lua', ['rare']);
+  if (rt.ok) { E.sendRoute(S, rt.rt.id); assert(!(rt.rt.cargo && rt.rt.cargo.rare), 'rota não leva o material reservado'); }
+  const alloy0 = U.st.alloy; U.st.rare = c2.rare + 0.5; E.tick(S, 0.1);
+  assert(U.b.criogenico.lvl === lv + 1 && !U.hold && near(alloy0 - U.st.alloy, c2.alloy), 'custo completo: melhora uma vez, paga e encerra a reserva');
+  E.tick(S, 1); assert(U.b.criogenico.lvl === lv + 1, 'não melhora de novo sem nova reserva');
+  E.setHold(S, 'urano', 'criogenico'); assert(U.hold && !E.setHold(S, 'urano', 'criogenico').on && !U.hold, 'reserva cancelável');
+  const B = JSON.parse(E.serialize(S)); B.run.regions.urano.hold = { bid: 'inexistente' }; const rb = E.deserialize(JSON.stringify(B));
+  assert(rb.ok && !rb.S.run.regions.urano.hold, 'reserva inválida descartada ao carregar');
+}
+
 let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');
