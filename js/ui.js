@@ -629,6 +629,8 @@
   // ---------------- EVENTOS DO MOTOR ----------------
   function processEvents() {
     const ev = S.events; if (!ev || !ev.length || ui.holdEvents) return;
+    // com uma janela aberta os avisos esperam (não cobrem a janela); guarda só os mais recentes
+    if (ui.modalOpen) { if (ev.length > 30) S.events = ev.slice(-30); return; }
     S.events = [];
     for (const e of ev) {
       if (e.kind === 'recruit') { sfx('promote'); enqueue(() => recruitModal(e.sid)); }

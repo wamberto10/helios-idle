@@ -80,6 +80,7 @@
     const S = { profile: null, perm: E.newPerm(), settings: { sound: true, reduceMotion: false, sci: false, dev: false, skipAnim: false }, events: [] };
     S.run = E.newRun(S, 'padrao');
     E.log(S, 'story', 'Missão Hélios: estabelecer uma operação na Lua e expandir pelo Sistema Solar.');
+    S.events = []; // fica no diário; a janela de introdução já apresenta a missão (sem aviso repetido)
     return S;
   };
 
@@ -750,7 +751,9 @@
       if (k === 'full') return { kind: 'full', bid, text: name + ': ' + E.whyText(S, rid, bs.why), hint: 'Construa armazéns, transporte ' + D.res[r].name.toLowerCase().replace('dyson', 'Dyson') + ' por rota ou ative “Exportar excedente” no estoque.' };
     }
     const manual = ids.filter((b) => !E.isAuto(m, D.buildings[b]));
-    if (manual.length) return { kind: 'manual', bid: manual[0], text: 'Operação manual: ' + manual.map((b) => D.buildings[b].name).join(', '), hint: 'Toque em “Operar” ou recrute o especialista da categoria para automatizar.' };
+    // o atalho “Operar” do gargalo aponta para uma instalação que pode começar um ciclo agora (ex.: o extrator,
+    // não a refinaria sem minério); sem nenhuma pronta, o quadro só informa
+    if (manual.length) return { kind: 'manual', bid: manual.find((b) => E.canOperate(S, rid, b, m).ok) || null, text: 'Operação manual: ' + manual.map((b) => D.buildings[b].name).join(', '), hint: 'Toque em “Operar” ou recrute o especialista da categoria para automatizar.' };
     return { kind: 'ok', text: 'Operação estável', hint: 'Todas as instalações automatizadas estão funcionando.' };
   };
 

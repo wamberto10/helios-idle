@@ -55,7 +55,11 @@ function researchGateProof() {
   const S = E.newState(); S.perm.data = 1e8;
   const path = ['min1', 'min2', 'min4', 'min5'], results = [];
   for (const id of path) results.push({ id, before: E.resState(S, id), result: E.buyResearch(S, id) });
-  assert(results.every(x => x.result.ok), 'Caminho de pesquisa deveria estar disponível na Lua com orçamento de teste');
+  // Desde as descobertas, a pesquisa avançada exige a tecnologia do planeta: na Lua, só o começo do ramo abre.
+  assert(results[0].result.ok && results[1].result.ok, 'Começo do ramo de mineração deveria estar disponível na Lua');
+  assert(!results[2].result.ok && results[2].before.disc, 'Pesquisa avançada deveria exigir a descoberta do planeta (achado P1 corrigido)');
+  const gate = D.research[path[2]].disc; S.perm.disc = Object.assign({}, S.perm.disc, { [gate.d]: 1 });
+  assert(E.buyResearch(S, path[2]).ok, 'Com a descoberta, a pesquisa avançada deveria abrir');
   return { artificialBudget: 1e8, caution: 'Orçamento injetado apenas para testar regras de acesso; não significa que esse valor surge no início de uma campanha.', pathCost: 1e8 - S.perm.data, prerequisitesAfter: S.perm.research, unlockedRegions: D.regionOrder.filter(rid => S.run.regions[rid].unlocked), luaPhase: S.run.regions.lua.phase, boughtAdvancedNode: 'min5', results };
 }
 

@@ -472,6 +472,16 @@ async function tWiki() {
   ok(c.H.UI.st.screen === 'wiki' && c.d.documentElement.scrollWidth <= c.w.innerWidth + 1, 'celular: abre a enciclopédia sem estourar a largura');
   close(c);
 }
+async function tNoToastOverModal() {
+  sec('Avisos não cobrem janelas abertas');
+  const g = await openGame('avisojanela', 1100, 900, { rawProfile: true }); await until(() => g.modal()); await wait(200);
+  ok(!!g.q('#profile-form') && !g.qa('#toasts .toast').length, 'jogo novo: criar comandante sem aviso por cima');
+  g.S().events.push({ kind: 'gold', text: 'Aviso de teste' }); g.H.UI.frame(); await wait(60);
+  ok(!g.qa('#toasts .toast').length, 'aviso espera enquanto a janela está aberta');
+  g.H.UI.closeModal(); await wait(60); g.H.UI.frame(); await wait(60);
+  ok(g.qa('#toasts .toast').some((t) => /Aviso de teste/.test(t.textContent)), 'janela fechada: o aviso aparece');
+  close(g);
+}
 async function tReview() {
   sec('Revisão de layout: celular e textos');
   const g = await openGame('revisao', 375, 812); await until(() => g.modal()); await g.closeAll();
@@ -720,7 +730,7 @@ async function tFinalArt() {
 async function main() {
   document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
   const t0 = Date.now();
-  const tests = [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tReactorSwap, tRoutesByPlanet, tWiki, tReview, tScrollKeep, tA11y, tLayout, tFinalArt];
+  const tests = [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tReactorSwap, tRoutesByPlanet, tWiki, tNoToastOverModal, tReview, tScrollKeep, tA11y, tLayout, tFinalArt];
   const params = new URLSearchParams(location.search);
   for (const t of tests.filter(t => (params.get('only') !== 'artes' || t === tFinalArt) && (params.get('skip') !== 'artes' || t !== tFinalArt))) {
     try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }

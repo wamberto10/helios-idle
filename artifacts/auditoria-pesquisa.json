@@ -1,30 +1,30 @@
 {
-  "generated": "2026-10-28T18:36:39.393Z",
+  "generated": "2026-10-30T21:24:59.225Z",
   "methodology": "Ensaios controlados com energia artificialmente suficiente. Fixação de máquinas/níveis/cartas não mede o tempo ou o custo de atingi-los. Sem missões, baús, expedições nem outras fontes de dados. A cada segundo o motor real produz e compras reais respeitam req/custos. Science-first poupa primeiro para exp1 I e Telemetria V; depois compra a opção disponível mais barata.",
   "baseBudget": {
     "branches": {
       "min": {
-        "total": 23162,
+        "total": 53727,
         "levels": 21,
         "nodes": 5
       },
       "ind": {
-        "total": 37046,
+        "total": 89692,
         "levels": 23,
         "nodes": 5
       },
       "en": {
-        "total": 100525,
+        "total": 256317,
         "levels": 23,
         "nodes": 5
       },
       "log": {
-        "total": 16884,
-        "levels": 23,
-        "nodes": 5
+        "total": 2713851,
+        "levels": 33,
+        "nodes": 6
       },
       "exp": {
-        "total": 22356,
+        "total": 52532,
         "levels": 21,
         "nodes": 5
       },
@@ -58,10 +58,10 @@
           40,
           88,
           194,
-          426,
-          938
+          1278,
+          2812
         ],
-        "total": 1686,
+        "total": 4412,
         "max": 5,
         "requirements": [
           "min1"
@@ -75,10 +75,10 @@
           60,
           132,
           291,
-          639,
-          1406
+          1917,
+          4217
         ],
-        "total": 2528,
+        "total": 6617,
         "max": 5,
         "requirements": [
           "min1"
@@ -91,9 +91,9 @@
         "costs": [
           400,
           1000,
-          2500
+          7500
         ],
-        "total": 3900,
+        "total": 8900,
         "max": 3,
         "requirements": [
           "min2"
@@ -106,9 +106,9 @@
         "costs": [
           1500,
           3750,
-          9375
+          28125
         ],
-        "total": 14625,
+        "total": 33375,
         "max": 3,
         "requirements": [
           "min4"
@@ -137,10 +137,10 @@
           50,
           111,
           243,
-          533,
-          1172
+          1598,
+          3514
         ],
-        "total": 2109,
+        "total": 5516,
         "max": 5,
         "requirements": [
           "ind1"
@@ -154,10 +154,10 @@
           120,
           264,
           581,
-          1278,
-          2812
+          3834,
+          8434
         ],
-        "total": 5055,
+        "total": 13233,
         "max": 5,
         "requirements": [
           "ind2"
@@ -171,10 +171,10 @@
           200,
           460,
           1058,
-          2434,
-          5597
+          7301,
+          16791
         ],
-        "total": 9749,
+        "total": 25810,
         "max": 5,
         "requirements": [
           "ind1"
@@ -187,9 +187,9 @@
         "costs": [
           2000,
           5000,
-          12500
+          37500
         ],
-        "total": 19500,
+        "total": 44500,
         "max": 3,
         "requirements": [
           "ind3"
@@ -218,10 +218,10 @@
           60,
           132,
           291,
-          639,
-          1406
+          1917,
+          4217
         ],
-        "total": 2528,
+        "total": 6617,
         "max": 5,
         "requirements": [
           "en1"
@@ -235,10 +235,10 @@
           300,
           690,
           1587,
-          3651,
-          8396
+          10951,
+          25186
         ],
-        "total": 14624,
+        "total": 38714,
         "max": 5,
         "requirements": [
           "en1"
@@ -252,10 +252,10 @@
           1200,
           2760,
           6348,
-          14601,
-          33581
+          43802,
+          100743
         ],
-        "total": 58490,
+        "total": 154853,
         "max": 5,
         "requirements": [
           "en2"
@@ -268,9 +268,9 @@
         "costs": [
           2500,
           6250,
-          15625
+          46875
         ],
-        "total": 24375,
+        "total": 55625,
         "max": 3,
         "requirements": [
           "en4"
@@ -299,10 +299,10 @@
           40,
           88,
           194,
-          426,
-          938
+          1278,
+          2812
         ],
-        "total": 1686,
+        "total": 4412,
         "max": 5,
         "requirements": []
       },
@@ -314,10 +314,10 @@
           80,
           176,
           388,
-          852,
-          1875
+          2556,
+          5623
         ],
-        "total": 3371,
+        "total": 8823,
         "max": 5,
         "requirements": [
           "log2"
@@ -331,10 +331,10 @@
           150,
           330,
           727,
-          1598,
-          3514
+          4792,
+          10542
         ],
-        "total": 6319,
+        "total": 16541,
         "max": 5,
         "requirements": [
           "log3"
@@ -347,9 +347,9 @@
         "costs": [
           500,
           1250,
-          3125
+          9375
         ],
-        "total": 4875,
+        "total": 11125,
         "max": 3,
         "requirements": [
           "log3"
@@ -392,10 +392,10 @@
           100,
           221,
           485,
-          1065,
-          2343
+          3195,
+          7028
         ],
-        "total": 4214,
+        "total": 11029,
         "max": 5,
         "requirements": [
           "exp1"
@@ -409,10 +409,10 @@
           200,
           460,
           1058,
-          2434,
-          5597
+          7301,
+          16791
         ],
-        "total": 9749,
+        "total": 25810,
         "max": 5,
         "requirements": [
           "exp1"
@@ -426,9 +426,9 @@
           300,
           690,
           1587,
-          3651
+          10951
         ],
-        "total": 6228,
+        "total": 13528,
         "max": 4,
         "requirements": [
           "exp3"
@@ -526,9 +526,29 @@
         "total": 5,
         "max": 1,
         "requirements": []
+      },
+      {
+        "id": "anom1",
+        "name": "Cartografia da Anomalia",
+        "currency": "data",
+        "costs": [
+          30000,
+          43500,
+          63075,
+          91459,
+          132616,
+          192293,
+          278824,
+          404294,
+          586227,
+          850029
+        ],
+        "total": 2672317,
+        "max": 10,
+        "requirements": []
       }
     ],
-    "dataTotal": 199973,
+    "dataTotal": 3166119,
     "fragmentTotal": 180
   },
   "rateGrid": [
@@ -552,26 +572,41 @@
       "lvl": 1,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 0.34666666666666657,
-      "gained": 20.799999999999994,
-      "expected": 0.3466666666666667,
+      "rate": 0.21666666666666606,
+      "gained": 12.999999999999964,
+      "expected": 0.21666666666666667,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 20.799999999999994
+      "report": 12.999999999999964
     },
     {
       "n": 1,
       "lvl": 1,
       "oraculo": 5,
       "seconds": 60,
+      "rate": 0.35000000000000075,
+      "gained": 21.000000000000046,
+      "expected": 0.35,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 21.000000000000046
+    },
+    {
+      "n": 1,
+      "lvl": 1,
+      "oraculo": 10,
+      "seconds": 60,
       "rate": 0.7999999999999983,
       "gained": 47.99999999999989,
       "expected": 0.8,
       "energyRatio": 1,
-      "dataGain": 1.5,
+      "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
@@ -579,198 +614,183 @@
     },
     {
       "n": 1,
-      "lvl": 1,
-      "oraculo": 10,
-      "seconds": 60,
-      "rate": 6.399999999999986,
-      "gained": 383.99999999999915,
-      "expected": 6.4,
-      "energyRatio": 1,
-      "dataGain": 2,
-      "globalYield": 1,
-      "globalSpeed": 1,
-      "cap": 28800,
-      "report": 383.99999999999915
-    },
-    {
-      "n": 1,
       "lvl": 5,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 0.21999999999999972,
-      "gained": 13.199999999999983,
-      "expected": 0.22000000000000003,
+      "rate": 0.16133333333333366,
+      "gained": 9.68000000000002,
+      "expected": 0.16133333333333336,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 13.199999999999983
+      "report": 9.68000000000002
     },
     {
       "n": 1,
       "lvl": 5,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 1.0400000000000027,
-      "gained": 62.40000000000016,
-      "expected": 1.04,
+      "rate": 0.4766666666666666,
+      "gained": 28.599999999999998,
+      "expected": 0.4766666666666667,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 62.40000000000016
+      "report": 28.599999999999998
     },
     {
       "n": 1,
       "lvl": 5,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 2.400000000000001,
-      "gained": 144.00000000000006,
-      "expected": 2.4,
+      "rate": 0.7699999999999998,
+      "gained": 46.19999999999999,
+      "expected": 0.77,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 144.00000000000006
+      "report": 46.19999999999999
     },
     {
       "n": 1,
       "lvl": 5,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 19.200000000000006,
-      "gained": 1152.0000000000005,
-      "expected": 19.2,
+      "rate": 1.7599999999999978,
+      "gained": 105.59999999999987,
+      "expected": 1.7600000000000002,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 1152.0000000000005
+      "report": 105.59999999999987
     },
     {
       "n": 1,
       "lvl": 10,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 0.4033333333333338,
-      "gained": 24.200000000000028,
-      "expected": 0.4033333333333334,
+      "rate": 0.27133333333333376,
+      "gained": 16.280000000000026,
+      "expected": 0.27133333333333337,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 24.200000000000028
+      "report": 16.280000000000026
     },
     {
       "n": 1,
       "lvl": 10,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 1.9066666666666665,
-      "gained": 114.39999999999999,
-      "expected": 1.9066666666666667,
+      "rate": 0.8016666666666659,
+      "gained": 48.09999999999995,
+      "expected": 0.8016666666666665,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 114.39999999999999
+      "report": 48.09999999999995
     },
     {
       "n": 1,
       "lvl": 10,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 4.399999999999991,
-      "gained": 263.99999999999943,
-      "expected": 4.4,
+      "rate": 1.2949999999999988,
+      "gained": 77.69999999999993,
+      "expected": 1.2950000000000002,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 263.99999999999943
+      "report": 77.69999999999993
     },
     {
       "n": 1,
       "lvl": 10,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 35.199999999999925,
-      "gained": 2111.9999999999955,
-      "expected": 35.2,
+      "rate": 2.959999999999996,
+      "gained": 177.59999999999977,
+      "expected": 2.96,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 2111.9999999999955
+      "report": 177.59999999999977
     },
     {
       "n": 1,
       "lvl": 25,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 0.9533333333333333,
-      "gained": 57.199999999999996,
-      "expected": 0.9533333333333334,
+      "rate": 0.6013333333333342,
+      "gained": 36.08000000000005,
+      "expected": 0.6013333333333333,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 57.199999999999996
+      "report": 36.08000000000005
     },
     {
       "n": 1,
       "lvl": 25,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 4.5066666666666615,
-      "gained": 270.3999999999997,
-      "expected": 4.506666666666667,
+      "rate": 1.7766666666666693,
+      "gained": 106.60000000000015,
+      "expected": 1.7766666666666666,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 270.3999999999997
+      "report": 106.60000000000015
     },
     {
       "n": 1,
       "lvl": 25,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 10.400000000000004,
-      "gained": 624.0000000000002,
-      "expected": 10.4,
+      "rate": 2.870000000000003,
+      "gained": 172.2000000000002,
+      "expected": 2.8699999999999997,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 624.0000000000002
+      "report": 172.2000000000002
     },
     {
       "n": 1,
       "lvl": 25,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 83.20000000000003,
-      "gained": 4992.000000000002,
-      "expected": 83.2,
+      "rate": 6.559999999999983,
+      "gained": 393.59999999999894,
+      "expected": 6.56,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 4992.000000000002
+      "report": 393.59999999999894
     },
     {
       "n": 5,
@@ -792,26 +812,41 @@
       "lvl": 1,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 1.7333333333333285,
-      "gained": 103.99999999999972,
-      "expected": 1.7333333333333334,
+      "rate": 1.0833333333333317,
+      "gained": 64.9999999999999,
+      "expected": 1.0833333333333333,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 103.99999999999972
+      "report": 64.9999999999999
     },
     {
       "n": 5,
       "lvl": 1,
       "oraculo": 5,
       "seconds": 60,
+      "rate": 1.75,
+      "gained": 105,
+      "expected": 1.75,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 105
+    },
+    {
+      "n": 5,
+      "lvl": 1,
+      "oraculo": 10,
+      "seconds": 60,
       "rate": 4,
       "gained": 240,
       "expected": 4,
       "energyRatio": 1,
-      "dataGain": 1.5,
+      "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
@@ -819,198 +854,183 @@
     },
     {
       "n": 5,
-      "lvl": 1,
-      "oraculo": 10,
-      "seconds": 60,
-      "rate": 32,
-      "gained": 1920,
-      "expected": 32,
-      "energyRatio": 1,
-      "dataGain": 2,
-      "globalYield": 1,
-      "globalSpeed": 1,
-      "cap": 28800,
-      "report": 1920
-    },
-    {
-      "n": 5,
       "lvl": 5,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 1.0999999999999976,
-      "gained": 65.99999999999986,
-      "expected": 1.1,
+      "rate": 0.8066666666666676,
+      "gained": 48.400000000000055,
+      "expected": 0.8066666666666668,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 65.99999999999986
+      "report": 48.400000000000055
     },
     {
       "n": 5,
       "lvl": 5,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 5.200000000000002,
-      "gained": 312.0000000000001,
-      "expected": 5.2,
+      "rate": 2.3833333333333306,
+      "gained": 142.99999999999983,
+      "expected": 2.3833333333333333,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 312.0000000000001
+      "report": 142.99999999999983
     },
     {
       "n": 5,
       "lvl": 5,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 12,
-      "gained": 720,
-      "expected": 12,
+      "rate": 3.850000000000008,
+      "gained": 231.00000000000048,
+      "expected": 3.85,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 720
+      "report": 231.00000000000048
     },
     {
       "n": 5,
       "lvl": 5,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 96,
-      "gained": 5760,
-      "expected": 96,
+      "rate": 8.799999999999981,
+      "gained": 527.9999999999989,
+      "expected": 8.8,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 5760
+      "report": 527.9999999999989
     },
     {
       "n": 5,
       "lvl": 10,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 2.0166666666666724,
-      "gained": 121.00000000000036,
-      "expected": 2.016666666666667,
+      "rate": 1.3566666666666656,
+      "gained": 81.39999999999993,
+      "expected": 1.3566666666666667,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 121.00000000000036
+      "report": 81.39999999999993
     },
     {
       "n": 5,
       "lvl": 10,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 9.533333333333323,
-      "gained": 571.9999999999993,
-      "expected": 9.533333333333333,
+      "rate": 4.008333333333327,
+      "gained": 240.4999999999996,
+      "expected": 4.008333333333334,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 571.9999999999993
+      "report": 240.4999999999996
     },
     {
       "n": 5,
       "lvl": 10,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 22,
-      "gained": 1320,
-      "expected": 22,
+      "rate": 6.475000000000013,
+      "gained": 388.5000000000008,
+      "expected": 6.475,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 1320
+      "report": 388.5000000000008
     },
     {
       "n": 5,
       "lvl": 10,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 176,
-      "gained": 10560,
-      "expected": 176,
+      "rate": 14.79999999999997,
+      "gained": 887.9999999999982,
+      "expected": 14.8,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 10560
+      "report": 887.9999999999982
     },
     {
       "n": 5,
       "lvl": 25,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 4.766666666666661,
-      "gained": 285.99999999999966,
-      "expected": 4.766666666666667,
+      "rate": 3.006666666666662,
+      "gained": 180.39999999999972,
+      "expected": 3.006666666666667,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 285.99999999999966
+      "report": 180.39999999999972
     },
     {
       "n": 5,
       "lvl": 25,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 22.533333333333307,
-      "gained": 1351.9999999999984,
-      "expected": 22.533333333333335,
+      "rate": 8.883333333333331,
+      "gained": 532.9999999999999,
+      "expected": 8.883333333333333,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 1351.9999999999984
+      "report": 532.9999999999999
     },
     {
       "n": 5,
       "lvl": 25,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 52,
-      "gained": 3120,
-      "expected": 52,
+      "rate": 14.349999999999973,
+      "gained": 860.9999999999984,
+      "expected": 14.35,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 3120
+      "report": 860.9999999999984
     },
     {
       "n": 5,
       "lvl": 25,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 416,
-      "gained": 24960,
-      "expected": 416,
+      "rate": 32.800000000000075,
+      "gained": 1968.0000000000043,
+      "expected": 32.8,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 24960
+      "report": 1968.0000000000043
     },
     {
       "n": 10,
@@ -1032,26 +1052,41 @@
       "lvl": 1,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 3.466666666666657,
-      "gained": 207.99999999999943,
-      "expected": 3.466666666666667,
+      "rate": 2.1666666666666634,
+      "gained": 129.9999999999998,
+      "expected": 2.1666666666666665,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 207.99999999999943
+      "report": 129.9999999999998
     },
     {
       "n": 10,
       "lvl": 1,
       "oraculo": 5,
       "seconds": 60,
+      "rate": 3.5,
+      "gained": 210,
+      "expected": 3.5,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 210
+    },
+    {
+      "n": 10,
+      "lvl": 1,
+      "oraculo": 10,
+      "seconds": 60,
       "rate": 8,
       "gained": 480,
       "expected": 8,
       "energyRatio": 1,
-      "dataGain": 1.5,
+      "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
@@ -1059,198 +1094,183 @@
     },
     {
       "n": 10,
-      "lvl": 1,
-      "oraculo": 10,
-      "seconds": 60,
-      "rate": 64,
-      "gained": 3840,
-      "expected": 64,
-      "energyRatio": 1,
-      "dataGain": 2,
-      "globalYield": 1,
-      "globalSpeed": 1,
-      "cap": 28800,
-      "report": 3840
-    },
-    {
-      "n": 10,
       "lvl": 5,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 2.1999999999999953,
-      "gained": 131.99999999999972,
-      "expected": 2.2,
+      "rate": 1.6133333333333353,
+      "gained": 96.80000000000011,
+      "expected": 1.6133333333333335,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 131.99999999999972
+      "report": 96.80000000000011
     },
     {
       "n": 10,
       "lvl": 5,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 10.400000000000004,
-      "gained": 624.0000000000002,
-      "expected": 10.4,
+      "rate": 4.766666666666661,
+      "gained": 285.99999999999966,
+      "expected": 4.766666666666667,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 624.0000000000002
+      "report": 285.99999999999966
     },
     {
       "n": 10,
       "lvl": 5,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 24,
-      "gained": 1440,
-      "expected": 24,
+      "rate": 7.700000000000016,
+      "gained": 462.00000000000097,
+      "expected": 7.7,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 1440
+      "report": 462.00000000000097
     },
     {
       "n": 10,
       "lvl": 5,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 192,
-      "gained": 11520,
-      "expected": 192,
+      "rate": 17.599999999999962,
+      "gained": 1055.9999999999977,
+      "expected": 17.6,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 11520
+      "report": 1055.9999999999977
     },
     {
       "n": 10,
       "lvl": 10,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 4.033333333333345,
-      "gained": 242.0000000000007,
-      "expected": 4.033333333333334,
+      "rate": 2.713333333333331,
+      "gained": 162.79999999999987,
+      "expected": 2.7133333333333334,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 242.0000000000007
+      "report": 162.79999999999987
     },
     {
       "n": 10,
       "lvl": 10,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 19.066666666666645,
-      "gained": 1143.9999999999986,
-      "expected": 19.066666666666666,
+      "rate": 8.016666666666653,
+      "gained": 480.9999999999992,
+      "expected": 8.016666666666667,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 1143.9999999999986
+      "report": 480.9999999999992
     },
     {
       "n": 10,
       "lvl": 10,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 44,
-      "gained": 2640,
-      "expected": 44,
+      "rate": 12.950000000000026,
+      "gained": 777.0000000000016,
+      "expected": 12.95,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 2640
+      "report": 777.0000000000016
     },
     {
       "n": 10,
       "lvl": 10,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 352,
-      "gained": 21120,
-      "expected": 352,
+      "rate": 29.59999999999994,
+      "gained": 1775.9999999999964,
+      "expected": 29.6,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 21120
+      "report": 1775.9999999999964
     },
     {
       "n": 10,
       "lvl": 25,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 9.533333333333323,
-      "gained": 571.9999999999993,
-      "expected": 9.533333333333333,
+      "rate": 6.013333333333324,
+      "gained": 360.79999999999944,
+      "expected": 6.013333333333334,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 571.9999999999993
+      "report": 360.79999999999944
     },
     {
       "n": 10,
       "lvl": 25,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 45.06666666666661,
-      "gained": 2703.999999999997,
-      "expected": 45.06666666666667,
+      "rate": 17.766666666666662,
+      "gained": 1065.9999999999998,
+      "expected": 17.766666666666666,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 2703.999999999997
+      "report": 1065.9999999999998
     },
     {
       "n": 10,
       "lvl": 25,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 104,
-      "gained": 6240,
-      "expected": 104,
+      "rate": 28.699999999999946,
+      "gained": 1721.9999999999968,
+      "expected": 28.7,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 6240
+      "report": 1721.9999999999968
     },
     {
       "n": 10,
       "lvl": 25,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 832,
-      "gained": 49920,
-      "expected": 832,
+      "rate": 65.60000000000015,
+      "gained": 3936.0000000000086,
+      "expected": 65.6,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 49920
+      "report": 3936.0000000000086
     },
     {
       "n": 25,
@@ -1272,26 +1292,41 @@
       "lvl": 1,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 8.666666666666654,
-      "gained": 519.9999999999992,
-      "expected": 8.666666666666666,
+      "rate": 5.416666666666665,
+      "gained": 324.9999999999999,
+      "expected": 5.416666666666667,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 519.9999999999992
+      "report": 324.9999999999999
     },
     {
       "n": 25,
       "lvl": 1,
       "oraculo": 5,
       "seconds": 60,
+      "rate": 8.75,
+      "gained": 525,
+      "expected": 8.75,
+      "energyRatio": 1,
+      "dataGain": 1.5,
+      "globalYield": 1,
+      "globalSpeed": 1,
+      "cap": 28800,
+      "report": 525
+    },
+    {
+      "n": 25,
+      "lvl": 1,
+      "oraculo": 10,
+      "seconds": 60,
       "rate": 20,
       "gained": 1200,
       "expected": 20,
       "energyRatio": 1,
-      "dataGain": 1.5,
+      "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
@@ -1299,198 +1334,183 @@
     },
     {
       "n": 25,
-      "lvl": 1,
-      "oraculo": 10,
-      "seconds": 60,
-      "rate": 160,
-      "gained": 9600,
-      "expected": 160,
-      "energyRatio": 1,
-      "dataGain": 2,
-      "globalYield": 1,
-      "globalSpeed": 1,
-      "cap": 28800,
-      "report": 9600
-    },
-    {
-      "n": 25,
       "lvl": 5,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 5.5,
-      "gained": 330,
-      "expected": 5.5,
+      "rate": 4.033333333333345,
+      "gained": 242.0000000000007,
+      "expected": 4.033333333333334,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 330
+      "report": 242.0000000000007
     },
     {
       "n": 25,
       "lvl": 5,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 26,
-      "gained": 1560,
-      "expected": 26,
+      "rate": 11.916666666666679,
+      "gained": 715.0000000000007,
+      "expected": 11.916666666666668,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 1560
+      "report": 715.0000000000007
     },
     {
       "n": 25,
       "lvl": 5,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 60,
-      "gained": 3600,
-      "expected": 60,
+      "rate": 19.250000000000004,
+      "gained": 1155.0000000000002,
+      "expected": 19.250000000000004,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 3600
+      "report": 1155.0000000000002
     },
     {
       "n": 25,
       "lvl": 5,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 480,
-      "gained": 28800,
-      "expected": 480,
+      "rate": 44.00000000000001,
+      "gained": 2640.0000000000005,
+      "expected": 44.00000000000001,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 28800
+      "report": 2640.0000000000005
     },
     {
       "n": 25,
       "lvl": 10,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 10.083333333333336,
-      "gained": 605.0000000000001,
-      "expected": 10.083333333333334,
+      "rate": 6.7833333333333306,
+      "gained": 406.99999999999983,
+      "expected": 6.783333333333334,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 605.0000000000001
+      "report": 406.99999999999983
     },
     {
       "n": 25,
       "lvl": 10,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 47.666666666666714,
-      "gained": 2860.0000000000027,
-      "expected": 47.666666666666664,
+      "rate": 20.04166666666667,
+      "gained": 1202.5000000000002,
+      "expected": 20.041666666666668,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 2860.0000000000027
+      "report": 1202.5000000000002
     },
     {
       "n": 25,
       "lvl": 10,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 110,
-      "gained": 6600,
-      "expected": 110,
+      "rate": 32.375,
+      "gained": 1942.5,
+      "expected": 32.375,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 6600
+      "report": 1942.5
     },
     {
       "n": 25,
       "lvl": 10,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 880,
-      "gained": 52800,
-      "expected": 880,
+      "rate": 74,
+      "gained": 4440,
+      "expected": 74,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 52800
+      "report": 4440
     },
     {
       "n": 25,
       "lvl": 25,
       "oraculo": 1,
       "seconds": 60,
-      "rate": 23.833333333333357,
-      "gained": 1430.0000000000014,
-      "expected": 23.833333333333336,
+      "rate": 15.033333333333308,
+      "gained": 901.9999999999985,
+      "expected": 15.033333333333333,
       "energyRatio": 1,
       "dataGain": 1.1,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 1430.0000000000014
+      "report": 901.9999999999985
     },
     {
       "n": 25,
       "lvl": 25,
       "oraculo": 3,
       "seconds": 60,
-      "rate": 112.6666666666665,
-      "gained": 6759.99999999999,
-      "expected": 112.66666666666667,
+      "rate": 44.41666666666669,
+      "gained": 2665.0000000000014,
+      "expected": 44.416666666666664,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 6759.99999999999
+      "report": 2665.0000000000014
     },
     {
       "n": 25,
       "lvl": 25,
       "oraculo": 5,
       "seconds": 60,
-      "rate": 260,
-      "gained": 15600,
-      "expected": 260,
+      "rate": 71.75,
+      "gained": 4305,
+      "expected": 71.74999999999999,
       "energyRatio": 1,
       "dataGain": 1.5,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 15600
+      "report": 4305
     },
     {
       "n": 25,
       "lvl": 25,
       "oraculo": 10,
       "seconds": 60,
-      "rate": 2080,
-      "gained": 124800,
-      "expected": 2080,
+      "rate": 164,
+      "gained": 9840,
+      "expected": 163.99999999999997,
       "energyRatio": 1,
       "dataGain": 2,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 124800
+      "report": 9840
     }
   ],
   "offline": [
@@ -1509,7 +1529,7 @@
       "globalSpeed": 1,
       "cap": 28800,
       "report": 2111.9999999998768,
-      "researchBudgets": 0.010561425792481986
+      "researchBudgets": 0.0006670627351656712
     },
     {
       "label": "Farm moderado sem prestígio",
@@ -1517,16 +1537,16 @@
       "lvl": 5,
       "oraculo": 3,
       "seconds": 28800,
-      "rate": 5.200000000000353,
-      "gained": 149760.00000001016,
-      "expected": 5.2,
+      "rate": 2.383333333333253,
+      "gained": 68639.99999999769,
+      "expected": 2.3833333333333333,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 149760.00000001016,
-      "researchBudgets": 0.7489011016487229
+      "report": 68639.99999999769,
+      "researchBudgets": 0.021679538892884292
     },
     {
       "label": "Farm ativo sem prestígio",
@@ -1534,16 +1554,16 @@
       "lvl": 5,
       "oraculo": 3,
       "seconds": 28800,
-      "rate": 10.400000000000706,
-      "gained": 299520.0000000203,
-      "expected": 10.4,
+      "rate": 4.766666666666506,
+      "gained": 137279.99999999537,
+      "expected": 4.766666666666667,
       "energyRatio": 1,
       "dataGain": 1.3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 299520.0000000203,
-      "researchBudgets": 1.4978022032974458
+      "report": 137279.99999999537,
+      "researchBudgets": 0.043359077785768585
     },
     {
       "label": "Farm ativo com Telemetria V",
@@ -1552,16 +1572,16 @@
       "oraculo": 3,
       "telemetria": 5,
       "seconds": 28800,
-      "rate": 15.599999999999044,
-      "gained": 449279.99999997247,
-      "expected": 15.600000000000001,
+      "rate": 7.150000000000365,
+      "gained": 205920.00000001054,
+      "expected": 7.150000000000001,
       "energyRatio": 1,
       "dataGain": 1.9500000000000002,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 449279.99999997247,
-      "researchBudgets": 2.246703304946163
+      "report": 205920.00000001054,
+      "researchBudgets": 0.06503861667865282
     },
     {
       "label": "Farm forte com Telemetria V",
@@ -1570,16 +1590,16 @@
       "oraculo": 5,
       "telemetria": 5,
       "seconds": 28800,
-      "rate": 66,
-      "gained": 1900800,
-      "expected": 66,
+      "rate": 19.425000000001305,
+      "gained": 559440.0000000376,
+      "expected": 19.425,
       "energyRatio": 1,
       "dataGain": 2.25,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 1900800,
-      "researchBudgets": 9.505283213233787
+      "report": 559440.0000000376,
+      "researchBudgets": 0.17669582223536126
     },
     {
       "label": "Stress máximo, não campanha atingida",
@@ -1588,16 +1608,16 @@
       "oraculo": 10,
       "telemetria": 5,
       "seconds": 28800,
-      "rate": 3120,
-      "gained": 89856000,
-      "expected": 3120,
+      "rate": 246,
+      "gained": 7084800,
+      "expected": 245.99999999999994,
       "energyRatio": 1,
       "dataGain": 3,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 89856000,
-      "researchBudgets": 449.3406609892335
+      "report": 7084800,
+      "researchBudgets": 2.2376922661466607
     },
     {
       "label": "Farm herdado ilustrativo,100 fragmentos",
@@ -1609,15 +1629,15 @@
       "globalSpeed": 2.5875,
       "eco": 1,
       "seconds": 28800,
-      "rate": 372.6000000000075,
-      "gained": 10730880.000000216,
-      "expected": 372.6,
+      "rate": 27.868489009765653,
+      "gained": 802612.4834812508,
+      "expected": 27.868489009766925,
       "energyRatio": 1,
       "dataGain": 2.25,
       "globalYield": 4,
       "cap": 36000,
-      "report": 10730880.000000216,
-      "researchBudgets": 53.661644321983346
+      "report": 802612.4834812508,
+      "researchBudgets": 0.25350041596076744
     },
     {
       "label": "Profundo abastecido, cenário controlado",
@@ -1627,16 +1647,16 @@
       "oraculo": 3,
       "telemetria": 5,
       "seconds": 28800,
-      "rate": 18.72000000000081,
-      "gained": 539136.0000000233,
-      "expected": 18.720000000000002,
+      "rate": 5.069999999999791,
+      "gained": 146015.99999999398,
+      "expected": 5.070000000000001,
       "energyRatio": 1,
       "dataGain": 1.9500000000000002,
       "globalYield": 1,
       "globalSpeed": 1,
       "cap": 28800,
-      "report": 539136.0000000233,
-      "researchBudgets": 2.696043965935402
+      "report": 146015.99999999398,
+      "researchBudgets": 0.04611829182668122
     }
   ],
   "completion": [
@@ -1650,9 +1670,9 @@
       "policy": "science-first",
       "completeAt": null,
       "initialSpent": 0,
-      "spent": 65009,
-      "produced": 65207.06866694722,
-      "bank": 198.06866666332724,
+      "spent": 60911,
+      "produced": 63658.73066672845,
+      "bank": 2747.7306667430003,
       "snapshots": [
         {
           "time": 3600,
@@ -1684,10 +1704,10 @@
         },
         {
           "time": 86400,
-          "levels": 5,
-          "bank": 4107.365333333448,
-          "produced": 8289.365333333815,
-          "spent": 4182
+          "levels": 4,
+          "bank": 6247.988000005188,
+          "produced": 7995.987999998491,
+          "spent": 1748
         }
       ],
       "maxHours": 168
@@ -1700,32 +1720,46 @@
         "oraculo": 3
       },
       "policy": "science-first",
-      "completeAt": 25808,
+      "completeAt": null,
       "initialSpent": 0,
-      "spent": 199973,
-      "produced": 199979.51999993162,
-      "bank": 6.519999997406558,
+      "spent": 141045,
+      "produced": 2159293.3266506167,
+      "bank": 2018248.3266484123,
       "snapshots": [
         {
           "time": 3600,
-          "levels": 72,
-          "bank": 807.1200000000106,
-          "produced": 26757.119999998362,
-          "spent": 25950
+          "levels": 5,
+          "bank": 2006.806666666705,
+          "produced": 11055.806666666434,
+          "spent": 9049
         },
         {
           "time": 7200,
-          "levels": 92,
-          "bank": 400.11999999993685,
-          "produced": 54837.120000006034,
-          "spent": 54437
+          "levels": 5,
+          "bank": 14018.806666666185,
+          "produced": 23067.806666664514,
+          "spent": 9049
         },
         {
           "time": 14400,
-          "levels": 105,
-          "bank": 5102.12000000047,
-          "produced": 110997.12000002699,
-          "spent": 105895
+          "levels": 70,
+          "bank": 990.7516666658154,
+          "produced": 48609.751666652584,
+          "spent": 47619
+        },
+        {
+          "time": 28800,
+          "levels": 81,
+          "bank": 6703.751666664603,
+          "produced": 100089.75166661068,
+          "spent": 93386
+        },
+        {
+          "time": 86400,
+          "levels": 85,
+          "bank": 164964.75166670172,
+          "produced": 306009.7516671551,
+          "spent": 141045
         }
       ],
       "maxHours": 168
@@ -1738,25 +1772,46 @@
         "oraculo": 3
       },
       "policy": "science-first",
-      "completeAt": 12904,
+      "completeAt": null,
       "initialSpent": 0,
-      "spent": 199973,
-      "produced": 199977.44000004575,
-      "bank": 4.439999999514839,
+      "spent": 141045,
+      "produced": 4321455.7099680565,
+      "bank": 4180410.709961616,
       "snapshots": [
         {
           "time": 3600,
-          "levels": 92,
-          "bank": 398.0400000000047,
-          "produced": 54835.0399999966,
-          "spent": 54437
+          "levels": 5,
+          "bank": 14017.85333333391,
+          "produced": 23066.853333331717,
+          "spent": 9049
         },
         {
           "time": 7200,
-          "levels": 105,
-          "bank": 5100.0400000000045,
-          "produced": 110995.04000001257,
-          "spent": 105895
+          "levels": 70,
+          "bank": 989.5600000007838,
+          "produced": 48608.56000000257,
+          "spent": 47619
+        },
+        {
+          "time": 14400,
+          "levels": 81,
+          "bank": 6702.560000000561,
+          "produced": 100088.5599999779,
+          "spent": 93386
+        },
+        {
+          "time": 28800,
+          "levels": 85,
+          "bank": 62003.560000008016,
+          "produced": 203048.5599998941,
+          "spent": 141045
+        },
+        {
+          "time": 86400,
+          "levels": 85,
+          "bank": 473843.56000053807,
+          "produced": 614888.5600009946,
+          "spent": 141045
         }
       ],
       "maxHours": 168
@@ -1770,12 +1825,48 @@
         "telemetria": 5
       },
       "policy": "science-first",
-      "completeAt": 2882,
-      "initialSpent": 9779,
-      "spent": 190194,
-      "produced": 190212,
-      "bank": 18,
-      "snapshots": [],
+      "completeAt": null,
+      "initialSpent": 25840,
+      "spent": 115205,
+      "produced": 11748259.425072081,
+      "bank": 11633054.425067663,
+      "snapshots": [
+        {
+          "time": 3600,
+          "levels": 81,
+          "bank": 2384.0000000001687,
+          "produced": 69930.0000000047,
+          "spent": 67546
+        },
+        {
+          "time": 7200,
+          "levels": 85,
+          "bank": 24654.99999999926,
+          "produced": 139860.0000000086,
+          "spent": 115205
+        },
+        {
+          "time": 14400,
+          "levels": 85,
+          "bank": 164514.99999999366,
+          "produced": 279719.9999999248,
+          "spent": 115205
+        },
+        {
+          "time": 28800,
+          "levels": 85,
+          "bank": 444234.999999826,
+          "produced": 559439.9999998624,
+          "spent": 115205
+        },
+        {
+          "time": 86400,
+          "levels": 85,
+          "bank": 1563115.0000022682,
+          "produced": 1678320.0000025444,
+          "spent": 115205
+        }
+      ],
       "maxHours": 168
     },
     {
@@ -1790,12 +1881,48 @@
         "eco": 1
       },
       "policy": "science-first",
-      "completeAt": 511,
-      "initialSpent": 9779,
-      "spent": 190194,
-      "produced": 190398.60000000175,
-      "bank": 204.59999999996944,
-      "snapshots": [],
+      "completeAt": null,
+      "initialSpent": 25840,
+      "spent": 115205,
+      "produced": 16854890.02168478,
+      "bank": 16739685.021681404,
+      "snapshots": [
+        {
+          "time": 3600,
+          "levels": 84,
+          "bank": 1912.560435160696,
+          "produced": 100326.56043515635,
+          "spent": 98414
+        },
+        {
+          "time": 7200,
+          "levels": 85,
+          "bank": 85448.12087031809,
+          "produced": 200653.12087030945,
+          "spent": 115205
+        },
+        {
+          "time": 14400,
+          "levels": 85,
+          "bank": 286101.2417406493,
+          "produced": 401306.24174076086,
+          "spent": 115205
+        },
+        {
+          "time": 28800,
+          "levels": 85,
+          "bank": 687407.4834816806,
+          "produced": 802612.4834817923,
+          "spent": 115205
+        },
+        {
+          "time": 86400,
+          "levels": 85,
+          "bank": 2292632.450445806,
+          "produced": 2407837.450445918,
+          "spent": 115205
+        }
+      ],
       "maxHours": 168
     }
   ],
@@ -1805,27 +1932,27 @@
       "budget": {
         "branches": {
           "min": {
-            "total": 23162,
+            "total": 53727,
             "levels": 21,
             "nodes": 5
           },
           "ind": {
-            "total": 37046,
+            "total": 89692,
             "levels": 23,
             "nodes": 5
           },
           "en": {
-            "total": 100525,
+            "total": 256317,
             "levels": 23,
             "nodes": 5
           },
           "log": {
-            "total": 16884,
-            "levels": 23,
-            "nodes": 5
+            "total": 2713851,
+            "levels": 33,
+            "nodes": 6
           },
           "exp": {
-            "total": 22356,
+            "total": 52532,
             "levels": 21,
             "nodes": 5
           },
@@ -1859,10 +1986,10 @@
               40,
               88,
               194,
-              426,
-              938
+              1278,
+              2812
             ],
-            "total": 1686,
+            "total": 4412,
             "max": 5,
             "requirements": [
               "min1"
@@ -1876,10 +2003,10 @@
               60,
               132,
               291,
-              639,
-              1406
+              1917,
+              4217
             ],
-            "total": 2528,
+            "total": 6617,
             "max": 5,
             "requirements": [
               "min1"
@@ -1892,9 +2019,9 @@
             "costs": [
               400,
               1000,
-              2500
+              7500
             ],
-            "total": 3900,
+            "total": 8900,
             "max": 3,
             "requirements": [
               "min2"
@@ -1907,9 +2034,9 @@
             "costs": [
               1500,
               3750,
-              9375
+              28125
             ],
-            "total": 14625,
+            "total": 33375,
             "max": 3,
             "requirements": [
               "min4"
@@ -1938,10 +2065,10 @@
               50,
               111,
               243,
-              533,
-              1172
+              1598,
+              3514
             ],
-            "total": 2109,
+            "total": 5516,
             "max": 5,
             "requirements": [
               "ind1"
@@ -1955,10 +2082,10 @@
               120,
               264,
               581,
-              1278,
-              2812
+              3834,
+              8434
             ],
-            "total": 5055,
+            "total": 13233,
             "max": 5,
             "requirements": [
               "ind2"
@@ -1972,10 +2099,10 @@
               200,
               460,
               1058,
-              2434,
-              5597
+              7301,
+              16791
             ],
-            "total": 9749,
+            "total": 25810,
             "max": 5,
             "requirements": [
               "ind1"
@@ -1988,9 +2115,9 @@
             "costs": [
               2000,
               5000,
-              12500
+              37500
             ],
-            "total": 19500,
+            "total": 44500,
             "max": 3,
             "requirements": [
               "ind3"
@@ -2019,10 +2146,10 @@
               60,
               132,
               291,
-              639,
-              1406
+              1917,
+              4217
             ],
-            "total": 2528,
+            "total": 6617,
             "max": 5,
             "requirements": [
               "en1"
@@ -2036,10 +2163,10 @@
               300,
               690,
               1587,
-              3651,
-              8396
+              10951,
+              25186
             ],
-            "total": 14624,
+            "total": 38714,
             "max": 5,
             "requirements": [
               "en1"
@@ -2053,10 +2180,10 @@
               1200,
               2760,
               6348,
-              14601,
-              33581
+              43802,
+              100743
             ],
-            "total": 58490,
+            "total": 154853,
             "max": 5,
             "requirements": [
               "en2"
@@ -2069,9 +2196,9 @@
             "costs": [
               2500,
               6250,
-              15625
+              46875
             ],
-            "total": 24375,
+            "total": 55625,
             "max": 3,
             "requirements": [
               "en4"
@@ -2100,10 +2227,10 @@
               40,
               88,
               194,
-              426,
-              938
+              1278,
+              2812
             ],
-            "total": 1686,
+            "total": 4412,
             "max": 5,
             "requirements": []
           },
@@ -2115,10 +2242,10 @@
               80,
               176,
               388,
-              852,
-              1875
+              2556,
+              5623
             ],
-            "total": 3371,
+            "total": 8823,
             "max": 5,
             "requirements": [
               "log2"
@@ -2132,10 +2259,10 @@
               150,
               330,
               727,
-              1598,
-              3514
+              4792,
+              10542
             ],
-            "total": 6319,
+            "total": 16541,
             "max": 5,
             "requirements": [
               "log3"
@@ -2148,9 +2275,9 @@
             "costs": [
               500,
               1250,
-              3125
+              9375
             ],
-            "total": 4875,
+            "total": 11125,
             "max": 3,
             "requirements": [
               "log3"
@@ -2193,10 +2320,10 @@
               100,
               221,
               485,
-              1065,
-              2343
+              3195,
+              7028
             ],
-            "total": 4214,
+            "total": 11029,
             "max": 5,
             "requirements": [
               "exp1"
@@ -2210,10 +2337,10 @@
               200,
               460,
               1058,
-              2434,
-              5597
+              7301,
+              16791
             ],
-            "total": 9749,
+            "total": 25810,
             "max": 5,
             "requirements": [
               "exp1"
@@ -2227,9 +2354,9 @@
               300,
               690,
               1587,
-              3651
+              10951
             ],
-            "total": 6228,
+            "total": 13528,
             "max": 4,
             "requirements": [
               "exp3"
@@ -2327,9 +2454,29 @@
             "total": 5,
             "max": 1,
             "requirements": []
+          },
+          {
+            "id": "anom1",
+            "name": "Cartografia da Anomalia",
+            "currency": "data",
+            "costs": [
+              30000,
+              43500,
+              63075,
+              91459,
+              132616,
+              192293,
+              278824,
+              404294,
+              586227,
+              850029
+            ],
+            "total": 2672317,
+            "max": 10,
+            "requirements": []
           }
         ],
-        "dataTotal": 199973,
+        "dataTotal": 3166119,
         "fragmentTotal": 180
       },
       "completion": [
@@ -2341,39 +2488,46 @@
             "oraculo": 3
           },
           "policy": "science-first",
-          "completeAt": 51615,
+          "completeAt": null,
           "initialSpent": 0,
-          "spent": 199973,
-          "produced": 199976.65999981677,
-          "bank": 3.6600000022081076,
+          "spent": 141045,
+          "produced": 1726861.136008348,
+          "bank": 1585816.1360147882,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 40,
-              "bank": 174.16000000013494,
-              "produced": 12718.159999999398,
-              "spent": 12544
+              "levels": 4,
+              "bank": 6934.197333333715,
+              "produced": 8682.197333333697,
+              "spent": 1748
             },
             {
               "time": 7200,
-              "levels": 72,
-              "bank": 808.1600000001079,
-              "produced": 26758.16000000293,
-              "spent": 25950
+              "levels": 5,
+              "bank": 9214.578666666894,
+              "produced": 18263.57866666543,
+              "spent": 9049
             },
             {
               "time": 14400,
-              "levels": 92,
-              "bank": 401.16000000022507,
-              "produced": 54838.160000013406,
-              "spent": 54437
+              "levels": 63,
+              "bank": 331.2760000003579,
+              "produced": 38314.27599999651,
+              "spent": 37983
             },
             {
               "time": 28800,
-              "levels": 105,
-              "bank": 5103.160000000238,
-              "produced": 110998.15999994955,
-              "spent": 105895
+              "levels": 79,
+              "bank": 441.27600000023364,
+              "produced": 79498.27600000489,
+              "spent": 79057
+            },
+            {
+              "time": 86400,
+              "levels": 85,
+              "bank": 103189.27600001996,
+              "produced": 244234.27599946264,
+              "spent": 141045
             }
           ],
           "maxHours": 168
@@ -2386,32 +2540,46 @@
             "oraculo": 3
           },
           "policy": "science-first",
-          "completeAt": 25808,
+          "completeAt": null,
           "initialSpent": 0,
-          "spent": 199973,
-          "produced": 199979.51999993162,
-          "bank": 6.519999997406558,
+          "spent": 141045,
+          "produced": 3456590.661361631,
+          "bank": 3315545.6613680613,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 72,
-              "bank": 807.1200000000106,
-              "produced": 26757.119999998362,
-              "spent": 25950
+              "levels": 5,
+              "bank": 9213.43466666674,
+              "produced": 18262.43466666683,
+              "spent": 9049
             },
             {
               "time": 7200,
-              "levels": 92,
-              "bank": 400.11999999993685,
-              "produced": 54837.120000006034,
-              "spent": 54437
+              "levels": 63,
+              "bank": 329.94133333324476,
+              "produced": 38312.94133333585,
+              "spent": 37983
             },
             {
               "time": 14400,
-              "levels": 105,
-              "bank": 5102.12000000047,
-              "produced": 110997.12000002699,
-              "spent": 105895
+              "levels": 79,
+              "bank": 439.94133333308366,
+              "produced": 79496.94133334424,
+              "spent": 79057
+            },
+            {
+              "time": 28800,
+              "levels": 85,
+              "bank": 20819.94133333222,
+              "produced": 161864.941333361,
+              "spent": 141045
+            },
+            {
+              "time": 86400,
+              "levels": 85,
+              "bank": 350291.9413329508,
+              "produced": 491336.9413322619,
+              "spent": 141045
             }
           ],
           "maxHours": 168
@@ -2425,25 +2593,46 @@
             "telemetria": 5
           },
           "policy": "science-first",
-          "completeAt": 7685,
-          "initialSpent": 9779,
-          "spent": 190194,
-          "produced": 190203.75,
-          "bank": 9.75,
+          "completeAt": null,
+          "initialSpent": 25840,
+          "spent": 115205,
+          "produced": 10069936.650114901,
+          "bank": 9954731.650112323,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 103,
-              "bank": 5582,
-              "produced": 89100,
-              "spent": 83518
+              "levels": 79,
+              "bank": 6723.000000000011,
+              "produced": 59940.00000000355,
+              "spent": 53217
             },
             {
               "time": 7200,
-              "levels": 110,
-              "bank": 21587,
-              "produced": 178200,
-              "spent": 156613
+              "levels": 85,
+              "bank": 4674.9999999993815,
+              "produced": 119879.99999998504,
+              "spent": 115205
+            },
+            {
+              "time": 14400,
+              "levels": 85,
+              "bank": 124554.99999998279,
+              "produced": 239759.99999994313,
+              "spent": 115205
+            },
+            {
+              "time": 28800,
+              "levels": 85,
+              "bank": 364315.0000000776,
+              "produced": 479520.00000023923,
+              "spent": 115205
+            },
+            {
+              "time": 86400,
+              "levels": 85,
+              "bank": 1323354.9999994973,
+              "produced": 1438559.9999988535,
+              "spent": 115205
             }
           ],
           "maxHours": 168
@@ -2460,25 +2649,46 @@
             "eco": 1
           },
           "policy": "science-first",
-          "completeAt": 8759,
-          "initialSpent": 9779,
-          "spent": 190194,
-          "produced": 190207.8664181136,
-          "bank": 13.866418089935905,
+          "completeAt": null,
+          "initialSpent": 25840,
+          "spent": 115205,
+          "produced": 3611762.147447249,
+          "bank": 3496557.1474490627,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 102,
-              "bank": 255.54059882673832,
-              "produced": 78176.54059882619,
-              "spent": 77921
+              "levels": 69,
+              "bank": 1317.5486646773102,
+              "produced": 21498.548664678434,
+              "spent": 20181
             },
             {
               "time": 7200,
-              "levels": 109,
-              "bank": 15365.08119765311,
-              "produced": 156353.0811976699,
-              "spent": 140988
+              "levels": 77,
+              "bank": 195.09732935464578,
+              "produced": 42997.097329357835,
+              "spent": 42802
+            },
+            {
+              "time": 14400,
+              "levels": 82,
+              "bank": 9073.19465870872,
+              "produced": 85994.19465869173,
+              "spent": 76921
+            },
+            {
+              "time": 28800,
+              "levels": 85,
+              "bank": 56783.38931742334,
+              "produced": 171988.38931730457,
+              "spent": 115205
+            },
+            {
+              "time": 86400,
+              "levels": 85,
+              "bank": 400760.1679525609,
+              "produced": 515965.16795299295,
+              "spent": 115205
             }
           ],
           "maxHours": 168
@@ -2491,15 +2701,15 @@
           "lvl": 5,
           "oraculo": 3,
           "seconds": 28800,
-          "rate": 2.6000000000001764,
-          "gained": 74880.00000000508,
-          "expected": 2.6,
+          "rate": 1.9066666666667376,
+          "gained": 54912.000000002045,
+          "expected": 1.9066666666666667,
           "energyRatio": 1,
           "dataGain": 1.3,
           "globalYield": 1,
           "globalSpeed": 1,
           "cap": 28800,
-          "report": 74880.00000000508
+          "report": 54912.000000002045
         },
         {
           "label": "Farm ativo sem prestígio",
@@ -2507,15 +2717,15 @@
           "lvl": 5,
           "oraculo": 3,
           "seconds": 28800,
-          "rate": 5.200000000000353,
-          "gained": 149760.00000001016,
-          "expected": 5.2,
+          "rate": 3.813333333333475,
+          "gained": 109824.00000000409,
+          "expected": 3.8133333333333335,
           "energyRatio": 1,
           "dataGain": 1.3,
           "globalYield": 1,
           "globalSpeed": 1,
           "cap": 28800,
-          "report": 149760.00000001016
+          "report": 109824.00000000409
         },
         {
           "label": "Farm forte com Telemetria V",
@@ -2524,15 +2734,15 @@
           "oraculo": 5,
           "telemetria": 5,
           "seconds": 28800,
-          "rate": 24.75,
-          "gained": 712800,
-          "expected": 24.75,
+          "rate": 16.650000000000986,
+          "gained": 479520.0000000284,
+          "expected": 16.65,
           "energyRatio": 1,
           "dataGain": 2.25,
           "globalYield": 1,
           "globalSpeed": 1,
           "cap": 28800,
-          "report": 712800
+          "report": 479520.0000000284
         },
         {
           "label": "Farm herdado ilustrativo,100 fragmentos",
@@ -2544,14 +2754,14 @@
           "globalSpeed": 2.5875,
           "eco": 1,
           "seconds": 28800,
-          "rate": 21.715705721896164,
-          "gained": 625412.3247906095,
-          "expected": 21.715705721896306,
+          "rate": 5.971819073521779,
+          "gained": 171988.38931742724,
+          "expected": 5.971819073521485,
           "energyRatio": 1,
           "dataGain": 2.25,
           "globalYield": 4,
           "cap": 36000,
-          "report": 625412.3247906095
+          "report": 171988.38931742724
         }
       ]
     },
@@ -2560,27 +2770,27 @@
       "budget": {
         "branches": {
           "min": {
-            "total": 35161,
+            "total": 86044,
             "levels": 21,
             "nodes": 5
           },
           "ind": {
-            "total": 62602,
+            "total": 160330,
             "levels": 23,
             "nodes": 5
           },
           "en": {
-            "total": 181936,
+            "total": 487200,
             "levels": 23,
             "nodes": 5
           },
           "log": {
-            "total": 33597,
-            "levels": 23,
-            "nodes": 5
+            "total": 493732256,
+            "levels": 33,
+            "nodes": 6
           },
           "exp": {
-            "total": 42351,
+            "total": 105572,
             "levels": 21,
             "nodes": 5
           },
@@ -2614,10 +2824,10 @@
               40,
               112,
               314,
-              879,
-              2459
+              2635,
+              7376
             ],
-            "total": 3804,
+            "total": 10477,
             "max": 5,
             "requirements": [
               "min1"
@@ -2631,10 +2841,10 @@
               60,
               168,
               471,
-              1318,
-              3688
+              3952,
+              11064
             ],
-            "total": 5705,
+            "total": 15715,
             "max": 5,
             "requirements": [
               "min1"
@@ -2647,9 +2857,9 @@
             "costs": [
               400,
               1200,
-              3600
+              10800
             ],
-            "total": 5200,
+            "total": 12400,
             "max": 3,
             "requirements": [
               "min2"
@@ -2662,9 +2872,9 @@
             "costs": [
               1500,
               4500,
-              13500
+              40500
             ],
-            "total": 19500,
+            "total": 46500,
             "max": 3,
             "requirements": [
               "min4"
@@ -2693,10 +2903,10 @@
               50,
               140,
               392,
-              1098,
-              3074
+              3293,
+              9220
             ],
-            "total": 4754,
+            "total": 13095,
             "max": 5,
             "requirements": [
               "ind1"
@@ -2710,10 +2920,10 @@
               120,
               336,
               941,
-              2635,
-              7376
+              7903,
+              22128
             ],
-            "total": 11408,
+            "total": 31428,
             "max": 5,
             "requirements": [
               "ind2"
@@ -2727,10 +2937,10 @@
               200,
               560,
               1568,
-              4391,
-              12294
+              13172,
+              36880
             ],
-            "total": 19013,
+            "total": 52380,
             "max": 5,
             "requirements": [
               "ind1"
@@ -2743,9 +2953,9 @@
             "costs": [
               2000,
               6000,
-              18000
+              54000
             ],
-            "total": 26000,
+            "total": 62000,
             "max": 3,
             "requirements": [
               "ind3"
@@ -2774,10 +2984,10 @@
               60,
               168,
               471,
-              1318,
-              3688
+              3952,
+              11064
             ],
-            "total": 5705,
+            "total": 15715,
             "max": 5,
             "requirements": [
               "en1"
@@ -2791,10 +3001,10 @@
               300,
               840,
               2352,
-              6586,
-              18440
+              19757,
+              55320
             ],
-            "total": 28518,
+            "total": 78569,
             "max": 5,
             "requirements": [
               "en1"
@@ -2808,10 +3018,10 @@
               1200,
               3360,
               9408,
-              26343,
-              73759
+              79028,
+              221277
             ],
-            "total": 114070,
+            "total": 314273,
             "max": 5,
             "requirements": [
               "en2"
@@ -2824,9 +3034,9 @@
             "costs": [
               2500,
               7500,
-              22500
+              67500
             ],
-            "total": 32500,
+            "total": 77500,
             "max": 3,
             "requirements": [
               "en4"
@@ -2855,10 +3065,10 @@
               40,
               112,
               314,
-              879,
-              2459
+              2635,
+              7376
             ],
-            "total": 3804,
+            "total": 10477,
             "max": 5,
             "requirements": []
           },
@@ -2870,10 +3080,10 @@
               80,
               224,
               628,
-              1757,
-              4918
+              5269,
+              14752
             ],
-            "total": 7607,
+            "total": 20953,
             "max": 5,
             "requirements": [
               "log2"
@@ -2887,10 +3097,10 @@
               150,
               420,
               1176,
-              3293,
-              9220
+              9879,
+              27660
             ],
-            "total": 14259,
+            "total": 39285,
             "max": 5,
             "requirements": [
               "log3"
@@ -2903,9 +3113,9 @@
             "costs": [
               500,
               1500,
-              4500
+              13500
             ],
-            "total": 6500,
+            "total": 15500,
             "max": 3,
             "requirements": [
               "log3"
@@ -2948,10 +3158,10 @@
               100,
               280,
               784,
-              2196,
-              6147
+              6586,
+              18440
             ],
-            "total": 9507,
+            "total": 26190,
             "max": 5,
             "requirements": [
               "exp1"
@@ -2965,10 +3175,10 @@
               200,
               560,
               1568,
-              4391,
-              12294
+              13172,
+              36880
             ],
-            "total": 19013,
+            "total": 52380,
             "max": 5,
             "requirements": [
               "exp1"
@@ -2982,9 +3192,9 @@
               300,
               840,
               2352,
-              6586
+              19757
             ],
-            "total": 10078,
+            "total": 23249,
             "max": 4,
             "requirements": [
               "exp3"
@@ -3082,9 +3292,29 @@
             "total": 5,
             "max": 1,
             "requirements": []
+          },
+          {
+            "id": "anom1",
+            "name": "Cartografia da Anomalia",
+            "currency": "data",
+            "costs": [
+              30000,
+              84000,
+              235200,
+              658560,
+              1843968,
+              5163111,
+              14456710,
+              40478786,
+              113340600,
+              317353679
+            ],
+            "total": 493644614,
+            "max": 10,
+            "requirements": []
           }
         ],
-        "dataTotal": 355647,
+        "dataTotal": 494571402,
         "fragmentTotal": 180
       },
       "completion": [
@@ -3096,46 +3326,46 @@
             "oraculo": 3
           },
           "policy": "science-first",
-          "completeAt": 91773,
+          "completeAt": null,
           "initialSpent": 0,
-          "spent": 355647,
-          "produced": 355649.58000028064,
-          "bank": 2.580000005022157,
+          "spent": 292594,
+          "produced": 1724358.8266626047,
+          "bank": 1431764.826675956,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 5,
-              "bank": 5510.520000000172,
-              "produced": 12259.519999999578,
-              "spent": 6749
+              "levels": 4,
+              "bank": 6263.374666666997,
+              "produced": 8621.37466666703,
+              "spent": 2358
             },
             {
               "time": 7200,
-              "levels": 49,
-              "bank": 89.87999999975798,
-              "produced": 25814.88000000102,
-              "spent": 25725
+              "levels": 5,
+              "bank": 2169.3959999990457,
+              "produced": 17699.395999997672,
+              "spent": 15530
             },
             {
               "time": 14400,
-              "levels": 77,
-              "bank": 1715.8799999997655,
-              "produced": 53894.88000001149,
-              "spent": 52179
+              "levels": 5,
+              "bank": 21388.596000002002,
+              "produced": 36918.5959999966,
+              "spent": 15530
             },
             {
               "time": 28800,
-              "levels": 95,
-              "bank": 2984.880000000439,
-              "produced": 110054.8799999494,
-              "spent": 107070
+              "levels": 66,
+              "bank": 199.96666667323206,
+              "produced": 76995.96666668836,
+              "spent": 76796
             },
             {
               "time": 86400,
-              "levels": 110,
-              "bank": 52806.88000001255,
-              "produced": 334694.88000015554,
-              "spent": 281888
+              "levels": 83,
+              "bank": 13677.966666678787,
+              "produced": 241731.96666615887,
+              "spent": 228054
             }
           ],
           "maxHours": 168
@@ -3148,39 +3378,46 @@
             "oraculo": 3
           },
           "policy": "science-first",
-          "completeAt": 45887,
+          "completeAt": null,
           "initialSpent": 0,
-          "spent": 355647,
-          "produced": 355652.4399996996,
-          "bank": 5.440000009461073,
+          "spent": 292594,
+          "produced": 3454089.496015858,
+          "bank": 3161495.4960292163,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 49,
-              "bank": 88.84000000035454,
-              "produced": 25813.839999998745,
-              "spent": 25725
+              "levels": 5,
+              "bank": 2169.2053333340523,
+              "produced": 17699.205333334197,
+              "spent": 15530
             },
             {
               "time": 7200,
-              "levels": 77,
-              "bank": 1714.8400000002907,
-              "produced": 53893.84000000598,
-              "spent": 52179
+              "levels": 5,
+              "bank": 21388.4053333336,
+              "produced": 36918.40533333093,
+              "spent": 15530
             },
             {
               "time": 14400,
-              "levels": 95,
-              "bank": 2983.84000000059,
-              "produced": 110053.84000002693,
-              "spent": 107070
+              "levels": 66,
+              "bank": 199.7760000027592,
+              "produced": 76995.77599999728,
+              "spent": 76796
             },
             {
               "time": 28800,
-              "levels": 107,
-              "bank": 7768.840000000031,
-              "produced": 222373.8399998985,
-              "spent": 214605
+              "levels": 78,
+              "bank": 10930.776000002365,
+              "produced": 159363.77600001404,
+              "spent": 148433
+            },
+            {
+              "time": 86400,
+              "levels": 85,
+              "bank": 196241.77600004105,
+              "produced": 488835.77599892765,
+              "spent": 292594
             }
           ],
           "maxHours": 168
@@ -3194,25 +3431,46 @@
             "telemetria": 5
           },
           "policy": "science-first",
-          "completeAt": 13601,
-          "initialSpent": 19043,
-          "spent": 336604,
-          "produced": 336624.75,
-          "bank": 20.75,
+          "completeAt": null,
+          "initialSpent": 52410,
+          "spent": 240184,
+          "produced": 10069936.6501149,
+          "bank": 9829752.650109528,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 95,
-              "bank": 1073,
-              "produced": 89100,
-              "spent": 88027
+              "levels": 74,
+              "bank": 1455.9999999999502,
+              "produced": 59940.00000000355,
+              "spent": 58484
             },
             {
               "time": 7200,
-              "levels": 106,
-              "bank": 638,
-              "produced": 178200,
-              "spent": 177562
+              "levels": 79,
+              "bank": 10684.99999999924,
+              "produced": 119879.99999998504,
+              "spent": 109195
+            },
+            {
+              "time": 14400,
+              "levels": 84,
+              "bank": 36456.000000001164,
+              "produced": 239759.99999994313,
+              "spent": 203304
+            },
+            {
+              "time": 28800,
+              "levels": 85,
+              "bank": 239335.9999999445,
+              "produced": 479520.00000023923,
+              "spent": 240184
+            },
+            {
+              "time": 86400,
+              "levels": 85,
+              "bank": 1198376.0000001984,
+              "produced": 1438559.9999988535,
+              "spent": 240184
             }
           ],
           "maxHours": 168
@@ -3229,32 +3487,46 @@
             "eco": 1
           },
           "policy": "science-first",
-          "completeAt": 15501,
-          "initialSpent": 19043,
-          "spent": 336604,
-          "produced": 336615.1543950706,
-          "bank": 11.15439511333534,
+          "completeAt": null,
+          "initialSpent": 52410,
+          "spent": 240184,
+          "produced": 3611762.147447249,
+          "bank": 3371578.147451036,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 92,
-              "bank": 3540.5405988267266,
-              "produced": 78176.54059882619,
-              "spent": 74636
+              "levels": 64,
+              "bank": 1308.5486646773243,
+              "produced": 21498.548664678437,
+              "spent": 20190
             },
             {
               "time": 7200,
-              "levels": 104,
-              "bank": 4585.0811976537325,
-              "produced": 156353.0811976699,
-              "spent": 151768
+              "levels": 71,
+              "bank": 3744.097329354658,
+              "produced": 42997.097329357835,
+              "spent": 39253
             },
             {
               "time": 14400,
-              "levels": 110,
-              "bank": 49861.162395305546,
-              "produced": 312706.1623952896,
-              "spent": 262845
+              "levels": 77,
+              "bank": 1035.1946587086763,
+              "produced": 85994.19465869173,
+              "spent": 84959
+            },
+            {
+              "time": 28800,
+              "levels": 82,
+              "bank": 16101.389317420411,
+              "produced": 171988.38931730457,
+              "spent": 155887
+            },
+            {
+              "time": 86400,
+              "levels": 85,
+              "bank": 275781.1679520981,
+              "produced": 515965.16795299284,
+              "spent": 240184
             }
           ],
           "maxHours": 168
@@ -3267,15 +3539,15 @@
           "lvl": 5,
           "oraculo": 3,
           "seconds": 28800,
-          "rate": 2.6000000000001764,
-          "gained": 74880.00000000508,
-          "expected": 2.6,
+          "rate": 1.9066666666667376,
+          "gained": 54912.000000002045,
+          "expected": 1.9066666666666667,
           "energyRatio": 1,
           "dataGain": 1.3,
           "globalYield": 1,
           "globalSpeed": 1,
           "cap": 28800,
-          "report": 74880.00000000508
+          "report": 54912.000000002045
         },
         {
           "label": "Farm ativo sem prestígio",
@@ -3283,15 +3555,15 @@
           "lvl": 5,
           "oraculo": 3,
           "seconds": 28800,
-          "rate": 5.200000000000353,
-          "gained": 149760.00000001016,
-          "expected": 5.2,
+          "rate": 3.813333333333475,
+          "gained": 109824.00000000409,
+          "expected": 3.8133333333333335,
           "energyRatio": 1,
           "dataGain": 1.3,
           "globalYield": 1,
           "globalSpeed": 1,
           "cap": 28800,
-          "report": 149760.00000001016
+          "report": 109824.00000000409
         },
         {
           "label": "Farm forte com Telemetria V",
@@ -3300,15 +3572,15 @@
           "oraculo": 5,
           "telemetria": 5,
           "seconds": 28800,
-          "rate": 24.75,
-          "gained": 712800,
-          "expected": 24.75,
+          "rate": 16.650000000000986,
+          "gained": 479520.0000000284,
+          "expected": 16.65,
           "energyRatio": 1,
           "dataGain": 2.25,
           "globalYield": 1,
           "globalSpeed": 1,
           "cap": 28800,
-          "report": 712800
+          "report": 479520.0000000284
         },
         {
           "label": "Farm herdado ilustrativo,100 fragmentos",
@@ -3320,14 +3592,14 @@
           "globalSpeed": 2.5875,
           "eco": 1,
           "seconds": 28800,
-          "rate": 21.715705721896164,
-          "gained": 625412.3247906095,
-          "expected": 21.715705721896306,
+          "rate": 5.971819073521779,
+          "gained": 171988.38931742724,
+          "expected": 5.971819073521485,
           "energyRatio": 1,
           "dataGain": 2.25,
           "globalYield": 4,
           "cap": 36000,
-          "report": 625412.3247906095
+          "report": 171988.38931742724
         }
       ]
     },
@@ -3336,27 +3608,27 @@
       "budget": {
         "branches": {
           "min": {
-            "total": 23162,
+            "total": 53727,
             "levels": 21,
             "nodes": 5
           },
           "ind": {
-            "total": 37046,
+            "total": 89692,
             "levels": 23,
             "nodes": 5
           },
           "en": {
-            "total": 100525,
+            "total": 256317,
             "levels": 23,
             "nodes": 5
           },
           "log": {
-            "total": 16884,
-            "levels": 23,
-            "nodes": 5
+            "total": 2713851,
+            "levels": 33,
+            "nodes": 6
           },
           "exp": {
-            "total": 22356,
+            "total": 52532,
             "levels": 21,
             "nodes": 5
           },
@@ -3390,10 +3662,10 @@
               40,
               88,
               194,
-              426,
-              938
+              1278,
+              2812
             ],
-            "total": 1686,
+            "total": 4412,
             "max": 5,
             "requirements": [
               "min1"
@@ -3407,10 +3679,10 @@
               60,
               132,
               291,
-              639,
-              1406
+              1917,
+              4217
             ],
-            "total": 2528,
+            "total": 6617,
             "max": 5,
             "requirements": [
               "min1"
@@ -3423,9 +3695,9 @@
             "costs": [
               400,
               1000,
-              2500
+              7500
             ],
-            "total": 3900,
+            "total": 8900,
             "max": 3,
             "requirements": [
               "min2"
@@ -3438,9 +3710,9 @@
             "costs": [
               1500,
               3750,
-              9375
+              28125
             ],
-            "total": 14625,
+            "total": 33375,
             "max": 3,
             "requirements": [
               "min4"
@@ -3469,10 +3741,10 @@
               50,
               111,
               243,
-              533,
-              1172
+              1598,
+              3514
             ],
-            "total": 2109,
+            "total": 5516,
             "max": 5,
             "requirements": [
               "ind1"
@@ -3486,10 +3758,10 @@
               120,
               264,
               581,
-              1278,
-              2812
+              3834,
+              8434
             ],
-            "total": 5055,
+            "total": 13233,
             "max": 5,
             "requirements": [
               "ind2"
@@ -3503,10 +3775,10 @@
               200,
               460,
               1058,
-              2434,
-              5597
+              7301,
+              16791
             ],
-            "total": 9749,
+            "total": 25810,
             "max": 5,
             "requirements": [
               "ind1"
@@ -3519,9 +3791,9 @@
             "costs": [
               2000,
               5000,
-              12500
+              37500
             ],
-            "total": 19500,
+            "total": 44500,
             "max": 3,
             "requirements": [
               "ind3"
@@ -3550,10 +3822,10 @@
               60,
               132,
               291,
-              639,
-              1406
+              1917,
+              4217
             ],
-            "total": 2528,
+            "total": 6617,
             "max": 5,
             "requirements": [
               "en1"
@@ -3567,10 +3839,10 @@
               300,
               690,
               1587,
-              3651,
-              8396
+              10951,
+              25186
             ],
-            "total": 14624,
+            "total": 38714,
             "max": 5,
             "requirements": [
               "en1"
@@ -3584,10 +3856,10 @@
               1200,
               2760,
               6348,
-              14601,
-              33581
+              43802,
+              100743
             ],
-            "total": 58490,
+            "total": 154853,
             "max": 5,
             "requirements": [
               "en2"
@@ -3600,9 +3872,9 @@
             "costs": [
               2500,
               6250,
-              15625
+              46875
             ],
-            "total": 24375,
+            "total": 55625,
             "max": 3,
             "requirements": [
               "en4"
@@ -3631,10 +3903,10 @@
               40,
               88,
               194,
-              426,
-              938
+              1278,
+              2812
             ],
-            "total": 1686,
+            "total": 4412,
             "max": 5,
             "requirements": []
           },
@@ -3646,10 +3918,10 @@
               80,
               176,
               388,
-              852,
-              1875
+              2556,
+              5623
             ],
-            "total": 3371,
+            "total": 8823,
             "max": 5,
             "requirements": [
               "log2"
@@ -3663,10 +3935,10 @@
               150,
               330,
               727,
-              1598,
-              3514
+              4792,
+              10542
             ],
-            "total": 6319,
+            "total": 16541,
             "max": 5,
             "requirements": [
               "log3"
@@ -3679,9 +3951,9 @@
             "costs": [
               500,
               1250,
-              3125
+              9375
             ],
-            "total": 4875,
+            "total": 11125,
             "max": 3,
             "requirements": [
               "log3"
@@ -3724,10 +3996,10 @@
               100,
               221,
               485,
-              1065,
-              2343
+              3195,
+              7028
             ],
-            "total": 4214,
+            "total": 11029,
             "max": 5,
             "requirements": [
               "exp1"
@@ -3741,10 +4013,10 @@
               200,
               460,
               1058,
-              2434,
-              5597
+              7301,
+              16791
             ],
-            "total": 9749,
+            "total": 25810,
             "max": 5,
             "requirements": [
               "exp1"
@@ -3758,9 +4030,9 @@
               300,
               690,
               1587,
-              3651
+              10951
             ],
-            "total": 6228,
+            "total": 13528,
             "max": 4,
             "requirements": [
               "exp3"
@@ -3858,9 +4130,29 @@
             "total": 5,
             "max": 1,
             "requirements": []
+          },
+          {
+            "id": "anom1",
+            "name": "Cartografia da Anomalia",
+            "currency": "data",
+            "costs": [
+              30000,
+              43500,
+              63075,
+              91459,
+              132616,
+              192293,
+              278824,
+              404294,
+              586227,
+              850029
+            ],
+            "total": 2672317,
+            "max": 10,
+            "requirements": []
           }
         ],
-        "dataTotal": 199973,
+        "dataTotal": 3166119,
         "fragmentTotal": 180
       },
       "completion": [
@@ -3872,46 +4164,46 @@
             "oraculo": 3
           },
           "policy": "science-first",
-          "completeAt": 103228,
+          "completeAt": null,
           "initialSpent": 0,
-          "spent": 199973,
-          "produced": 199973.28000027238,
-          "bank": 0.2800000103889033,
+          "spent": 141045,
+          "produced": 537671.3604125706,
+          "bank": 396626.3604135106,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 5,
-              "bank": 1788.770000000031,
-              "produced": 5970.769999999789,
-              "spent": 4182
+              "levels": 4,
+              "bank": 799.60458333335,
+              "produced": 2547.604583333437,
+              "spent": 1748
             },
             {
               "time": 7200,
-              "levels": 40,
-              "bank": 174.6799999999668,
-              "produced": 12718.680000000277,
-              "spent": 12544
+              "levels": 4,
+              "bank": 3588.1045833333715,
+              "produced": 5336.104583334185,
+              "spent": 1748
             },
             {
               "time": 14400,
-              "levels": 72,
-              "bank": 808.679999999962,
-              "produced": 26758.680000005515,
-              "spent": 25950
+              "levels": 5,
+              "bank": 2007.462083331612,
+              "produced": 11056.462083333492,
+              "spent": 9049
             },
             {
               "time": 28800,
-              "levels": 92,
-              "bank": 401.68000000025893,
-              "produced": 54838.67999997482,
-              "spent": 54437
+              "levels": 5,
+              "bank": 14019.462083336055,
+              "produced": 23068.462083344668,
+              "spent": 9049
             },
             {
               "time": 86400,
-              "levels": 110,
-              "bank": 766.6800000029779,
-              "produced": 167158.68000007648,
-              "spent": 166392
+              "levels": 78,
+              "bank": 916.4666666730485,
+              "produced": 74350.46666681035,
+              "spent": 73434
             }
           ],
           "maxHours": 168
@@ -3924,39 +4216,46 @@
             "oraculo": 3
           },
           "policy": "science-first",
-          "completeAt": 51615,
+          "completeAt": null,
           "initialSpent": 0,
-          "spent": 199973,
-          "produced": 199976.65999981677,
-          "bank": 3.6600000022081076,
+          "spent": 141045,
+          "produced": 1078212.0158252497,
+          "bank": 937167.0158251479,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 40,
-              "bank": 174.16000000013494,
-              "produced": 12718.159999999398,
-              "spent": 12544
+              "levels": 4,
+              "bank": 3587.925833333346,
+              "produced": 5335.925833333322,
+              "spent": 1748
             },
             {
               "time": 7200,
-              "levels": 72,
-              "bank": 808.1600000001079,
-              "produced": 26758.16000000293,
-              "spent": 25950
+              "levels": 5,
+              "bank": 2007.2833333333413,
+              "produced": 11056.283333333531,
+              "spent": 9049
             },
             {
               "time": 14400,
-              "levels": 92,
-              "bank": 401.16000000022507,
-              "produced": 54838.160000013406,
-              "spent": 54437
+              "levels": 5,
+              "bank": 14019.283333331985,
+              "produced": 23068.2833333389,
+              "spent": 9049
             },
             {
               "time": 28800,
-              "levels": 105,
-              "bank": 5103.160000000238,
-              "produced": 110998.15999994955,
-              "spent": 105895
+              "levels": 70,
+              "bank": 991.2283333319647,
+              "produced": 48610.22833332294,
+              "spent": 47619
+            },
+            {
+              "time": 86400,
+              "levels": 85,
+              "bank": 10525.228333338988,
+              "produced": 151570.22833358933,
+              "spent": 141045
             }
           ],
           "maxHours": 168
@@ -3970,25 +4269,46 @@
             "telemetria": 5
           },
           "policy": "science-first",
-          "completeAt": 11527,
-          "initialSpent": 9779,
-          "spent": 190194,
-          "produced": 190195.5,
-          "bank": 1.5,
+          "completeAt": null,
+          "initialSpent": 25840,
+          "spent": 115205,
+          "produced": 2937064.8562680203,
+          "bank": 2821859.856263602,
           "snapshots": [
             {
               "time": 3600,
-              "levels": 97,
-              "bank": 1045,
-              "produced": 59400,
-              "spent": 58355
+              "levels": 67,
+              "bank": 475.5000000000203,
+              "produced": 17482.500000001175,
+              "spent": 17007
             },
             {
               "time": 7200,
-              "levels": 107,
-              "bank": 4913,
-              "produced": 118800,
-              "spent": 113887
+              "levels": 74,
+              "bank": 3088.999999999999,
+              "produced": 34965.00000000215,
+              "spent": 31876
+            },
+            {
+              "time": 14400,
+              "levels": 81,
+              "bank": 2383.9999999993197,
+              "produced": 69929.9999999812,
+              "spent": 67546
+            },
+            {
+              "time": 28800,
+              "levels": 85,
+              "bank": 24655.000000002932,
+              "produced": 139859.99999996563,
+              "spent": 115205
+            },
+            {
+              "time": 86400,
+              "levels": 85,
+              "bank": 304375.00000036065,
+              "produced": 419580.0000006361,
+              "spent": 115205
             }
           ],
           "maxHours": 168
@@ -4005,12 +4325,48 @@
             "eco": 1
           },
           "policy": "science-first",
-          "completeAt": 2042,
-          "initialSpent": 9779,
-          "spent": 190194,
-          "produced": 190212.29999999295,
-          "bank": 18.30000000007567,
-          "snapshots": [],
+          "completeAt": null,
+          "initialSpent": 25840,
+          "spent": 115205,
+          "produced": 4213722.505418308,
+          "bank": 4098517.505418823,
+          "snapshots": [
+            {
+              "time": 3600,
+              "levels": 71,
+              "bank": 1385.6401087902143,
+              "produced": 25081.640108789088,
+              "spent": 23696
+            },
+            {
+              "time": 7200,
+              "levels": 78,
+              "bank": 2569.2802175802867,
+              "produced": 50163.28021757736,
+              "spent": 47594
+            },
+            {
+              "time": 14400,
+              "levels": 84,
+              "bank": 1912.5604351610893,
+              "produced": 100326.56043519021,
+              "spent": 98414
+            },
+            {
+              "time": 28800,
+              "levels": 85,
+              "bank": 85448.12087033647,
+              "produced": 200653.12087044807,
+              "spent": 115205
+            },
+            {
+              "time": 86400,
+              "levels": 85,
+              "bank": 486754.36261136783,
+              "produced": 601959.3626114795,
+              "spent": 115205
+            }
+          ],
           "maxHours": 168
         }
       ],
@@ -4021,15 +4377,15 @@
           "lvl": 5,
           "oraculo": 3,
           "seconds": 28800,
-          "rate": 1.3000000000000882,
-          "gained": 37440.00000000254,
-          "expected": 1.3,
+          "rate": 0.5958333333333132,
+          "gained": 17159.99999999942,
+          "expected": 0.5958333333333333,
           "energyRatio": 1,
           "dataGain": 1.3,
           "globalYield": 1,
           "globalSpeed": 1,
           "cap": 28800,
-          "report": 37440.00000000254
+          "report": 17159.99999999942
         },
         {
           "label": "Farm ativo sem prestígio",
@@ -4037,15 +4393,15 @@
           "lvl": 5,
           "oraculo": 3,
           "seconds": 28800,
-          "rate": 2.6000000000001764,
-          "gained": 74880.00000000508,
-          "expected": 2.6,
+          "rate": 1.1916666666666265,
+          "gained": 34319.99999999884,
+          "expected": 1.1916666666666667,
           "energyRatio": 1,
           "dataGain": 1.3,
           "globalYield": 1,
           "globalSpeed": 1,
           "cap": 28800,
-          "report": 74880.00000000508
+          "report": 34319.99999999884
         },
         {
           "label": "Farm forte com Telemetria V",
@@ -4054,15 +4410,15 @@
           "oraculo": 5,
           "telemetria": 5,
           "seconds": 28800,
-          "rate": 16.5,
-          "gained": 475200,
-          "expected": 16.5,
+          "rate": 4.856250000000326,
+          "gained": 139860.0000000094,
+          "expected": 4.85625,
           "energyRatio": 1,
           "dataGain": 2.25,
           "globalYield": 1,
           "globalSpeed": 1,
           "cap": 28800,
-          "report": 475200
+          "report": 139860.0000000094
         },
         {
           "label": "Farm herdado ilustrativo,100 fragmentos",
@@ -4074,17 +4430,17 @@
           "globalSpeed": 2.5875,
           "eco": 1,
           "seconds": 28800,
-          "rate": 93.15000000000188,
-          "gained": 2682720.000000054,
-          "expected": 93.15,
+          "rate": 6.967122252441413,
+          "gained": 200653.1208703127,
+          "expected": 6.967122252441731,
           "energyRatio": 1,
           "dataGain": 2.25,
           "globalYield": 4,
           "cap": 36000,
-          "report": 2682720.000000054
+          "report": 200653.1208703127
         }
       ]
     }
   ],
-  "finding": "DataGain é aplicado uma única vez em produção manual/automática. A inflação decorre da composição velocidade de Oráculo, nível/rendimento, multiplicadores permanentes e produção sem insumos no observatório simples. A árvore inteira fica disponível por dinheiro sem vínculo a região/missão."
+  "finding": "DataGain é aplicado uma única vez em produção manual/automática. A inflação decorre da composição velocidade de Oráculo, nível/rendimento, multiplicadores permanentes e produção sem insumos no observatório simples. Os níveis avançados de cada ramo exigem a descoberta do planeta correspondente (missão-marco), além dos dados."
 }

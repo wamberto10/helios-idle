@@ -2,50 +2,50 @@
 
 Nenhuma alteração aplicada ao jogo. Reproduza com `node tools/auditoria-missoes.js`; dados completos em `auditoria-missoes.json`.
 
-Missões: **164**, em **21 fases**; **8.135 dados base**. **152** missões só recompensam dados. Baús de todas as fases: **3.570 dados base** e **181 cartas**, antes dos multiplicadores. As recompensas diretas adicionais incluem oito recrutamentos, um desbloqueio de expedições e três entregas de recursos. Avançar as fases também abre instalações/regiões e concede baús, portanto as missões continuam relevantes além do dinheiro.
+Missões: **164**, em **21 fases**; **8.135 dados base**. **144** missões só recompensam dados. Baús de todas as fases: **3.570 dados base** e **181 cartas**, antes dos multiplicadores. As recompensas diretas adicionais incluem oito recrutamentos, um desbloqueio de expedições e três entregas de recursos. Avançar as fases também abre instalações/regiões e concede baús, portanto as missões continuam relevantes além do dinheiro.
 
 ## Orçamento por fase
 
 | Região | Fase | Missões | Dados base | Segundos na base moderada | Outras recompensas diretas |
 |---|---|---:|---:|---:|---|
-| Lua | Pouso | 4 | 20 | 9,62 | res:2, spec:1 |
-| Lua | Posto de Extração | 8 | 80 | 37,86 | spec:1, res:1 |
-| Lua | Complexo Industrial | 8 | 100 | 46,57 | spec:1 |
-| Lua | Base Orbital | 8 | 140 | 65,2 | unlock:1, spec:1 |
-| Marte | Cabeça de Ponte | 8 | 140 | 65,2 | spec:1 |
-| Marte | Forjas Vermelhas | 8 | 210 | 98,56 | — |
-| Marte | Estaleiros de Marte | 8 | 255 | 119,89 | — |
-| Cinturão de Asteroides | Fronteira de Rocha | 8 | 245 | 115,38 | — |
-| Cinturão de Asteroides | Rede Logística | 8 | 295 | 138,82 | — |
-| Mercúrio | Margem do Sol | 8 | 285 | 132,81 | spec:1 |
-| Mercúrio | Fundação do Enxame | 8 | 375 | 175,48 | — |
-| Vênus | Céus Ácidos | 8 | 355 | 166,47 | spec:1 |
-| Vênus | Cidades Flutuantes | 8 | 455 | 213,64 | — |
-| Júpiter | Gigante Gasoso | 8 | 425 | 199,82 | spec:1 |
-| Júpiter | Forja de Fusão | 8 | 535 | 250 | — |
-| Saturno | Anéis de Gelo | 8 | 565 | 264,42 | — |
-| Saturno | Grandes Estaleiros | 8 | 615 | 288,46 | — |
-| Urano | Gelo Profundo | 8 | 645 | 302,88 | — |
-| Urano | Laboratórios Criogênicos | 8 | 695 | 326,32 | — |
-| Netuno | Sinal Fantasma | 8 | 740 | 346,15 | — |
-| Netuno | A Anomalia | 8 | 960 | 449,82 | — |
+| Lua | Pouso | 4 | 20 | 19,23 | res:2, spec:1 |
+| Lua | Posto de Extração | 8 | 80 | 75,72 | spec:1, res:1 |
+| Lua | Complexo Industrial | 8 | 100 | 93,15 | spec:1 |
+| Lua | Base Orbital | 8 | 140 | 130,41 | unlock:1, spec:1 |
+| Marte | Cabeça de Ponte | 8 | 140 | 130,41 | spec:1 |
+| Marte | Forjas Vermelhas | 8 | 210 | 197,12 | cards:1 |
+| Marte | Estaleiros de Marte | 8 | 255 | 239,78 | cards:1 |
+| Cinturão de Asteroides | Fronteira de Rocha | 8 | 245 | 230,77 | — |
+| Cinturão de Asteroides | Rede Logística | 8 | 295 | 277,64 | cards:1 |
+| Mercúrio | Margem do Sol | 8 | 285 | 265,63 | spec:1 |
+| Mercúrio | Fundação do Enxame | 8 | 375 | 350,96 | — |
+| Vênus | Céus Ácidos | 8 | 355 | 332,93 | spec:1 |
+| Vênus | Cidades Flutuantes | 8 | 455 | 427,28 | cards:1 |
+| Júpiter | Gigante Gasoso | 8 | 425 | 399,64 | spec:1 |
+| Júpiter | Forja de Fusão | 8 | 535 | 500 | cards:1 |
+| Saturno | Anéis de Gelo | 8 | 565 | 528,85 | — |
+| Saturno | Grandes Estaleiros | 8 | 615 | 576,92 | cards:1 |
+| Urano | Gelo Profundo | 8 | 645 | 605,77 | — |
+| Urano | Laboratórios Criogênicos | 8 | 695 | 652,64 | cards:1 |
+| Netuno | Sinal Fantasma | 8 | 740 | 692,31 | — |
+| Netuno | A Anomalia | 8 | 960 | 899,64 | cards:1 |
 
 ## Produção controlada por oito horas
 
 | Cenário | Observatórios | Nível | Oráculo | Dados/h | Dados/8h |
 |---|---:|---:|---:|---:|---:|
 | recem-automatizado | 1 | 1 | 1 | 264 | 2.112 |
-| base-moderada | 4 | 3 | 3 | 11.980,8 | 95.846,4 |
-| base-avancada-controlada | 8 | 8 | 5 | 1.073.088 | 8.584.704 |
+| base-moderada | 4 | 3 | 3 | 5.990,4 | 47.923,2 |
+| base-avancada-controlada | 8 | 8 | 5 | 92.342 | 738.736,03 |
 
 Cenários plausíveis controlados; não representam níveis atingidos em tempo medido de campanha. Todos usam o motor real por oito horas, com energia suficiente e nenhum gasto de dados. A base moderada usa Telemetria Profunda 2; a avançada usa Telemetria 5, Eco Industrial 2, Eco 1 e 100 fragmentos totais. A tabela completa dos bônus está no JSON.
 
-Gastos permanentes máximos: **199.973** dados em pesquisa + **1.781.450** em onze especialistas = **1.981.423**. Promoções também dependem de cartas. Depois desses tetos, o sumidouro permanente de dados termina.
+Gastos permanentes máximos: **3.166.119** dados em pesquisa + **1.781.450** em onze especialistas = **4.947.569**. Promoções também dependem de cartas. Depois desses tetos, o sumidouro permanente de dados termina.
 
 ## Farm de ruínas
 
-- reliquia1-duas-sondas: 48 Ruínas + 36 Câmaras em oito horas ativas; **57 fragmentos**, rendimento global **×2,2 → ×3,91**, nenhum novo Colapso.
-- pesquisas-maximas-e-reliquia10: 182 Ruínas + 137 Câmaras em oito horas ativas; **218 fragmentos**, rendimento global **×2,2 → ×8,74**, nenhum novo Colapso.
+- reliquia1-duas-sondas: 48 Ruínas + 36 Câmaras em oito horas ativas; **2 fragmentos**, rendimento global **×2,2 → ×2,26**, nenhum novo Colapso.
+- pesquisas-maximas-e-reliquia10: 182 Ruínas + 137 Câmaras em oito horas ativas; **2 fragmentos**, rendimento global **×2,2 → ×2,26**, nenhum novo Colapso.
 
 O multiplicador de recompensa NÃO escala fragmentos: 1 continua 1. O problema é a repetição sem novo Colapso somada ao ganho permanente de fragsTotal. O teste máximo usa duas sondas resgatadas e relançadas de imediato, Relíquia 10, pesquisas e universo Ancestral. Ambos começam após um Colapso anterior e com 40 fragmentos iniciais; não medem o tempo para atingir os níveis máximos. Ausência real de oito horas só completa as duas expedições lançadas; não há relançamento automático.
 

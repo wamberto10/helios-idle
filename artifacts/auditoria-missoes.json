@@ -3,11 +3,11 @@
   "sources": [
     {
       "file": "js/data.js",
-      "sha256": "3f09b47ee410f9fe4f440c7325ca19e00fd373cdbdb4e203b682f691686d009a"
+      "sha256": "03dd045fefb22495e35c9d91cb365439b9406063b86d29f942c72c6845b9bb31"
     },
     {
       "file": "js/engine.js",
-      "sha256": "2f6cb27f20c371ec13d461a06107830448efe367adfb755bb19ebfdf9ca7d7d6"
+      "sha256": "75e98c015db09e0d57dea5065471309a8d3f724ced7d42f0f4cfe2fe4e3cd9f7"
     }
   ],
   "method": {
@@ -22,11 +22,11 @@
     "totalMissions": 164,
     "totalPhases": 21,
     "baseData": 8135,
-    "onlyDataRewards": 152,
+    "onlyDataRewards": 144,
     "otherRewardCounts": {
       "spec": 8,
       "unlock": 1,
-      "cards": 0,
+      "cards": 8,
       "res": 3,
       "frags": 0
     },
@@ -53,8 +53,8 @@
       },
       "equivalentProductionSeconds": {
         "recem-automatizado": 313.637789,
-        "base-moderada": 9.615385,
-        "base-avancada-controlada": 0.150966
+        "base-moderada": 19.230769,
+        "base-avancada-controlada": 1.754348
       }
     },
     {
@@ -71,8 +71,8 @@
       },
       "equivalentProductionSeconds": {
         "recem-automatizado": 1213.64188,
-        "base-moderada": 37.860577,
-        "base-avancada-controlada": 0.613929
+        "base-moderada": 75.721154,
+        "base-avancada-controlada": 7.134348
       }
     },
     {
@@ -88,8 +88,8 @@
       },
       "equivalentProductionSeconds": {
         "recem-automatizado": 1527.279669,
-        "base-moderada": 46.574519,
-        "base-avancada-controlada": 0.761541
+        "base-moderada": 93.149038,
+        "base-avancada-controlada": 8.84971
       }
     },
     {
@@ -106,8 +106,8 @@
       },
       "equivalentProductionSeconds": {
         "recem-automatizado": 2113.645971,
-        "base-moderada": 65.204327,
-        "base-avancada-controlada": 1.056763
+        "base-moderada": 130.408654,
+        "base-avancada-controlada": 12.280435
       }
     },
     {
@@ -123,8 +123,8 @@
       },
       "equivalentProductionSeconds": {
         "recem-automatizado": 2113.645971,
-        "base-moderada": 65.204327,
-        "base-avancada-controlada": 1.056763
+        "base-moderada": 130.408654,
+        "base-avancada-controlada": 12.280435
       }
     },
     {
@@ -134,12 +134,14 @@
       "phase": "Forjas Vermelhas",
       "missions": 8,
       "baseData": 210,
-      "onlyDataRewards": 8,
-      "nonDataRewards": {},
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "cards": 1
+      },
       "equivalentProductionSeconds": {
         "recem-automatizado": 3190.923595,
-        "base-moderada": 98.557692,
-        "base-avancada-controlada": 1.583468
+        "base-moderada": 197.115385,
+        "base-avancada-controlada": 18.40116
       }
     },
     {
@@ -149,12 +151,14 @@
       "phase": "Estaleiros de Marte",
       "missions": 8,
       "baseData": 255,
-      "onlyDataRewards": 8,
-      "nonDataRewards": {},
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "cards": 1
+      },
       "equivalentProductionSeconds": {
         "recem-automatizado": 3831.835599,
-        "base-moderada": 119.891827,
-        "base-avancada-controlada": 1.935722
+        "base-moderada": 239.783654,
+        "base-avancada-controlada": 22.494638
       }
     },
     {
@@ -168,8 +172,8 @@
       "nonDataRewards": {},
       "equivalentProductionSeconds": {
         "recem-automatizado": 3681.834917,
-        "base-moderada": 115.384615,
-        "base-avancada-controlada": 1.861916
+        "base-moderada": 230.769231,
+        "base-avancada-controlada": 21.636957
       }
     },
     {
@@ -179,12 +183,14 @@
       "phase": "Rede Logística",
       "missions": 8,
       "baseData": 295,
-      "onlyDataRewards": 8,
-      "nonDataRewards": {},
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "cards": 1
+      },
       "equivalentProductionSeconds": {
         "recem-automatizado": 4472.747603,
-        "base-moderada": 138.822115,
-        "base-avancada-controlada": 2.230945
+        "base-moderada": 277.644231,
+        "base-avancada-controlada": 25.925363
       }
     },
     {
@@ -200,8 +206,8 @@
       },
       "equivalentProductionSeconds": {
         "recem-automatizado": 4281.837645,
-        "base-moderada": 132.8125,
-        "base-avancada-controlada": 2.150429
+        "base-moderada": 265.625,
+        "base-avancada-controlada": 24.989711
       }
     },
     {
@@ -215,8 +221,8 @@
       "nonDataRewards": {},
       "equivalentProductionSeconds": {
         "recem-automatizado": 5672.753058,
-        "base-moderada": 175.480769,
-        "base-avancada-controlada": 2.8281
+        "base-moderada": 350.961538,
+        "base-avancada-controlada": 32.864783
       }
     },
     {
@@ -232,8 +238,8 @@
       },
       "equivalentProductionSeconds": {
         "recem-automatizado": 5331.842417,
-        "base-moderada": 166.466346,
-        "base-avancada-controlada": 2.690553
+        "base-moderada": 332.932692,
+        "base-avancada-controlada": 31.266378
       }
     },
     {
@@ -243,12 +249,14 @@
       "phase": "Cidades Flutuantes",
       "missions": 8,
       "baseData": 455,
-      "onlyDataRewards": 8,
-      "nonDataRewards": {},
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "cards": 1
+      },
       "equivalentProductionSeconds": {
         "recem-automatizado": 6872.758513,
-        "base-moderada": 213.641827,
-        "base-avancada-controlada": 3.438674
+        "base-moderada": 427.283654,
+        "base-avancada-controlada": 39.960146
       }
     },
     {
@@ -264,8 +272,8 @@
       },
       "equivalentProductionSeconds": {
         "recem-automatizado": 6381.84719,
-        "base-moderada": 199.819712,
-        "base-avancada-controlada": 3.207193
+        "base-moderada": 399.639423,
+        "base-avancada-controlada": 37.270146
       }
     },
     {
@@ -275,12 +283,14 @@
       "phase": "Forja de Fusão",
       "missions": 8,
       "baseData": 535,
-      "onlyDataRewards": 8,
-      "nonDataRewards": {},
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "cards": 1
+      },
       "equivalentProductionSeconds": {
         "recem-automatizado": 8072.763967,
-        "base-moderada": 250,
-        "base-avancada-controlada": 4.035829
+        "base-moderada": 500,
+        "base-avancada-controlada": 46.899566
       }
     },
     {
@@ -294,8 +304,8 @@
       "nonDataRewards": {},
       "equivalentProductionSeconds": {
         "recem-automatizado": 8481.856736,
-        "base-moderada": 264.423077,
-        "base-avancada-controlada": 4.277375
+        "base-moderada": 528.846154,
+        "base-avancada-controlada": 49.706523
       }
     },
     {
@@ -305,12 +315,14 @@
       "phase": "Grandes Estaleiros",
       "missions": 8,
       "baseData": 615,
-      "onlyDataRewards": 8,
-      "nonDataRewards": {},
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "cards": 1
+      },
       "equivalentProductionSeconds": {
         "recem-automatizado": 9272.769422,
-        "base-moderada": 288.461538,
-        "base-avancada-controlada": 4.646404
+        "base-moderada": 576.923077,
+        "base-avancada-controlada": 53.994929
       }
     },
     {
@@ -324,8 +336,8 @@
       "nonDataRewards": {},
       "equivalentProductionSeconds": {
         "recem-automatizado": 9681.86219,
-        "base-moderada": 302.884615,
-        "base-avancada-controlada": 4.867821
+        "base-moderada": 605.769231,
+        "base-avancada-controlada": 56.567972
       }
     },
     {
@@ -335,12 +347,14 @@
       "phase": "Laboratórios Criogênicos",
       "missions": 8,
       "baseData": 695,
-      "onlyDataRewards": 8,
-      "nonDataRewards": {},
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "cards": 1
+      },
       "equivalentProductionSeconds": {
         "recem-automatizado": 10472.774876,
-        "base-moderada": 326.322115,
-        "base-avancada-controlada": 5.243559
+        "base-moderada": 652.644231,
+        "base-avancada-controlada": 60.934349
       }
     },
     {
@@ -354,8 +368,8 @@
       "nonDataRewards": {},
       "equivalentProductionSeconds": {
         "recem-automatizado": 11100.050455,
-        "base-moderada": 346.153846,
-        "base-avancada-controlada": 5.595813
+        "base-moderada": 692.307692,
+        "base-avancada-controlada": 65.027828
       }
     },
     {
@@ -365,12 +379,14 @@
       "phase": "A Anomalia",
       "missions": 8,
       "baseData": 960,
-      "onlyDataRewards": 8,
-      "nonDataRewards": {},
+      "onlyDataRewards": 7,
+      "nonDataRewards": {
+        "cards": 1
+      },
       "equivalentProductionSeconds": {
         "recem-automatizado": 14400.065455,
-        "base-moderada": 449.819712,
-        "base-avancada-controlada": 7.246377
+        "base-moderada": 899.639423,
+        "base-avancada-controlada": 84.208698
       }
     }
   ],
@@ -843,7 +859,8 @@
       "building": null,
       "title": "Produzir 15 componentes",
       "reward": {
-        "data": 20
+        "data": 20,
+        "disc": "componentes"
       },
       "onlyDataReward": true
     },
@@ -913,9 +930,13 @@
       "building": null,
       "title": "Produzir 250 ligas",
       "reward": {
-        "data": 25
+        "data": 25,
+        "cards": {
+          "vulcano": 4
+        },
+        "cardsOwned": true
       },
-      "onlyDataReward": true
+      "onlyDataReward": false
     },
     {
       "id": "marte.1.2",
@@ -997,7 +1018,8 @@
       "building": null,
       "title": "Produzir 2,50K metais",
       "reward": {
-        "data": 30
+        "data": 30,
+        "choice": "forjas"
       },
       "onlyDataReward": true
     },
@@ -1109,9 +1131,13 @@
       "building": null,
       "title": "Produzir 1,20K ligas",
       "reward": {
-        "data": 40
+        "data": 40,
+        "cards": {
+          "vega": 4
+        },
+        "cardsOwned": true
       },
-      "onlyDataReward": true
+      "onlyDataReward": false
     },
     {
       "id": "cinturao.0.0",
@@ -1151,7 +1177,8 @@
       "building": null,
       "title": "Produzir 20 metais raros",
       "reward": {
-        "data": 30
+        "data": 30,
+        "disc": "raros"
       },
       "onlyDataReward": true
     },
@@ -1333,9 +1360,13 @@
       "building": null,
       "title": "Produzir 300 metais raros",
       "reward": {
-        "data": 45
+        "data": 45,
+        "cards": {
+          "iris": 4
+        },
+        "cardsOwned": true
       },
-      "onlyDataReward": true
+      "onlyDataReward": false
     },
     {
       "id": "mercurio.0.0",
@@ -1473,7 +1504,8 @@
       "building": null,
       "title": "Produzir 5 satélites Dyson",
       "reward": {
-        "data": 45
+        "data": 45,
+        "disc": "solar_orbital"
       },
       "onlyDataReward": true
     },
@@ -1669,7 +1701,8 @@
       "building": null,
       "title": "Gerar 100 MW de energia",
       "reward": {
-        "data": 55
+        "data": 55,
+        "choice": "nuvens"
       },
       "onlyDataReward": true
     },
@@ -1711,9 +1744,13 @@
       "building": null,
       "title": "Produzir 1,50K unidades de combustível",
       "reward": {
-        "data": 55
+        "data": 55,
+        "cards": {
+          "aura": 4
+        },
+        "cardsOwned": true
       },
-      "onlyDataReward": true
+      "onlyDataReward": false
     },
     {
       "id": "venus.1.3",
@@ -1789,11 +1826,11 @@
       "id": "jupiter.0.0",
       "region": "jupiter",
       "phase": "Gigante Gasoso",
-      "type": "build",
-      "target": 3,
+      "type": "route",
+      "target": 1,
       "resource": null,
-      "building": "plataforma",
-      "title": "Construir 3 plataformas atmosféricas",
+      "building": null,
+      "title": "Estabelecer uma rota de transporte",
       "reward": {
         "data": 60
       },
@@ -1803,11 +1840,11 @@
       "id": "jupiter.0.1",
       "region": "jupiter",
       "phase": "Gigante Gasoso",
-      "type": "prod",
+      "type": "deliver",
       "target": 600,
       "resource": "gas",
       "building": null,
-      "title": "Produzir 600 unidades de gás",
+      "title": "Receber 600 unidades de gás por rotas",
       "reward": {
         "data": 60
       },
@@ -1851,7 +1888,8 @@
       "building": null,
       "title": "Produzir 30 unidades de combustível de fusão",
       "reward": {
-        "data": 60
+        "data": 60,
+        "disc": "fusao"
       },
       "onlyDataReward": true
     },
@@ -1977,9 +2015,13 @@
       "building": null,
       "title": "Produzir 500 unidades de combustível de fusão",
       "reward": {
-        "data": 65
+        "data": 65,
+        "cards": {
+          "ion": 4
+        },
+        "cardsOwned": true
       },
-      "onlyDataReward": true
+      "onlyDataReward": false
     },
     {
       "id": "jupiter.1.6",
@@ -1988,8 +2030,8 @@
       "type": "level",
       "target": 3,
       "resource": null,
-      "building": "plataforma",
-      "title": "Melhorar plataforma atmosférica até o nível 3",
+      "building": "reator",
+      "title": "Melhorar reator de fusão até o nível 3",
       "reward": {
         "data": 65
       },
@@ -2047,7 +2089,8 @@
       "building": null,
       "title": "Produzir 5 módulos estruturais",
       "reward": {
-        "data": 70
+        "data": 70,
+        "disc": "estruturas"
       },
       "onlyDataReward": true
     },
@@ -2117,7 +2160,8 @@
       "building": null,
       "title": "Gerar 250 MW de energia",
       "reward": {
-        "data": 75
+        "data": 75,
+        "choice": "aneis"
       },
       "onlyDataReward": true
     },
@@ -2229,9 +2273,13 @@
       "building": null,
       "title": "Produzir 80 módulos estruturais",
       "reward": {
-        "data": 85
+        "data": 85,
+        "cards": {
+          "nix": 4
+        },
+        "cardsOwned": true
       },
-      "onlyDataReward": true
+      "onlyDataReward": false
     },
     {
       "id": "urano.0.0",
@@ -2257,7 +2305,8 @@
       "building": null,
       "title": "Produzir 10 supercondutores",
       "reward": {
-        "data": 80
+        "data": 80,
+        "disc": "criogenia"
       },
       "onlyDataReward": true
     },
@@ -2439,9 +2488,13 @@
       "building": null,
       "title": "Produzir 250 supercondutores",
       "reward": {
-        "data": 85
+        "data": 85,
+        "cards": {
+          "oraculo": 3
+        },
+        "cardsOwned": true
       },
-      "onlyDataReward": true
+      "onlyDataReward": false
     },
     {
       "id": "urano.1.7",
@@ -2537,7 +2590,8 @@
       "building": null,
       "title": "Decodificar o sinal",
       "reward": {
-        "data": 100
+        "data": 100,
+        "disc": "anomalia"
       },
       "onlyDataReward": true
     },
@@ -2621,9 +2675,13 @@
       "building": null,
       "title": "Estabilizar a anomalia",
       "reward": {
-        "data": 120
+        "data": 120,
+        "cards": {
+          "ion": 3
+        },
+        "cardsOwned": true
       },
-      "onlyDataReward": true
+      "onlyDataReward": false
     },
     {
       "id": "netuno.1.4",
@@ -2708,10 +2766,10 @@
         40,
         88,
         194,
-        426,
-        938
+        1278,
+        2812
       ],
-      "totalCost": 1686,
+      "totalCost": 4412,
       "requirements": [
         {
           "id": "min1",
@@ -2729,10 +2787,10 @@
         60,
         132,
         291,
-        639,
-        1406
+        1917,
+        4217
       ],
-      "totalCost": 2528,
+      "totalCost": 6617,
       "requirements": [
         {
           "id": "min1",
@@ -2749,9 +2807,9 @@
       "rankCosts": [
         400,
         1000,
-        2500
+        7500
       ],
-      "totalCost": 3900,
+      "totalCost": 8900,
       "requirements": [
         {
           "id": "min2",
@@ -2768,9 +2826,9 @@
       "rankCosts": [
         1500,
         3750,
-        9375
+        28125
       ],
-      "totalCost": 14625,
+      "totalCost": 33375,
       "requirements": [
         {
           "id": "min4",
@@ -2804,10 +2862,10 @@
         50,
         111,
         243,
-        533,
-        1172
+        1598,
+        3514
       ],
-      "totalCost": 2109,
+      "totalCost": 5516,
       "requirements": [
         {
           "id": "ind1",
@@ -2825,10 +2883,10 @@
         120,
         264,
         581,
-        1278,
-        2812
+        3834,
+        8434
       ],
-      "totalCost": 5055,
+      "totalCost": 13233,
       "requirements": [
         {
           "id": "ind2",
@@ -2846,10 +2904,10 @@
         200,
         460,
         1058,
-        2434,
-        5597
+        7301,
+        16791
       ],
-      "totalCost": 9749,
+      "totalCost": 25810,
       "requirements": [
         {
           "id": "ind1",
@@ -2866,9 +2924,9 @@
       "rankCosts": [
         2000,
         5000,
-        12500
+        37500
       ],
-      "totalCost": 19500,
+      "totalCost": 44500,
       "requirements": [
         {
           "id": "ind3",
@@ -2902,10 +2960,10 @@
         60,
         132,
         291,
-        639,
-        1406
+        1917,
+        4217
       ],
-      "totalCost": 2528,
+      "totalCost": 6617,
       "requirements": [
         {
           "id": "en1",
@@ -2923,10 +2981,10 @@
         300,
         690,
         1587,
-        3651,
-        8396
+        10951,
+        25186
       ],
-      "totalCost": 14624,
+      "totalCost": 38714,
       "requirements": [
         {
           "id": "en1",
@@ -2944,10 +3002,10 @@
         1200,
         2760,
         6348,
-        14601,
-        33581
+        43802,
+        100743
       ],
-      "totalCost": 58490,
+      "totalCost": 154853,
       "requirements": [
         {
           "id": "en2",
@@ -2964,9 +3022,9 @@
       "rankCosts": [
         2500,
         6250,
-        15625
+        46875
       ],
-      "totalCost": 24375,
+      "totalCost": 55625,
       "requirements": [
         {
           "id": "en4",
@@ -3000,10 +3058,10 @@
         40,
         88,
         194,
-        426,
-        938
+        1278,
+        2812
       ],
-      "totalCost": 1686,
+      "totalCost": 4412,
       "requirements": [],
       "explicitRegionGate": null
     },
@@ -3016,10 +3074,10 @@
         80,
         176,
         388,
-        852,
-        1875
+        2556,
+        5623
       ],
-      "totalCost": 3371,
+      "totalCost": 8823,
       "requirements": [
         {
           "id": "log2",
@@ -3037,10 +3095,10 @@
         150,
         330,
         727,
-        1598,
-        3514
+        4792,
+        10542
       ],
-      "totalCost": 6319,
+      "totalCost": 16541,
       "requirements": [
         {
           "id": "log3",
@@ -3057,9 +3115,9 @@
       "rankCosts": [
         500,
         1250,
-        3125
+        9375
       ],
-      "totalCost": 4875,
+      "totalCost": 11125,
       "requirements": [
         {
           "id": "log3",
@@ -3111,10 +3169,10 @@
         100,
         221,
         485,
-        1065,
-        2343
+        3195,
+        7028
       ],
-      "totalCost": 4214,
+      "totalCost": 11029,
       "requirements": [
         {
           "id": "exp1",
@@ -3132,10 +3190,10 @@
         200,
         460,
         1058,
-        2434,
-        5597
+        7301,
+        16791
       ],
-      "totalCost": 9749,
+      "totalCost": 25810,
       "requirements": [
         {
           "id": "exp1",
@@ -3153,9 +3211,9 @@
         300,
         690,
         1587,
-        3651
+        10951
       ],
-      "totalCost": 6228,
+      "totalCost": 13528,
       "requirements": [
         {
           "id": "exp3",
@@ -3266,12 +3324,33 @@
       "totalCost": 5,
       "requirements": [],
       "explicitRegionGate": null
+    },
+    {
+      "id": "anom1",
+      "name": "Cartografia da Anomalia",
+      "currency": "data",
+      "ranks": 10,
+      "rankCosts": [
+        30000,
+        43500,
+        63075,
+        91459,
+        132616,
+        192293,
+        278824,
+        404294,
+        586227,
+        850029
+      ],
+      "totalCost": 2672317,
+      "requirements": [],
+      "explicitRegionGate": null
     }
   ],
   "finiteSinks": {
-    "dataResearchNodes": 25,
-    "dataResearchRanks": 111,
-    "totalDataResearchCost": 199973,
+    "dataResearchNodes": 26,
+    "dataResearchRanks": 121,
+    "totalDataResearchCost": 3166119,
     "totalFragmentResearchCost": 180,
     "maxSpecialistLevel": 10,
     "specialistCount": 11,
@@ -3279,17 +3358,16 @@
     "dataPromotionCostAllSpecialists": 1781450,
     "requiredCardsPerSpecialist": 1030,
     "note": "Não há manutenção nem pesquisa infinita. Todos esses gastos de dados são permanentes, finitos e preservados no Colapso; ter dados não dispensa cartas para promoção.",
-    "totalPermanentDataSink": 1981423
+    "totalPermanentDataSink": 4947569
   },
   "researchGateProof": {
     "artificialBudget": 100000000,
     "caution": "Orçamento injetado apenas para testar regras de acesso; não significa que esse valor surge no início de uma campanha.",
-    "pathCost": 1950,
+    "pathCost": 450,
     "prerequisitesAfter": {
       "min1": 1,
       "min2": 1,
-      "min4": 1,
-      "min5": 1
+      "min4": 1
     },
     "unlockedRegions": [
       "lua"
@@ -3302,6 +3380,8 @@
         "before": {
           "lvl": 0,
           "locked": false,
+          "why": "",
+          "disc": null,
           "cost": 10,
           "cur": "data",
           "can": true
@@ -3315,6 +3395,8 @@
         "before": {
           "lvl": 0,
           "locked": false,
+          "why": "",
+          "disc": null,
           "cost": 40,
           "cur": "data",
           "can": true
@@ -3327,26 +3409,32 @@
         "id": "min4",
         "before": {
           "lvl": 0,
-          "locked": false,
+          "locked": true,
+          "why": "Requer a descoberta “Metalurgia de materiais raros” (Cinturão de Asteroides: Produzir 20 metais raros)",
+          "disc": "raros",
           "cost": 400,
           "cur": "data",
-          "can": true
+          "can": false
         },
         "result": {
-          "ok": true
+          "ok": false,
+          "err": "Requer a descoberta “Metalurgia de materiais raros” (Cinturão de Asteroides: Produzir 20 metais raros)"
         }
       },
       {
         "id": "min5",
         "before": {
           "lvl": 0,
-          "locked": false,
+          "locked": true,
+          "why": "Requer Mineração de Precisão",
+          "disc": "raros",
           "cost": 1500,
           "cur": "data",
-          "can": true
+          "can": false
         },
         "result": {
-          "ok": true
+          "ok": false,
+          "err": "Requer Mineração de Precisão"
         }
       }
     ]
@@ -3383,15 +3471,15 @@
         },
         "fragsTotal": 0,
         "ecoLevel": 0,
-        "panelsLevel1": 10
+        "panelsLevel1": 9
       },
-      "powerMW": 37.32132,
+      "powerMW": 32.413132,
       "energyRatio": 1,
       "dataGainMultiplier": 1.56,
-      "dataPerSecond": 3.328,
-      "dataPerHour": 11980.8,
-      "dataIn8Hours": 95846.4,
-      "reportData": 95846.4,
+      "dataPerSecond": 1.664,
+      "dataPerHour": 5990.4,
+      "dataIn8Hours": 47923.2,
+      "reportData": 47923.2,
       "assumptions": "Cenário controlado plausível, não tempo medido de campanha. Lua com somente observatórios e painéis; produção automática, energia suficiente, sem gasto durante 8 h."
     },
     {
@@ -3406,25 +3494,25 @@
         },
         "fragsTotal": 100,
         "ecoLevel": 1,
-        "panelsLevel1": 28
+        "panelsLevel1": 20
       },
-      "powerMW": 108.226276,
+      "powerMW": 77.822964,
       "energyRatio": 1,
       "dataGainMultiplier": 2.25,
-      "dataPerSecond": 298.08,
-      "dataPerHour": 1073088,
-      "dataIn8Hours": 8584704,
-      "reportData": 8584704,
+      "dataPerSecond": 25.650557,
+      "dataPerHour": 92342.003662,
+      "dataIn8Hours": 738736.0293,
+      "reportData": 738736.0293,
       "assumptions": "Cenário controlado plausível, não tempo medido de campanha. Lua com somente observatórios e painéis; produção automática, energia suficiente, sem gasto durante 8 h."
     }
   ],
   "exp4Feedback": {
-    "wholeResearchCost": 9749,
+    "wholeResearchCost": 25810,
     "wholeResearchDataMultiplier": 1.5,
-    "baseDataPerSecond": 2.773333,
+    "baseDataPerSecond": 1.386667,
     "firstRankCost": 200,
-    "firstRankPaybackSecondsUsingOnlyThoseObservatories": 721.153933,
-    "wholeResearchPaybackSecondsIgnoringStagedAcquisition": 7030.529691,
+    "firstRankPaybackSecondsUsingOnlyThoseObservatories": 1442.307346,
+    "wholeResearchPaybackSecondsIgnoringStagedAcquisition": 37225.95259,
     "note": "Só produção contínua, sem crédito extra de missões, baús ou expedições. Níveis do mesmo nó somam; outros bônus multiplicam. Não é exponenciação por nível."
   },
   "expeditions": {
@@ -3469,7 +3557,7 @@
       },
       "actualDeterministicSeed": {
         "data": 24184,
-        "frags": 57,
+        "frags": 2,
         "cards": {
           "reliquia": 240
         }
@@ -3478,9 +3566,9 @@
         "lua": 997120,
         "marte": 996400
       },
-      "fragmentsTotalGained": 57,
+      "fragmentsTotalGained": 2,
       "globalYieldBefore": 2.2,
-      "globalYieldAfter": 3.9099999999999997,
+      "globalYieldAfter": 2.26,
       "initialCollapses": 1,
       "finalCollapses": 1,
       "collapsesDuringFarm": 0,
@@ -3527,18 +3615,16 @@
       },
       "actualDeterministicSeed": {
         "data": 1589070,
-        "frags": 218,
-        "cards": {
-          "reliquia": 5609
-        }
+        "frags": 2,
+        "cards": {}
       },
       "remainingFuel": {
         "lua": 989080,
         "marte": 986300
       },
-      "fragmentsTotalGained": 218,
+      "fragmentsTotalGained": 2,
       "globalYieldBefore": 2.2,
-      "globalYieldAfter": 8.739999999999998,
+      "globalYieldAfter": 2.26,
       "initialCollapses": 1,
       "finalCollapses": 1,
       "collapsesDuringFarm": 0,
@@ -3551,18 +3637,26 @@
         {
           "id": "ruinas",
           "data": 4410,
-          "cards": {
-            "reliquia": 12
+          "cards": {},
+          "frags": 1,
+          "sup": {
+            "metal": 480,
+            "alloy": 144,
+            "comp": 36
           },
-          "frags": 1
+          "supCards": 12
         },
         {
           "id": "ruinas2",
           "data": 2940,
-          "cards": {
-            "reliquia": 25
+          "cards": {},
+          "frags": 1,
+          "sup": {
+            "metal": 1000,
+            "alloy": 300,
+            "comp": 75
           },
-          "frags": 1
+          "supCards": 25
         }
       ],
       "fragmentsTotalGained": 2,

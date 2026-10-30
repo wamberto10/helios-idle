@@ -571,6 +571,17 @@ function testLastRegion() {
 }
 
 // =============== 14. BOTÃO OPERAR: TODAS AS INSTALAÇÕES MANUAIS ===============
+// =============== 18. PRIMEIROS PASSOS ===============
+function testFirstSteps() {
+  section('Primeiros passos: gargalo aponta o que dá para operar; sem aviso repetido da introdução');
+  const S = fresh(); const b = E.bottleneck(S, 'lua');
+  assert(b.kind === 'manual' && b.bid === 'extrator', 'jogo novo: o atalho do gargalo é o extrator (a refinaria está sem minério), veio ' + b.bid);
+  S.run.regions.lua.st.ore = 50; assert(E.bottleneck(S, 'lua').bid === 'refinaria', 'com minério, o atalho passa para a refinaria');
+  for (const k in S.run.regions.lua.b) S.run.regions.lua.b[k].on = true;
+  assert(E.bottleneck(S, 'lua').bid === null, 'tudo em operação: o quadro só informa, sem botão');
+  const N = E.newState(); assert(!N.events.length && /Missão Hélios/.test(N.run.log[0].text), 'introdução fica no diário sem virar aviso');
+}
+
 // =============== 17. GASES SÓ EM VÊNUS (save v3 → v4) ===============
 function testVenusGasHub() {
   section('Gases só em Vênus: Júpiter importa; saves antigos desmontam as plataformas de Júpiter');
@@ -688,7 +699,7 @@ let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub, testArtSizes, testVenusGasHub]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub, testArtSizes, testVenusGasHub, testFirstSteps]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');
