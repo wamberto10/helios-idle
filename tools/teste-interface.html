@@ -497,6 +497,30 @@ async function tReview() {
   ok(hMin >= 10, 'mapa no celular: nomes dos planetas com pelo menos 10 px (' + Math.round(hMin) + ')');
   close(g);
 }
+async function tReactorSwap() {
+  sec('Reator de Fusão: painel trocado pelo reator (Lua), coletor pelo reator (Mercúrio)');
+  const g = await openGame('reatorswap', 375, 812); await until(() => g.modal()); await g.closeAll();
+  const E = g.H.E, S = g.S(); for (const r of ['marte', 'cinturao', 'mercurio', 'venus', 'jupiter']) E.unlockRegion(S, r, true); S.events = [];
+  const L = S.run.regions.lua; L.b.painel = { n: 2, lvl: 4, p: 0 }; L.b.reator = { n: 1, lvl: 2, p: 0 };
+  g.H.UI.go('region', { rid: 'lua', rtab: 'prod' }); await wait(120); await g.closeAll();
+  const order = () => g.qa('.bgrid > .bcard').map((c) => c.id);
+  ok(order().indexOf('b-reator') === order().indexOf('b-painel') + 1, 'Lua: reator logo depois do painel');
+  const up = g.q('#b-painel .evolve-btn'); ok(up && !up.classList.contains('hidden') && /Reator de Fusão/.test(up.getAttribute('aria-label')), 'painel com ↑ para o Reator de Fusão');
+  ok(!g.q('#b-reator .evolve-btn'), 'reator (topo da escada) sem ↑');
+  for (const r in E.swapInfo(S, 'lua', 'painel').cost) L.st[r] = 1e4; g.H.UI.frame(); await wait(40);
+  g.click(up); await wait(80);
+  ok(/Painel Solar → Reator de Fusão/.test(g.q('#modal h2').textContent) && /Nv 2/.test(g.q('#modal').textContent), 'janela: painel → reator, entrando no Nv 2 dos reatores');
+  g.click('#modal [data-a="genswap|lua|painel"]'); await wait(80);
+  ok(L.b.painel.n === 1 && L.b.reator.n === 2 && L.b.reator.lvl === 2 && L.b.painel.lvl === 4, 'troca: 1 painel Nv 4 restante, 2 reatores Nv 2');
+  g.click('#modal [data-a="genswap|lua|painel"]'); await wait(80); g.H.UI.closeModal(); await wait(60);
+  ok(L.b.painel.n === 0 && !g.q('#b-painel') && order()[0] === 'b-reator', 'último painel trocado: o reator ocupa o lugar do painel');
+  // Mercúrio: painel → coletor e coletor → reator
+  const M = S.run.regions.mercurio; M.b.painel = { n: 1, lvl: 1, p: 0 }; M.b.coletor_solar = { n: 2, lvl: 1, p: 0 };
+  g.H.UI.go('region', { rid: 'mercurio', rtab: 'prod' }); await wait(120); await g.closeAll();
+  ok(/Coletor Solar/.test(g.q('#b-painel .evolve-btn').getAttribute('aria-label')) && /Reator de Fusão/.test(g.q('#b-coletor_solar .evolve-btn').getAttribute('aria-label')), 'Mercúrio: painel ↑ coletor, coletor ↑ reator');
+  const o = order(); ok(o.indexOf('b-coletor_solar') === o.indexOf('b-painel') + 1 && o.indexOf('b-reator') === o.indexOf('b-coletor_solar') + 1, 'Mercúrio: painel, coletor e reator lado a lado');
+  close(g);
+}
 async function tSolarSwap() {
   sec('Painel solar: botão ↑ no canto troca 1 painel por 1 coletor (só onde há coletor)');
   const g = await openGame('solarswap', 375, 812); await until(() => g.modal()); await g.closeAll();
@@ -510,22 +534,22 @@ async function tSolarSwap() {
   ok(g.q('#b-painel.bcard') && g.q('#b-coletor_solar.bcard'), 'Mercúrio: painel e coletor com cartões próprios, no layout normal');
   ok(up() && !up().classList.contains('hidden') && !up().classList.contains('ready') && /Recursos insuficientes/.test(up().getAttribute('aria-label')), 'sem recursos: ↑ visível, sem destaque, com o motivo no nome acessível');
   g.click(up()); await wait(80);
-  const sw = g.q('#modal [data-a="solarevolve|mercurio"]');
+  const sw = g.q('#modal [data-a="genswap|mercurio|painel"]');
   ok(sw && sw.disabled && /Recursos insuficientes/.test(g.q('#modal').textContent), 'janela mostra custo e motivo; “Trocar” bloqueado');
   const cost = E.solarInfo(S, 'mercurio').evolutionCost; for (const r in cost) M.st[r] = cost[r] * 2; g.H.UI.frame(); await wait(40);
-  ok(!g.q('#modal [data-a="solarevolve|mercurio"]').disabled, 'com recursos a janela se atualiza e libera a troca');
+  ok(!g.q('#modal [data-a="genswap|mercurio|painel"]').disabled, 'com recursos a janela se atualiza e libera a troca');
   // produção ativa: o estoque muda a todo instante, mas a janela não é refeita (imagens somiam e o clique se perdia)
-  const btn0 = g.q('#modal [data-a="solarevolve|mercurio"]'), img0 = g.q('#modal .solar-swap img');
+  const btn0 = g.q('#modal [data-a="genswap|mercurio|painel"]'), img0 = g.q('#modal .solar-swap img');
   for (let i = 0; i < 6; i++) { M.st.metal += 0.7; M.st.cell += 0.3; g.H.UI.frame(); await wait(20); }
-  ok(g.q('#modal [data-a="solarevolve|mercurio"]') === btn0 && g.q('#modal .solar-swap img') === img0, 'estoque mudando não refaz a janela: botão e imagens continuam os mesmos');
-  g.click('#modal [data-a="solarevolve|mercurio"]'); await wait(80);
+  ok(g.q('#modal [data-a="genswap|mercurio|painel"]') === btn0 && g.q('#modal .solar-swap img') === img0, 'estoque mudando não refaz a janela: botão e imagens continuam os mesmos');
+  g.click('#modal [data-a="genswap|mercurio|painel"]'); await wait(80);
   ok(M.b.painel.n === 2 && M.b.coletor_solar.n === 2 && g.H.UI.st.modalOpen && /2 painéis/.test(g.q('#modal').textContent), 'troca feita: 3→2 painéis, 1→2 coletores; janela segue aberta com a próxima troca');
   const order = () => g.qa('.bgrid > .bcard').map((c) => c.id);
   ok(order().indexOf('b-coletor_solar') === order().indexOf('b-painel') + 1, 'com painéis: o coletor fica logo depois do painel');
   // trocar o último painel: o cartão do painel sai e o coletor fica no lugar dele
   M.b.painel.n = 1; for (const r in E.solarInfo(S, 'mercurio').evolutionCost) M.st[r] = 1e4; g.H.UI.frame(); await wait(40);
   const pos = order().indexOf('b-painel');
-  g.click('#modal [data-a="solarevolve|mercurio"]'); await wait(80); g.H.UI.closeModal(); await wait(60);
+  g.click('#modal [data-a="genswap|mercurio|painel"]'); await wait(80); g.H.UI.closeModal(); await wait(60);
   ok(M.b.painel.n === 0 && !g.q('#b-painel') && order().indexOf('b-coletor_solar') === pos, 'último painel trocado: o painel some e o coletor fica no lugar dele');
   g.H.UI.go('region', { rid: 'mercurio', hl: 'painel' }); await wait(60);
   ok(g.q('#b-coletor_solar').classList.contains('hl'), 'atalho para o painel leva ao coletor');
@@ -696,7 +720,7 @@ async function tFinalArt() {
 async function main() {
   document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
   const t0 = Date.now();
-  const tests = [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tRoutesByPlanet, tWiki, tReview, tScrollKeep, tA11y, tLayout, tFinalArt];
+  const tests = [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tReactorSwap, tRoutesByPlanet, tWiki, tReview, tScrollKeep, tA11y, tLayout, tFinalArt];
   const params = new URLSearchParams(location.search);
   for (const t of tests.filter(t => (params.get('only') !== 'artes' || t === tFinalArt) && (params.get('skip') !== 'artes' || t !== tFinalArt))) {
     try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }

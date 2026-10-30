@@ -92,31 +92,22 @@ function run() {
     equal(JSON.parse(JSON.stringify(S)), JSON.parse(stale), 'prévia antiga não autoriza pagamento parcial');
   });
 
-  section('níveis mistos preservados e melhorias avançadas cobradas', () => {
+  section('troca entra no nível atual do gerador melhor (sem herdar nem cobrar nível)', () => {
     for (const [basicLevel, collectorLevel] of [[5, 2], [2, 6]]) {
       const { S, R, rid } = fixture({ basicN: 4, basicLevel, collectorN: 2, collectorLevel });
-      const m = E.mods(S), build = plain(E.bCost(S, rid, 'coletor_solar', m));
-      const expected = Object.assign({}, build); expected.metal -= Math.ceil(D.buildings.painel.cost.metal * m.costRed);
-      const target = Math.max(basicLevel, collectorLevel);
-      const reference = clone(S), C = reference.run.regions[rid]; fund(C, { metal: 1e12, cell: 1e12, comp: 1e12 });
-      for (let level = collectorLevel; level < target; level++) {
-        const step = E.uCost(reference, rid, 'coletor_solar');
-        for (const r in step) expected[r] = (expected[r] || 0) + step[r];
-        ok(E.upgrade(reference, rid, 'coletor_solar').ok, 'referência paga melhoria normal de coletor');
-      }
-      const preview = E.solarInfo(S, rid); equal(preview.evolutionCost, expected, 'conversão cobra as mesmas melhorias avançadas (' + basicLevel + '/' + collectorLevel + ')');
-      const generationBefore = preview.generation;
+      const m = E.mods(S), expected = plain(E.bCost(S, rid, 'coletor_solar', m)); expected.metal -= Math.ceil(D.buildings.painel.cost.metal * m.costRed);
+      const preview = E.solarInfo(S, rid); equal(preview.evolutionCost, expected, 'custo = construir 1 coletor menos o painel (' + basicLevel + '/' + collectorLevel + ')');
+      ok(preview.evolutionLevel === collectorLevel, 'prévia indica o nível atual dos coletores');
       fund(R, preview.evolutionCost); const stock = plain(R.st);
-      ok(E.evolveSolar(S, rid).ok, 'conversão com níveis diferentes aceita');
-      ok(R.b.painel.n === 3 && R.b.painel.lvl === basicLevel, 'grupo básico conserva nível e perde uma unidade');
-      ok(R.b.coletor_solar.n === 3 && R.b.coletor_solar.lvl === target, 'grupo avançado preserva o maior nível');
-      equal(spent(stock, R.st), expected, 'custo de compatibilização realmente pago');
-      near(solarGeneration(S, rid), preview.evolutionAfter, 'geração prevista com níveis mistos');
-      ok(solarGeneration(S, rid) >= generationBefore, 'investimento não reduz geração');
+      ok(E.evolveSolar(S, rid).ok, 'troca com níveis diferentes aceita');
+      ok(R.b.painel.n === 3 && R.b.painel.lvl === basicLevel, 'painéis restantes mantêm o próprio nível');
+      ok(R.b.coletor_solar.n === 3 && R.b.coletor_solar.lvl === collectorLevel, 'coletores continuam no nível deles');
+      equal(spent(stock, R.st), expected, 'nenhuma melhoria extra cobrada');
+      near(solarGeneration(S, rid), preview.evolutionAfter, 'geração prevista confere');
     }
     const { S, R, rid } = fixture({ basicN: 1, basicLevel: 3 });
     const info = E.solarInfo(S, rid); fund(R, info.evolutionCost);
-    ok(E.evolveSolar(S, rid).ok && R.b.coletor_solar.lvl === 3, 'primeiro coletor herda o nível pago do painel');
+    ok(E.evolveSolar(S, rid).ok && R.b.coletor_solar.lvl === 1, 'primeiro coletor começa no nível 1 (o do painel não passa)');
     const remaining = plain(R.st);
     ok(!E.evolveSolar(S, rid).ok, 'repetir após converter o último painel não cria outra unidade');
     equal(R.st, remaining, 'repetição recusada não cobra materiais');
@@ -149,7 +140,7 @@ function run() {
     fund(R, E.solarInfo(S, rid).evolutionCost); E.evolveSolar(S, rid);
     ok(E.mProg(S, rid, panelBuild, 'test').done && E.mProg(S, rid, panelBuild, 'test').cur === 3, 'evoluir não regride a contagem de painéis');
     ok(E.mProg(S, rid, { t: 'build', b: 'coletor_solar', n: 2 }, 'test').done, 'conversão conta para construir coletores');
-    ok(E.mProg(S, rid, { t: 'level', b: 'coletor_solar', n: 3 }, 'test').done, 'nível preservado conta para meta de coletor');
+    ok(!E.mProg(S, rid, { t: 'level', b: 'coletor_solar', n: 3 }, 'test').done, 'nível do painel não conta para meta de nível do coletor');
     fund(R, E.solarInfo(S, rid).evolutionCost); E.evolveSolar(S, rid);
     ok(R.b.painel.n === 0 && E.mProg(S, rid, panelLevel, 'test').done, 'só coletores ainda cumprem nível do modelo básico');
     ok(!E.mProg(fixture({ basicN: 10 }).S, rid, { t: 'build', b: 'coletor_solar', n: 1 }, 'test').done, 'painéis básicos não satisfazem missão avançada');
@@ -167,9 +158,38 @@ function run() {
     ok(r2.ok && !r2.holdCancelled && partial.R.hold.bid === 'painel', 'reserva de painéis restantes continua');
     const catchup = fixture({ basicLevel: 3, collectorN: 1, collectorLevel: 1 }); fund(catchup.R, E.solarInfo(catchup.S, catchup.rid).evolutionCost);
     E.setHold(catchup.S, catchup.rid, 'coletor_solar'); const r3 = E.evolveSolar(catchup.S, catchup.rid);
-    ok(r3.ok && r3.holdCancelled && !catchup.R.hold, 'melhoria paga na compatibilização encerra a reserva antiga');
+    ok(r3.ok && !r3.holdCancelled && catchup.R.hold.bid === 'coletor_solar', 'sem cobrança de nível, a reserva da melhoria do coletor continua');
     const other = fixture(); E.bs(other.R, 'refinaria').n = 1; E.setHold(other.S, other.rid, 'refinaria'); fund(other.R, E.solarInfo(other.S, other.rid).evolutionCost);
     ok(E.evolveSolar(other.S, other.rid).ok && other.R.hold.bid === 'refinaria', 'ação manual pode gastar material reservado sem cancelar reserva de outra instalação');
+  });
+
+  section('escada de geradores: painel → coletor → reator de fusão', () => {
+    const S = E.newState(); S.lastTick = 1e12; for (const r of ['marte', 'cinturao', 'mercurio']) E.unlockRegion(S, r, true);
+    ok(E.genNext(S, 'lua', 'painel') === null, 'Lua antes de Júpiter: painel ainda sem gerador melhor');
+    ok(E.genNext(S, 'mercurio', 'painel') === 'coletor_solar' && E.genNext(S, 'mercurio', 'coletor_solar') === null, 'Mercúrio antes de Júpiter: painel → coletor; coletor sem próximo');
+    for (const r of ['venus', 'jupiter']) E.unlockRegion(S, r, true);
+    ok(E.genNext(S, 'lua', 'painel') === 'reator', 'com Júpiter alcançado: na Lua o painel vai direto ao reator');
+    ok(E.genNext(S, 'mercurio', 'painel') === 'coletor_solar' && E.genNext(S, 'mercurio', 'coletor_solar') === 'reator', 'em Mercúrio: painel → coletor → reator');
+    ok(E.genNext(S, 'jupiter', 'reator') === null, 'reator é o topo da escada');
+    // troca na Lua: o reator entra no nível atual dos reatores; o painel restante mantém o nível dele
+    const L = S.run.regions.lua; L.b.painel = { n: 3, lvl: 4, p: 0 }; L.b.reator = { n: 1, lvl: 2, p: 0 };
+    const info = E.swapInfo(S, 'lua', 'painel'), m = E.mods(S);
+    equal(info.cost, plain(E.bCost(S, 'lua', 'reator', m)), 'custo = construir 1 reator (o painel não tem material em comum para descontar)');
+    ok(info.to === 'reator' && info.toLevel === 2 && info.gain > 0, 'prévia: reator nível 2 e ganho de energia');
+    ok(!E.swapGen(S, 'lua', 'painel').ok, 'sem materiais a troca é recusada');
+    fund(L, info.cost); const before = plain(L.st), r = E.swapGen(S, 'lua', 'painel');
+    ok(r.ok && L.b.painel.n === 2 && L.b.painel.lvl === 4 && L.b.reator.n === 2 && L.b.reator.lvl === 2, 'troca feita: 2 painéis Nv 4 e 2 reatores Nv 2');
+    equal(spent(before, L.st), info.cost, 'custo pago uma vez');
+    near(E.genOf(S, 'lua', 'painel', m, 2, 4) + E.genOf(S, 'lua', 'reator', m, 2, 2), info.after, 'energia depois = prévia');
+    // reator novo (sem nenhum antes) começa no nível 1, mesmo com painel de nível alto
+    const T = E.newState(); T.lastTick = 1e12; for (const x of ['marte', 'cinturao', 'mercurio', 'venus', 'jupiter']) E.unlockRegion(T, x, true);
+    const TL = T.run.regions.lua; TL.b.painel = { n: 1, lvl: 5, p: 0 }; delete TL.b.reator; fund(TL, E.swapInfo(T, 'lua', 'painel').cost);
+    ok(E.swapGen(T, 'lua', 'painel').ok && TL.b.reator.lvl === 1 && TL.b.painel.n === 0, 'primeiro reator começa no nível 1');
+    ok(E.mProg(T, 'lua', { t: 'build', b: 'painel', n: 1 }, 'x').done && E.mProg(T, 'lua', { t: 'level', b: 'painel', n: 5 }, 'x').done, 'metas de painel continuam cumpridas depois de trocar tudo pelo reator');
+    ok(!E.mProg(T, 'lua', { t: 'level', b: 'reator', n: 2 }, 'x').done, 'nível do painel não vale para metas do reator');
+    // em Mercúrio o coletor também sobe para reator
+    const M = S.run.regions.mercurio; M.b.coletor_solar = { n: 2, lvl: 3, p: 0 }; M.b.reator = { n: 0, lvl: 1, p: 0 }; fund(M, E.swapInfo(S, 'mercurio', 'coletor_solar').cost);
+    ok(E.swapGen(S, 'mercurio', 'coletor_solar').ok && M.b.coletor_solar.n === 1 && M.b.reator.n === 1 && M.b.reator.lvl === 1, 'Mercúrio: coletor trocado por reator Nv 1');
   });
 
   section('saves mistos preservam níveis e energia; online = offline', () => {

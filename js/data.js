@@ -511,6 +511,9 @@
       ] },
   };
   D.regionOrder = ['lua', 'marte', 'cinturao', 'mercurio', 'venus', 'jupiter', 'saturno', 'urano', 'netuno'];
+  // Escada de geradores: cada um pode ser trocado, uma unidade por vez, pelo próximo disponível na região
+  // (Painel Solar → Coletor Solar → Reator de Fusão; sem coletor, o painel vai direto ao reator).
+  D.genChain = ['painel', 'coletor_solar', 'reator'];
   // Polo de cada recurso: o planeta cuja função é produzi-lo. Avisos de "sobrando em" e sugestões de rota
   // só apontam para o polo (estoque guardado em outro planeta, como recompensa ou sobra de entrega, não conta).
   D.resHub = { ore: 'lua', metal: 'lua', ice: 'lua', alloy: 'marte', comp: 'marte', rare: 'cinturao', cell: 'mercurio', sat: 'mercurio',

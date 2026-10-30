@@ -288,8 +288,8 @@
     if (ui.screen === 'map') initMap();
     if (ui.hl) { const b = revealBuilding(ui.hl); if (b) { b.classList.add('hl'); b.scrollIntoView({ behavior: H.reduceMotion() ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => b.classList.remove('hl'), 2200); } ui.hl = null; }
   }
-  // atalhos para o painel levam ao coletor quando o painel já foi todo trocado
-  const revealBuilding = (bid) => document.getElementById('b-' + bid) || (bid === 'painel' ? document.getElementById('b-coletor_solar') : null);
+  // atalhos para um gerador já todo trocado levam ao gerador melhor que ocupou o lugar dele
+  const revealBuilding = (bid) => document.getElementById('b-' + bid) || (D.genChain.includes(bid) ? D.genChain.slice(D.genChain.indexOf(bid) + 1).map((b) => document.getElementById('b-' + b)).find(Boolean) || null : null);
   function mountRegionBase() {
     const host = $('#screen .base-map-host'); if (!host) return;
     if (baseRun !== S.run) { baseNodes.clear(); baseScroll.clear(); baseRun = S.run; }
@@ -442,10 +442,11 @@
   }
   U.bcount = (el, a) => { const bs = S.run.regions[a[1]].b[a[2]] || { n: 0, lvl: 1 }; setT(el, bs.n ? '×' + bs.n + ' · Nível ' + bs.lvl : 'Não construída'); };
   U.bevolve = (el, a, m) => {
-    const rid = a[1], reg = S.run.regions[rid]; const show = E.bAvail(S, rid, 'coletor_solar') && !!(reg.b.painel && reg.b.painel.n);
+    const rid = a[1], bid = a[2], reg = S.run.regions[rid]; const to = E.genNext(S, rid, bid);
+    const show = !!to && !!(reg.b[bid] && reg.b[bid].n);
     setC(el, 'hidden', !show); if (!show) return;
-    const s = E.solarInfo(S, rid, m); setC(el, 'ready', s.canEvolve); setH(el, A.ic('up', 16));
-    const t = 'Trocar painel por Coletor Solar' + (s.canEvolve ? ' (+' + F.n(s.evolutionGain, 1) + ' MW)' : ' — ' + s.evolutionReason);
+    const s = E.swapInfo(S, rid, bid, to, m); setC(el, 'ready', s.can); setH(el, A.ic('up', 16));
+    const t = 'Trocar ' + D.buildings[bid].name + ' por ' + D.buildings[to].name + (s.can ? ' (+' + F.n(s.gain, 1) + ' MW)' : ' — ' + s.reason);
     if (el.title !== t) { el.title = t; el.setAttribute('aria-label', t); }
   };
   U.btag = (el, a, m) => {
@@ -698,18 +699,21 @@
   }
   // Cartões da região. O Coletor Solar fica logo depois do Painel Solar; quando todos os painéis já
   // foram trocados por coletores, o cartão do painel sai e o coletor ocupa o lugar dele.
+  // Cartões da região. Os geradores ficam juntos, na ordem da escada (painel → coletor → reator), no lugar do
+  // primeiro deles; quando todas as unidades de um foram trocadas por um gerador melhor, o cartão dele sai.
   function cardList(rid) {
     const reg = S.run.regions[rid], list = E.bList(S, rid);
-    if (!list.includes('coletor_solar')) return list;
-    const swapped = !(reg.b.painel && reg.b.painel.n) && !!(reg.b.coletor_solar && reg.b.coletor_solar.n);
-    const out = list.filter((b) => b !== 'coletor_solar' && !(swapped && b === 'painel'));
-    const i = out.indexOf('painel'); out.splice(i >= 0 ? i + 1 : 0, 0, 'coletor_solar');
+    const gens = D.genChain.filter((b) => list.includes(b)); if (gens.length < 2) return list;
+    const has = (b) => !!(reg.b[b] && reg.b[b].n);
+    const shown = gens.filter((b, i) => has(b) || !gens.slice(i + 1).some(has));
+    const at = list.findIndex((b) => gens.includes(b)); const out = list.filter((b) => !gens.includes(b));
+    out.splice(at, 0, ...shown);
     return out;
   }
   function buildingCard(rid, bid) {
     const def = D.buildings[bid];
-    // canto superior direito: pausa (automação) ou, no painel solar, a troca por coletor (↑)
-    const corner = bid === 'painel' ? `<button class="pause-btn evolve-btn hidden" data-a="solarask|${rid}" data-u="bevolve|${rid}"></button>` : `<button class="pause-btn hidden" data-a="pause|${rid}|${bid}" data-u="bpause|${rid}|${bid}"></button>`;
+    // canto superior direito: pausa (automação) ou, nos geradores, a troca pelo próximo gerador melhor (↑)
+    const corner = D.genChain.includes(bid) && bid !== D.genChain[D.genChain.length - 1] ? `<button class="pause-btn evolve-btn hidden" data-a="genask|${rid}|${bid}" data-u="bevolve|${rid}|${bid}"></button>` : `<button class="pause-btn hidden" data-a="pause|${rid}|${bid}" data-u="bpause|${rid}|${bid}"></button>`;
     return `<div class="bcard" id="b-${bid}" tabindex="-1" aria-label="Controles de ${esc(def.name)}">
       ${corner}
       <div class="hd">${A.bIcon(bid)}<div class="grow"><div class="nm">${def.name}</div><div class="cnt" data-u="bcount|${rid}|${bid}"></div></div></div>
@@ -724,23 +728,27 @@
         <button class="btn" data-a="up|${rid}|${bid}" data-u="bup|${rid}|${bid}"></button>
       </div><div class="hold" data-u="bhold|${rid}|${bid}"></div></div>`;
   }
-  // Troca de 1 painel por 1 coletor (botão ↑ do painel): janela com ganho, custo e o motivo quando não dá.
-  function solarSwapHTML(rid) {
-    const m = E.mods(S), s = E.solarInfo(S, rid, m), reg = S.run.regions[rid];
-    const over = Object.keys(s.evolutionCost).filter((r) => s.evolutionCost[r] > E.cap(S, rid, r, m));
-    const level = s.basicN && s.evolutionLevel > s.collectorLevel ? `<p class="small muted">O coletor recebe o nível ${s.evolutionLevel} do painel; o custo inclui as melhorias dos coletores até esse nível.</p>` : '';
-    const help = over.length ? `<p class="small warn">O custo passa do armazenamento de ${over.map((r) => D.res[r].name.toLowerCase()).join(', ')}. Amplie o armazém ou construa um coletor direto no cartão dele.</p>`
-      : `<p class="small ${s.canEvolve ? 'muted' : 'warn'}">${esc(s.canEvolve ? 'O custo já desconta o metal do painel trocado.' : s.evolutionReason)}</p>`;
-    return `<h2>${A.ic('up', 20)} Painel Solar → Coletor Solar</h2>
-      <p class="small muted">Troca 1 painel por 1 coletor. O total de unidades continua o mesmo e a região gera mais energia.</p>
-      <div class="solar-swap">${A.bIcon('painel')}<span class="small">${F.n(s.basicN)} ${s.basicN === 1 ? 'painel' : 'painéis'} · Nv ${s.basicLevel}</span><span aria-hidden="true" class="gold">→</span>${A.bIcon('coletor_solar')}<span class="small">${F.n(s.collectorN)} ${s.collectorN === 1 ? 'coletor' : 'coletores'} · Nv ${s.collectorLevel}</span></div>
-      ${s.basicN ? `<div class="solar-comparison num">${A.rg('energy')} ${F.n(s.generation, 1)} → <b>${F.n(s.evolutionAfter, 1)} MW</b><span class="ok">+${F.n(s.evolutionGain, 1)} MW</span></div>` : ''}
-      ${level}${s.basicN ? `<div class="row wrap"><span class="small muted">Custo:</span>${costHTML(s.evolutionCost, reg)}</div>` : ''}${help}
-      <div class="foot"><button class="btn ghost" data-a="close">Fechar</button><button class="btn gold" data-a="solarevolve|${rid}" data-k="solar-swap" ${s.canEvolve ? 'autofocus' : 'disabled'}>Trocar 1 painel</button></div>`;
+  // Troca de 1 gerador pelo próximo da escada (botão ↑): janela com ganho, custo e o motivo quando não dá.
+  const genCount = (bid, n) => F.n(n) + ' ' + (n === 1 ? D.buildings[bid].name : D.buildings[bid].pl).toLowerCase();
+  function genSwapHTML(rid, from) {
+    const m = E.mods(S), reg = S.run.regions[rid], s = E.swapInfo(S, rid, from, null, m);
+    if (!s.to) return `<h2>Troca de gerador</h2><p class="small muted">${esc(s.reason)}</p><div class="foot"><button class="btn ghost" data-a="close">Fechar</button></div>`;
+    const A1 = D.buildings[from].name, B1 = D.buildings[s.to].name;
+    const over = Object.keys(s.cost).filter((r) => s.cost[r] > E.cap(S, rid, r, m));
+    const level = s.fromN ? `<p class="small muted">${s.toN ? 'A unidade nova entra no nível atual dos ' + D.buildings[s.to].pl + ' (Nv ' + s.toLevel + ').' : 'O primeiro ' + B1 + ' começa no nível ' + s.toLevel + '.'} O nível do ${A1} não passa para ele.</p>` : '';
+    const credit = Object.keys(D.buildings[from].cost).some((r) => D.buildings[s.to].cost[r]);
+    const help = over.length ? `<p class="small warn">O custo passa do armazenamento de ${over.map((r) => D.res[r].name.toLowerCase()).join(', ')}. Amplie o armazém ou construa um ${B1} direto no cartão dele.</p>`
+      : `<p class="small ${s.can ? 'muted' : 'warn'}">${esc(s.can ? (credit ? 'O custo já desconta o material do ' + A1 + ' trocado.' : 'Custo de construir 1 ' + B1 + '.') : s.reason)}</p>`;
+    return `<h2>${A.ic('up', 20)} ${A1} → ${B1}</h2>
+      <p class="small muted">Troca 1 ${A1} por 1 ${B1}. O total de unidades continua o mesmo e a região gera mais energia.</p>
+      <div class="solar-swap">${A.bIcon(from)}<span class="small">${genCount(from, s.fromN)} · Nv ${s.fromLevel}</span><span aria-hidden="true" class="gold">→</span>${A.bIcon(s.to)}<span class="small">${genCount(s.to, s.toN)} · Nv ${s.toLevel}</span></div>
+      ${s.fromN ? `<div class="solar-comparison num">${A.rg('energy')} ${F.n(s.generation, 1)} → <b>${F.n(s.after, 1)} MW</b><span class="ok">+${F.n(s.gain, 1)} MW</span></div>` : ''}
+      ${level}${s.fromN ? `<div class="row wrap"><span class="small muted">Custo:</span>${costHTML(s.cost, reg)}</div>` : ''}${help}
+      <div class="foot"><button class="btn ghost" data-a="close">Fechar</button><button class="btn gold" data-a="genswap|${rid}|${from}" data-k="gen-swap" ${s.can ? 'autofocus' : 'disabled'}>Trocar 1 ${A1.split(' ')[0].toLowerCase()}</button></div>`;
   }
   // Só refaz a janela quando algo visível muda (quantidades, níveis, custo, falta/sobra de cada recurso).
   // O estoque em si muda a cada instante: refazer por ele recarregava as imagens e trocava o botão no meio do clique.
-  const solarSwapSig = (rid) => { const s = E.solarInfo(S, rid); const reg = S.run.regions[rid]; return JSON.stringify([s.basicN, s.collectorN, s.basicLevel, s.collectorLevel, s.canEvolve, s.evolutionReason, s.evolutionCost, F.n(s.generation, 1), F.n(s.evolutionAfter, 1), Object.keys(s.evolutionCost).map((r) => (reg.st[r] || 0) + 1e-9 >= s.evolutionCost[r])]); };
+  const genSwapSig = (rid, from) => { const s = E.swapInfo(S, rid, from); const reg = S.run.regions[rid]; return JSON.stringify([s.to, s.fromN, s.toN, s.fromLevel, s.toLevel, s.can, s.reason, s.cost, F.n(s.generation, 1), F.n(s.after, 1), Object.keys(s.cost).map((r) => (reg.st[r] || 0) + 1e-9 >= s.cost[r])]); };
   function projectsHTML(rid) {
     let h = '';
     const nr = E.nextRegion(rid);
@@ -1240,10 +1248,10 @@
     },
     op: (rid, bid, el) => { const r = E.operate(S, rid, bid); if (r.ok) sfx('click'); else UI.err(r); },
     build: (rid, bid, el) => { const r = E.build(S, rid, bid); if (r.ok) { sfx('buy'); floatNum(el, '+1'); H.save(); } else UI.err(r); },
-    solarask: (rid) => { UI.modal(solarSwapHTML(rid), '', { live: { sig: () => solarSwapSig(rid), render: () => solarSwapHTML(rid) } }); },
-    solarevolve: (rid) => {
-      const r = E.evolveSolar(S, rid); if (!r.ok) return UI.err(r);
-      sfx('promote'); H.save(true); UI.frame(); // a janela continua aberta e se atualiza para trocar outro painel
+    genask: (rid, bid) => { if (!D.genChain.includes(bid)) return; UI.modal(genSwapHTML(rid, bid), '', { live: { sig: () => genSwapSig(rid, bid), render: () => genSwapHTML(rid, bid) } }); },
+    genswap: (rid, bid) => {
+      const r = E.swapGen(S, rid, bid); if (!r.ok) return UI.err(r);
+      sfx('promote'); H.save(true); UI.frame(); // a janela continua aberta e se atualiza para trocar outra unidade
     },
     up: (rid, bid, el) => { const r = E.upgrade(S, rid, bid); if (r.ok) { sfx('buy'); floatNum(el, 'Nv ' + S.run.regions[rid].b[bid].lvl); H.save(); } else UI.err(r); },
     pause: (rid, bid) => { E.togglePause(S, rid, bid); sfx('click'); },
