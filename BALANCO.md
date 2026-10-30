@@ -1,5 +1,7 @@
 # Balanço de recursos — HELIOS IDLE
 
+> **Atualização 30/10/2026:** medição refeita com o jogo atual em [AUDITORIA-RECURSOS.md](AUDITORIA-RECURSOS.md) (ferramenta `tools/balanco-recursos.js`).
+
 > **Histórico.** Medição de 27/10/2026. A conclusão de que os dados eram equilibrados não se mantém com farm e ausências longas (ver AUDITORIA-BALANCEAMENTO.md); o estado atual está em [CORRECOES-BALANCEAMENTO.md](CORRECOES-BALANCEAMENTO.md).
 
 > Revisão em 28/10/2026: a [auditoria de ciência e missões](AUDITORIA-BALANCEAMENTO.md) reproduziu excesso de dados em campanhas de farm e horizontes longos. A conclusão abaixo de que dados eram equilibrados vale apenas para o cenário curto medido na época e foi revista. A nova auditoria também identifica referências históricas que já não correspondem às fórmulas atuais, como combustível fixo de cargueiro.

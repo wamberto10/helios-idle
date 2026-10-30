@@ -130,9 +130,10 @@
   // Consumo de energia = e × máquinas × velocidade^energySpeedExp (velocidade de especialistas, pesquisa e universo).
   // 0 = consumo fixo; 1 = proporcional à velocidade.
   D.energySpeedExp = 0.3;
-  // Exportação de excedente: com a opção ligada, o que passa do armazenamento é enviado à Terra
-  // e convertido em dados de pesquisa (valor do recurso × taxa).
-  D.exportRate = 0;   // rendimento por ciclo por nível
+  // Exportação de excedente: com a opção ligada, o que passa do armazenamento é enviado à Terra e conta
+  // como produzido (valor do Colapso). Taxa de conversão em dados: 0 (zerada para conter o excesso de dados
+  // em partidas de farm); valor do recurso × taxa se for religada.
+  D.exportRate = 0;
   D.maxBuildingLevel = 25;
 
   // ---------------- ESPECIALISTAS ----------------
@@ -537,20 +538,26 @@
 
   // ---------------- ENXAME DE DYSON ----------------
   D.dysonRequired = 6;
+  // Etapas do enxame (entregues em Mercúrio). As obrigatórias (1–6) pedem só um pouco de metal e ligas do
+  // próprio Mercúrio; as opcionais (7–10, fragmentos extras) são o destino de longo prazo dos básicos que
+  // sobram no fim do jogo: metal, ligas, combustível de Vênus e componentes de Marte em grande escala.
+  // Volumes grandes nas obrigatórias atrasavam muito o 2º universo (auditoria de recursos de 30/10/2026).
   D.dyson = [
-    { sat: 5, comp: 20 },
-    { sat: 10, cell: 40, comp: 30 },
-    { sat: 20, comp: 60, fusion: 10 },
-    { sat: 30, hull: 10, comp: 80 },
-    { sat: 45, hull: 25, cryo: 10 },
-    { sat: 60, hull: 40, cryo: 30 },
-    { sat: 90, hull: 60, cryo: 50, exotic: 5 },
-    { sat: 130, hull: 90, exotic: 15 },
-    { sat: 180, hull: 130, exotic: 30 },
-    { sat: 250, hull: 200, exotic: 60 },
+    { sat: 5, comp: 20, metal: 1000, alloy: 300 },
+    { sat: 10, cell: 40, comp: 30, metal: 1600, alloy: 500 },
+    { sat: 20, comp: 60, fusion: 10, metal: 2600, alloy: 800 },
+    { sat: 30, hull: 10, comp: 80, metal: 4100, alloy: 1300 },
+    { sat: 45, hull: 25, cryo: 10, metal: 6600, alloy: 2100 },
+    { sat: 60, hull: 40, cryo: 30, metal: 10500, alloy: 3400 },
+    { sat: 90, hull: 60, cryo: 50, exotic: 5, metal: 100000, alloy: 30000, fuel: 25000, comp: 3000 },
+    { sat: 130, hull: 90, exotic: 15, metal: 180000, alloy: 55000, fuel: 40000, comp: 6000 },
+    { sat: 180, hull: 130, exotic: 30, metal: 330000, alloy: 100000, fuel: 60000, comp: 12000 },
+    { sat: 250, hull: 200, exotic: 60, metal: 600000, alloy: 180000, fuel: 90000, comp: 25000 },
   ];
   D.dysonEnergyPerStage = 0.15; // +15% de energia em todas as regiões por etapa
   D.dysonRegion = 'mercurio';
+  // Núcleo: só material exótico. Ligas e componentes aqui atrasavam o Colapso em até 35 min, porque a
+  // logística até Netuno é estreita; o destino dos básicos fica nas etapas do Dyson.
   D.core = { region: 'netuno', minPhase: 1, cost: { exotic: 60, hull: 30, cryo: 60, fusion: 80 } };
 
   // ---------------- COLAPSO ----------------
