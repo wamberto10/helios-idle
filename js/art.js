@@ -141,9 +141,9 @@
     const color = r === 'data' ? '#3fe0ff' : r === 'frag' ? '#b07cff' : r === 'energy' ? '#ffd76a' : D.res[r].color;
     const name = RG_NAME[r] || (D.res[r] ? D.res[r].name : r);
     const src = A.paths.resource(r);
-    if (src && !failedImages.has(src)) return `<img class="rg rgi" src="${src}" width="${size || 14}" height="${size || 14}" data-r="${r}" ${deco ? 'alt="" aria-hidden="true"' : `alt="${name}"`} decoding="async" draggable="false" onerror="H.A.rgFailed(this)">`;
+    if (src && !failedImages.has(src)) return `<img class="rg rgi" src="${src}" width="${size || 14}" height="${size || 14}" data-r="${r}" title="${name}" ${deco ? 'alt="" aria-hidden="true"' : `alt="${name}"`} decoding="async" draggable="false" onerror="H.A.rgFailed(this)">`;
     const a11y = deco ? 'aria-hidden="true"' : `role="img" aria-label="${name}"`;
-    return `<svg class="rg" viewBox="0 0 16 16" width="${size || 14}" height="${size || 14}" style="color:${color}" fill="currentColor" focusable="false" ${a11y}>${RG[r] || RG.ore}</svg>`;
+    return `<svg class="rg" viewBox="0 0 16 16" width="${size || 14}" height="${size || 14}" style="color:${color}" fill="currentColor" focusable="false" ${a11y}><title>${name}</title>${RG[r] || RG.ore}</svg>`; // <title>: nome ao passar o cursor
   };
 
   // ---------------- PLANETAS ----------------
@@ -225,7 +225,7 @@
     lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/>',
     check: '<path d="M4 12l5 5L20 6" fill="none" stroke="currentColor" stroke-width="2.6"/>',
     warn: '<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 17v1.5" stroke="#050a18" stroke-width="2"/>',
-    play: '<path d="M7 4l13 8-13 8z"/>', up: '<path d="M12 3l8 9h-5v9H9v-9H4z"/>', pause: '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>',
+    play: '<path d="M7 4l13 8-13 8z"/>', up: '<path d="M12 3l8 9h-5v9H9v-9H4z"/>', book: '<path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H20v17H7.5a2.5 2.5 0 0 0 0 3H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M5 4.5V20" stroke="currentColor" stroke-width="2"/><path d="M9.5 7h6.5M9.5 10.5h4.5" stroke="currentColor" stroke-width="1.8"/>', pause: '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>',
     bolt: '<path d="M13 2L5 13h6l-1 9 8-11h-6z"/>', ship: '<path d="M22 12L4 6l4 6-4 6z"/>', sound: '<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8a5 5 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="1.8"/>',
   };
   A.ic = (n, size) => `<svg class="ic" viewBox="0 0 24 24" width="${size || 20}" height="${size || 20}" fill="currentColor" aria-hidden="true">${NAV[n] || ''}</svg>`;

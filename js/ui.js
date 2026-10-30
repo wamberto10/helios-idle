@@ -9,7 +9,7 @@
   let baseRun = null;
   // painel visual da base (mapa com as instalações): desligado por enquanto; os cartões de instalação continuam
   const SHOW_BASE_PANEL = false;
-  const ui = UI.st = { open: {}, screen: 'region', rid: 'lua', sel: 'lua', rtab: 'prod', resSel: null, uniSel: null, hl: null, sig: '', nodes: [], nr: { from: 'lua', to: '', res: 'metal' }, modalOpen: false, queue: [] };
+  const ui = UI.st = { open: {}, screen: 'region', rid: 'lua', sel: 'lua', rtab: 'prod', resSel: null, uniSel: null, hl: null, sig: '', nodes: [], nr: { from: 'lua', to: '', res: 'metal' }, wikiTab: 'res', modalOpen: false, queue: [] };
   const $ = (s, r) => (r || document).querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const setT = (el, v) => { if (el._t !== v) { el.textContent = v; el._t = v; } };
@@ -24,7 +24,7 @@
   // ---------------- PEDAÇOS DE HTML ----------------
   // tamanhos dos ícones de recurso: custos 24 px, estoque 32 px (o número e o nome continuam em texto)
   const IC_COST = 24, IC_STOCK = 32;
-  const resChip = (r, amt, have) => `<span class="chip res-cost ${have !== undefined && have + 1e-9 < amt ? 'lack' : ''}">${A.rg(r, IC_COST)} ${F.n(amt)}</span>`;
+  const resChip = (r, amt, have) => `<span class="chip res-cost ${have !== undefined && have + 1e-9 < amt ? 'lack' : ''}" title="${esc(D.res[r] ? D.res[r].name : r)}">${A.rg(r, IC_COST)} ${F.n(amt)}</span>`;
   const costHTML = (cost, reg) => '<span class="costs">' + Object.keys(cost).map((r) => resChip(r, cost[r], reg ? (reg.st[r] || 0) : undefined)).join('') + '</span>';
   // recompensa como o motor vai pagar agora (E.rewardPreview: bônus de dados, recrutamento ou carta, espaço, descoberta)
   function rewardHTML(rw, rid, m) {
@@ -207,12 +207,12 @@
 
   // ---------------- TOPO E NAVEGAÇÃO ----------------
   const SCREENS = [
-    ['map', 'Sistema'], ['region', 'Região'], ['crew', 'Tripulação'], ['research', 'Pesquisa'], ['exp', 'Expedições'], ['sing', 'Singularidade'], ['settings', 'Ajustes'],
+    ['map', 'Sistema'], ['region', 'Região'], ['crew', 'Tripulação'], ['research', 'Pesquisa'], ['exp', 'Expedições'], ['sing', 'Singularidade'], ['wiki', 'Enciclopédia'], ['settings', 'Ajustes'],
   ];
   // rótulo curto para telas estreitas (o longo fica fora do layout e da leitura; nome acessível = texto visível)
   const NAV_SHORT = { crew: 'Equipe', exp: 'Sondas', sing: 'Colapso' };
   const NAV_DOT = { region: 'missões prontas', crew: 'promoção disponível', exp: 'baú ou expedição para abrir', sing: 'Colapso ou diretriz disponível', research: 'pesquisa disponível' };
-  const NAVI = { map: 'map', region: 'region', crew: 'crew', research: 'research', exp: 'exp', sing: 'sing', settings: 'settings' };
+  const NAVI = { map: 'map', region: 'region', crew: 'crew', research: 'research', exp: 'exp', sing: 'sing', wiki: 'book', settings: 'settings' };
   function renderChrome() {
     $('#top').innerHTML = `<div class="logo"><span class="sun"></span><span class="txt">HELIOS <b>IDLE</b></span></div>
       <span class="uni-chip" data-u="uni"></span><span class="top-spacer"></span>
@@ -221,8 +221,9 @@
       <button class="commander-chip" data-a="profile" data-k="commander-profile" aria-label="${S.profile ? 'Editar comandante ' + esc(S.profile.name) : 'Criar comandante'}" title="${S.profile ? esc(S.profile.name) : 'Criar comandante'}">${S.profile ? avatarArt(S.profile.avatar) : A.ic('crew', 22)}<span>${S.profile ? esc(S.profile.name) : 'Comandante'}</span></button>
       <button class="save-warn hidden" data-a="nav|settings" data-u="savest" title="O progresso não está sendo salvo neste navegador">${A.ic('warn', 14)} Não salvo</button>
       <button class="icon-btn chest-btn hidden" data-a="openchest" data-u="chestbtn" title="Abrir Baú de Suprimentos" aria-label="Abrir Baú de Suprimentos">${A.ic('chest')}<span class="badge" data-u="chestn"></span></button>
+      <button class="icon-btn wiki-top" data-a="nav|wiki" title="Enciclopédia" aria-label="Enciclopédia">${A.ic('book')}</button>
       <button class="icon-btn" data-a="nav|settings" title="Ajustes" aria-label="Ajustes">${A.ic('settings')}</button>`;
-    $('#nav').innerHTML = SCREENS.map(([k, l]) => `<button class="nav-btn ${k === 'settings' ? 'settings' : ''}" data-a="nav|${k}" data-u="nav|${k}" data-k="nav-${k}">${A.ic(NAVI[k], 22)}<span class="lbl">${NAV_SHORT[k] ? `<span class="lbl-full">${l}</span><span class="lbl-short">${NAV_SHORT[k]}</span>` : l}</span></button>`).join('');
+    $('#nav').innerHTML = SCREENS.map(([k, l]) => `<button class="nav-btn ${k === 'settings' || k === 'wiki' ? k : ''}" data-a="nav|${k}" data-u="nav|${k}" data-k="nav-${k}">${A.ic(NAVI[k], 22)}<span class="lbl">${NAV_SHORT[k] ? `<span class="lbl-full">${l}</span><span class="lbl-short">${NAV_SHORT[k]}</span>` : l}</span></button>`).join('');
   }
 
   // ---------------- ASSINATURA (re-render quando a estrutura muda) ----------------
@@ -234,6 +235,7 @@
         const reg = run.regions[ui.rid];
         return base + '|' + ui.rid + ui.rtab + '|' + cardList(ui.rid).join(',') + '|' + E.activeMissions(S, ui.rid).map((x) => x.id).join(',') + '|' + run.routes.map((r) => r.id + r.res.join('') + r.auto + r.lvl).join(',') + '|' + run.dyson.stage + run.core + run.flags.expeditions + '|' + ui.nr.from + ui.nr.to + ui.nr.res + '|' + run.log.length + (run.log[0] && run.log[0].t);
       }
+      case 'wiki': return base + '|' + ui.wikiTab;
       case 'map': return base + '|' + ui.sel + run.routes.map((r) => r.id).join(',') + run.dyson.stage;
       case 'crew': return base + JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
       case 'research': return base + JSON.stringify(p.research) + Object.keys(p.disc || {}).join() + ui.resSel;
@@ -262,7 +264,7 @@
 
   function renderScreen() {
     const el = $('#screen');
-    const fn = { map: renderMap, region: renderRegion, crew: renderCrew, research: renderResearch, exp: renderExp, sing: renderSing, settings: renderSettings }[ui.screen];
+    const fn = { map: renderMap, region: renderRegion, crew: renderCrew, research: renderResearch, exp: renderExp, sing: renderSing, wiki: renderWiki, settings: renderSettings }[ui.screen];
     // preserva o foco do teclado e campos em edição ao refazer a tela
     const ae = document.activeElement; const key = ae && el.contains(ae) ? focusKey(ae) : null;
     const oldBase = el.querySelector('.base-scroll');
@@ -1077,6 +1079,46 @@
   }
 
   // ================= TELA: AJUSTES =================
+  // ---------------- ENCICLOPÉDIA ----------------
+  // Onde cada recurso é coletado ou fabricado, quem o usa e o que é exclusivo de cada planeta (tudo vem de DATA).
+  function wikiData() {
+    const res = {};
+    for (const r of D.resOrder) res[r] = { made: [], used: [] };
+    for (const rid of RO) for (const bid of Object.keys(D.regions[rid].build)) {
+      const def = D.buildings[bid];
+      for (const r in (def.out || {})) if (res[r]) res[r].made.push({ rid, bid });
+      for (const r in (def.in || {})) if (res[r] && !res[r].used.includes(bid)) res[r].used.push(bid);
+    }
+    for (const r in res) res[r].regions = [...new Set(res[r].made.map((x) => x.rid))];
+    return res;
+  }
+  const plDot = (rid) => `<span class="pl" style="background:radial-gradient(circle at 35% 35%,#fff8,${D.regions[rid].color} 40%,${D.regions[rid].color2})"></span>`;
+  const plName = (rid) => `<span class="wiki-pl ${S.run.regions[rid].unlocked ? '' : 'locked'}">${plDot(rid)}${D.regions[rid].name}${S.run.regions[rid].unlocked ? '' : `<span class="sr-only"> (ainda não alcançado)</span>${A.ic('lock', 12)}`}</span>`;
+  const madeVerb = (bid) => D.buildings[bid].in ? 'fabrica' : 'coleta';
+  function renderWiki() {
+    const W = wikiData(), tab = ui.wikiTab;
+    let h = `<div class="screen-title"><h2>Enciclopédia</h2><span class="small muted">Onde cada recurso é coletado ou fabricado no sistema</span></div>
+      <div class="tabs" role="group" aria-label="Organizar a enciclopédia"><button class="tab ${tab === 'res' ? 'on' : ''}" data-a="wikitab|res"${tab === 'res' ? ' aria-current="true"' : ''}>Por recurso</button><button class="tab ${tab === 'planet' ? 'on' : ''}" data-a="wikitab|planet"${tab === 'planet' ? ' aria-current="true"' : ''}>Por planeta</button></div>`;
+    if (tab === 'res') {
+      h += '<div class="wiki-grid">' + D.resOrder.map((r) => {
+        const w = W[r], only = w.regions.length === 1 ? w.regions[0] : null, hub = D.resHub[r];
+        const made = w.regions.map((rid) => `<li>${plName(rid)} <span class="muted">— ${w.made.filter((x) => x.rid === rid).map((x) => madeVerb(x.bid) + ' com ' + D.buildings[x.bid].name).join(', ')}</span></li>`).join('');
+        return `<section class="panel wiki-card" id="wiki-${r}"><div class="wiki-hd">${A.rg(r, 32, true)}<h3>${D.res[r].name}</h3>${only ? `<span class="chip gold tiny">Só em ${D.regions[only].name}</span>` : ''}</div>
+          <p class="small wiki-k">Onde conseguir</p><ul class="wiki-list small">${made || '<li class="muted">Não é produzido em nenhum planeta.</li>'}</ul>
+          ${!only && hub ? `<p class="small"><span class="muted">Polo de produção:</span> ${plName(hub)}</p>` : ''}
+          <p class="small"><span class="muted">Usado por:</span> ${w.used.length ? w.used.map((b) => D.buildings[b].name).join(', ') : 'construções, melhorias e projetos'}</p></section>`;
+      }).join('') + '</div>';
+    } else {
+      h += '<div class="wiki-grid">' + RO.map((rid) => {
+        const here = D.resOrder.filter((r) => W[r].regions.includes(rid));
+        const rows = here.map((r) => { const only = W[r].regions.length === 1, hub = D.resHub[r] === rid;
+          return `<li class="wiki-res-row">${A.rg(r, 24, true)}<span>${D.res[r].name}</span>${only ? '<span class="chip gold tiny">Exclusivo</span>' : hub ? '<span class="chip cyan tiny">Polo</span>' : ''}</li>`; }).join('');
+        return `<section class="panel wiki-card"><div class="wiki-hd"><h3>${plName(rid)}</h3></div><p class="small muted">${esc(D.regions[rid].role)}</p>
+          <ul class="wiki-list small">${rows || '<li class="muted">Nenhum recurso é produzido aqui.</li>'}</ul></section>`;
+      }).join('') + '</div><p class="tiny muted" style="margin-top:10px"><span class="chip gold tiny">Exclusivo</span> só existe neste planeta · <span class="chip cyan tiny">Polo</span> planeta principal de um recurso produzido em vários lugares.</p>';
+    }
+    return h;
+  }
   function renderSettings() {
     const st = S.settings;
     const sw = (k, label, desc) => `<label class="switch"><input type="checkbox" data-ch="set|${k}" ${st[k] ? 'checked' : ''}> <span>${label}${desc ? `<br><span class="tiny muted">${desc}</span>` : ''}</span></label>`;
@@ -1170,6 +1212,7 @@
     openreg: (r) => { ui.rid = r; ui.rtab = 'prod'; UI.go('region'); },
     mapsel: (r) => { ui.sel = r; sfx('click'); ui.sig = ''; },
     rtab: (t) => { ui.rtab = t; ui.sig = ''; },
+    wikitab: (t) => { ui.wikiTab = t === 'planet' ? 'planet' : 'res'; ui.sig = ''; sfx('click'); },
     // aviso de gargalo: abre a aba de rotas com origem, destino e recurso já escolhidos
     // ação do gargalo: destaca a instalação certa (gerador, armazém ou a instalação parada)
     bfix: (rid, what) => {

@@ -466,6 +466,7 @@ table.t th { color: var(--muted); font-weight: 600; }
   .region-grid { grid-template-columns: minmax(0, 1fr) 320px; }
   .tree { grid-template-columns: repeat(3, minmax(170px, 1fr)); }
 }
+#top .wiki-top { display: none; } /* Enciclopédia no topo só no celular */
 @media (max-width: 960px) {
   .region-head .over { gap: 12px; }
   .base-toolbar { padding: 11px 12px; }
@@ -473,7 +474,8 @@ table.t th { color: var(--muted); font-weight: 600; }
   #app { grid-template-columns: 1fr; grid-template-areas: "top" "main"; }
   #nav { position: fixed; top: auto; bottom: 0; left: 0; right: 0; height: calc(var(--nav-h) + env(safe-area-inset-bottom)); flex-direction: row; justify-content: space-around; padding: 4px 4px calc(4px + env(safe-area-inset-bottom)); border-right: 0; border-top: 1px solid var(--line); background: rgba(3, 6, 15, .94); backdrop-filter: blur(10px); z-index: 40; }
   .nav-btn { flex: 1; padding: 6px 2px; font-size: 10.5px; }
-  .nav-btn.settings { display: none; }
+  .nav-btn.settings, .nav-btn.wiki { display: none; } /* no celular: Enciclopédia e Ajustes ficam no topo */
+  #top .wiki-top { display: inline-flex; }
   #screen { padding: 12px 12px calc(var(--nav-h) + 24px); }
   .region-grid, .map-wrap, .sing-grid { grid-template-columns: 1fr; }
   .region-grid .side { order: -1; }
@@ -595,6 +597,7 @@ details.coll:not([open]) > summary::after { transform: rotate(-90deg); }
 @media (max-width: 400px) {
   .nav-btn .lbl-full { display: none; } .nav-btn .lbl-short { display: inline; }
   #nav { padding-left: 2px; padding-right: 2px; gap: 0; } .nav-btn { padding: 6px 0; }
+  #top { gap: 3px; padding-left: 6px; padding-right: 6px; } /* cabe o livro da Enciclopédia em 320 px */
 }
 /* A08: nomes de recursos completos (sem corte); EXP sai de cima do título no celular */
 .res .top { white-space: normal; overflow: visible; text-overflow: clip; align-items: flex-start; line-height: 1.2; overflow-wrap: anywhere; hyphens: auto; }
@@ -637,3 +640,17 @@ img.rg { display: inline-block; vertical-align: middle; object-fit: contain; fle
 /* botão Operar (largura total do cartão): ícone e texto na mesma linha; o motivo do bloqueio fica embaixo */
 .bcard .acts .btn.full-w { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px 8px; padding: 8px 12px; }
 .bcard .acts .btn.full-w .op-why { flex-basis: 100%; text-align: center; font-size: 12px; font-weight: 600; }
+
+/* Enciclopédia */
+.wiki-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 12px; }
+.wiki-card { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.wiki-card p { margin: 0; }
+.wiki-hd { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.wiki-hd h3 { margin: 0; font-size: 16px; }
+.wiki-k { color: var(--muted); }
+.wiki-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.wiki-pl { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+.wiki-pl .pl { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+.wiki-pl.locked { opacity: .65; }
+.wiki-res-row { display: flex; align-items: center; gap: 8px; }
+.chip.tiny { font-size: 10.5px; padding: 1px 7px; }

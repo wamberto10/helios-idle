@@ -442,6 +442,26 @@ async function tRoutesByPlanet() {
   ok(/Rotas e transporte \(2\)/.test(g.q('[data-a="rtab|routes"]').textContent), 'contador da aba igual à lista');
   close(g);
 }
+async function tWiki() {
+  sec('Enciclopédia: onde cada recurso é coletado ou fabricado');
+  const g = await openGame('enciclopedia', 1100, 900); await until(() => g.modal()); await g.closeAll();
+  ok(!!g.q('.nav-btn.wiki') && g.w.getComputedStyle(g.q('#top .wiki-top')).display === 'none', 'computador: aba na barra lateral (livro do topo escondido)');
+  g.click('.nav-btn.wiki'); await wait(80); await g.closeAll();
+  ok(g.H.UI.st.screen === 'wiki' && g.qa('.wiki-card').length === g.H.DATA.resOrder.length, 'um cartão por recurso');
+  const rare = g.q('#wiki-rare').textContent;
+  ok(/Só em Cinturão de Asteroides/.test(rare) && /coleta com Garimpeira/.test(rare), 'metais raros: só no Cinturão, coletados pela Garimpeira');
+  ok(/Polo de produção:\s*Lua/.test(g.q('#wiki-metal').textContent) && !/Só em/.test(g.q('#wiki-metal').textContent), 'metal: vários planetas, polo na Lua');
+  g.click('[data-a="wikitab|planet"]'); await wait(80);
+  const marte = g.qa('.wiki-card').find((c) => /Marte/.test(c.querySelector('h3').textContent));
+  ok(g.qa('.wiki-card').length === g.H.DATA.regionOrder.length && marte && /Componentes\s*Exclusivo/.test(marte.textContent), 'por planeta: Marte mostra componentes como exclusivo');
+  ok(g.q('.wiki-pl.locked') && /ainda não alcançado/.test(g.q('.wiki-pl.locked').textContent), 'planetas ainda não alcançados aparecem marcados');
+  close(g);
+  const c = await openGame('enciclopedia-cel', 375, 812); await until(() => c.modal()); await c.closeAll();
+  ok(c.w.getComputedStyle(c.q('#top .wiki-top')).display !== 'none' && c.w.getComputedStyle(c.q('.nav-btn.wiki')).display === 'none', 'celular: livro no topo, barra de baixo sem aba extra');
+  c.click('#top .wiki-top'); await wait(80); await c.closeAll();
+  ok(c.H.UI.st.screen === 'wiki' && c.d.documentElement.scrollWidth <= c.w.innerWidth + 1, 'celular: abre a enciclopédia sem estourar a largura');
+  close(c);
+}
 async function tSolarSwap() {
   sec('Painel solar: botão ↑ no canto troca 1 painel por 1 coletor (só onde há coletor)');
   const g = await openGame('solarswap', 375, 812); await until(() => g.modal()); await g.closeAll();
@@ -509,6 +529,7 @@ async function tA11y() {
   const costIcon = g.q('[data-u="bbuild|lua|extrator"] .rg');
   ok(nameOf(costIcon) === 'Metal' && !costIcon.hasAttribute('aria-hidden'), 'A01: custo de construção anuncia o recurso (Metal)');
   ok(costIcon.tagName === 'IMG' && costIcon.getBoundingClientRect().width === 24, 'ícone de custo com a arte nova, 24 px');
+  ok(costIcon.title === 'Metal' && costIcon.closest('.chip').title === 'Metal' && g.qa('#screen img.rg').every((i) => i.title), 'nome do recurso ao passar o cursor: ícone e chip de custo');
   const rec = g.q('[data-u="brecipe|lua|refinaria"] .rg:not([aria-hidden="true"])');
   ok(nameOf(rec) === 'Minério', 'A01: insumo da receita anuncia o recurso (Minério)');
   const stIcon = g.q('.res .top .rg');
@@ -574,7 +595,7 @@ async function tLayout() {
     const g = await openGame('layout' + w, w, h); await until(() => g.modal()); await g.closeAll();
     const S = g.S(); S.settings.dev = true; for (const sid of ['iris', 'vulcano', 'vega']) g.H.E.recruit(S, sid); g.H.dev('ready'); g.H.dev('cards'); g.H.UI.frame(); await wait(200); await g.closeAll();
     const bad = [];
-    for (const scr of ['map', 'region', 'crew', 'research', 'exp', 'sing', 'settings']) {
+    for (const scr of ['map', 'region', 'crew', 'research', 'exp', 'sing', 'wiki', 'settings']) {
       g.click('[data-a="nav|' + scr + '"]'); await wait(60);
       const de = g.d.documentElement; if (de.scrollWidth > de.clientWidth + 1) bad.push(scr + ' (' + de.scrollWidth + 'px)');
     }
@@ -590,7 +611,7 @@ async function tLayout() {
 async function main() {
   document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
   const t0 = Date.now();
-  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tRoutesByPlanet, tScrollKeep, tA11y, tLayout]) {
+  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tRoutesByPlanet, tWiki, tScrollKeep, tA11y, tLayout]) {
     try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }
     STAGE.innerHTML = '';
   }
