@@ -8,3 +8,5 @@ desktop.ini
 app/www/
 app/android/
 app/node_modules/
+# artes originais em tamanho cheio (59 MB): ficam só no computador; o jogo usa as cópias de assets/
+artifacts/artes-finais-originais/

@@ -21,7 +21,7 @@ Os nomes, as descrições, os requisitos e os estados permanecem em texto acess�
 
 Prompts exatos e caminhos das saídas originais: [artes principais](assets/prompts-key-art-final.md), [universos e pesquisa](assets/prompts-universes-research-final.md), [emblemas de Exploração e Singularidade](assets/prompts-research-extra.md), [conquistas](assets/prompts-achievements-final.md) e [medalhas finais](assets/prompts-achievements-extra.md).
 
-`tools/exportar-artes-finais.ps1` preserva os originais em `artifacts/artes-finais-originais/` e exporta cópias menores para o jogo, mantendo proporção e transparência. Os originais não entram na distribuição Android. O catálogo completo inclui também os 16 ícones de recursos do lote anterior.
+`tools/exportar-artes-finais.ps1` preserva os originais em `artifacts/artes-finais-originais/` e exporta cópias menores para o jogo, mantendo proporção e transparência. Os originais ficam só no computador (fora do repositório, ver .gitignore) e não entram na distribuição Android. O catálogo completo inclui também os 16 ícones de recursos do lote anterior.
 
 Verificação final: 31 novas artes exportadas de 58,77 MB para 9,37 MB (redução de 84,1%); 94 artes ativas sem caminhos ausentes; 99 PNGs íntegros, incluindo arquivos preservados e favicon. A galeria carregou as 94 artes sem imagens quebradas. A cópia `app/www` foi regenerada e suas imagens conferem com as fontes.
 
