@@ -571,6 +571,29 @@ function testLastRegion() {
 }
 
 // =============== 14. BOTÃO OPERAR: TODAS AS INSTALAÇÕES MANUAIS ===============
+// =============== 20. CARGA: RECURSOS COMPACTOS E ARMAZÉM ALTO ===============
+function testCargoBonus() {
+  section('Carga: recursos caros ocupam menos espaço; armazém Nv 5+ amplia os cargueiros que saem');
+  const S = fresh(); for (const r of ['marte', 'cinturao', 'mercurio']) E.unlockRegion(S, r, true);
+  const C = S.run.regions.cinturao, M = S.run.regions.mercurio, m = E.mods(S);
+  C.st.fuel = 500; C.st.rare = 1000; C.st.metal = 1000; M.st.rare = 0; M.st.metal = 0;
+  const mk = (res) => { const r = E.createRoute(S, 'cinturao', 'mercurio', res); assert(r.ok, 'rota criada'); return S.run.routes[S.run.routes.length - 1]; };
+  const rt = mk(['rare']); const cap = E.routeInfo(S, rt, m).cap;
+  const sum = (r) => C.st[r] + M.st[r] + S.run.routes.reduce((a, x) => a + ((x.cargo || {})[r] || 0), 0);
+  const before = sum('rare');
+  assert(E.routeDepart(S, rt, m), 'cargueiro parte');
+  assert(rt.cargo.rare === Math.min(cap * 2, Math.floor(E.cap(S, 'mercurio', 'rare', m))), 'metais raros ×2: leva ' + rt.cargo.rare + ' com carga ' + cap);
+  assert(Math.abs(sum('rare') - before) < 1e-9, 'carga conservada (estoque + porão)');
+  const mix = mk(['rare', 'metal']); C.st.rare = 6; const capMix = E.routeInfo(S, mix, m).cap;
+  assert(E.routeDepart(S, mix, m) && mix.cargo.rare === 6 && mix.cargo.metal === Math.floor(capMix - 6 / 2), 'misto: 6 raros ocupam 3 de espaço e o resto vai em metal (' + JSON.stringify(mix.cargo) + ')');
+  assert(E.cargoMult('cryo') === 3 && E.cargoMult('fusion') === 2 && E.cargoMult('metal') === 1, 'supercondutores ×3, fusão ×2, metal ×1');
+  // armazém: sem bônus até o Nv 4; +10% por nível a partir do 5
+  C.b.armazem = { n: 1, lvl: 4, p: 0 }; assert(E.storeCargo(S, 'cinturao') === 1, 'armazém Nv 4: sem bônus de carga');
+  C.b.armazem.lvl = 7; assert(Math.abs(E.storeCargo(S, 'cinturao') - 1.3) < 1e-9, 'armazém Nv 7: +30% de carga');
+  assert(E.routeInfo(S, rt, m).cap === Math.floor(D.route.baseCap * m.cargo * 1.3), 'capacidade da rota inclui o armazém da origem');
+  assert(E.storeCargo(S, 'mercurio') === 1, 'o bônus vale só para quem sai da região do armazém');
+}
+
 // =============== 18. PRIMEIROS PASSOS ===============
 function testFirstSteps() {
   section('Primeiros passos: gargalo aponta o que dá para operar; sem aviso repetido da introdução');
@@ -699,7 +722,7 @@ let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub, testArtSizes, testVenusGasHub, testFirstSteps]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub, testArtSizes, testVenusGasHub, testFirstSteps, testCargoBonus]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');

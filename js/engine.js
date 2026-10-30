@@ -200,7 +200,8 @@
     m = m || E.mods(S);
     const reg = S.run.regions[rid]; const a = reg.b.armazem;
     const bonus = a && a.n ? D.buildings.armazem.storage * a.n * D.levelYield(a.lvl) : 0;
-    return Math.floor(D.res[r].cap * (1 + bonus) * m.storage);
+    // recursos compactos (D.route.capMult) ocupam menos espaço também no armazém: cabem ×k unidades
+    return Math.floor(D.res[r].cap * (1 + bonus) * m.storage * E.cargoMult(r));
   };
   E.bAvail = function (S, rid, bid) {
     const v = D.regions[rid].build[bid];
@@ -343,11 +344,19 @@
     const dmin = Math.abs(r1 - r2), dmax = r1 + r2;
     const q = dmax - dmin > EPS ? Math.max(0, Math.min(1, (dmax - d) / (dmax - dmin))) : 1;
     const win = q >= R.windowQ; const wb = win ? Math.min(0.8, m.window) : 0;
-    const cap = Math.floor(R.baseCap * Math.pow(R.capPerLvl, rt.lvl - 1) * m.cargo);
+    const cap = E.routeCap(S, rt, rt.lvl, m);
     const T = Math.max(3, (R.timeBase + R.timePerAU * d) * (1 - wb) * m.travel / m.routeSpeed);
-    const fuel = Math.ceil((R.fuelBase + R.fuelPerAU * d) * Math.sqrt(cap / R.baseCap) * (1 - wb) * m.fuel);
+    const fuel = Math.ceil((R.fuelBase + R.fuelPerAU * d) * Math.pow(cap / R.baseCap, R.fuelCapExp) * (1 - wb) * m.fuel);
     return { d, q, win, cap, T, fuel, wb };
   };
+  // Capacidade do cargueiro num nível: base × 1,5^(nível−1) × pesquisa/especialistas × bônus do armazém da origem.
+  E.routeCap = (S, rt, lvl, m) => Math.floor(D.route.baseCap * Math.pow(D.route.capPerLvl, lvl - 1) * m.cargo * E.storeCargo(S, rt.from));
+  E.storeCargo = function (S, rid) {
+    const def = D.buildings.armazem, a = S.run.regions[rid] && S.run.regions[rid].b.armazem;
+    return a && a.n ? 1 + def.routeCargo * Math.max(0, a.lvl - def.routeCargoFrom + 1) : 1;
+  };
+  // unidades de um recurso que cabem em 1 de espaço do cargueiro
+  E.cargoMult = (r) => (D.route.capMult && D.route.capMult[r]) || 1;
   // custo do cargueiro cresce com o número de rotas que já partem da mesma origem
   E.routeCost = function (S, m, from) {
     m = m || E.mods(S); const c = {};
@@ -546,8 +555,9 @@
       // espaço livre no destino descontando cargas que já estão a caminho (reserva de capacidade)
       // destino com “Exportar excedente” ligado aceita tudo (o que não couber segue para a Terra)
       const space = to.exp[r] ? Infinity : E.cap(S, rt.to, r, m) - (to.st[r] || 0) - E.inbound(S, rt.to, r, rt);
-      const amt = Math.floor(Math.min(avail, left, space) + EPS);
-      if (amt > 0) { cargo[r] = amt; left -= amt; tot += amt; }
+      const k = E.cargoMult(r); // recurso compacto: cada unidade ocupa 1/k do espaço
+      const amt = Math.floor(Math.min(avail, left * k, space) + EPS);
+      if (amt > 0) { cargo[r] = amt; left -= amt / k; tot += amt; }
     }
     if (tot <= 0) { rt.why = anyAvail ? 'destfull' : 'empty'; return false; }
     from.st.fuel = Math.max(0, from.st.fuel - info.fuel); addFlow(from, 'fuel', -info.fuel);
@@ -1403,6 +1413,26 @@
     return mm ? +mm[1] : 0; // salvamentos v1 não têm revisão
   };
   const isObj = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
+  // Construções que não existem mais numa região são desmontadas e devolvem o que custaram (construção e
+  // melhorias, sem descontos); o diário explica. Carregar de novo não devolve outra vez (já não existem).
+  function dismantleGone(o) {
+    const regs = o.run && isObj(o.run.regions) ? o.run.regions : {};
+    for (const rid in regs) {
+      const reg = regs[rid], R = D.regions[rid]; if (!isObj(reg) || !R || !isObj(reg.b)) continue;
+      for (const bid in reg.b) {
+        const def = D.buildings[bid], bs = reg.b[bid]; if (!def || R.build[bid] !== undefined || !isObj(bs)) continue;
+        const n = Math.max(0, Math.floor(+bs.n || 0)), lvl = Math.max(1, Math.floor(+bs.lvl || 1)); const back = {};
+        for (let i = 0; i < n; i++) for (const r in def.cost) back[r] = (back[r] || 0) + Math.ceil(def.cost[r] * Math.pow(def.g, i));
+        if (n) for (let l = 1; l < lvl; l++) { const c = upgradeCostAt(bid, l, { costRed: 1 }); for (const r in c) back[r] = (back[r] || 0) + c[r]; }
+        if (!isObj(reg.st)) reg.st = {};
+        for (const r in back) reg.st[r] = (+reg.st[r] || 0) + back[r];
+        delete reg.b[bid];
+        if (isObj(reg.hold) && reg.hold.bid === bid) delete reg.hold;
+        if (n && rid === 'jupiter' && bid === 'plataforma') reg.st.gas = Math.max(+reg.st.gas || 0, 150);
+        if (n && Array.isArray(o.run.log)) o.run.log.unshift({ kind: 'gold', text: def.name + ' de ' + R.name + ' desmontada: ' + (bid === 'plataforma' ? 'os gases agora vêm de Vênus por rota. ' : '') + 'O material foi devolvido ao estoque.', t: +o.run.time || 0 });
+      }
+    }
+  }
   const MIGRATIONS = {
     // v1 → v2: um ciclo manual em andamento passa a registrar as máquinas e o nível pagos.
     // Os insumos já foram cobrados; o ciclo entrega uma única vez com os valores que o salvamento tinha.
@@ -1438,25 +1468,7 @@
     // v3 → v4: Júpiter deixou de coletar gases (o polo é Vênus). Construções que não existem mais numa região são
     // desmontadas e devolvem o que custaram (construção e melhorias, sem descontos); Júpiter recebe gases para
     // as refinarias seguirem até a rota de Vênus chegar. Carregar de novo não devolve outra vez (já não existem).
-    3: (o) => {
-      const regs = o.run && isObj(o.run.regions) ? o.run.regions : {};
-      for (const rid in regs) {
-        const reg = regs[rid], R = D.regions[rid]; if (!isObj(reg) || !R || !isObj(reg.b)) continue;
-        for (const bid in reg.b) {
-          const def = D.buildings[bid], bs = reg.b[bid]; if (!def || R.build[bid] !== undefined || !isObj(bs)) continue;
-          const n = Math.max(0, Math.floor(+bs.n || 0)), lvl = Math.max(1, Math.floor(+bs.lvl || 1)); const back = {};
-          for (let i = 0; i < n; i++) for (const r in def.cost) back[r] = (back[r] || 0) + Math.ceil(def.cost[r] * Math.pow(def.g, i));
-          if (n) for (let l = 1; l < lvl; l++) { const c = upgradeCostAt(bid, l, { costRed: 1 }); for (const r in c) back[r] = (back[r] || 0) + c[r]; }
-          if (!isObj(reg.st)) reg.st = {};
-          for (const r in back) reg.st[r] = (+reg.st[r] || 0) + back[r];
-          delete reg.b[bid];
-          if (isObj(reg.hold) && reg.hold.bid === bid) delete reg.hold;
-          if (n && rid === 'jupiter' && bid === 'plataforma') reg.st.gas = Math.max(+reg.st.gas || 0, 150);
-          if (n && Array.isArray(o.run.log)) o.run.log.unshift({ kind: 'gold', text: def.name + ' de ' + R.name + ' desmontada: ' + (bid === 'plataforma' ? 'os gases agora vêm de Vênus por rota. ' : '') + 'O material foi devolvido ao estoque.', t: +o.run.time || 0 });
-        }
-      }
-      o.v = 4; return o;
-    },
+    3: (o) => { dismantleGone(o); o.v = 4; return o; },
   };
   E.MIGRATIONS = MIGRATIONS;
 

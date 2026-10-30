@@ -2,6 +2,35 @@
 
 Data: 30/10/2026. Base: código atual, já com gases só em Vênus e a troca de geradores até o Reator de Fusão. Nenhum valor do jogo foi alterado nesta auditoria. Ela substitui as medições de [BALANCO.md](BALANCO.md) (27/10).
 
+## Aplicado em 30/10/2026: logística das cadeias finais, combustível e armazém
+
+**O que mudou:**
+- **Recursos compactos:** metais raros ×2, supercondutores ×3 e combustível de fusão ×2 (`D.route.capMult`). Cargueiros e armazéns guardam essa quantidade de unidades no mesmo espaço. Só a carga extra nos cargueiros não bastava: o cargueiro embarca o que cabe no armazém do destino, e o armazém base de Netuno guarda poucos supercondutores.
+- **Armazém a partir do Nv 5:** cada nível dá +10% de carga aos cargueiros que saem da região. O cartão e o botão de melhoria mostram isso.
+- **Combustível das viagens:** cresce com `(carga ÷ 20)^0,6` (antes 0,5). O cargueiro de nível 1 gasta o mesmo; os grandes gastam mais. O plano propunha 0,75, mas com ele uma em cada 15 partidas travava em 136–146 min.
+- **Missão nova em Saturno:** "Receber 500 ligas por rotas" substitui "Produzir 2 mil de combustível", que já sobrava. As outras missões de entrega do plano já existiam: supercondutores em Netuno, metais raros em Urano e em Mercúrio, gases em Júpiter.
+
+**O que não foi aplicado:**
+- **Refinaria Química de Júpiter:** continua no jogo. Ela produz pouco, mas é a única fonte de combustível de Júpiter, que paga as rotas de fusão para Saturno, Urano, Netuno e Mercúrio. Sem ela, essas rotas paravam e o Energético foi de 1h24 para 1h43.
+- **Mais ligas iniciais em Saturno:** o armazenamento base de ligas lá é 100, e o valor inicial (160) já passa disso.
+
+**Resultado** (média dos 5 universos):
+
+| Medida | Antes | Depois |
+|---|---|---|
+| Criogênico (Urano) parado esperando metais raros | 38–43% | 7% |
+| Observatório Profundo (Netuno) parado esperando supercondutores | 50–59% | 9% |
+| Laboratório de Anomalia (Netuno) parado por falta | 58–66% | 41–48% (agora falta combustível de fusão, não supercondutores) |
+| Fundição Fotovoltaica (Mercúrio) parada esperando metais raros | 24% | 5% |
+| Metais raros exportados | 93% | 18% |
+| Supercondutores exportados | 87–89% | 0% |
+| Combustível de fusão exportado | 73–78% | 15% |
+| Combustível exportado | 80% | ~71% |
+
+**Ritmo:** 5 universos × 3 inícios (0, 7 e 13 s parados), com média de 81 min e pior caso de 88, iguais à versão anterior. O 2º universo segue em 36–43 min.
+
+**Meta não alcançada:** o Laboratório de Anomalia continua abaixo do esperado (meta: menos de 25% parado). O limite agora é a rota Júpiter → Netuno, a mais longa do jogo, cuja ampliação é paga em Júpiter, que não produz metal nem ligas. Deixar a fusão ×4 só levou a 41%.
+
 ## Aplicado em 30/10/2026: destino aos básicos (recomendação 1)
 
 **O que mudou:** as etapas do Enxame de Dyson, entregues em Mercúrio, passaram a pedir recursos básicos.

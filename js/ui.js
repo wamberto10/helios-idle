@@ -460,7 +460,8 @@
   U.brecipe = (el, a, m) => {
     const { def, bs } = bInfo(a[1], a[2], m); const n = Math.max(1, bs.n);
     if (def.gen) { setH(el, `${A.rg('energy')} +${F.n(E.genOf(S, a[1], a[2], m, n, bs.lvl))} MW ${def.solar ? `<span class="dim">(luz solar ${F.pct(E.solarFactor(S, a[1], m) / m.genSolar * 1)})</span>` : ''}`); return; }
-    if (def.storage) { setH(el, `+${F.pct(def.storage * n * D.levelYield(bs.lvl))} de armazenamento na região`); return; }
+    if (def.storage) { const cg = E.storeCargo(S, a[1]) - 1;
+      setH(el, `+${F.pct(def.storage * n * D.levelYield(bs.lvl))} de armazenamento na região${cg > 0 ? ` · <span class="ok">+${F.pct(cg)} de carga nos cargueiros que saem daqui</span>` : bs.n && def.routeCargo ? ` <span class="dim">· no Nv ${def.routeCargoFrom}: +${F.pct(def.routeCargo)} de carga nos cargueiros</span>` : ''}`); return; }
     const ins = def.in ? Object.keys(def.in).map((r) => `${A.rg(r)} ${F.n(def.in[r] * n)}`).join(' + ') + ' → ' : '';
     const outs = Object.keys(def.out).map((r) => `${A.rg(r, 0, 1)} ${F.n(def.out[r] * n * E.yieldOf(def, bs, r, m) * (r === 'data' ? m.dataGain : 1), 1)} ${r === 'data' ? 'dados' : D.res[r].name.toLowerCase().replace('dyson', 'Dyson')}`).join(' + ');
     setH(el, `<span class="dim">Por ciclo:</span> ${ins}${outs}`);
@@ -511,7 +512,7 @@
     const cost = E.uCost(S, rid, bid, m); const ly = E.isSci(def) ? D.science.levelYield : D.levelYield; const y0 = ly(bs.lvl), y1 = ly(bs.lvl + 1);
     let ben = 'Rendimento ' + F.x(y0) + ' → ' + F.x(y1);
     if (def.gen) ben = '+' + F.n(E.genOf(S, rid, bid, m, bs.n, bs.lvl + 1) - E.genOf(S, rid, bid, m, bs.n, bs.lvl)) + ' MW';
-    else if (def.storage) ben = '+' + F.pct(def.storage * bs.n * (D.levelYield(bs.lvl + 1) - D.levelYield(bs.lvl))) + ' armazenamento'; // armazém não tem rendimento
+    else if (def.storage) ben = '+' + F.pct(def.storage * bs.n * (D.levelYield(bs.lvl + 1) - D.levelYield(bs.lvl))) + ' armazenamento' + (def.routeCargo && bs.lvl + 1 >= def.routeCargoFrom ? ' · +' + F.pct(def.routeCargo) + ' carga' : ''); // armazém não tem rendimento
     else if (!def.passive) { const d = E.bRate(S, rid, bid, m, 0, 1) - E.bRate(S, rid, bid, m); ben += ' (+' + F.n(d, d < 10 ? 2 : undefined) + '/s)'; }
     setD(el, !E.afford(reg, cost));
     setH(el, `<span>Melhorar → Nv ${bs.lvl + 1}</span>${costHTML(cost, reg)}<span class="benefit">${ben}</span>`);
@@ -564,19 +565,21 @@
   U.rinfo = (el, a, m) => {
     const rt = S.run.routes.find((r) => r.id === +a[1]); if (!rt) return;
     const i = E.routeInfo(S, rt, m);
-    setH(el, `<span>${F.n(i.d, 2)} UA</span> · <span>viagem ${F.t(i.T)}</span> · <span>${A.rg('fuel')} ${F.n(i.fuel)}/viagem</span> · <span>carga ${F.n(i.cap)}</span> · ${i.win ? `<span class="win">✓ Janela favorável (−${F.pct(i.wb)} tempo e combustível)</span>` : `<span class="muted">proximidade ${F.pct(i.q)}</span>`}`);
+    setH(el, `<span>${F.n(i.d, 2)} UA</span> · <span>viagem ${F.t(i.T)}</span> · <span>${A.rg('fuel')} ${F.n(i.fuel)}/viagem</span> · <span>carga ${F.n(i.cap)}${cargoNote(rt.res)}</span> · ${i.win ? `<span class="win">✓ Janela favorável (−${F.pct(i.wb)} tempo e combustível)</span>` : `<span class="muted">proximidade ${F.pct(i.q)}</span>`}`);
   };
+  // recursos compactos levam mais unidades no mesmo espaço: “(metais raros ×2)”
+  const cargoNote = (res) => { const x = (res || []).filter((r) => E.cargoMult(r) > 1).map((r) => D.res[r].name.toLowerCase() + ' ×' + E.cargoMult(r)); return x.length ? ' <span class="dim">(' + x.join(', ') + ')</span>' : ''; };
   U.rsend = (el, a, m) => { const rt = S.run.routes.find((r) => r.id === +a[1]); if (!rt) return; setC(el, 'hidden', m.routeAuto && rt.auto); setD(el, rt.st !== 'idle'); };
   U.rupb = (el, a, m) => {
     const rt = S.run.routes.find((r) => r.id === +a[1]); if (!rt) return; const reg = S.run.regions[rt.from];
     if (rt.lvl >= D.route.maxLvl) { setD(el, true); setH(el, 'Nível máximo'); return; }
     const c = E.routeUpCost(S, rt, m); setD(el, !E.afford(reg, c));
-    setH(el, `<span>Ampliar cargueiro → Nv ${rt.lvl + 1}</span>${costHTML(c, reg)}<span class="benefit">Carga ${F.n(E.routeInfo(S, rt, m).cap)} → ${F.n(Math.floor(D.route.baseCap * Math.pow(D.route.capPerLvl, rt.lvl) * m.cargo))}</span>`);
+    setH(el, `<span>Ampliar cargueiro → Nv ${rt.lvl + 1}</span>${costHTML(c, reg)}<span class="benefit">Carga ${F.n(E.routeInfo(S, rt, m).cap)} → ${F.n(E.routeCap(S, rt, rt.lvl + 1, m))}</span>`);
   };
   U.rnew = (el, a, m) => {
     const nr = ui.nr; if (!nr.to || nr.from === nr.to) { setH(el, '<span class="muted">Escolha origem e destino diferentes.</span>'); return; }
     const fake = { from: nr.from, to: nr.to, lvl: 1 }; const i = E.routeInfo(S, fake, m); const c = E.routeCost(S, m, nr.from); const reg = S.run.regions[nr.from];
-    setH(el, `<div class="small">${F.n(i.d, 2)} UA · viagem ${F.t(i.T)} · ${A.rg('fuel', IC_COST)} ${F.n(i.fuel)} por viagem · carga ${F.n(i.cap)} ${i.win ? '· <span class="win">janela favorável agora</span>' : ''}</div><div class="row wrap small"><span class="muted">Custo do cargueiro (em ${regName(nr.from)}):</span>${costHTML(c, reg)}</div>`);
+    setH(el, `<div class="small">${F.n(i.d, 2)} UA · viagem ${F.t(i.T)} · ${A.rg('fuel', IC_COST)} ${F.n(i.fuel)} por viagem · carga ${F.n(i.cap)}${cargoNote([nr.res])} ${i.win ? '· <span class="win">janela favorável agora</span>' : ''}</div><div class="row wrap small"><span class="muted">Custo do cargueiro (em ${regName(nr.from)}):</span>${costHTML(c, reg)}</div>`);
     const b = $('#nr-btn'); if (b) setD(b, !E.afford(reg, c));
   };
   // tripulação

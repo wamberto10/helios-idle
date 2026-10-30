@@ -66,7 +66,8 @@
     reator: { name: 'Reator de Fusão', pl: 'reatores de fusão', cat: 'power', tier: 0, passive: true, gen: 60,
       cost: { alloy: 40, comp: 12, fusion: 8 }, g: 1.32, up: [['alloy', 80, 1], ['comp', 30, 1], ['fusion', 15, 3]], ug: 1.9,
       desc: 'Energia constante em qualquer órbita.' },
-    armazem: { name: 'Armazém', pl: 'armazéns', cat: 'storage', tier: 0, passive: true, storage: 0.6,
+    // a partir do nível 5, cada nível do armazém dá +10% de carga aos cargueiros que saem da região
+    armazem: { name: 'Armazém', pl: 'armazéns', cat: 'storage', tier: 0, passive: true, storage: 0.6, routeCargo: 0.1, routeCargoFrom: 5,
       cost: { metal: 30 }, g: 1.5, up: [['metal', 60, 1], ['alloy', 20, 2], ['comp', 10, 4]], ug: 1.9,
       desc: 'Aumenta o armazenamento de todos os recursos da região.' },
 
@@ -393,6 +394,7 @@
       specs: ['ion', 'aura', 'vega'],
       launch: { cost: { fuel: 300, alloy: 80, metal: 200 } },
       // sem coleta própria de gases: Vênus é o polo e abastece as refinarias de Júpiter por rota
+      // a Refinaria Química fica: é a única fonte de combustível de Júpiter, que paga as rotas de fusão
       build: { quimica: 0, ref_fusao: 0, reator: 0, painel: 0, armazem: 0 },
       start: { b: { ref_fusao: 1, reator: 1 }, st: { alloy: 120, comp: 40, metal: 150, fuel: 60, gas: 150 } },
       phases: [
@@ -444,7 +446,7 @@
             P('hull', 40, { data: 75 }),
             DY(4, { data: 80 }),
             L('esc_gelo', 4, { data: 75 }),
-            P('fuel', 2000, { data: 75 }),
+            DL('alloy', 500, { data: 75 }), // ensina a rota de ligas para os estaleiros
             B('reator', 5, { data: 75 }),
             SH(15, { data: 75 }),
             P('hull', 80, { data: 85 }),
@@ -533,7 +535,10 @@
     baseCap: 20, capPerLvl: 1.5,                             // capacidade = 20 × 1,5^(nível-1)
     timeBase: 15, timePerAU: 12,                             // segundos por trecho
     fuelBase: 3, fuelPerAU: 2,                               // combustível por viagem (ida e volta) com 20 de carga
+    fuelCapExp: 0.6,                                         // combustível cresce com (carga/20)^0,6: cargueiros grandes gastam mais (antes 0,5; 0,75 travava partidas)
     windowQ: 0.8, windowBonus: 0.35,                         // janela: proximidade ≥ 80% → −35% tempo e combustível
+    // recursos caros e compactos: cargueiros e armazéns guardam mais unidades deles no mesmo espaço (cadeias finais)
+    capMult: { rare: 2, cryo: 3, fusion: 2 },
   };
 
   // ---------------- ENXAME DE DYSON ----------------
