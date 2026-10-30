@@ -705,19 +705,16 @@
     if (k === 'hold') return 'Material reservado para melhoria (' + D.res[r].name.toLowerCase().replace('dyson', 'Dyson') + ')';
     return why;
   };
-  // outra região com sobra do recurso (estoque acima de metade da capacidade ou exportando): fonte sugerida para uma rota
+  // fonte sugerida para uma rota: só o polo do recurso (D.resHub), e só se ele tiver sobra
+  // (estoque acima de metade da capacidade ou exportando)
   E.surplusFor = function (S, rid, r, m) {
-    m = m || E.mods(S); let best = null;
-    for (const o of RO) {
-      if (o === rid) continue; const reg = S.run.regions[o]; if (!reg || !reg.unlocked) continue;
-      const st = reg.st[r] || 0; if (st < 1) continue;
-      const cap = E.cap(S, o, r, m); if (!(st >= cap * 0.5 || reg.exp[r])) continue;
-      const score = st / cap + (reg.exp[r] ? 1 : 0);
-      if (!best || score > best.score) best = { rid: o, st, score };
-    }
-    if (!best) return null;
-    const rt = S.run.routes.find((x) => x.from === best.rid && x.to === rid && x.res.includes(r));
-    return { rid: best.rid, st: best.st, route: rt ? rt.id : null };
+    m = m || E.mods(S); const o = D.resHub[r];
+    if (!o || o === rid) return null;
+    const reg = S.run.regions[o]; if (!reg || !reg.unlocked) return null;
+    const st = reg.st[r] || 0; if (st < 1) return null;
+    if (!(st >= E.cap(S, o, r, m) * 0.5 || reg.exp[r])) return null;
+    const rt = S.run.routes.find((x) => x.from === o && x.to === rid && x.res.includes(r));
+    return { rid: o, st, route: rt ? rt.id : null };
   };
   E.routeWhyText = function (why) {
     return { nofuel: 'Sem combustível na origem', empty: 'Sem carga disponível', destfull: 'Destino cheio', destwait: 'Aguardando espaço no destino' }[why] || '';

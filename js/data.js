@@ -511,6 +511,10 @@
       ] },
   };
   D.regionOrder = ['lua', 'marte', 'cinturao', 'mercurio', 'venus', 'jupiter', 'saturno', 'urano', 'netuno'];
+  // Polo de cada recurso: o planeta cuja função é produzi-lo. Avisos de "sobrando em" e sugestões de rota
+  // só apontam para o polo (estoque guardado em outro planeta, como recompensa ou sobra de entrega, não conta).
+  D.resHub = { ore: 'lua', metal: 'lua', ice: 'lua', alloy: 'marte', comp: 'marte', rare: 'cinturao', cell: 'mercurio', sat: 'mercurio',
+    gas: 'venus', fuel: 'venus', fusion: 'jupiter', hull: 'saturno', cryo: 'urano', exotic: 'netuno' };
   D.earth = { au: 1.0, vis: 128, period: 600, a0: 0.4 };
 
   // Baú de fase (gpi = índice global da fase concluída)

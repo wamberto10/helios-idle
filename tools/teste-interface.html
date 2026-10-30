@@ -427,6 +427,21 @@ async function tOperate() {
   ok(!wrong.length, 'todos os botões Operar com ícone e texto alinhados' + (wrong.length ? ' — ' + wrong.join(', ') : ''));
   close(g);
 }
+async function tRoutesByPlanet() {
+  sec('Rotas: cada planeta mostra só as rotas que saem ou chegam nele');
+  const g = await openGame('rotasplaneta', 1100, 900); await until(() => g.modal()); await g.closeAll();
+  const E = g.H.E, S = g.S(); for (const r of ['marte', 'cinturao', 'mercurio']) E.unlockRegion(S, r, true); S.events = [];
+  for (const rid of ['lua', 'marte', 'cinturao']) Object.assign(S.run.regions[rid].st, { alloy: 500, fuel: 500, metal: 500 });
+  for (const [a, b, r] of [['lua', 'marte', 'metal'], ['cinturao', 'mercurio', 'rare'], ['marte', 'mercurio', 'comp']]) E.createRoute(S, a, b, [r]);
+  const show = async (rid) => { g.H.UI.go('region', { rid, rtab: 'routes' }); await wait(80); await g.closeAll(); return g.qa('.route').length; };
+  ok(await show('mercurio') === 2 && /Rotas de Mercúrio \(2\)/.test(g.q('#screen').textContent), 'Mercúrio: só as 2 rotas que chegam nele');
+  ok(!g.q('[data-ch="regfilter"]'), 'sem a chave que misturava as rotas de todo o sistema');
+  ok(g.H.UI.st.nr.to === 'mercurio' || g.H.UI.st.nr.from === 'mercurio', 'nova rota já envolve o planeta aberto');
+  ok(await show('lua') === 1, 'Lua: só a rota Lua → Marte');
+  ok(await show('marte') === 2, 'Marte: a que chega da Lua e a que sai para Mercúrio');
+  ok(/Rotas e transporte \(2\)/.test(g.q('[data-a="rtab|routes"]').textContent), 'contador da aba igual à lista');
+  close(g);
+}
 async function tSolarSwap() {
   sec('Painel solar: botão ↑ no canto troca 1 painel por 1 coletor (só onde há coletor)');
   const g = await openGame('solarswap', 375, 812); await until(() => g.modal()); await g.closeAll();
@@ -444,10 +459,21 @@ async function tSolarSwap() {
   ok(sw && sw.disabled && /Recursos insuficientes/.test(g.q('#modal').textContent), 'janela mostra custo e motivo; “Trocar” bloqueado');
   const cost = E.solarInfo(S, 'mercurio').evolutionCost; for (const r in cost) M.st[r] = cost[r] * 2; g.H.UI.frame(); await wait(40);
   ok(!g.q('#modal [data-a="solarevolve|mercurio"]').disabled, 'com recursos a janela se atualiza e libera a troca');
+  // produção ativa: o estoque muda a todo instante, mas a janela não é refeita (imagens somiam e o clique se perdia)
+  const btn0 = g.q('#modal [data-a="solarevolve|mercurio"]'), img0 = g.q('#modal .solar-swap img');
+  for (let i = 0; i < 6; i++) { M.st.metal += 0.7; M.st.cell += 0.3; g.H.UI.frame(); await wait(20); }
+  ok(g.q('#modal [data-a="solarevolve|mercurio"]') === btn0 && g.q('#modal .solar-swap img') === img0, 'estoque mudando não refaz a janela: botão e imagens continuam os mesmos');
   g.click('#modal [data-a="solarevolve|mercurio"]'); await wait(80);
   ok(M.b.painel.n === 2 && M.b.coletor_solar.n === 2 && g.H.UI.st.modalOpen && /2 painéis/.test(g.q('#modal').textContent), 'troca feita: 3→2 painéis, 1→2 coletores; janela segue aberta com a próxima troca');
-  g.H.UI.closeModal(); M.b.painel.n = 0; g.H.UI.frame(); await wait(40);
-  ok(up().classList.contains('hidden'), 'sem painéis para trocar: o botão ↑ some');
+  const order = () => g.qa('.bgrid > .bcard').map((c) => c.id);
+  ok(order().indexOf('b-coletor_solar') === order().indexOf('b-painel') + 1, 'com painéis: o coletor fica logo depois do painel');
+  // trocar o último painel: o cartão do painel sai e o coletor fica no lugar dele
+  M.b.painel.n = 1; for (const r in E.solarInfo(S, 'mercurio').evolutionCost) M.st[r] = 1e4; g.H.UI.frame(); await wait(40);
+  const pos = order().indexOf('b-painel');
+  g.click('#modal [data-a="solarevolve|mercurio"]'); await wait(80); g.H.UI.closeModal(); await wait(60);
+  ok(M.b.painel.n === 0 && !g.q('#b-painel') && order().indexOf('b-coletor_solar') === pos, 'último painel trocado: o painel some e o coletor fica no lugar dele');
+  g.H.UI.go('region', { rid: 'mercurio', hl: 'painel' }); await wait(60);
+  ok(g.q('#b-coletor_solar').classList.contains('hl'), 'atalho para o painel leva ao coletor');
   close(g);
 }
 const D_T = (bid, g) => g.H.DATA.buildings[bid].t / g.H.E.speedOf(g.H.DATA.buildings[bid], g.H.E.mods(g.S()));
@@ -458,8 +484,10 @@ async function tScrollKeep() {
   for (const rid of ['lua', 'marte', 'cinturao']) Object.assign(S.run.regions[rid].st, { alloy: 5000, fuel: 5000, metal: 5000, comp: 500 });
   for (const [a, b] of [['lua', 'marte'], ['lua', 'cinturao']]) g.H.E.createRoute(S, a, b, ['metal']);
   g.H.UI.go('region', { rid: 'lua', rtab: 'routes' }); await wait(150);
-  const btns = g.qa('[data-a^="rup|"]'); const b = btns[btns.length - 1]; const key = b.dataset.a;
-  g.w.scrollTo(0, g.d.documentElement.scrollHeight); await wait(80); const y0 = g.w.scrollY; const top0 = b.getBoundingClientRect().top;
+  const btns = g.qa('[data-a^="rup|"]'); const key = btns[btns.length - 1].dataset.a;
+  g.w.scrollTo(0, g.d.documentElement.scrollHeight); await wait(80);
+  const b = g.q('[data-a="' + key + '"]'); // busca de novo: as rotas em andamento podem ter refeito a tela durante a rolagem
+  const y0 = g.w.scrollY; const top0 = b.getBoundingClientRect().top;
   b.focus(); g.click(b); await until(() => g.q('[data-a="' + key + '"]') !== b && g.H.UI.st.restoreY === undefined, 2000); await wait(30); // espera a tela ser refeita e a posição restaurada
   const b2 = g.q('[data-a="' + key + '"]');
   ok(Math.abs(g.w.scrollY - y0) <= 2, 'a página fica no lugar ao ampliar o cargueiro (' + y0 + ' → ' + g.w.scrollY + ')');
@@ -562,7 +590,7 @@ async function tLayout() {
 async function main() {
   document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
   const t0 = Date.now();
-  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tScrollKeep, tA11y, tLayout]) {
+  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tRoutesByPlanet, tScrollKeep, tA11y, tLayout]) {
     try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }
     STAGE.innerHTML = '';
   }

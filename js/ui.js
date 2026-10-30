@@ -9,7 +9,7 @@
   let baseRun = null;
   // painel visual da base (mapa com as instalações): desligado por enquanto; os cartões de instalação continuam
   const SHOW_BASE_PANEL = false;
-  const ui = UI.st = { open: {}, screen: 'region', rid: 'lua', sel: 'lua', rtab: 'prod', resSel: null, uniSel: null, hl: null, sig: '', nodes: [], nr: { from: 'lua', to: '', res: 'metal' }, regFilter: true, modalOpen: false, queue: [] };
+  const ui = UI.st = { open: {}, screen: 'region', rid: 'lua', sel: 'lua', rtab: 'prod', resSel: null, uniSel: null, hl: null, sig: '', nodes: [], nr: { from: 'lua', to: '', res: 'metal' }, modalOpen: false, queue: [] };
   const $ = (s, r) => (r || document).querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const setT = (el, v) => { if (el._t !== v) { el.textContent = v; el._t = v; } };
@@ -232,7 +232,7 @@
     switch (ui.screen) {
       case 'region': {
         const reg = run.regions[ui.rid];
-        return base + '|' + ui.rid + ui.rtab + '|' + E.bList(S, ui.rid).join(',') + '|' + E.activeMissions(S, ui.rid).map((x) => x.id).join(',') + '|' + run.routes.map((r) => r.id + r.res.join('') + r.auto + r.lvl).join(',') + '|' + run.dyson.stage + run.core + run.flags.expeditions + '|' + ui.regFilter + ui.nr.from + ui.nr.to + ui.nr.res + '|' + run.log.length + (run.log[0] && run.log[0].t);
+        return base + '|' + ui.rid + ui.rtab + '|' + cardList(ui.rid).join(',') + '|' + E.activeMissions(S, ui.rid).map((x) => x.id).join(',') + '|' + run.routes.map((r) => r.id + r.res.join('') + r.auto + r.lvl).join(',') + '|' + run.dyson.stage + run.core + run.flags.expeditions + '|' + ui.nr.from + ui.nr.to + ui.nr.res + '|' + run.log.length + (run.log[0] && run.log[0].t);
       }
       case 'map': return base + '|' + ui.sel + run.routes.map((r) => r.id).join(',') + run.dyson.stage;
       case 'crew': return base + JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
@@ -282,7 +282,8 @@
     if (ui.screen === 'map') initMap();
     if (ui.hl) { const b = revealBuilding(ui.hl); if (b) { b.classList.add('hl'); b.scrollIntoView({ behavior: H.reduceMotion() ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => b.classList.remove('hl'), 2200); } ui.hl = null; }
   }
-  const revealBuilding = (bid) => document.getElementById('b-' + bid);
+  // atalhos para o painel levam ao coletor quando o painel já foi todo trocado
+  const revealBuilding = (bid) => document.getElementById('b-' + bid) || (bid === 'painel' ? document.getElementById('b-coletor_solar') : null);
   function mountRegionBase() {
     const host = $('#screen .base-map-host'); if (!host) return;
     if (baseRun !== S.run) { baseNodes.clear(); baseScroll.clear(); baseRun = S.run; }
@@ -679,7 +680,7 @@
       pend: `<div class="pendsup o-pend" data-u="pend|${rid}"></div>`,
       bneck: `<div class="bneck o-bneck" data-u="bneck|${rid}"></div>`,
       proj: `<div class="o-proj col" style="gap:14px">${projectsHTML(rid)}</div>`,
-      bgrid: `<div class="bgrid o-bgrid">${E.bList(S, rid).map((b) => buildingCard(rid, b)).join('')}</div>`,
+      bgrid: `<div class="bgrid o-bgrid">${cardList(rid).map((b) => buildingCard(rid, b)).join('')}</div>`,
       mis: `<div class="o-mis">${missionsHTML(rid)}</div>`,
       specs: collapsible('specs', 'Especialistas da região', specsHTML(rid, m), 'o-specs'),
       log: collapsible('log', 'Diário de bordo', `<div class="log">${S.run.log.slice(0, 10).map((l) => `<div class="${l.kind}">${esc(l.text)}</div>`).join('') || '<span class="muted small">Sem registros.</span>'}</div>`, 'o-log'),
@@ -687,6 +688,16 @@
     if (narrow()) h += `<div class="region-grid one">${['mis', 'bneck', 'pend', 'proj', 'stock', 'energy', 'bgrid', 'specs', 'log'].map((k) => P[k]).join('')}</div>`;
     else h += `<div class="region-grid"><div class="main col" style="gap:14px">${P.stock}${P.energy}${P.pend}${P.bneck}${P.proj}${P.bgrid}</div><div class="side col" style="gap:14px">${P.mis}${P.specs}${P.log}</div></div>`;
     return h;
+  }
+  // Cartões da região. O Coletor Solar fica logo depois do Painel Solar; quando todos os painéis já
+  // foram trocados por coletores, o cartão do painel sai e o coletor ocupa o lugar dele.
+  function cardList(rid) {
+    const reg = S.run.regions[rid], list = E.bList(S, rid);
+    if (!list.includes('coletor_solar')) return list;
+    const swapped = !(reg.b.painel && reg.b.painel.n) && !!(reg.b.coletor_solar && reg.b.coletor_solar.n);
+    const out = list.filter((b) => b !== 'coletor_solar' && !(swapped && b === 'painel'));
+    const i = out.indexOf('painel'); out.splice(i >= 0 ? i + 1 : 0, 0, 'coletor_solar');
+    return out;
   }
   function buildingCard(rid, bid) {
     const def = D.buildings[bid];
@@ -720,7 +731,9 @@
       ${level}${s.basicN ? `<div class="row wrap"><span class="small muted">Custo:</span>${costHTML(s.evolutionCost, reg)}</div>` : ''}${help}
       <div class="foot"><button class="btn ghost" data-a="close">Fechar</button><button class="btn gold" data-a="solarevolve|${rid}" data-k="solar-swap" ${s.canEvolve ? 'autofocus' : 'disabled'}>Trocar 1 painel</button></div>`;
   }
-  const solarSwapSig = (rid) => { const s = E.solarInfo(S, rid); const reg = S.run.regions[rid]; return JSON.stringify([s.basicN, s.collectorN, s.basicLevel, s.collectorLevel, s.canEvolve, s.evolutionCost, Object.keys(s.evolutionCost).map((r) => Math.floor(reg.st[r] || 0))]); };
+  // Só refaz a janela quando algo visível muda (quantidades, níveis, custo, falta/sobra de cada recurso).
+  // O estoque em si muda a cada instante: refazer por ele recarregava as imagens e trocava o botão no meio do clique.
+  const solarSwapSig = (rid) => { const s = E.solarInfo(S, rid); const reg = S.run.regions[rid]; return JSON.stringify([s.basicN, s.collectorN, s.basicLevel, s.collectorLevel, s.canEvolve, s.evolutionReason, s.evolutionCost, F.n(s.generation, 1), F.n(s.evolutionAfter, 1), Object.keys(s.evolutionCost).map((r) => (reg.st[r] || 0) + 1e-9 >= s.evolutionCost[r])]); };
   function projectsHTML(rid) {
     let h = '';
     const nr = E.nextRegion(rid);
@@ -788,11 +801,13 @@
   function renderRoutes(rid, m) {
     const unl = RO.filter((r) => S.run.regions[r].unlocked);
     if (unl.length < 2) return `<div class="panel empty">As rotas de transporte ficam disponíveis quando houver uma segunda região. Conclua as fases da Lua e prepare a expedição a Marte.</div>`;
-    if (!unl.includes(ui.nr.from)) ui.nr.from = rid;
+    // ao abrir outro planeta, a nova rota passa a envolvê-lo (destino); a escolha manual vale enquanto ele estiver aberto
+    if (ui.nrRid !== rid) { ui.nrRid = rid; if (ui.nr.from !== rid && ui.nr.to !== rid) ui.nr.to = rid; }
+    if (!unl.includes(ui.nr.from) || ui.nr.from === ui.nr.to) ui.nr.from = unl.find((r) => r !== ui.nr.to) || rid;
     if (!ui.nr.to || !unl.includes(ui.nr.to) || ui.nr.to === ui.nr.from) ui.nr.to = unl.find((r) => r !== ui.nr.from);
     const opt = (sel, v) => unl.map((r) => `<option value="${r}" ${r === v ? 'selected' : ''}>${D.regions[r].name}</option>`).join('');
     const ropt = (v, none) => (none ? '<option value="">—</option>' : '') + D.resOrder.map((r) => `<option value="${r}" ${r === v ? 'selected' : ''}>${D.res[r].name}</option>`).join('');
-    const routes = S.run.routes.filter((r) => !ui.regFilter || r.from === rid || r.to === rid);
+    const routes = S.run.routes.filter((r) => r.from === rid || r.to === rid); // só as rotas que saem ou chegam no planeta aberto
     let h = `<div class="panel"><h3>Nova rota</h3><div class="newroute">
       <label>Origem<select data-ch="nr|from">${opt(0, ui.nr.from)}</select></label>
       <label>Destino<select data-ch="nr|to">${opt(0, ui.nr.to)}</select></label>
@@ -800,7 +815,7 @@
       <button class="btn" id="nr-btn" data-a="rcreate">Construir cargueiro</button></div>
       <div style="margin-top:8px" data-u="rnew"></div>
       <p class="tiny muted">Os planetas se movem: quando dois estão próximos, abre-se uma <b class="ok">janela de transporte</b> com viagens mais curtas e mais baratas. As viagens continuam disponíveis o tempo todo. O combustível é pago na origem.${m.routeAuto ? '' : ' Recrute <b>Vega</b> para automatizar as rotas.'}</p></div>
-      <div class="row sb" style="margin:12px 0"><b>Rotas ${ui.regFilter ? 'de ' + D.regions[rid].name : 'de todo o sistema'} (${routes.length})</b><label class="switch small"><input type="checkbox" data-ch="regfilter" ${ui.regFilter ? 'checked' : ''}> Só desta região</label></div>
+      <div class="row sb" style="margin:12px 0"><b>Rotas de ${D.regions[rid].name} (${routes.length})</b><span class="tiny muted">Saem ou chegam em ${D.regions[rid].name}</span></div>
       <div class="col">`;
     h += routes.map((rt) => `<div class="route">
         <div class="path">${regName(rt.from)} ${A.ic('ship', 16)} ${regName(rt.to)} <span class="chip">Cargueiro Nv ${rt.lvl}</span></div>
@@ -1236,7 +1251,7 @@
     openchest: () => { if (S.perm.chests.length) ACT.chest(S.perm.chests[0].id); },
     rsend: (id) => { const r = E.sendRoute(S, +id); if (r.ok) sfx('buy'); else UI.err(r); },
     rup: (id) => { const r = E.upgradeRoute(S, +id); if (r.ok) { sfx('buy'); H.save(); } else UI.err(r); },
-    rdel: (id) => { UI.modal(rdelHTML(+id), '', { live: { sig: () => JSON.stringify(E.removePreview(S, +id)), render: () => rdelHTML(+id) } }); },
+    rdel: (id) => { UI.modal(rdelHTML(+id), '', { live: { sig: () => JSON.stringify(E.removePreview(S, +id), (k, v) => typeof v === 'number' ? F.n(v) : v), render: () => rdelHTML(+id) } }); },
     rdel2: (id) => {
       const r = E.removeRoute(S, +id); UI.closeModal(); if (!r.ok) return UI.err(r); H.save();
       const lost = Object.keys(r.pv.lost); if (lost.length) UI.toast('Carga sem espaço descartada: ' + lost.map((k) => F.n(r.pv.lost[k]) + ' ' + D.res[k].name.toLowerCase()).join(', '), 'err');
@@ -1287,7 +1302,6 @@
     else if (k === 'rres') { const rt = S.run.routes.find((r) => r.id === +a1); if (rt) { const arr = rt.res.slice(); arr[+a2] = t.value; rt.res = arr.filter((x, i) => x && arr.indexOf(x) === i); if (!rt.res.length) rt.res = ['metal']; } }
     else if (k === 'rreserve') { const rt = S.run.routes.find((r) => r.id === +a1); if (rt) rt.reserve = Math.max(0, +t.value || 0); }
     else if (k === 'rauto') { const rt = S.run.routes.find((r) => r.id === +a1); if (rt) rt.auto = t.checked; }
-    else if (k === 'regfilter') { ui.regFilter = t.checked; }
     else if (k === 'dysonauto') { S.run.dyson.auto = t.checked; }
     else if (k === 'set') { S.settings[a1] = t.checked; H.applySettings(); }
     else if (k === 'file') { const f = t.files[0]; if (f) f.text().then((txt) => { $('#io').value = txt; ACT.import(); }); }

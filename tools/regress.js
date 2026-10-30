@@ -571,6 +571,25 @@ function testLastRegion() {
 }
 
 // =============== 14. BOTÃO OPERAR: TODAS AS INSTALAÇÕES MANUAIS ===============
+// =============== 15. “SOBRANDO EM”: SÓ O POLO DO RECURSO ===============
+function testSurplusHub() {
+  section('Aviso “sobrando em”: aponta só o planeta polo do recurso');
+  const S = fresh(); for (const r of ['marte', 'cinturao', 'mercurio']) E.unlockRegion(S, r, true);
+  const m = E.mods(S); const R = S.run.regions;
+  R.lua.st.comp = E.cap(S, 'lua', 'comp', m); R.marte.st.comp = 0;
+  assert(E.surplusFor(S, 'mercurio', 'comp', m) === null, 'componentes cheios na Lua (não é polo) não geram aviso');
+  assert(!/sobrando/.test(E.whyText(S, 'mercurio', 'no:comp')), 'texto do cartão sem “sobrando em Lua”');
+  R.marte.st.comp = E.cap(S, 'marte', 'comp', m);
+  const sp = E.surplusFor(S, 'mercurio', 'comp', m);
+  assert(sp && sp.rid === 'marte' && /sobrando em Marte/.test(E.whyText(S, 'mercurio', 'no:comp')), 'sobra em Marte (polo de componentes) gera o aviso');
+  assert(E.surplusFor(S, 'marte', 'comp', m) === null, 'o próprio polo não recebe aviso de sobra');
+  R.marte.st.comp = 1; assert(E.surplusFor(S, 'mercurio', 'comp', m) === null, 'polo sem sobra (abaixo de metade e sem exportar) não gera aviso');
+  R.marte.exp.comp = true; assert(E.surplusFor(S, 'mercurio', 'comp', m).rid === 'marte', 'polo exportando gera o aviso mesmo abaixo da metade');
+  const regs = D.regionOrder; let bad = [];
+  for (const r in D.resHub) if (!Object.keys(D.regions[D.resHub[r]].build).some((b) => D.buildings[b].out && D.buildings[b].out[r])) bad.push(r);
+  assert(!bad.length && regs.length, 'todo polo tem uma instalação que produz o recurso' + (bad.length ? ': ' + bad.join(', ') : ''));
+}
+
 function testOperateAll() {
   section('Operar (ciclo manual): todas as instalações — botão = motor, produto entregue uma vez');
   const manual = Object.keys(D.buildings).filter((b) => !D.buildings[b].passive);
@@ -626,7 +645,7 @@ let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');
