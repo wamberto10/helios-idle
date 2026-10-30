@@ -571,6 +571,27 @@ function testLastRegion() {
 }
 
 // =============== 14. BOTÃO OPERAR: TODAS AS INSTALAÇÕES MANUAIS ===============
+// =============== 16. ARTES NO TAMANHO DE INTERFACE ===============
+// Originais grandes ficam em artifacts/ (fora do git); o jogo só baixa cópias leves (tools/otimizar-artes.ps1).
+function testArtSizes() {
+  section('Artes: arquivos existem e têm tamanho de interface');
+  const root = path.join(__dirname, '..'); const ctx = { window: {} }; ctx.window.H = {}; ctx.H = ctx.window.H;
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'assets', 'manifest.js'), 'utf8'), ctx);
+  const M = ctx.H.ASSET_MANIFEST; const limits = { building: 300, portrait: 200, commander: 250, region: 450, terrain: 900, resource: 80 };
+  const dim = (f) => { const b = fs.readFileSync(f); if (b[0] === 0x89) return [b.readUInt32BE(16), b.readUInt32BE(20)];
+    for (let i = 2; i < b.length - 9;) { if (b[i] !== 0xFF) { i++; continue; } const mk = b[i + 1]; if (mk >= 0xC0 && mk <= 0xC3) return [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)]; i += 2 + b.readUInt16BE(i + 2); } return [0, 0]; };
+  const missing = [], heavy = [];
+  for (const g in M) for (const k in M[g]) {
+    const rel = M[g][k]; if (typeof rel !== 'string') continue; const f = path.join(root, rel);
+    if (!fs.existsSync(f)) { missing.push(rel); continue; }
+    const kb = fs.statSync(f).size / 1024; if (limits[g] && kb > limits[g]) heavy.push(rel + ' (' + Math.round(kb) + ' KB)');
+  }
+  assert(!missing.length, 'todo arquivo do manifesto existe' + (missing.length ? ': ' + missing.join(', ') : ''));
+  assert(!heavy.length, 'artes leves para baixar' + (heavy.length ? ' — pesadas: ' + heavy.join(', ') : ''));
+  const big = Object.values(M.building).filter((rel) => Math.max(...dim(path.join(root, rel))) > 256);
+  assert(!big.length, 'ícones de instalação com no máximo 256 px' + (big.length ? ': ' + big.join(', ') : ''));
+}
+
 // =============== 15. “SOBRANDO EM”: SÓ O POLO DO RECURSO ===============
 function testSurplusHub() {
   section('Aviso “sobrando em”: aponta só o planeta polo do recurso');
@@ -645,7 +666,7 @@ let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub, testArtSizes]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');

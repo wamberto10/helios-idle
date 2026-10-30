@@ -448,9 +448,19 @@ async function tWiki() {
   ok(!!g.q('.nav-btn.wiki') && g.w.getComputedStyle(g.q('#top .wiki-top')).display === 'none', 'computador: aba na barra lateral (livro do topo escondido)');
   g.click('.nav-btn.wiki'); await wait(80); await g.closeAll();
   ok(g.H.UI.st.screen === 'wiki' && g.qa('.wiki-card').length === g.H.DATA.resOrder.length, 'um cartão por recurso');
+  const names = g.qa('.wiki-card h3').map((h) => h.textContent);
+  ok(names.slice(0, 6).join(',') === 'Minério,Metal,Gelo,Ligas,Combustível,Componentes' && names[names.length - 1] === 'Matéria Exótica', 'ordem de desbloqueio: Lua primeiro, Matéria Exótica (Netuno) por último');
+  const tops = g.qa('.wiki-card').slice(0, 2).map((c) => Math.round(c.getBoundingClientRect().top));
+  ok(tops[0] === tops[1], 'primeira linha alinhada (o primeiro cartão não fica mais alto)');
   const rare = g.q('#wiki-rare').textContent;
   ok(/Só em Cinturão de Asteroides/.test(rare) && /coleta com Garimpeira/.test(rare), 'metais raros: só no Cinturão, coletados pela Garimpeira');
   ok(/Polo de produção:\s*Lua/.test(g.q('#wiki-metal').textContent) && !/Só em/.test(g.q('#wiki-metal').textContent), 'metal: vários planetas, polo na Lua');
+  // imagens já baixadas: ao refazer a tela aparecem na hora (sem voltar ao desenho de reserva)
+  // (o jogo pré-carrega os ícones de instalações e recursos logo depois de abrir, inclusive os abaixo da dobra)
+  g.H.UI.go('region', { rid: 'lua' }); await wait(80);
+  const instant = await until(() => { g.H.UI.st.sig = ''; g.H.UI.frame(true); const arts = g.qa('#screen .bcard .art'); return arts.length && arts.every((x) => x.classList.contains('has-image')); }, 5000);
+  ok(instant, 'tela refeita: ícones de instalação aparecem na hora (pré-carregados)');
+  g.H.UI.go('wiki'); await wait(60);
   g.click('[data-a="wikitab|planet"]'); await wait(80);
   const marte = g.qa('.wiki-card').find((c) => /Marte/.test(c.querySelector('h3').textContent));
   ok(g.qa('.wiki-card').length === g.H.DATA.regionOrder.length && marte && /Componentes\s*Exclusivo/.test(marte.textContent), 'por planeta: Marte mostra componentes como exclusivo');

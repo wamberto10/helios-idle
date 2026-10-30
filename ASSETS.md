@@ -23,6 +23,8 @@ Prompts exatos e caminhos das saídas originais: [artes principais](assets/promp
 
 `tools/exportar-artes-finais.ps1` preserva os originais em `artifacts/artes-finais-originais/` e exporta cópias menores para o jogo, mantendo proporção e transparência. Os originais ficam só no computador (fora do repositório, ver .gitignore) e não entram na distribuição Android. O catálogo completo inclui também os 16 ícones de recursos do lote anterior.
 
+`tools/otimizar-artes.ps1` faz o mesmo para instalações (PNG 256 px), retratos (JPG 512 px), comandantes (JPG 640 px) e regiões (JPG 1600 px; terrenos 2400 px): o jogo baixa cerca de 5 MB em vez de 100 MB. Rode de novo depois de trocar uma arte; ele sempre parte do original guardado.
+
 Verificação final: 31 novas artes exportadas de 58,77 MB para 9,37 MB (redução de 84,1%); 94 artes ativas sem caminhos ausentes; 99 PNGs íntegros, incluindo arquivos preservados e favicon. A galeria carregou as 94 artes sem imagens quebradas. A cópia `app/www` foi regenerada e suas imagens conferem com as fontes.
 
 No navegador, passaram 194 verificações gerais de interface e 22 específicas das novas artes em 1280 e 375 px, incluindo carregamento, seleção de universo, posição do cargueiro, retorno do SVG após falha e ausência de rolagem horizontal. Prévia final em `artifacts/preview-artes-finais.jpg`.

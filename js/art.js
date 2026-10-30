@@ -7,6 +7,8 @@
   const id = (p) => p + (++uid);
 
   const failedImages = new Set();
+  // imagens já baixadas nesta sessão: ao refazer a tela aparecem na hora, sem esmaecer de novo
+  const loadedImages = new Set();
   const assetPath = (kind, key) => {
     const group = (H.ASSET_MANIFEST || {})[kind];
     return group && Object.prototype.hasOwnProperty.call(group, key) && typeof group[key] === 'string' ? group[key] : '';
@@ -14,19 +16,35 @@
   A.paths = {};
   for (const kind of ['portrait', 'commander', 'building', 'region', 'terrain', 'planet', 'ui', 'resource', 'ship', 'universe', 'research', 'achievement']) A.paths[kind] = (key) => assetPath(kind, key);
   A.imageLoaded = function (img) {
-    if ((img.naturalWidth || img.tagName.toLowerCase() === 'image') && img.parentElement) img.parentElement.classList.add('has-image');
+    if ((img.naturalWidth || img.tagName.toLowerCase() === 'image') && img.parentElement) { img.parentElement.classList.add('has-image'); loadedImages.add(img.getAttribute('src') || img.getAttribute('href')); }
   };
   A.imageFailed = function (img) {
     failedImages.add(img.getAttribute('src') || img.getAttribute('href'));
     if (img.parentElement) img.parentElement.classList.remove('has-image');
     img.remove();
   };
+  // Pré-carrega, com o navegador ocioso, os ícones que aparecem em quase todas as telas (instalações e recursos).
+  A.preload = function () {
+    const M = H.ASSET_MANIFEST || {}; const list = [];
+    for (const g of ['building', 'resource']) for (const k in (M[g] || {})) if (typeof M[g][k] === 'string') list.push(M[g][k]);
+    let i = 0;
+    // pede poucas imagens por vez; o prazo garante o pré-carregamento mesmo com a aba sempre ocupada ou em segundo plano
+    const later = (f) => (window.requestIdleCallback ? window.requestIdleCallback(f, { timeout: 1500 }) : setTimeout(f, 200));
+    const step = () => {
+      for (let n = 0; n < 6 && i < list.length; n++) {
+        const src = list[i++]; if (failedImages.has(src) || loadedImages.has(src)) continue;
+        const im = new Image(); im.decoding = 'async'; im.onload = () => loadedImages.add(src); im.src = src;
+      }
+      if (i < list.length) later(step);
+    };
+    later(step);
+  };
   // O SVG mantém o tamanho e fica visível até a imagem terminar de carregar.
   // Arquivos não declarados ou já ausentes nesta sessão não geram novas solicitações.
   A.img = function (src, fallback, cls) {
     const kind = fallback.includes('class="chest-svg ') ? 'art-chest' : '';
     const image = src && !failedImages.has(src) ? `<img src="${src.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" alt="" loading="lazy" decoding="async" onload="H.A.imageLoaded(this)" onerror="H.A.imageFailed(this)">` : '';
-    return `<span class="art ${kind} ${cls || ''}">${fallback}${image}</span>`;
+    return `<span class="art ${kind} ${cls || ''}${image && loadedImages.has(src) ? ' has-image' : ''}">${fallback}${image}</span>`;
   };
 
   // As artes são decorativas: os nomes, estados e requisitos permanecem em texto.

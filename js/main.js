@@ -304,6 +304,7 @@
     H.state = () => S; // acesso para depuração e testes
     try { H.applySettings(); } catch (e) { console.error(e); }
     UI.init(S);
+    if (H.A.preload) H.A.preload(); // ícones de instalações e recursos prontos antes de abrir as telas
     H.folderSave.init();
     if (!store.available()) { H.saveState.failing = true; H.saveState.reason = 'blocked'; UI.toast('Este navegador bloqueou o armazenamento local. A partida funciona, mas não será salva: use Ajustes → Exportar.', 'err'); }
     // posse da sessão: confirma depois de um instante (duas abas abertas ao mesmo tempo)

@@ -665,6 +665,7 @@ img.rg { display: inline-block; vertical-align: middle; object-fit: contain; fle
 /* Enciclopédia */
 .wiki-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 12px; }
 .wiki-card { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.wiki-grid > .panel { margin-top: 0; } /* a grade alinha os cartões; sem a margem de painel após painel */
 .wiki-card p { margin: 0; }
 .wiki-hd { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .wiki-hd h3 { margin: 0; font-size: 16px; }

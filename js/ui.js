@@ -1097,6 +1097,10 @@
       for (const r in (def.in || {})) if (res[r] && !res[r].used.includes(bid)) res[r].used.push(bid);
     }
     for (const r in res) res[r].regions = [...new Set(res[r].made.map((x) => x.rid))];
+    // ordem de desbloqueio: planeta e fase em que a primeira instalação que produz o recurso é liberada
+    const when = (rid, bid) => { const v = D.regions[rid].build[bid]; return typeof v === 'number' ? RO.indexOf(rid) * 100 + v : Math.max(RO.indexOf(rid), RO.indexOf(v)) * 100; };
+    for (const r in res) res[r].unlock = res[r].made.length ? Math.min(...res[r].made.map((x) => when(x.rid, x.bid))) : Infinity;
+    res.order = D.resOrder.slice().sort((a, b) => res[a].unlock - res[b].unlock || D.resOrder.indexOf(a) - D.resOrder.indexOf(b));
     return res;
   }
   const plDot = (rid) => `<span class="pl" style="background:radial-gradient(circle at 35% 35%,#fff8,${D.regions[rid].color} 40%,${D.regions[rid].color2})"></span>`;
@@ -1107,7 +1111,7 @@
     let h = `<div class="screen-title"><h2>Enciclopédia</h2><span class="small muted">Onde cada recurso é coletado ou fabricado no sistema</span></div>
       <div class="tabs" role="group" aria-label="Organizar a enciclopédia"><button class="tab ${tab === 'res' ? 'on' : ''}" data-a="wikitab|res"${tab === 'res' ? ' aria-current="true"' : ''}>Por recurso</button><button class="tab ${tab === 'planet' ? 'on' : ''}" data-a="wikitab|planet"${tab === 'planet' ? ' aria-current="true"' : ''}>Por planeta</button></div>`;
     if (tab === 'res') {
-      h += '<div class="wiki-grid">' + D.resOrder.map((r) => {
+      h += '<div class="wiki-grid">' + W.order.map((r) => {
         const w = W[r], only = w.regions.length === 1 ? w.regions[0] : null, hub = D.resHub[r];
         const made = w.regions.map((rid) => `<li>${plName(rid)} <span class="muted">— ${w.made.filter((x) => x.rid === rid).map((x) => madeVerb(x.bid) + ' com ' + D.buildings[x.bid].name).join(', ')}</span></li>`).join('');
         return `<section class="panel wiki-card" id="wiki-${r}"><div class="wiki-hd">${A.rg(r, 32, true)}<h3>${D.res[r].name}</h3>${only ? `<span class="chip gold tiny">Só em ${D.regions[only].name}</span>` : ''}</div>
@@ -1117,7 +1121,7 @@
       }).join('') + '</div>';
     } else {
       h += '<div class="wiki-grid">' + RO.map((rid) => {
-        const here = D.resOrder.filter((r) => W[r].regions.includes(rid));
+        const here = W.order.filter((r) => W[r].regions.includes(rid));
         const rows = here.map((r) => { const only = W[r].regions.length === 1, hub = D.resHub[r] === rid;
           return `<li class="wiki-res-row">${A.rg(r, 24, true)}<span>${D.res[r].name}</span>${only ? '<span class="chip gold tiny">Exclusivo</span>' : hub ? '<span class="chip cyan tiny">Polo</span>' : ''}</li>`; }).join('');
         return `<section class="panel wiki-card"><div class="wiki-hd"><h3>${plName(rid)}</h3></div><p class="small muted">${esc(D.regions[rid].role)}</p>
