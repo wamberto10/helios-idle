@@ -395,6 +395,66 @@ async function tMobileUX() {
   const de = g.d.documentElement; ok(de.scrollWidth <= de.clientWidth + 1, 'sem rolagem horizontal');
   close(g);
 }
+async function tA11y() {
+  sec('Acessibilidade (auditoria 29/10): nomes, contraste, foco, estados, ordem e cortes');
+  const g = await openGame('a11y', 375, 812); await until(() => g.modal()); await g.closeAll();
+  const S = g.S(); g.H.UI.go('region', { rid: 'lua' }); await wait(120);
+  // A01: custos e receitas identificam o recurso
+  const costIcon = g.q('[data-u="bbuild|lua|extrator"] svg.rg');
+  ok(costIcon && costIcon.getAttribute('role') === 'img' && costIcon.getAttribute('aria-label') === 'Metal', 'A01: custo de construção anuncia o recurso (Metal)');
+  const rec = g.q('[data-u="brecipe|lua|refinaria"] svg.rg[role="img"]');
+  ok(rec && rec.getAttribute('aria-label') === 'Minério', 'A01: insumo da receita anuncia o recurso (Minério)');
+  ok(g.q('.res .top svg.rg').getAttribute('aria-hidden') === 'true', 'A01: ícone ao lado do nome escrito não repete o nome');
+  // A07: ordem do HTML = ordem visual no celular
+  const grid = g.q('.region-grid'); const first = grid.querySelector('button, [href], input, select, textarea, summary');
+  ok(grid.classList.contains('one') && first && first.closest('.o-mis'), 'A07: no celular o primeiro controle da área é das missões');
+  const ord = Array.from(grid.children).map((e) => Array.from(e.classList).find((c) => c.startsWith('o-')));
+  ok(ord.indexOf('o-mis') < ord.indexOf('o-bneck') && ord.indexOf('o-bneck') < ord.indexOf('o-stock') && ord.indexOf('o-stock') < ord.indexOf('o-bgrid'), 'A07: HTML segue missões → gargalo → estoque → instalações');
+  // A06: EXP com estado
+  const ex = g.q('[data-a="exp|lua|ore"]'); ok(ex.getAttribute('aria-pressed') === 'false' && /^EXP/.test(ex.getAttribute('aria-label')), 'A06: EXP começa desligado, nome com “EXP”');
+  g.click(ex); g.H.UI.frame(); ok(g.q('[data-a="exp|lua|ore"]').getAttribute('aria-pressed') === 'true', 'A06: ao ligar, o estado muda para pressionado');
+  // A10: seção e região atuais
+  ok(g.q('[data-a="nav|region"]').getAttribute('aria-current') === 'page' && !g.q('[data-a="nav|crew"]').hasAttribute('aria-current'), 'A10: navegação marca a seção atual');
+  ok(g.q('[data-a="rtab|prod"]').getAttribute('aria-current') === 'true' && g.q('[data-a="reg|lua"]').getAttribute('aria-current') === 'true', 'A10: aba e região atuais marcadas');
+  // A03: contraste do texto secundário
+  const lin = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+  const L = (rgb) => 0.2126 * lin(rgb[0]) + 0.7152 * lin(rgb[1]) + 0.0722 * lin(rgb[2]);
+  const dim = g.w.getComputedStyle(g.q('.res .val small') || g.q('.res .val')).color.match(/\d+(\.\d+)?/g).slice(0, 3).map(Number);
+  const cr = (L(dim) + 0.05) / (L([17.274, 30.776, 61.766]) + 0.05);
+  ok(cr >= 4.5, 'A03: texto secundário com contraste ' + cr.toFixed(2) + ':1 (mínimo 4,5:1)');
+  // A08: nomes completos dos recursos
+  S.settings.dev = true; g.H.dev('ready'); await g.closeAll(); g.H.UI.go('region', { rid: 'jupiter' }); await wait(120);
+  const cut = g.qa('.res .top').filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => e.textContent.trim());
+  ok(!cut.length, 'A08: nomes dos recursos sem corte em 375 px' + (cut.length ? ' — cortados: ' + cut.join(', ') : ''));
+  // A09: campo de reserva da rota com nome
+  Object.assign(S.run.regions.lua.st, { alloy: 100, fuel: 100 }); // custo do cargueiro
+  g.H.E.createRoute(S, 'lua', 'marte', ['metal']); g.H.UI.go('region', { rid: 'lua', rtab: 'routes' }); await wait(120);
+  const rin = g.q('input[data-ch^="rreserve|"]');
+  ok(rin && rin.labels.length > 0 && /Reserva mínima na origem \(Lua → Marte\)/.test(rin.getAttribute('aria-label')), 'A09: reserva mínima associada ao texto e à rota');
+  // A03: pesquisa bloqueada legível
+  g.click('[data-a="nav|research"]'); await wait(80);
+  const lk = g.q('.node.locked'); ok(!lk || g.w.getComputedStyle(lk).opacity === '1', 'A03: pesquisa bloqueada sem apagar o texto');
+  // A04: foco preservado ao mudar uma opção
+  g.click('[data-a="nav|settings"]'); await wait(80);
+  const sw = g.q('[data-ch="set|sound"]'); sw.focus(); sw.click(); await wait(80); g.H.UI.frame();
+  ok(g.d.activeElement && g.d.activeElement.dataset.ch === 'set|sound', 'A04: o foco continua no interruptor depois de mudar a opção');
+  // A05: Abrir arquivo é um botão que aciona o seletor
+  const ob = g.q('[data-a="openfile"]'); let picked = false; const fi = g.q('#io-file'); fi.click = () => { picked = true; };
+  ok(ob && ob.tagName === 'BUTTON', 'A05: “Abrir arquivo” é um botão nativo');
+  g.click(ob); ok(picked, 'A05: o botão aciona o seletor de arquivo');
+  close(g);
+  // A02: navegação inteira em 320 px
+  const n = await openGame('a11y320', 320, 640); await until(() => n.modal()); await n.closeAll();
+  const nav = n.q('#nav').getBoundingClientRect();
+  const out = n.qa('#nav .nav-btn').filter((b) => b.offsetParent !== null).filter((b) => { const r = b.getBoundingClientRect(); const l = b.querySelector('.lbl'); return r.right > nav.right + 0.5 || r.left < nav.left - 0.5 || (l && l.scrollWidth > l.clientWidth + 1); }).map((b) => b.textContent.trim());
+  ok(!out.length, 'A02: todos os botões da navegação cabem em 320 px' + (out.length ? ' — fora: ' + out.join(', ') : ''));
+  ok(n.qa('#nav .nav-btn').filter((b) => b.offsetParent !== null).every((b) => b.textContent.trim().length > 0), 'A02: cada botão mantém um rótulo visível');
+  n.H.UI.go('region', { rid: 'lua' }); await wait(100);
+  const cut3 = n.qa('.res .top').filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => e.textContent.trim());
+  ok(!cut3.length, 'A08: nomes dos recursos sem corte em 320 px' + (cut3.length ? ' — ' + cut3.join(', ') : ''));
+  const de = n.d.documentElement; ok(de.scrollWidth <= de.clientWidth + 1, '320 px sem rolagem horizontal');
+  close(n);
+}
 async function tLayout() {
   sec('Layout no computador e no celular (sem rolagem horizontal)');
   for (const [w, h, label] of [[1280, 800, 'computador'], [375, 812, 'celular']]) {
@@ -417,7 +477,7 @@ async function tLayout() {
 async function main() {
   document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
   const t0 = Date.now();
-  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tLayout]) {
+  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tA11y, tLayout]) {
     try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }
     STAGE.innerHTML = '';
   }

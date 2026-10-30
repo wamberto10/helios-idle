@@ -28,8 +28,8 @@
   function rewardHTML(rw, rid, m) {
     if (!rw) return '';
     const p = E.rewardPreview(S, rid || null, rw, m); let s = '';
-    if (p.data) s += `<span class="chip cyan" title="Já com os bônus de dados atuais">${A.rg('data')} ${F.n(p.data)} dados</span>`;
-    if (p.frags) s += `<span class="chip purple">${A.rg('frag')} ${p.frags} fragmento${p.frags > 1 ? 's' : ''}</span>`;
+    if (p.data) s += `<span class="chip cyan" title="Já com os bônus de dados atuais">${A.rg('data', 0, 1)} ${F.n(p.data)} dados</span>`;
+    if (p.frags) s += `<span class="chip purple">${A.rg('frag', 0, 1)} ${p.frags} fragmento${p.frags > 1 ? 's' : ''}</span>`;
     if (rw.res && rid) for (const r in rw.res) s += `<span class="chip">${A.rg(r)} ${F.n(rw.res[r])}</span>` + (p.pend[r] ? `<span class="chip warn" title="Sem espaço no estoque agora: entram assim que houver espaço">${F.n(p.pend[r])} aguardam espaço</span>` : '');
     if (p.spec) s += `<span class="chip gold">★ Recruta ${D.specs[p.spec].name}</span>`;
     if (p.specCard) s += `<span class="chip gold" title="${D.specs[p.specCard].name} já está na tripulação">+1 carta de ${D.specs[p.specCard].name}</span>`;
@@ -55,12 +55,13 @@
   };
   UI.err = (r) => { if (r && !r.ok && r.err) { UI.toast(r.err, 'err'); sfx('err'); } };
   // ---- foco: chave estável para reencontrar um controle depois de re-renderizar ----
-  const focusKey = (el) => el && el.nodeType === 1 ? (el.dataset.k ? 'k:' + el.dataset.k : el.dataset.a ? 'a:' + el.dataset.a : el.id ? 'i:' + el.id : null) : null;
+  const focusKey = (el) => el && el.nodeType === 1 ? (el.dataset.k ? 'k:' + el.dataset.k : el.dataset.a ? 'a:' + el.dataset.a : el.dataset.ch ? 'c:' + el.dataset.ch : el.id ? 'i:' + el.id : null) : null;
   function findKey(root, key) {
     if (!key) return null; const v = key.slice(2); const q = (s) => { try { return root.querySelector(s); } catch (e) { return null; } };
     const esc2 = (s) => (window.CSS && CSS.escape ? CSS.escape(s) : s.replace(/["\\]/g, '\\$&'));
     if (key[0] === 'k') return q(`[data-k="${esc2(v)}"]`);
     if (key[0] === 'a') return q(`[data-a="${esc2(v)}"]`);
+    if (key[0] === 'c') return q(`[data-ch="${esc2(v)}"]`); // interruptores e seletores (Ajustes, rotas)
     return q('#' + esc2(v));
   }
   const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -206,6 +207,9 @@
   const SCREENS = [
     ['map', 'Sistema'], ['region', 'Região'], ['crew', 'Tripulação'], ['research', 'Pesquisa'], ['exp', 'Expedições'], ['sing', 'Singularidade'], ['settings', 'Ajustes'],
   ];
+  // rótulo curto para telas estreitas (o longo fica fora do layout e da leitura; nome acessível = texto visível)
+  const NAV_SHORT = { crew: 'Equipe', exp: 'Sondas', sing: 'Colapso' };
+  const NAV_DOT = { region: 'missões prontas', crew: 'promoção disponível', exp: 'baú ou expedição para abrir', sing: 'Colapso ou diretriz disponível', research: 'pesquisa disponível' };
   const NAVI = { map: 'map', region: 'region', crew: 'crew', research: 'research', exp: 'exp', sing: 'sing', settings: 'settings' };
   function renderChrome() {
     $('#top').innerHTML = `<div class="logo"><span class="sun"></span><span class="txt">HELIOS <b>IDLE</b></span></div>
@@ -216,7 +220,7 @@
       <button class="save-warn hidden" data-a="nav|settings" data-u="savest" title="O progresso não está sendo salvo neste navegador">${A.ic('warn', 14)} Não salvo</button>
       <button class="icon-btn chest-btn hidden" data-a="openchest" data-u="chestbtn" title="Abrir Baú de Suprimentos" aria-label="Abrir Baú de Suprimentos">${A.ic('chest')}<span class="badge" data-u="chestn"></span></button>
       <button class="icon-btn" data-a="nav|settings" title="Ajustes" aria-label="Ajustes">${A.ic('settings')}</button>`;
-    $('#nav').innerHTML = SCREENS.map(([k, l]) => `<button class="nav-btn ${k === 'settings' ? 'settings' : ''}" data-a="nav|${k}" data-u="nav|${k}" aria-label="${l}">${A.ic(NAVI[k], 22)}<span>${l}</span></button>`).join('');
+    $('#nav').innerHTML = SCREENS.map(([k, l]) => `<button class="nav-btn ${k === 'settings' ? 'settings' : ''}" data-a="nav|${k}" data-u="nav|${k}" data-k="nav-${k}">${A.ic(NAVI[k], 22)}<span class="lbl">${NAV_SHORT[k] ? `<span class="lbl-full">${l}</span><span class="lbl-short">${NAV_SHORT[k]}</span>` : l}</span></button>`).join('');
   }
 
   // ---------------- ASSINATURA (re-render quando a estrutura muda) ----------------
@@ -319,6 +323,7 @@
   U.mdata = (el) => setT(el, F.n(S.perm.data));
   U.nav = function (el, a, m) {
     const k = a[1]; setC(el, 'on', ui.screen === k);
+    if (ui.screen === k) { if (el.getAttribute('aria-current') !== 'page') el.setAttribute('aria-current', 'page'); } else if (el.hasAttribute('aria-current')) el.removeAttribute('aria-current');
     let dot = false;
     if (k === 'region') dot = RO.some((r) => S.run.regions[r].unlocked && E.activeMissions(S, r).some((x) => E.mProg(S, r, x.md, x.id, m).done));
     if (k === 'crew') dot = Object.keys(S.perm.specs).some((s) => E.canPromote(S, s));
@@ -326,7 +331,8 @@
     if (k === 'sing') dot = E.canCollapse(S) || E.dirs(S).some((d) => !d.claimed && d.p.done);
     if (k === 'research') dot = Object.keys(D.research).some((id) => { const st = E.resState(S, id); return st.can && st.cur === 'data' && st.cost <= S.perm.data * 0.6; });
     let d = el.querySelector('.dot');
-    if (dot && !d) { d = document.createElement('i'); d.className = 'dot'; el.appendChild(d); } else if (!dot && d) d.remove();
+    // o ponto visual tem texto equivalente para leitores de tela
+    if (dot && !d) { d = document.createElement('span'); d.className = 'dot'; d.innerHTML = '<span class="sr-only">, ' + NAV_DOT[k] + '</span>'; el.appendChild(d); } else if (!dot && d) d.remove();
   };
   // recursos
   U.resv = (el, a, m) => {
@@ -335,10 +341,10 @@
   };
   U.resr = (el, a) => { const v = S.run.regions[a[1]].rate[a[2]] || 0; setT(el, (v >= 0 ? '+' : '') + F.n(v, Math.abs(v) < 10 && v !== 0 ? 1 : undefined) + '/s'); setC(el, 'ok', v > 0.01); setC(el, 'bad', v < -0.01); setC(el, 'dim', Math.abs(v) <= 0.01); };
   U.resb = (el, a, m) => { const reg = S.run.regions[a[1]]; const cap = E.cap(S, a[1], a[2], m); setW(el, (reg.st[a[2]] || 0) / cap); const box = el.closest('.res'); if (box) setC(box, 'full', (reg.st[a[2]] || 0) >= cap - 0.5); };
-  U.rese = (el, a) => { const on = !!S.run.regions[a[1]].exp[a[2]]; setC(el, 'on', on); setT(el, on ? 'EXP ✓' : 'EXP'); };
+  U.rese = (el, a) => { const on = !!S.run.regions[a[1]].exp[a[2]]; setC(el, 'on', on); setT(el, on ? 'EXP ✓' : 'EXP'); if (el.getAttribute('aria-pressed') !== String(on)) el.setAttribute('aria-pressed', String(on)); };
   U.energy = (el, a) => {
     const en = S.run.regions[a[1]].en; const ok = en.ratio >= 0.999;
-    setH(el, `<span class="row">${A.rg('energy', 18)}<b class="num">${F.n(en.gen)} MW</b><span class="muted small">gerados</span></span>
+    setH(el, `<span class="row">${A.rg('energy', 18, 1)}<b class="num">${F.n(en.gen)} MW</b><span class="muted small">gerados</span></span>
       <div class="bar ${ok ? 'ok' : 'gold'}"><i style="width:${Math.min(100, en.gen > 0 ? en.use / en.gen * 100 : 100).toFixed(1)}%"></i></div>
       <span class="row small"><span class="num">${F.n(en.use)} MW em uso</span>${ok ? '<span class="ok">✓ suficiente</span>' : `<span class="bad">${A.ic('warn', 14)} déficit — velocidade ${F.pct(en.ratio)}</span>`}</span>`);
   };
@@ -429,7 +435,7 @@
     if (def.gen) { setH(el, `${A.rg('energy')} +${F.n(E.genOf(S, a[1], a[2], m, n, bs.lvl))} MW ${def.solar ? `<span class="dim">(luz solar ${F.pct(E.solarFactor(S, a[1], m) / m.genSolar * 1)})</span>` : ''}`); return; }
     if (def.storage) { setH(el, `+${F.pct(def.storage * n * D.levelYield(bs.lvl))} de armazenamento na região`); return; }
     const ins = def.in ? Object.keys(def.in).map((r) => `${A.rg(r)} ${F.n(def.in[r] * n)}`).join(' + ') + ' → ' : '';
-    const outs = Object.keys(def.out).map((r) => `${A.rg(r)} ${F.n(def.out[r] * n * E.yieldOf(def, bs, r, m) * (r === 'data' ? m.dataGain : 1), 1)} ${r === 'data' ? 'dados' : D.res[r].name.toLowerCase().replace('dyson', 'Dyson')}`).join(' + ');
+    const outs = Object.keys(def.out).map((r) => `${A.rg(r, 0, 1)} ${F.n(def.out[r] * n * E.yieldOf(def, bs, r, m) * (r === 'data' ? m.dataGain : 1), 1)} ${r === 'data' ? 'dados' : D.res[r].name.toLowerCase().replace('dyson', 'Dyson')}`).join(' + ');
     setH(el, `<span class="dim">Por ciclo:</span> ${ins}${outs}`);
   };
   U.bstat = (el, a, m) => {
@@ -511,7 +517,7 @@
     const key = a[1]; const info = E.projectInfo(S, key);
     if (!info.cost) { setH(el, ''); return; }
     const pr = E.projectProgress(S, key, info.cost); const reg = S.run.regions[info.rid];
-    setH(el, Object.keys(info.cost).map((r) => { const have = Math.min(pr.st[r] || 0, info.cost[r]); return `<span>${A.rg(r)} ${D.res[r].name}</span><div class="bar ${have >= info.cost[r] ? 'ok' : 'gold'}"><i style="width:${have / info.cost[r] * 100}%"></i></div><span class="num small">${F.n(have)}/${F.n(info.cost[r])} <span class="dim">(estoque ${F.n(reg.st[r] || 0)})</span></span>`; }).join(''));
+    setH(el, Object.keys(info.cost).map((r) => { const have = Math.min(pr.st[r] || 0, info.cost[r]); return `<span>${A.rg(r, 0, 1)} ${D.res[r].name}</span><div class="bar ${have >= info.cost[r] ? 'ok' : 'gold'}"><i style="width:${have / info.cost[r] * 100}%"></i></div><span class="num small">${F.n(have)}/${F.n(info.cost[r])} <span class="dim">(estoque ${F.n(reg.st[r] || 0)})</span></span>`; }).join(''));
   };
   U.projbtn = (el, a) => { const info = E.projectInfo(S, a[1]); if (!info.cost) { setD(el, true); return; } const reg = S.run.regions[info.rid]; const pr = E.projectProgress(S, a[1], info.cost); setD(el, !info.avail || !Object.keys(info.cost).some((r) => (pr.st[r] || 0) < info.cost[r] && (reg.st[r] || 0) >= 0.5)); };
   // rotas
@@ -631,7 +637,7 @@
     return D.resOrder.filter((r) => set.has(r));
   }
   function regionSwitch() {
-    return `<div class="region-switch">${RO.filter((r) => S.run.regions[r].unlocked).map((r) => `<button class="rs-btn ${r === ui.rid ? 'on' : ''}" data-a="reg|${r}"><span class="pl" style="background:radial-gradient(circle at 35% 35%,#fff8,${D.regions[r].color} 40%,${D.regions[r].color2})"></span>${D.regions[r].name}</button>`).join('')}</div>`;
+    return `<div class="region-switch">${RO.filter((r) => S.run.regions[r].unlocked).map((r) => `<button class="rs-btn ${r === ui.rid ? 'on' : ''}" data-a="reg|${r}"${r === ui.rid ? ' aria-current="true"' : ''}><span class="pl" style="background:radial-gradient(circle at 35% 35%,#fff8,${D.regions[r].color} 40%,${D.regions[r].color2})"></span>${D.regions[r].name}</button>`).join('')}</div>`;
   }
   function renderRegion() {
     if (!S.run.regions[ui.rid] || !S.run.regions[ui.rid].unlocked) ui.rid = 'lua';
@@ -641,20 +647,25 @@
         <div><span class="muted small">${esc(R.sub)}</span><h2>${R.name}</h2><span class="small muted">${esc(R.role)}</span></div>
         <div class="phase phase-bar" data-u="phase|${rid}"></div></div></div>
       ${regionSwitch()}
-      <div class="tabs"><button class="tab ${ui.rtab === 'prod' ? 'on' : ''}" data-a="rtab|prod">Produção</button><button class="tab ${ui.rtab === 'routes' ? 'on' : ''}" data-a="rtab|routes">Rotas e transporte (${nRoutes})</button></div>`;
+      <div class="tabs" role="group" aria-label="Seções da região"><button class="tab ${ui.rtab === 'prod' ? 'on' : ''}" data-a="rtab|prod"${ui.rtab === 'prod' ? ' aria-current="true"' : ''}>Produção</button><button class="tab ${ui.rtab === 'routes' ? 'on' : ''}" data-a="rtab|routes"${ui.rtab === 'routes' ? ' aria-current="true"' : ''}>Rotas e transporte (${nRoutes})</button></div>`;
     if (ui.rtab === 'routes') return h + renderRoutes(rid, m);
     const res = relevantRes(rid);
     if (SHOW_BASE_PANEL) h += `<section class="base-panel" aria-labelledby="base-title"><div class="base-toolbar"><div><span class="base-eyebrow">Área de construção</span><h3 id="base-title">Base de ${R.name}</h3></div><span class="base-count" data-u="basecount|${rid}"></span></div><div class="base-map-host" data-region="${rid}"></div><div class="base-help"><span>Selecione uma instalação para ver produção e melhorias.</span><span class="base-pan-hint">↔ Deslize para explorar a base</span></div></section>`;
-    h += `<div class="region-grid"><div class="main col" style="gap:14px">
-      <div class="panel o-stock"><h3>Estoque da região <span class="r small muted">EXP = exportar excedente à Terra quando cheio</span></h3><div class="res-strip">${res.map((r) => `<div class="res"><div class="top">${A.rg(r)} ${D.res[r].name}</div><div class="val" data-u="resv|${rid}|${r}"></div><div class="rate" data-u="resr|${rid}|${r}"></div><div class="bar"><i data-u="resb|${rid}|${r}"></i></div><button class="exp" data-a="exp|${rid}|${r}" data-u="rese|${rid}|${r}" aria-label="Exportar excedente de ${D.res[r].name}" title="Exportar excedente: quando o estoque enche, a produção continua, os cargueiros descarregam e o excesso vai para a Terra"></button></div>`).join('')}</div></div>
-      <div class="panel o-energy"><div class="energy" data-u="energy|${rid}"></div></div>
-      <div class="pendsup o-pend" data-u="pend|${rid}"></div>
-      <div class="bneck o-bneck" data-u="bneck|${rid}"></div>
-      <div class="o-proj col" style="gap:14px">${projectsHTML(rid)}</div>
-      <div class="bgrid o-bgrid">${E.bList(S, rid).map((b) => buildingCard(rid, b)).join('')}</div>
-    </div><div class="side col" style="gap:14px"><div class="o-mis">${missionsHTML(rid)}</div>${collapsible('specs', 'Especialistas da região', specsHTML(rid, m), 'o-specs')}
-      ${collapsible('log', 'Diário de bordo', `<div class="log">${S.run.log.slice(0, 10).map((l) => `<div class="${l.kind}">${esc(l.text)}</div>`).join('') || '<span class="muted small">Sem registros.</span>'}</div>`, 'o-log')}
-    </div></div>`;
+    // Peças da tela da região. No celular o HTML segue a ordem de prioridade (missões, gargalo, ação, detalhes),
+    // para que leitura, foco e aparência coincidam; no computador, duas colunas (produção | missões).
+    const P = {
+      stock: `<div class="panel o-stock"><h3>Estoque da região <span class="r small muted">EXP = exportar excedente à Terra quando cheio</span></h3><div class="res-strip">${res.map((r) => `<div class="res"><div class="top">${A.rg(r, 0, 1)} ${D.res[r].name}</div><div class="val" data-u="resv|${rid}|${r}"></div><div class="rate" data-u="resr|${rid}|${r}"></div><div class="bar"><i data-u="resb|${rid}|${r}"></i></div><button class="exp" data-a="exp|${rid}|${r}" data-u="rese|${rid}|${r}" aria-label="EXP: exportar excedente de ${D.res[r].name}" aria-pressed="${!!S.run.regions[rid].exp[r]}" title="Exportar excedente: quando o estoque enche, a produção continua, os cargueiros descarregam e o excesso vai para a Terra"></button></div>`).join('')}</div></div>`,
+      energy: `<div class="panel o-energy"><div class="energy" data-u="energy|${rid}"></div></div>`,
+      pend: `<div class="pendsup o-pend" data-u="pend|${rid}"></div>`,
+      bneck: `<div class="bneck o-bneck" data-u="bneck|${rid}"></div>`,
+      proj: `<div class="o-proj col" style="gap:14px">${projectsHTML(rid)}</div>`,
+      bgrid: `<div class="bgrid o-bgrid">${E.bList(S, rid).map((b) => buildingCard(rid, b)).join('')}</div>`,
+      mis: `<div class="o-mis">${missionsHTML(rid)}</div>`,
+      specs: collapsible('specs', 'Especialistas da região', specsHTML(rid, m), 'o-specs'),
+      log: collapsible('log', 'Diário de bordo', `<div class="log">${S.run.log.slice(0, 10).map((l) => `<div class="${l.kind}">${esc(l.text)}</div>`).join('') || '<span class="muted small">Sem registros.</span>'}</div>`, 'o-log'),
+    };
+    if (narrow()) h += `<div class="region-grid one">${['mis', 'bneck', 'pend', 'proj', 'stock', 'energy', 'bgrid', 'specs', 'log'].map((k) => P[k]).join('')}</div>`;
+    else h += `<div class="region-grid"><div class="main col" style="gap:14px">${P.stock}${P.energy}${P.pend}${P.bneck}${P.proj}${P.bgrid}</div><div class="side col" style="gap:14px">${P.mis}${P.specs}${P.log}</div></div>`;
     return h;
   }
   function buildingCard(rid, bid) {
@@ -722,6 +733,7 @@
   }
   // seção recolhível com estado preservado entre atualizações (aberta no computador, fechada no celular)
   const narrow = () => !!(window.matchMedia && matchMedia('(max-width: 960px)').matches);
+  if (window.matchMedia) { const mq = matchMedia('(max-width: 960px)'); const re = () => { ui.sig = ''; }; if (mq.addEventListener) mq.addEventListener('change', re); else if (mq.addListener) mq.addListener(re); }
   function collapsible(key, title, body, cls) {
     const open = key in ui.open ? ui.open[key] : !narrow();
     return `<details class="panel coll ${cls || ''}" data-coll="${key}" ${open ? 'open' : ''}><summary><h3>${title}</h3></summary>${body}</details>`;
@@ -757,8 +769,8 @@
         <div class="path">${regName(rt.from)} ${A.ic('ship', 16)} ${regName(rt.to)} <span class="chip">Cargueiro Nv ${rt.lvl}</span></div>
         <div class="small" data-u="rstat|${rt.id}"></div><div class="bar"><i data-u="rprog|${rt.id}"></i></div>
         <div class="small muted" data-u="rinfo|${rt.id}"></div>
-        <div class="cfg"><span class="muted">Prioridade:</span>${[0, 1, 2].map((i) => `<select data-ch="rres|${rt.id}|${i}" aria-label="Recurso ${i + 1}">${ropt(rt.res[i] || '', i > 0)}</select>`).join('')}
-          <span class="muted">Reserva mínima na origem</span><input type="number" min="0" step="10" value="${rt.reserve || 0}" data-ch="rreserve|${rt.id}">
+        <div class="cfg"><span class="muted">Prioridade:</span>${[0, 1, 2].map((i) => `<select data-ch="rres|${rt.id}|${i}" aria-label="Recurso ${i + 1} da rota ${esc(regName(rt.from))} → ${esc(regName(rt.to))}">${ropt(rt.res[i] || '', i > 0)}</select>`).join('')}
+          <label class="rres"><span class="muted">Reserva mínima na origem</span> <input type="number" min="0" step="10" value="${rt.reserve || 0}" data-ch="rreserve|${rt.id}" aria-label="Reserva mínima na origem (${esc(regName(rt.from))} → ${esc(regName(rt.to))})"></label>
           <label class="switch"><input type="checkbox" data-ch="rauto|${rt.id}" ${rt.auto ? 'checked' : ''} ${m.routeAuto ? '' : 'disabled'}> Automática${m.routeAuto ? '' : ' (requer Vega)'}</label></div>
         <div class="row wrap"><button class="btn gold sm" data-a="rsend|${rt.id}" data-u="rsend|${rt.id}">Enviar carga</button><button class="btn sm" data-a="rup|${rt.id}" data-u="rupb|${rt.id}"></button><button class="btn ghost sm" data-a="rdel|${rt.id}">Desmontar</button></div>
       </div>`).join('') || '<div class="panel empty">Nenhuma rota ainda.</div>';
@@ -787,7 +799,8 @@
         <circle r="70" fill="url(#sun-g)" opacity=".7"/><circle r="26" fill="url(#sun-core)"/>
         <g id="dyson"></g>${orbits}<g>${belt}</g><g id="routes"></g>${earth}${pls}</svg>
         <div class="map-legend"><span><i style="background:var(--cyan)"></i>rota</span><span><i style="background:var(--ok)"></i>janela favorável</span><span><i style="background:var(--gold)"></i>próxima expedição</span></div></div>
-      <div class="side col"><div class="panel"><div data-u="mapinfo"></div><div style="margin-top:10px">${mapBtnHTML()}</div></div></div></div>`;
+      <div class="side col"><div class="panel"><div data-u="mapinfo"></div><div style="margin-top:10px">${mapBtnHTML()}</div></div>
+        <div class="panel"><h3>Destinos</h3><p class="tiny muted">Os mesmos planetas do mapa, em botões de toque confortável.</p><div class="dest-list">${RO.map((rid) => { const u = S.run.regions[rid].unlocked; return `<button class="btn sm ${ui.sel === rid ? 'on' : ''}" data-a="mapsel|${rid}" aria-pressed="${ui.sel === rid}">${D.regions[rid].name}${u ? '' : ' <span class="muted">(bloqueado)</span>'}</button>`; }).join('')}</div></div></div></div>`;
   }
   let mapEls = null;
   function initMap() {
@@ -825,7 +838,7 @@
     const ph = R.phases[reg.phase];
     h += `<div class="kv small"><span class="k">Fase</span><span class="v">${ph ? ph.name : 'Consolidada'}</span><span class="k">Instalações</span><span class="v">${Object.values(reg.b).reduce((a, b) => a + b.n, 0)}</span><span class="k">Energia</span><span class="v">${F.n(reg.en.gen)} / ${F.n(reg.en.use)} MW</span></div><div class="sep"></div>`;
     const top = Object.entries(reg.rate).filter(([, v]) => v > 0.01).sort((a, b) => b[1] * D.res[b[0]].v - a[1] * D.res[a[0]].v).slice(0, 5);
-    h += top.length ? '<div class="col small">' + top.map(([r, v]) => `<span>${A.rg(r)} ${D.res[r].name}: <b class="ok">+${F.n(v, v < 10 ? 1 : undefined)}/s</b></span>`).join('') + '</div>' : '<span class="small muted">Sem produção automatizada.</span>';
+    h += top.length ? '<div class="col small">' + top.map(([r, v]) => `<span>${A.rg(r, 0, 1)} ${D.res[r].name}: <b class="ok">+${F.n(v, v < 10 ? 1 : undefined)}/s</b></span>`).join('') + '</div>' : '<span class="small muted">Sem produção automatizada.</span>';
     const rts = S.run.routes.filter((r) => r.from === rid || r.to === rid);
     if (rts.length) h += '<div class="sep"></div><b class="small">Janelas de transporte</b><div class="col small">' + rts.map((rt) => { const i = E.routeInfo(S, rt, m); return `<span>${regName(rt.from)} → ${regName(rt.to)}: ${i.win ? '<span class="win">favorável</span>' : 'proximidade ' + F.pct(i.q)} · ${F.t(i.T)}</span>`; }).join('') + '</div>';
     return h;
@@ -874,7 +887,7 @@
       ${bl.length ? `<div class="small"><b>Instalações afetadas:</b> ${bl.map((b) => D.buildings[b].name).join(', ')}</div><div class="small"><b>Automação:</b> <span class="ok">ativa</span> em ${active} tipo(s) de instalação no universo atual. Novas instalações da categoria são automatizadas ao serem liberadas.</div>` : ''}
       ${extra ? `<div class="small"><b>Efeito adicional:</b> ${extra}</div>` : ''}
       ${c ? `<div class="promo-cmp"><div><span class="small muted">Atual (Nv ${s.lvl})</span><b class="cyan">${E.specLabel(sid, s.lvl)}</b></div><span>→</span><div><span class="small muted">Próximo (Nv ${s.lvl + 1})</span><b class="gold">${E.specLabel(sid, s.lvl + 1)}</b></div></div>
-        <div class="row sb small"><span>Cartas: <b class="${s.cards >= c.cards ? 'ok' : ''}">${s.cards}/${c.cards}</b></span><span>Custo: <b class="${S.perm.data + 1e-9 >= c.data ? 'cyan' : 'bad'}">${A.rg('data')} ${F.n(c.data)} dados</b> <span class="muted">(você tem <span data-u="mdata"></span>)</span></span></div><div class="bar gold"><i style="width:${Math.min(100, s.cards / c.cards * 100)}%"></i></div>
+        <div class="row sb small"><span>Cartas: <b class="${s.cards >= c.cards ? 'ok' : ''}">${s.cards}/${c.cards}</b></span><span>Custo: <b class="${S.perm.data + 1e-9 >= c.data ? 'cyan' : 'bad'}">${A.rg('data', 0, 1)} ${F.n(c.data)} dados</b> <span class="muted">(você tem <span data-u="mdata"></span>)</span></span></div><div class="bar gold"><i style="width:${Math.min(100, s.cards / c.cards * 100)}%"></i></div>
         <p class="tiny muted">Velocidade ${F.x(2)} = ciclos duas vezes mais rápidos, respeitando insumos, energia e armazenamento. Não altera o rendimento por ciclo.</p>` : '<p class="gold">Nível máximo alcançado.</p>'}
       </div></div><div class="foot"><button class="btn ghost" data-a="close">Fechar</button>${c ? `<button class="btn gold" data-a="promote|${sid}|${s.lvl}" data-k="promote" ${can ? '' : 'disabled'} ${can ? 'autofocus' : ''}>Promover a Nv ${s.lvl + 1}</button>` : ''}</div>`);
   }
@@ -914,7 +927,7 @@
   }
   function renderResearch() {
     const sel = ui.resSel;
-    let h = `<div class="screen-title"><h2>Pesquisa</h2><span class="chip cyan">${A.rg('data')} <span data-u="data"></span> dados</span><span class="chip purple">${A.rg('frag')} <span data-u="frags"></span> fragmentos</span><span class="muted small">Projetos permanentes: são preservados no Colapso.</span></div>`;
+    let h = `<div class="screen-title"><h2>Pesquisa</h2><span class="chip cyan">${A.rg('data', 0, 1)} <span data-u="data"></span> dados</span><span class="chip purple">${A.rg('frag', 0, 1)} <span data-u="frags"></span> fragmentos</span><span class="muted small">Projetos permanentes: são preservados no Colapso.</span></div>`;
     const known = D.discOrder.filter((d) => E.knows(S, d)).length;
     h += `<div class="panel disc-panel"><h3>Descobertas <span class="r small muted">${known}/${D.discOrder.length} · obtidas em missões, permanentes</span></h3><div class="row wrap small">${D.discOrder.map((d) => { const k = E.knows(S, d); return `<span class="chip ${k ? 'ok' : 'muted'}" title="${esc(k ? D.discoveries[d].desc : 'Obtida em ' + E.discSource(d, S))}">${k ? '✓' : A.ic('lock', 12)} ${D.discoveries[d].name}</span>`; }).join('')}</div><p class="tiny muted">Pesquisas avançadas exigem a descoberta correspondente, além dos dados.</p></div><div class="tree">`;
     for (const br in D.branches) {
@@ -922,7 +935,7 @@
       h += `<div class="branch" style="--bc:${B.color}"><h4>${B.name}</h4>` + Object.keys(D.research).filter((id) => D.research[id].br === br).map((id) => {
         const n = D.research[id]; const st = E.resState(S, id); const lvl = st.lvl;
         return `<button type="button" class="node ${sel === id ? 'sel' : ''}" data-a="rsel|${id}" data-u="rnode|${id}" aria-pressed="${sel === id}" aria-controls="res-detail"><span class="nn">${n.name}</span><span class="pips" aria-hidden="true">${Array.from({ length: n.max }, (_, i) => `<i class="${i < lvl ? 'f' : ''}"></i>`).join('')}</span>
-          <span class="tiny muted">${st.max ? 'Completo' : st.locked ? esc(st.why) : (n.cur === 'frag' ? A.rg('frag') : A.rg('data')) + ' ' + F.n(st.cost)}</span></button>`;
+          <span class="tiny muted">${st.max ? 'Completo' : st.locked ? A.ic('lock', 11) + ' ' + esc(st.why) : (n.cur === 'frag' ? A.rg('frag') : A.rg('data')) + ' ' + F.n(st.cost)}</span></button>`;
       }).join('') + '</div>';
     }
     h += '</div>';
@@ -967,8 +980,8 @@
   function chestModal(res) {
     const ch = res.chest; const cards = Object.keys(ch.cards);
     UI.modal(`<h2 class="gold">${esc(ch.title)}</h2><div class="chest-anim" id="chanim">${A.img(A.paths.ui('chest'), A.chest(false))}</div><div id="chrev" class="hidden"><div class="reveal">${cards.map((s, i) => `<div class="rc" style="--rar:${rarColor(s)};animation-delay:${i * 0.12}s">${A.portraitBox(s, false)}<b>${D.specs[s].name}</b><span class="gold">+${ch.cards[s]} carta${ch.cards[s] > 1 ? 's' : ''}</span></div>`).join('')}</div>
-      <p style="text-align:center"><span class="chip cyan">${A.rg('data')} +${F.n(res.data)} dados de pesquisa</span></p>${res.sup ? `<p class="small" style="text-align:center">Toda a tripulação já tem as cartas que precisa: o baú trouxe suprimentos para ${D.regions[res.sup.rid].name}: ${Object.keys(res.sup.res).map((r) => A.rg(r) + ' ' + F.n(res.sup.res[r] + ((res.sup.pend || {})[r] || 0))).join(' ')}${Object.keys(res.sup.pend || {}).length ? ' <span class="warn">(parte aguarda espaço no estoque)</span>' : ''}.</p>` : ''}</div><div class="foot"><button class="btn gold" data-a="close">Ótimo!</button></div>`);
-    const go = () => { const a = $('#chanim'); if (!a) return; a.querySelector('svg').classList.add('open'); a.classList.add('burst'); setTimeout(() => { const r = $('#chrev'); if (r) r.classList.remove('hidden'); if (a) a.classList.add('hidden'); }, S.settings.reduceMotion ? 0 : 650); };
+      <p style="text-align:center"><span class="chip cyan">${A.rg('data', 0, 1)} +${F.n(res.data)} dados de pesquisa</span></p>${res.sup ? `<p class="small" style="text-align:center">Toda a tripulação já tem as cartas que precisa: o baú trouxe suprimentos para ${D.regions[res.sup.rid].name}: ${Object.keys(res.sup.res).map((r) => A.rg(r) + ' ' + F.n(res.sup.res[r] + ((res.sup.pend || {})[r] || 0))).join(' ')}${Object.keys(res.sup.pend || {}).length ? ' <span class="warn">(parte aguarda espaço no estoque)</span>' : ''}.</p>` : ''}</div><div class="foot"><button class="btn gold" data-a="close">Ótimo!</button></div>`);
+    const go = () => { const a = $('#chanim'); if (!a) return; a.querySelector('svg').classList.add('open'); a.classList.add('burst'); setTimeout(() => { const r = $('#chrev'); if (r) r.classList.remove('hidden'); if (a) a.classList.add('hidden'); }, H.reduceMotion() ? 0 : 650); };
     setTimeout(go, H.reduceMotion() ? 0 : 250);
   }
 
@@ -985,7 +998,7 @@
   function renderSing() {
     const run = S.run; const p = S.perm; const can = E.canCollapse(S); const m = E.mods(S);
     const dInfo = E.projectInfo(S, 'dyson');
-    let h = `<div class="screen-title"><h2>Singularidade</h2><span class="chip purple">${A.rg('frag')} ${F.n(p.frags)} fragmentos · total ${F.n(p.fragsTotal)} → ${F.x(m.globalYield)} rendimento global</span></div><div class="sing-grid"><div class="col" style="gap:14px">
+    let h = `<div class="screen-title"><h2>Singularidade</h2><span class="chip purple">${A.rg('frag', 0, 1)} ${F.n(p.frags)} fragmentos · total ${F.n(p.fragsTotal)} → ${F.x(m.globalYield)} rendimento global</span></div><div class="sing-grid"><div class="col" style="gap:14px">
       <div class="panel"><h3>Enxame de Dyson <span class="r gold">${run.dyson.stage}/${D.dyson.length} etapas</span></h3><div class="dyson-vis" data-u="dysonvis"></div>
         <p class="small muted">Etapas 1–${D.dysonRequired} formam o enxame (requisito do Colapso). Etapas extras rendem mais fragmentos. Bônus atual: +${F.pct(D.dysonEnergyPerStage * run.dyson.stage)} de energia em todas as regiões.</p>
         ${dInfo.avail ? projCard('dyson', `Etapa ${run.dyson.stage + 1} — entregue em Mercúrio`, 'Os recursos saem do estoque de Mercúrio. Use rotas para abastecê-lo.', 'gold') : dInfo.done ? '<p class="gold">Enxame completo!</p>' : '<p class="small muted">' + A.ic('lock', 14) + ' Disponível em Mercúrio, fase “Fundação do Enxame”.</p>'}</div>
@@ -1022,7 +1035,7 @@
       <div class="panel"><h3>Salvamento</h3><p class="small muted">Salvamento automático a cada ${D.AUTOSAVE_SEC}s e após ações importantes. Formato versionado (v${D.SAVE_VERSION}).</p>
         <div class="row wrap"><button class="btn" data-a="save">Salvar agora</button><button class="btn" data-a="export">Exportar</button><button class="btn" data-a="download">Baixar arquivo</button></div>
         <textarea id="io" placeholder="O código exportado aparece aqui. Para importar, cole um código e toque em Importar." style="margin-top:8px"></textarea>
-        <div class="row wrap" style="margin-top:8px"><button class="btn" data-a="copy">Copiar</button><button class="btn gold" data-a="import">Importar</button><label class="btn ghost">Abrir arquivo<input type="file" accept=".txt,.json" data-ch="file" hidden></label></div></div>
+        <div class="row wrap" style="margin-top:8px"><button class="btn" data-a="copy">Copiar</button><button class="btn gold" data-a="import">Importar</button><button class="btn ghost" data-a="openfile" data-k="openfile">Abrir arquivo</button><input type="file" id="io-file" accept=".txt,.json" data-ch="file" hidden></div></div>
       <div class="panel"><h3>Reiniciar</h3><p class="small muted">Apaga todo o progresso, inclusive especialistas e fragmentos.</p><button class="btn danger" data-a="reset">Apagar progresso</button></div>
     </div><div class="col" style="gap:14px">
       <div class="panel"><h3>Regras de bônus</h3><ul class="small" style="margin:0;padding-left:18px">
@@ -1143,6 +1156,7 @@
         const pend = Object.keys(g.pend || {}); if (pend.length) UI.toast(pend.map((k) => F.n(g.pend[k]) + ' ' + D.res[k].name.toLowerCase()).join(', ') + ' aguardam espaço no estoque e entram assim que couberem.', 'warn');
       } else UI.err(r);
     },
+    openfile: () => { const f = $('#io-file'); if (f) f.click(); }, // botão nativo aciona o seletor de arquivo (teclado e leitor de tela)
     claimall: (rid) => { const s = E.claimAll(S, rid); if (!s.count) return; sfx('claim'); H.save(); },
     contrib: (key) => { const r = E.contribute(S, key); if (r.ok) { sfx(r.done ? 'promote' : 'buy'); if (r.done) H.save(); } else UI.err(r); },
     goto: (rid, id) => {

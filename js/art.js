@@ -131,9 +131,14 @@
     frag: '<path d="M8 1l4 6-4 8-4-8z"/><path d="M8 1v14" stroke="#050a18" stroke-width=".8"/>',
     energy: '<path d="M9 1L3 9h4l-1 6 6-8H8z"/>',
   };
-  A.rg = function (r, size) {
+  // Ícone de recurso. Por padrão anuncia o nome do recurso para leitores de tela (custos e receitas são só
+  // ícone + número); deco = true quando o nome já está escrito ao lado, para não repetir.
+  const RG_NAME = { data: 'dados de pesquisa', frag: 'fragmentos', energy: 'energia' };
+  A.rg = function (r, size, deco) {
     const color = r === 'data' ? '#3fe0ff' : r === 'frag' ? '#b07cff' : r === 'energy' ? '#ffd76a' : D.res[r].color;
-    return `<svg class="rg" viewBox="0 0 16 16" width="${size || 14}" height="${size || 14}" style="color:${color}" fill="currentColor" aria-hidden="true">${RG[r] || RG.ore}</svg>`;
+    const name = RG_NAME[r] || (D.res[r] ? D.res[r].name : r);
+    const a11y = deco ? 'aria-hidden="true"' : `role="img" aria-label="${name}"`;
+    return `<svg class="rg" viewBox="0 0 16 16" width="${size || 14}" height="${size || 14}" style="color:${color}" fill="currentColor" focusable="false" ${a11y}>${RG[r] || RG.ore}</svg>`;
   };
 
   // ---------------- PLANETAS ----------------
