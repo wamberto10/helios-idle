@@ -12,7 +12,7 @@
     return group && Object.prototype.hasOwnProperty.call(group, key) && typeof group[key] === 'string' ? group[key] : '';
   };
   A.paths = {};
-  for (const kind of ['portrait', 'commander', 'building', 'region', 'terrain', 'planet', 'ui']) A.paths[kind] = (key) => assetPath(kind, key);
+  for (const kind of ['portrait', 'commander', 'building', 'region', 'terrain', 'planet', 'ui', 'resource']) A.paths[kind] = (key) => assetPath(kind, key);
   A.imageLoaded = function (img) {
     if (img.naturalWidth && img.parentElement) img.parentElement.classList.add('has-image');
   };
@@ -134,9 +134,14 @@
   // Ícone de recurso. Por padrão anuncia o nome do recurso para leitores de tela (custos e receitas são só
   // ícone + número); deco = true quando o nome já está escrito ao lado, para não repetir.
   const RG_NAME = { data: 'dados de pesquisa', frag: 'fragmentos', energy: 'energia' };
+  // Arte da prancha quando existe (custos com 24 px, estoque com 32 px); se o arquivo falhar, volta ao SVG.
+  // Sem transição de opacidade: os custos são redesenhados quando os números mudam e não podem piscar.
+  A.rgFailed = function (img) { failedImages.add(img.getAttribute('src')); const r = img.dataset.r; img.outerHTML = A.rg(r, +img.getAttribute('width'), img.getAttribute('aria-hidden') === 'true'); };
   A.rg = function (r, size, deco) {
     const color = r === 'data' ? '#3fe0ff' : r === 'frag' ? '#b07cff' : r === 'energy' ? '#ffd76a' : D.res[r].color;
     const name = RG_NAME[r] || (D.res[r] ? D.res[r].name : r);
+    const src = A.paths.resource(r);
+    if (src && !failedImages.has(src)) return `<img class="rg rgi" src="${src}" width="${size || 14}" height="${size || 14}" data-r="${r}" ${deco ? 'alt="" aria-hidden="true"' : `alt="${name}"`} decoding="async" draggable="false" onerror="H.A.rgFailed(this)">`;
     const a11y = deco ? 'aria-hidden="true"' : `role="img" aria-label="${name}"`;
     return `<svg class="rg" viewBox="0 0 16 16" width="${size || 14}" height="${size || 14}" style="color:${color}" fill="currentColor" focusable="false" ${a11y}>${RG[r] || RG.ore}</svg>`;
   };

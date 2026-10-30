@@ -1,0 +1,26 @@
+Use case: stylized-concept.
+Asset type: ONE production-quality PNG resource-icon atlas for the existing sci-fi mobile idle game HELIOS IDLE.
+Create a polished 2048 x 2048 square sprite sheet with a genuinely transparent alpha background. Exactly SIXTEEN distinct, isolated, beautifully rendered resource objects in a precise FOUR-COLUMN by FOUR-ROW grid. Each of the 16 equal square cells has one icon centered at its exact center. Consistent visual scale and 20% empty safety margin inside every cell. Uniform spacing, absolutely no overlap or particles crossing into adjacent cells. This is a single atlas image, not a poster or screenshot.
+Visual direction: premium hand-painted 2D game inventory icons with restrained dimensional rendering, crisp bold silhouettes, clean edges, slight consistent three-quarter orthographic perspective, top-left soft key light, subtle bright rim for readability on a dark navy game interface. Tactile metal, crystal and high-tech materials; simple large readable facets, high contrast and very restrained highlights. Every silhouette must remain recognizable at 32–48 pixels and remain distinct without relying only on color. Serious elegant space-industrial art matching dark navy/cyan/gold/violet science-fiction game art, not cartoon emojis, not monochrome line icons, not overcomplicated photorealism.
+EXACT ROW-MAJOR ORDER, left to right:
+ROW 1:
+1. MINÉRIO: one irregular chunky warm taupe-brown ore rock, jagged silhouette and a few exposed mineral veins.
+2. METAL: one broad solid silver-blue rectangular metal ingot with beveled edges.
+3. LIGAS: three shorter bronze-gold alloy ingots neatly stacked into a low triangular pile; clearly unlike the single silver ingot.
+4. COMPONENTES: one mint-green square circuit-board microchip with clearly visible pins extending from its four sides.
+ROW 2:
+5. GELO: one large translucent pale ice-blue faceted ice cube, frosty internal cracks and sharp clean corners.
+6. GASES: one tall rounded yellow industrial pressure cylinder with a small unmistakable valve and short handle at top.
+7. COMBUSTÍVEL: one squat rectangular orange fuel jerrycan with an integrated top handle and small capped spout; emphatically different from the gas cylinder.
+8. METAIS RAROS: one compact upright cluster of three pointed violet-silver metallic crystalline shards, lustrous solid facets.
+ROW 3:
+9. CÉLULAS SOLARES: one broad cobalt-blue rectangular photovoltaic panel tilted in three-quarter view with a clean visible grid of six large cells and slim silver frame.
+10. COMBUSTÍVEL DE FUSÃO: one compact spherical futuristic containment capsule, robust white-silver ring casing surrounding a luminous magenta plasma core; restrained glow kept inside its silhouette.
+11. MÓDULOS ESTRUTURAIS: one silver-gray triangular space-station truss assembly with three bold beams and visible open triangular negative space; industrial structural frame, NOT another ingot.
+12. SUPERCONDUTORES: one turquoise-cyan U-shaped superconducting coil with several large readable ridges and two metallic terminal ends.
+ROW 4:
+13. MATÉRIA EXÓTICA: one mysterious near-black purple sphere surrounded by a single thin tilted luminous violet orbit ring; simple dark central orb, readable silhouette, NOT a containment machine.
+14. SATÉLITES DYSON: one compact gold satellite with a central faceted metallic body and exactly two wide golden solar wings; distinct from the plain blue photovoltaic panel.
+15. DADOS: three luminous cyan translucent data disks stacked as a short holographic database cylinder, clean simple stepped silhouette.
+16. FRAGMENTOS: one single tall asymmetric amethyst-purple triangular singularity shard with one bright violet internal fissure; emphatically a single shard, not a cluster.
+Constraints: exactly 16 icons; correct ordered grid; same polished art direction and camera angle; visually balanced optical size. TRANSPARENT BACKGROUND WITH REAL ALPHA. No solid background, no checkerboard drawn into the image. NO text, NO letters, NO numbers, NO captions, NO title, NO logo, NO watermark. No UI cards, no circles or rounded-square badges behind icons, no surrounding frames, no decorative stars, no floor planes, no detached sparkles, no heavy drop shadows. Keep each complete object safely inside its own cell with ample transparent padding.

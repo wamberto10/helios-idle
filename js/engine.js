@@ -697,6 +697,7 @@
     }
     if (key.startsWith('launch:')) {
       const to = key.slice(7); const from = RO[RO.indexOf(to) - 1];
+      if (!D.regions[to] || !from || !D.regions[to].launch) return { avail: false, done: false, rid: from || null, cost: null, name: '' }; // destino inexistente
       return { avail: !run.regions[to].unlocked && E.regionDone(S, from), done: run.regions[to].unlocked, rid: from, cost: D.regions[to].launch.cost, name: 'Expedição a ' + D.regions[to].name };
     }
     if (key.startsWith('m:')) {

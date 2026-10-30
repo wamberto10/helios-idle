@@ -22,7 +22,9 @@
   let profileDraft = null;
 
   // ---------------- PEDAÇOS DE HTML ----------------
-  const resChip = (r, amt, have) => `<span class="chip ${have !== undefined && have + 1e-9 < amt ? 'lack' : ''}">${A.rg(r)} ${F.n(amt)}</span>`;
+  // tamanhos dos ícones de recurso: custos 24 px, estoque 32 px (o número e o nome continuam em texto)
+  const IC_COST = 24, IC_STOCK = 32;
+  const resChip = (r, amt, have) => `<span class="chip res-cost ${have !== undefined && have + 1e-9 < amt ? 'lack' : ''}">${A.rg(r, IC_COST)} ${F.n(amt)}</span>`;
   const costHTML = (cost, reg) => '<span class="costs">' + Object.keys(cost).map((r) => resChip(r, cost[r], reg ? (reg.st[r] || 0) : undefined)).join('') + '</span>';
   // recompensa como o motor vai pagar agora (E.rewardPreview: bônus de dados, recrutamento ou carta, espaço, descoberta)
   function rewardHTML(rw, rid, m) {
@@ -214,8 +216,8 @@
   function renderChrome() {
     $('#top').innerHTML = `<div class="logo"><span class="sun"></span><span class="txt">HELIOS <b>IDLE</b></span></div>
       <span class="uni-chip" data-u="uni"></span><span class="top-spacer"></span>
-      <span class="cur data" title="Dados de pesquisa (permanentes)">${A.rg('data', 16)}<span data-u="data"></span></span>
-      <span class="cur frag" title="Fragmentos de Singularidade">${A.rg('frag', 16)}<span data-u="frags"></span></span>
+      <span class="cur data" title="Dados de pesquisa (permanentes)">${A.rg('data', 22)}<span data-u="data"></span></span>
+      <span class="cur frag" title="Fragmentos de Singularidade">${A.rg('frag', 22)}<span data-u="frags"></span></span>
       <button class="commander-chip" data-a="profile" data-k="commander-profile" aria-label="${S.profile ? 'Editar comandante ' + esc(S.profile.name) : 'Criar comandante'}" title="${S.profile ? esc(S.profile.name) : 'Criar comandante'}">${S.profile ? avatarArt(S.profile.avatar) : A.ic('crew', 22)}<span>${S.profile ? esc(S.profile.name) : 'Comandante'}</span></button>
       <button class="save-warn hidden" data-a="nav|settings" data-u="savest" title="O progresso não está sendo salvo neste navegador">${A.ic('warn', 14)} Não salvo</button>
       <button class="icon-btn chest-btn hidden" data-a="openchest" data-u="chestbtn" title="Abrir Baú de Suprimentos" aria-label="Abrir Baú de Suprimentos">${A.ic('chest')}<span class="badge" data-u="chestn"></span></button>
@@ -356,7 +358,7 @@
     const cost = E.uCost(S, rid, bid, m); const mine = reg.hold && reg.hold.bid === bid;
     if (mine) {
       const miss = Object.keys(cost).filter((r) => (reg.st[r] || 0) + 1e-9 < cost[r]);
-      setH(el, `<div class="hold-on small"><span class="gold">${A.ic('lock', 12)} Reservando para o Nv ${bs.lvl + 1}</span>${miss.length ? ' — falta ' + miss.map((r) => A.rg(r) + ' ' + F.n(cost[r] - (reg.st[r] || 0))).join(' ') : ''}. Consumidores e rotas da região não usam esse material; a melhoria acontece sozinha. <button class="btn ghost sm" data-a="hold|${rid}|${bid}">Cancelar reserva</button></div>`);
+      setH(el, `<div class="hold-on small"><span class="gold">${A.ic('lock', 12)} Reservando para o Nv ${bs.lvl + 1}</span>${miss.length ? ' — falta ' + miss.map((r) => A.rg(r, IC_COST) + ' ' + F.n(cost[r] - (reg.st[r] || 0))).join(' ') : ''}. Consumidores e rotas da região não usam esse material; a melhoria acontece sozinha. <button class="btn ghost sm" data-a="hold|${rid}|${bid}">Cancelar reserva</button></div>`);
       return;
     }
     if (E.afford(reg, cost)) { setH(el, ''); return; }
@@ -508,7 +510,7 @@
     const rwEl = el.querySelector('.rw'); if (rwEl) setH(rwEl, rewardHTML(x.md.rw, rid, m));
     if (x.md.t === 'pay') {
       const pr = E.projectProgress(S, 'm:' + id, x.md.cost); const reg = S.run.regions[rid];
-      const pl = el.querySelector('.paylist'); if (pl) setH(pl, Object.keys(x.md.cost).map((r) => `<span class="chip ${(pr.st[r] || 0) >= x.md.cost[r] ? 'ok' : (reg.st[r] || 0) < 1 ? 'lack' : ''}">${A.rg(r)} ${F.n(Math.min(pr.st[r] || 0, x.md.cost[r]))}/${F.n(x.md.cost[r])}</span>`).join(''));
+      const pl = el.querySelector('.paylist'); if (pl) setH(pl, Object.keys(x.md.cost).map((r) => `<span class="chip ${(pr.st[r] || 0) >= x.md.cost[r] ? 'ok' : (reg.st[r] || 0) < 1 ? 'lack' : ''} res-cost">${A.rg(r, IC_COST)} ${F.n(Math.min(pr.st[r] || 0, x.md.cost[r]))}/${F.n(x.md.cost[r])}</span>`).join(''));
       const pb = el.querySelector('[data-a^="contrib"]'); if (pb) setD(pb, p.done);
     }
   };
@@ -517,7 +519,7 @@
     const key = a[1]; const info = E.projectInfo(S, key);
     if (!info.cost) { setH(el, ''); return; }
     const pr = E.projectProgress(S, key, info.cost); const reg = S.run.regions[info.rid];
-    setH(el, Object.keys(info.cost).map((r) => { const have = Math.min(pr.st[r] || 0, info.cost[r]); return `<span>${A.rg(r, 0, 1)} ${D.res[r].name}</span><div class="bar ${have >= info.cost[r] ? 'ok' : 'gold'}"><i style="width:${have / info.cost[r] * 100}%"></i></div><span class="num small">${F.n(have)}/${F.n(info.cost[r])} <span class="dim">(estoque ${F.n(reg.st[r] || 0)})</span></span>`; }).join(''));
+    setH(el, Object.keys(info.cost).map((r) => { const have = Math.min(pr.st[r] || 0, info.cost[r]); return `<span>${A.rg(r, IC_COST, 1)} ${D.res[r].name}</span><div class="bar ${have >= info.cost[r] ? 'ok' : 'gold'}"><i style="width:${have / info.cost[r] * 100}%"></i></div><span class="num small">${F.n(have)}/${F.n(info.cost[r])} <span class="dim">(estoque ${F.n(reg.st[r] || 0)})</span></span>`; }).join(''));
   };
   U.projbtn = (el, a) => { const info = E.projectInfo(S, a[1]); if (!info.cost) { setD(el, true); return; } const reg = S.run.regions[info.rid]; const pr = E.projectProgress(S, a[1], info.cost); setD(el, !info.avail || !Object.keys(info.cost).some((r) => (pr.st[r] || 0) < info.cost[r] && (reg.st[r] || 0) >= 0.5)); };
   // rotas
@@ -548,7 +550,7 @@
   U.rnew = (el, a, m) => {
     const nr = ui.nr; if (!nr.to || nr.from === nr.to) { setH(el, '<span class="muted">Escolha origem e destino diferentes.</span>'); return; }
     const fake = { from: nr.from, to: nr.to, lvl: 1 }; const i = E.routeInfo(S, fake, m); const c = E.routeCost(S, m, nr.from); const reg = S.run.regions[nr.from];
-    setH(el, `<div class="small">${F.n(i.d, 2)} UA · viagem ${F.t(i.T)} · ${A.rg('fuel')} ${F.n(i.fuel)} por viagem · carga ${F.n(i.cap)} ${i.win ? '· <span class="win">janela favorável agora</span>' : ''}</div><div class="row wrap small"><span class="muted">Custo do cargueiro (em ${regName(nr.from)}):</span>${costHTML(c, reg)}</div>`);
+    setH(el, `<div class="small">${F.n(i.d, 2)} UA · viagem ${F.t(i.T)} · ${A.rg('fuel', IC_COST)} ${F.n(i.fuel)} por viagem · carga ${F.n(i.cap)} ${i.win ? '· <span class="win">janela favorável agora</span>' : ''}</div><div class="row wrap small"><span class="muted">Custo do cargueiro (em ${regName(nr.from)}):</span>${costHTML(c, reg)}</div>`);
     const b = $('#nr-btn'); if (b) setD(b, !E.afford(reg, c));
   };
   // tripulação
@@ -632,7 +634,8 @@
     const reg = S.run.regions[rid]; const set = new Set();
     for (const b of E.bList(S, rid)) { const d = D.buildings[b]; for (const r in (d.in || {})) set.add(r); for (const r in (d.out || {})) set.add(r); for (const r in d.cost) set.add(r); }
     for (const r in reg.st) if (reg.st[r] >= 0.5) set.add(r);
-    for (const k of ['dyson', 'core', 'launch:' + E.nextRegion(rid)]) { const i = E.projectInfo(S, k); if (i.avail && i.rid === rid) for (const r in i.cost) set.add(r); }
+    const nr = E.nextRegion(rid); // Netuno é a última região: não há lançamento seguinte
+    for (const k of ['dyson', 'core'].concat(nr ? ['launch:' + nr] : [])) { const i = E.projectInfo(S, k); if (i.avail && i.rid === rid) for (const r in i.cost) set.add(r); }
     set.delete('data');
     return D.resOrder.filter((r) => set.has(r));
   }
@@ -654,7 +657,7 @@
     // Peças da tela da região. No celular o HTML segue a ordem de prioridade (missões, gargalo, ação, detalhes),
     // para que leitura, foco e aparência coincidam; no computador, duas colunas (produção | missões).
     const P = {
-      stock: `<div class="panel o-stock"><h3>Estoque da região <span class="r small muted">EXP = exportar excedente à Terra quando cheio</span></h3><div class="res-strip">${res.map((r) => `<div class="res"><div class="top">${A.rg(r, 0, 1)} ${D.res[r].name}</div><div class="val" data-u="resv|${rid}|${r}"></div><div class="rate" data-u="resr|${rid}|${r}"></div><div class="bar"><i data-u="resb|${rid}|${r}"></i></div><button class="exp" data-a="exp|${rid}|${r}" data-u="rese|${rid}|${r}" aria-label="EXP: exportar excedente de ${D.res[r].name}" aria-pressed="${!!S.run.regions[rid].exp[r]}" title="Exportar excedente: quando o estoque enche, a produção continua, os cargueiros descarregam e o excesso vai para a Terra"></button></div>`).join('')}</div></div>`,
+      stock: `<div class="panel o-stock"><h3>Estoque da região <span class="r small muted">EXP = exportar excedente à Terra quando cheio</span></h3><div class="res-strip">${res.map((r) => `<div class="res"><div class="top">${A.rg(r, IC_STOCK, 1)} <span class="rname">${D.res[r].name}</span></div><div class="val" data-u="resv|${rid}|${r}"></div><div class="rate" data-u="resr|${rid}|${r}"></div><div class="bar"><i data-u="resb|${rid}|${r}"></i></div><button class="exp" data-a="exp|${rid}|${r}" data-u="rese|${rid}|${r}" aria-label="EXP: exportar excedente de ${D.res[r].name}" aria-pressed="${!!S.run.regions[rid].exp[r]}" title="Exportar excedente: quando o estoque enche, a produção continua, os cargueiros descarregam e o excesso vai para a Terra"></button></div>`).join('')}</div></div>`,
       energy: `<div class="panel o-energy"><div class="energy" data-u="energy|${rid}"></div></div>`,
       pend: `<div class="pendsup o-pend" data-u="pend|${rid}"></div>`,
       bneck: `<div class="bneck o-bneck" data-u="bneck|${rid}"></div>`,
@@ -935,7 +938,7 @@
       h += `<div class="branch" style="--bc:${B.color}"><h4>${B.name}</h4>` + Object.keys(D.research).filter((id) => D.research[id].br === br).map((id) => {
         const n = D.research[id]; const st = E.resState(S, id); const lvl = st.lvl;
         return `<button type="button" class="node ${sel === id ? 'sel' : ''}" data-a="rsel|${id}" data-u="rnode|${id}" aria-pressed="${sel === id}" aria-controls="res-detail"><span class="nn">${n.name}</span><span class="pips" aria-hidden="true">${Array.from({ length: n.max }, (_, i) => `<i class="${i < lvl ? 'f' : ''}"></i>`).join('')}</span>
-          <span class="tiny muted">${st.max ? 'Completo' : st.locked ? A.ic('lock', 11) + ' ' + esc(st.why) : (n.cur === 'frag' ? A.rg('frag') : A.rg('data')) + ' ' + F.n(st.cost)}</span></button>`;
+          <span class="tiny muted">${st.max ? 'Completo' : st.locked ? A.ic('lock', 11) + ' ' + esc(st.why) : (n.cur === 'frag' ? A.rg('frag', IC_COST) : A.rg('data', IC_COST)) + ' ' + F.n(st.cost)}</span></button>`;
       }).join('') + '</div>';
     }
     h += '</div>';
@@ -943,7 +946,7 @@
       const n = D.research[sel]; const st = E.resState(S, sel);
       h += `<div class="panel res-detail" id="res-detail" aria-live="polite"><div class="row sb wrap"><div><b>${n.name}</b> <span class="muted small">(${D.branches[n.br].name} · nível ${st.lvl}/${n.max})</span><div class="small">${esc(n.desc)}</div>
         <div class="small">Efeito atual: <b class="cyan">${st.lvl ? effText(sel, st.lvl) : 'nenhum'}</b>${st.max ? '' : ` → próximo: <b class="gold">${effText(sel, st.lvl + 1)}</b>`}</div>${n.disc ? `<div class="small">${E.knows(S, n.disc.d) ? '<span class="ok">✓</span>' : A.ic('lock', 12)} Descoberta exigida${n.disc.from > 1 ? ' a partir do nível ' + n.disc.from : ''}: <b>${D.discoveries[n.disc.d].name}</b> <span class="muted">(${esc(E.discSource(n.disc.d, S))})</span></div>` : ''}${n.opt ? '<div class="small muted">Opcional: não é exigido para avançar.</div>' : ''}${!st.max && st.locked ? `<div class="small bad">${esc(st.why)}</div>` : ''}</div>
-        ${st.max ? '<span class="chip ok">Completo</span>' : `<button class="btn ${n.cur === 'frag' ? 'purple' : ''}" data-a="rbuy|${sel}|${st.lvl}" data-k="rbuy" data-u="rbuy|${sel}">Pesquisar · ${n.cur === 'frag' ? A.rg('frag') : A.rg('data')} ${F.n(st.cost)}</button>`}</div></div>`;
+        ${st.max ? '<span class="chip ok">Completo</span>' : `<button class="btn ${n.cur === 'frag' ? 'purple' : ''}" data-a="rbuy|${sel}|${st.lvl}" data-k="rbuy" data-u="rbuy|${sel}">Pesquisar · ${n.cur === 'frag' ? A.rg('frag', IC_COST) : A.rg('data', IC_COST)} ${F.n(st.cost)}</button>`}</div></div>`;
     } else h += '<p class="small muted">Toque em um projeto para ver o benefício e o custo antes de confirmar.</p>';
     return h;
   }

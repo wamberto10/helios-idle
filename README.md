@@ -64,6 +64,7 @@ Tempos medidos pelo bot (jogo perfeito, sem pausas; mediana de 5 inícios ligeir
 | `tools/simular-campanhas.js`, `tools/verificar-balanceamento.js`, `tools/verificar-offline.js`, `tools/verificar-recompensas-missoes.js` | Simulações de balanceamento (campanhas, ausência de 8h, prêmios das missões); resultados em `artifacts/` |
 | `tools/teste-interface.html` | Testes da interface no navegador |
 | `assets/` | Imagens opcionais, registradas em `assets/manifest.js` (veja `ASSETS.md`) |
+| `assets/resources/` | Prancha de ícones de recursos e os recortes usados pelo jogo (`icons/`, gerados por `tools/recortar-recursos.js`) |
 
 ## Catálogo gráfico
 

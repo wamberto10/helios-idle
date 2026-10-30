@@ -400,11 +400,16 @@ async function tA11y() {
   const g = await openGame('a11y', 375, 812); await until(() => g.modal()); await g.closeAll();
   const S = g.S(); g.H.UI.go('region', { rid: 'lua' }); await wait(120);
   // A01: custos e receitas identificam o recurso
-  const costIcon = g.q('[data-u="bbuild|lua|extrator"] svg.rg');
-  ok(costIcon && costIcon.getAttribute('role') === 'img' && costIcon.getAttribute('aria-label') === 'Metal', 'A01: custo de construção anuncia o recurso (Metal)');
-  const rec = g.q('[data-u="brecipe|lua|refinaria"] svg.rg[role="img"]');
-  ok(rec && rec.getAttribute('aria-label') === 'Minério', 'A01: insumo da receita anuncia o recurso (Minério)');
-  ok(g.q('.res .top svg.rg').getAttribute('aria-hidden') === 'true', 'A01: ícone ao lado do nome escrito não repete o nome');
+  const nameOf = (el) => el ? (el.tagName === 'IMG' ? el.getAttribute('alt') : el.getAttribute('aria-label')) : null;
+  const costIcon = g.q('[data-u="bbuild|lua|extrator"] .rg');
+  ok(nameOf(costIcon) === 'Metal' && !costIcon.hasAttribute('aria-hidden'), 'A01: custo de construção anuncia o recurso (Metal)');
+  ok(costIcon.tagName === 'IMG' && costIcon.getBoundingClientRect().width === 24, 'ícone de custo com a arte nova, 24 px');
+  const rec = g.q('[data-u="brecipe|lua|refinaria"] .rg:not([aria-hidden="true"])');
+  ok(nameOf(rec) === 'Minério', 'A01: insumo da receita anuncia o recurso (Minério)');
+  const stIcon = g.q('.res .top .rg');
+  ok(stIcon.getAttribute('aria-hidden') === 'true', 'A01: ícone ao lado do nome escrito não repete o nome');
+  ok(stIcon.tagName === 'IMG' && stIcon.getBoundingClientRect().width === 32 && g.q('.res .top .rname').textContent.length > 2, 'estoque com ícone de 32 px e o nome escrito');
+  ok(await until(() => g.qa('img.rg').every((i) => i.complete && i.naturalWidth > 0), 3000), 'todos os ícones de recurso carregaram');
   // A07: ordem do HTML = ordem visual no celular
   const grid = g.q('.region-grid'); const first = grid.querySelector('button, [href], input, select, textarea, summary');
   ok(grid.classList.contains('one') && first && first.closest('.o-mis'), 'A07: no celular o primeiro controle da área é das missões');
@@ -423,7 +428,10 @@ async function tA11y() {
   const cr = (L(dim) + 0.05) / (L([17.274, 30.776, 61.766]) + 0.05);
   ok(cr >= 4.5, 'A03: texto secundário com contraste ' + cr.toFixed(2) + ':1 (mínimo 4,5:1)');
   // A08: nomes completos dos recursos
-  S.settings.dev = true; g.H.dev('ready'); await g.closeAll(); g.H.UI.go('region', { rid: 'jupiter' }); await wait(120);
+  S.settings.dev = true; g.H.dev('ready'); await g.closeAll();
+  const broken = []; for (const rid of g.H.DATA.regionOrder) { try { g.H.UI.go('region', { rid }); if (!g.q('.region-head h2') || g.q('.region-head h2').textContent.trim() !== g.H.DATA.regions[rid].name.toUpperCase() && g.q('.region-head h2').textContent.trim() !== g.H.DATA.regions[rid].name) broken.push(rid); } catch (e) { broken.push(rid + ' (' + e.message + ')'); } }
+  ok(!broken.length, 'a tela de todas as regiões abre, inclusive Netuno' + (broken.length ? ' — falhou: ' + broken.join(', ') : ''));
+  g.H.UI.go('region', { rid: 'jupiter' }); await wait(120);
   const cut = g.qa('.res .top').filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => e.textContent.trim());
   ok(!cut.length, 'A08: nomes dos recursos sem corte em 375 px' + (cut.length ? ' — cortados: ' + cut.join(', ') : ''));
   // A09: campo de reserva da rota com nome

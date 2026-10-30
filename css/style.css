@@ -613,3 +613,16 @@ input[type=number], select, textarea, input[type=text] { border-color: #7a90b6; 
 .dest-list { display: flex; flex-wrap: wrap; gap: 6px; }
 .dest-list .btn.on { border-color: var(--cyan); color: var(--cyan); }
 @media (max-width: 560px) { #toasts .toast:nth-child(n+3) { display: none; } } /* no celular, no máximo dois avisos sobre o conteúdo */
+
+/* ícones de recurso (arte da prancha): custos 24 px, estoque 32 px; texto continua legível ao lado */
+img.rg { display: inline-block; vertical-align: middle; object-fit: contain; flex: none; }
+.chip.res-cost { gap: 4px; padding-top: 2px; padding-bottom: 2px; font-weight: 700; }
+.costs .chip.res-cost { min-height: 30px; }
+.res .top { align-items: center; gap: 8px; font-size: 13px; }
+.res .top img.rg { margin: -2px 0; }
+.res .top .rname { min-width: 0; }
+/* estoque com ícone de 32 px: EXP no canto inferior em todas as larguras; o nome usa a largura toda e só quebra entre palavras */
+.res { padding-bottom: 10px; }
+.res .top { padding-right: 0; overflow-wrap: break-word; }
+.res .exp { top: auto; bottom: 8px; right: 6px; }
+.res .rate { padding-right: 50px; min-height: 22px; }

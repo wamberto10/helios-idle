@@ -561,11 +561,20 @@ function testRewardsV2() {
   assert(rb.ok && !Object.keys(rb.S.run.choices).length, 'escolhas inválidas descartadas ao carregar');
 }
 
+// =============== 13. ÚLTIMA REGIÃO ===============
+function testLastRegion() {
+  section('Netuno (última região): sem lançamento seguinte, consultas não falham');
+  const S = fresh(); for (const rid of RO) S.run.regions[rid].unlocked = true;
+  let r; try { r = E.projectInfo(S, 'launch:undefined'); } catch (e) { r = null; }
+  assert(r && r.avail === false, 'lançamento para destino inexistente é indisponível, sem exceção');
+  assert(E.nextRegion('netuno') === undefined && E.projectInfo(S, 'launch:netuno').rid === 'urano', 'Netuno é a última região; o lançamento para ela continua normal');
+}
+
 let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');

@@ -17,7 +17,8 @@ for (const f of walk('js')) take(f);
 take('assets/manifest.js');
 // imagens usadas pelo jogo: pastas de arte (prévias, galerias e textos de prompts ficam fora)
 for (const dir of fs.readdirSync(path.join(ROOT, 'assets'), { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name)) {
-  for (const f of walk(path.join('assets', dir))) if (/\.(png|jpe?g|webp|svg|woff2?)$/i.test(f)) take(f);
+  // a prancha de recursos (assets/resources/*.png) fica fora: o jogo usa os recortes em assets/resources/icons
+  for (const f of walk(path.join('assets', dir))) if (/\.(png|jpe?g|webp|svg|woff2?)$/i.test(f) && !/^assets[\\/]resources[\\/][^\\/]+$/.test(f)) take(f);
 }
 // index.html: fonte local se existir; sem ela, o CSS já cai para a fonte do sistema
 let html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');

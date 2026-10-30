@@ -16,6 +16,8 @@
       eco: 'assets/portraits/eco.png',
       reliquia: 'assets/portraits/reliquia.png',
     },
+    // ícones de recurso recortados de assets/resources/recursos-helios-idle-v1.png (tools/recortar-recursos.js)
+    resource: Object.fromEntries(['ore', 'metal', 'alloy', 'comp', 'ice', 'gas', 'fuel', 'rare', 'cell', 'fusion', 'hull', 'cryo', 'exotic', 'sat', 'data', 'frag'].map((k) => [k, 'assets/resources/icons/' + k + '.png'])),
     commander: {
       aurora: 'assets/commanders/aurora.png',
       atlas: 'assets/commanders/atlas.png',
