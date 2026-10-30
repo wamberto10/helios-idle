@@ -15,6 +15,8 @@ Grade visual 4 × 4, sem texto embutido:
 
 ## Integração no jogo (30/10/2026)
 
+O grupo também inclui `icons/energy.png`, gerado separadamente na expansão visual final. Esse raio dourado não vem da prancha e não é alterado por `recortar-recursos.js`; seu prompt está em `../prompts-key-art-final.md`.
+
 - `node tools/recortar-recursos.js` recorta a prancha em 16 arquivos de 128 × 128 px em `icons/<id>.png` (cerca de 420 KB no total). Cada ícone é separado pelos pixels conectados: partes de um vizinho que invadem a célula ficam de fora, e partes que passam da borda vêm inteiras. A prancha original não é alterada.
 - Registrados em `assets/manifest.js` (grupo `resource`). O jogo usa `A.rg` em `js/art.js`: **24 px nos custos** (botões de construir/melhorar/ampliar, expedições, entregas, projetos, pesquisa, combustível das rotas) e **32 px no estoque**. Os demais usos continuam no tamanho anterior.
 - Os nomes e as quantidades continuam em texto. O ícone de custo tem `alt` com o nome do recurso; no estoque, onde o nome está escrito ao lado, o ícone é decorativo.

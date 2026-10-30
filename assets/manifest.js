@@ -17,7 +17,7 @@
       reliquia: 'assets/portraits/reliquia.png',
     },
     // ícones de recurso recortados de assets/resources/recursos-helios-idle-v1.png (tools/recortar-recursos.js)
-    resource: Object.fromEntries(['ore', 'metal', 'alloy', 'comp', 'ice', 'gas', 'fuel', 'rare', 'cell', 'fusion', 'hull', 'cryo', 'exotic', 'sat', 'data', 'frag'].map((k) => [k, 'assets/resources/icons/' + k + '.png'])),
+    resource: Object.fromEntries(['ore', 'metal', 'alloy', 'comp', 'ice', 'gas', 'fuel', 'rare', 'cell', 'fusion', 'hull', 'cryo', 'exotic', 'sat', 'data', 'frag', 'energy'].map((k) => [k, 'assets/resources/icons/' + k + '.png'])),
     commander: {
       aurora: 'assets/commanders/aurora.png',
       atlas: 'assets/commanders/atlas.png',
@@ -60,12 +60,21 @@
       netuno: 'assets/regions/netuno.png',
     },
     planet: {},
+    ship: {
+      freighter: 'assets/ships/freighter.png',
+      probe: 'assets/ships/probe.png',
+    },
+    universe: Object.fromEntries(['padrao', 'abundante', 'energetico', 'congelado', 'ancestral'].map((k) => [k, 'assets/universes/' + k + '.png'])),
+    research: Object.fromEntries(['min', 'ind', 'en', 'log', 'exp', 'sg'].map((k) => [k, 'assets/research/' + k + '.png'])),
+    achievement: Object.fromEntries(['auto1', 'route1', 'exp1', 'chest1', 'promo3', 'promo5', 'mars', 'outer', 'edge', 'dyson1', 'dysonR', 'dyson10', 'collapse1', 'collapse3', 'alluni'].map((k) => [k, 'assets/achievements/' + k + '.png'])),
     terrain: {
       lua: 'assets/regions/lua-terreno.png',
       marte: 'assets/regions/marte-terreno.png',
     },
     ui: {
       chest: 'assets/ui/chest.png',
+      anomaly: 'assets/ui/anomaly.png',
+      logo: 'assets/ui/logo.png',
     },
   };
 })(window.H = window.H || {});

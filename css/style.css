@@ -36,6 +36,24 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; letter-spacing: .02em; }
 .bicon { width: 48px; height: 48px; border-radius: 10px; background: rgba(255, 255, 255, .03); flex: none; }
 .rg { vertical-align: -2px; flex: none; }
 .ic { vertical-align: middle; flex: none; }
+.art.ship-art > img, .art.research-badge > img, .art.achievement-medal > img, .art.brand-mark > img { object-fit: contain; }
+.brand-mark { width: 32px; height: 32px; flex: none; vertical-align: middle; }
+.profile-brand .brand-mark { width: 28px; height: 28px; }
+.transport-heading { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+.transport-heading > div { min-width: 0; }
+.ship-art { width: 86px; height: 64px; color: var(--cyan); flex: none; }
+.ship-art.route-ship { width: 56px; height: 40px; }
+.map-ship { pointer-events: none; }
+.map-ship.has-image > circle { visibility: hidden; }
+.branch h4 { display: flex; align-items: center; gap: 8px; }
+.research-badge { width: 36px; height: 36px; flex: none; }
+.art.anomaly-art, .art.universe-art { display: block; width: 100%; aspect-ratio: 5/2; border-radius: 10px; margin-bottom: 12px; }
+.uni-opt .sw { width: 100%; }
+.uni-opt .universe-art { margin: 0; aspect-ratio: 5/2; }
+.ach-grid .ach { display: flex; align-items: center; gap: 9px; }
+.ach-grid .ach > div { min-width: 0; }
+.achievement-medal { width: 48px; height: 48px; flex: none; filter: grayscale(1); opacity: .42; }
+.ach.on .achievement-medal { filter: none; opacity: 1; }
 
 /* ---------- layout ---------- */
 #app { position: relative; z-index: 1; min-height: 100%; display: grid; grid-template-columns: 88px 1fr; grid-template-rows: auto 1fr; grid-template-areas: "top top" "nav main"; }
@@ -179,7 +197,7 @@ textarea { width: 100%; min-height: 90px; font-family: ui-monospace, monospace; 
 .base-slot:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; background: #08203244; }
 .base-help { display: flex; justify-content: space-between; gap: 10px; padding: 9px 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; background: #0a1627; }
 .base-pan-hint { display: none; color: var(--cyan); white-space: nowrap; }
-.region-switch { display: flex; gap: 6px; overflow-x: auto; padding: 10px 0 2px; scrollbar-width: thin; }
+.region-switch { display: flex; gap: 6px; overflow-x: auto; position: relative; padding: 10px 0 2px; scrollbar-width: thin; }
 .rs-btn { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; color: var(--muted); white-space: nowrap; min-height: 36px; font-weight: 600; position: relative; }
 .rs-btn.on { color: var(--text); border-color: var(--cyan); }
 .rs-btn .pl { width: 14px; height: 14px; border-radius: 50%; }
@@ -258,6 +276,8 @@ textarea { width: 100%; min-height: 90px; font-family: ui-monospace, monospace; 
 @keyframes ringp { 50% { stroke-opacity: .2; } }
 .map .pl.sel .selr { stroke: var(--cyan); stroke-width: 2; fill: none; }
 .map .lbl { font-size: 12px; fill: var(--muted); font-family: var(--font); font-weight: 700; pointer-events: none; }
+@media (max-width: 700px) { .map .lbl { font-size: 16px; } }
+@media (max-width: 480px) { .map .lbl { font-size: 22px; } } /* o mapa encolhe no celular: nomes com ~10 px na tela */
 .map .pl.on .lbl { fill: var(--text); }
 .map .route-line { stroke: rgba(63, 224, 255, .35); stroke-width: 1.4; stroke-dasharray: 4 4; }
 .map .route-line.win { stroke: rgba(94, 242, 160, .75); stroke-width: 2; }
@@ -302,7 +322,7 @@ textarea { width: 100%; min-height: 90px; font-family: ui-monospace, monospace; 
 .node.can { border-color: var(--bc); box-shadow: 0 0 10px -3px var(--bc); }
 .node.max { border-color: rgba(94, 242, 160, .35); }
 .node.sel { outline: 2px solid var(--cyan); }
-.res-detail { position: sticky; bottom: calc(var(--nav-h) * 0 + 12px); margin-top: 14px; }
+.res-detail { position: sticky; bottom: calc(var(--nav-h) * 0 + 12px); margin-top: 14px; z-index: 5; background: rgb(12, 22, 46); backdrop-filter: blur(8px); box-shadow: 0 -8px 24px rgba(0, 0, 0, .55); } /* opaco: a árvore rola por trás sem misturar o texto */
 
 /* ---------- expedições ---------- */
 .exp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
@@ -325,7 +345,7 @@ textarea { width: 100%; min-height: 90px; font-family: ui-monospace, monospace; 
 .uni-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
 .uni-opt { padding: 12px; border-radius: 14px; border: 2px solid var(--line2); background: var(--panel2); cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
 .uni-opt.sel { border-color: var(--purple); box-shadow: 0 0 18px -4px var(--purple); }
-.uni-opt .sw { height: 40px; border-radius: 10px; }
+.uni-opt .sw { height: auto; border-radius: 10px; }
 .uni-opt ul { margin: 0; padding-left: 18px; font-size: 12.5px; color: var(--muted); }
 .lists { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; }
 .lists ul { margin: 4px 0 0; padding-left: 18px; color: var(--muted); }
@@ -623,12 +643,13 @@ img.rg { display: inline-block; vertical-align: middle; object-fit: contain; fle
 .costs .chip.res-cost { min-height: 30px; }
 .res .top { align-items: center; gap: 8px; font-size: 13px; }
 .res .top img.rg { margin: -2px 0; }
-.res .top .rname { min-width: 0; }
+.res .top .rname { min-width: 0; hyphens: auto; -webkit-hyphens: auto; } /* "Supercondu-tores" em vez de "Supercondutor / es" */
 /* estoque com ícone de 32 px: EXP no canto inferior em todas as larguras; o nome usa a largura toda e só quebra entre palavras */
 .res { padding-bottom: 10px; }
 .res .top { padding-right: 0; overflow-wrap: break-word; }
 .res .exp { top: auto; bottom: 8px; right: 6px; }
 .res .rate { padding-right: 50px; min-height: 22px; }
+.res .bar { margin-right: 50px; } /* a barra termina antes do botão EXP (não passa por baixo dele) */
 
 /* Painel solar: botão ↑ no canto troca 1 painel por 1 coletor (janela com custo e ganho) */
 .evolve-btn.ready { color: var(--gold); border-color: var(--gold); }

@@ -12,12 +12,12 @@
     return group && Object.prototype.hasOwnProperty.call(group, key) && typeof group[key] === 'string' ? group[key] : '';
   };
   A.paths = {};
-  for (const kind of ['portrait', 'commander', 'building', 'region', 'terrain', 'planet', 'ui', 'resource']) A.paths[kind] = (key) => assetPath(kind, key);
+  for (const kind of ['portrait', 'commander', 'building', 'region', 'terrain', 'planet', 'ui', 'resource', 'ship', 'universe', 'research', 'achievement']) A.paths[kind] = (key) => assetPath(kind, key);
   A.imageLoaded = function (img) {
-    if (img.naturalWidth && img.parentElement) img.parentElement.classList.add('has-image');
+    if ((img.naturalWidth || img.tagName.toLowerCase() === 'image') && img.parentElement) img.parentElement.classList.add('has-image');
   };
   A.imageFailed = function (img) {
-    failedImages.add(img.getAttribute('src'));
+    failedImages.add(img.getAttribute('src') || img.getAttribute('href'));
     if (img.parentElement) img.parentElement.classList.remove('has-image');
     img.remove();
   };
@@ -27,6 +27,20 @@
     const kind = fallback.includes('class="chest-svg ') ? 'art-chest' : '';
     const image = src && !failedImages.has(src) ? `<img src="${src.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" alt="" loading="lazy" decoding="async" onload="H.A.imageLoaded(this)" onerror="H.A.imageFailed(this)">` : '';
     return `<span class="art ${kind} ${cls || ''}">${fallback}${image}</span>`;
+  };
+
+  // As artes são decorativas: os nomes, estados e requisitos permanecem em texto.
+  A.ship = (key, cls) => A.img(A.paths.ship(key), A.ic('ship', 48), 'ship-art ' + (cls || ''));
+  A.mapShip = () => {
+    const src = A.paths.ship('freighter');
+    return `<circle class="shipdot" r="3"/>${src && !failedImages.has(src) ? `<image href="${src}" x="-14" y="-14" width="28" height="28" onload="H.A.imageLoaded(this)" onerror="H.A.imageFailed(this)"/>` : ''}`;
+  };
+  A.researchBadge = (key) => A.img(A.paths.research(key), A.ic('research', 40), 'research-badge');
+  A.medal = (key) => A.img(A.paths.achievement(key), '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 3h9l2 15-9 5zM26 3h9l-2 20-9-5z" fill="#3fe0ff"/><circle cx="24" cy="30" r="14" fill="#b18b41"/><path d="m24 20 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" fill="#ffe39b"/></svg>', 'achievement-medal');
+  A.logo = () => A.img(A.paths.ui('logo'), '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="12" fill="#ffcf5a"/><circle cx="24" cy="24" r="21" fill="none" stroke="#3fe0ff" stroke-width="2" stroke-dasharray="5 5"/></svg>', 'brand-mark');
+  A.universe = (key, cls) => {
+    const color = D.universes[key].sun;
+    return A.img(A.paths.universe(key), `<svg viewBox="0 0 600 240" aria-hidden="true"><rect width="600" height="240" fill="#0b1630"/><circle cx="190" cy="100" r="65" fill="${color}"/><ellipse cx="280" cy="130" rx="245" ry="75" fill="none" stroke="${color}" opacity=".35"/></svg>`, 'universe-art ' + (cls || ''));
   };
 
   // ---------------- RETRATOS ----------------

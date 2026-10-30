@@ -25,6 +25,8 @@
   // tamanhos dos ícones de recurso: custos 24 px, estoque 32 px (o número e o nome continuam em texto)
   const IC_COST = 24, IC_STOCK = 32;
   const resChip = (r, amt, have) => `<span class="chip res-cost ${have !== undefined && have + 1e-9 < amt ? 'lack' : ''}" title="${esc(D.res[r] ? D.res[r].name : r)}">${A.rg(r, IC_COST)} ${F.n(amt)}</span>`;
+  // ponto de quebra opcional em palavras longas (o hífen só aparece se o nome não couber na linha)
+  const softName = (n) => n.replace('Supercondutores', 'Supercondu­tores');
   const costHTML = (cost, reg) => '<span class="costs">' + Object.keys(cost).map((r) => resChip(r, cost[r], reg ? (reg.st[r] || 0) : undefined)).join('') + '</span>';
   // recompensa como o motor vai pagar agora (E.rewardPreview: bônus de dados, recrutamento ou carta, espaço, descoberta)
   function rewardHTML(rw, rid, m) {
@@ -120,7 +122,7 @@
     const avatar = D.commanderAvatars[draft.avatar];
     return `<div class="profile-layout">
       <div class="profile-hero" style="--profile-accent:${avatar.color}">
-        <div class="profile-brand"><span class="profile-sun" aria-hidden="true"></span> HELIOS <b>IDLE</b></div>
+        <div class="profile-brand"><span aria-hidden="true">${A.logo()}</span> HELIOS <b>IDLE</b></div>
         <div class="profile-hero-copy"><span class="profile-eyebrow">Programa de exploração solar</span><span class="profile-mission">SEU LUGAR ENTRE AS ESTRELAS</span></div>
         <div class="profile-preview-portrait" aria-hidden="true">${avatarArt(draft.avatar)}</div>
         <div class="profile-pass"><span class="profile-eyebrow">Comando Hélios</span><strong class="profile-preview-name">${esc(draft.name || 'Seu comandante')}</strong><span class="profile-preview-role">${esc(avatar.label)}</span><span class="profile-pass-line" aria-hidden="true"></span><span class="profile-pass-bottom">EXPLORAR · AUTOMATIZAR · ATRAVESSAR</span></div>
@@ -214,7 +216,7 @@
   const NAV_DOT = { region: 'missões prontas', crew: 'promoção disponível', exp: 'baú ou expedição para abrir', sing: 'Colapso ou diretriz disponível', research: 'pesquisa disponível' };
   const NAVI = { map: 'map', region: 'region', crew: 'crew', research: 'research', exp: 'exp', sing: 'sing', wiki: 'book', settings: 'settings' };
   function renderChrome() {
-    $('#top').innerHTML = `<div class="logo"><span class="sun"></span><span class="txt">HELIOS <b>IDLE</b></span></div>
+    $('#top').innerHTML = `<div class="logo"><span aria-hidden="true">${A.logo()}</span><span class="txt">HELIOS <b>IDLE</b></span></div>
       <span class="uni-chip" data-u="uni"></span><span class="top-spacer"></span>
       <span class="cur data" title="Dados de pesquisa (permanentes)">${A.rg('data', 22)}<span data-u="data"></span></span>
       <span class="cur frag" title="Fragmentos de Singularidade">${A.rg('frag', 22)}<span data-u="frags"></span></span>
@@ -278,6 +280,8 @@
     ui.restoreY = ui.hl ? null : sy; // ao ir para uma instalação (ui.hl), a rolagem é intencional
     for (const d of el.querySelectorAll('details[data-coll]')) d.addEventListener('toggle', () => { ui.open[d.dataset.coll] = d.open; });
     mountRegionBase();
+    // fileira de planetas (rola na horizontal no celular): o planeta aberto fica visível
+    const rsOn = el.querySelector('.region-switch .rs-btn.on'); if (rsOn) { const bar = rsOn.parentElement; if (rsOn.offsetLeft < bar.scrollLeft || rsOn.offsetLeft + rsOn.offsetWidth > bar.scrollLeft + bar.clientWidth) bar.scrollLeft = rsOn.offsetLeft - (bar.clientWidth - rsOn.offsetWidth) / 2; }
     const io2 = $('#io'); if (io2 && ioVal) io2.value = ioVal;
     if (key) { const t = findKey(el, key); if (t) t.focus({ preventScroll: true }); }
     ui.nodes = Array.from(document.querySelectorAll('#top [data-u], #nav [data-u], #screen [data-u]'));
@@ -506,6 +510,7 @@
     const cost = E.uCost(S, rid, bid, m); const ly = E.isSci(def) ? D.science.levelYield : D.levelYield; const y0 = ly(bs.lvl), y1 = ly(bs.lvl + 1);
     let ben = 'Rendimento ' + F.x(y0) + ' → ' + F.x(y1);
     if (def.gen) ben = '+' + F.n(E.genOf(S, rid, bid, m, bs.n, bs.lvl + 1) - E.genOf(S, rid, bid, m, bs.n, bs.lvl)) + ' MW';
+    else if (def.storage) ben = '+' + F.pct(def.storage * bs.n * (D.levelYield(bs.lvl + 1) - D.levelYield(bs.lvl))) + ' armazenamento'; // armazém não tem rendimento
     else if (!def.passive) { const d = E.bRate(S, rid, bid, m, 0, 1) - E.bRate(S, rid, bid, m); ben += ' (+' + F.n(d, d < 10 ? 2 : undefined) + '/s)'; }
     setD(el, !E.afford(reg, cost));
     setH(el, `<span>Melhorar → Nv ${bs.lvl + 1}</span>${costHTML(cost, reg)}<span class="benefit">${ben}</span>`);
@@ -677,7 +682,7 @@
     // Peças da tela da região. No celular o HTML segue a ordem de prioridade (missões, gargalo, ação, detalhes),
     // para que leitura, foco e aparência coincidam; no computador, duas colunas (produção | missões).
     const P = {
-      stock: `<div class="panel o-stock"><h3>Estoque da região <span class="r small muted">EXP = exportar excedente à Terra quando cheio</span></h3><div class="res-strip">${res.map((r) => `<div class="res"><div class="top">${A.rg(r, IC_STOCK, 1)} <span class="rname">${D.res[r].name}</span></div><div class="val" data-u="resv|${rid}|${r}"></div><div class="rate" data-u="resr|${rid}|${r}"></div><div class="bar"><i data-u="resb|${rid}|${r}"></i></div><button class="exp" data-a="exp|${rid}|${r}" data-u="rese|${rid}|${r}" aria-label="EXP: exportar excedente de ${D.res[r].name}" aria-pressed="${!!S.run.regions[rid].exp[r]}" title="Exportar excedente: quando o estoque enche, a produção continua, os cargueiros descarregam e o excesso vai para a Terra"></button></div>`).join('')}</div></div>`,
+      stock: `<div class="panel o-stock"><h3>Estoque da região <span class="r small muted">EXP = exportar excedente à Terra quando cheio</span></h3><div class="res-strip">${res.map((r) => `<div class="res"><div class="top">${A.rg(r, IC_STOCK, 1)} <span class="rname">${softName(D.res[r].name)}</span></div><div class="val" data-u="resv|${rid}|${r}"></div><div class="rate" data-u="resr|${rid}|${r}"></div><div class="bar"><i data-u="resb|${rid}|${r}"></i></div><button class="exp" data-a="exp|${rid}|${r}" data-u="rese|${rid}|${r}" aria-label="EXP: exportar excedente de ${D.res[r].name}" aria-pressed="${!!S.run.regions[rid].exp[r]}" title="Exportar excedente: quando o estoque enche, a produção continua, os cargueiros descarregam e o excesso vai para a Terra"></button></div>`).join('')}</div></div>`,
       energy: `<div class="panel o-energy"><div class="energy" data-u="energy|${rid}"></div></div>`,
       pend: `<div class="pendsup o-pend" data-u="pend|${rid}"></div>`,
       bneck: `<div class="bneck o-bneck" data-u="bneck|${rid}"></div>`,
@@ -810,7 +815,7 @@
     const opt = (sel, v) => unl.map((r) => `<option value="${r}" ${r === v ? 'selected' : ''}>${D.regions[r].name}</option>`).join('');
     const ropt = (v, none) => (none ? '<option value="">—</option>' : '') + D.resOrder.map((r) => `<option value="${r}" ${r === v ? 'selected' : ''}>${D.res[r].name}</option>`).join('');
     const routes = S.run.routes.filter((r) => r.from === rid || r.to === rid); // só as rotas que saem ou chegam no planeta aberto
-    let h = `<div class="panel"><h3>Nova rota</h3><div class="newroute">
+    let h = `<div class="panel"><div class="transport-heading">${A.ship('freighter')}<div><h3>Nova rota</h3><p class="tiny muted">Cargueiros orbitais · rede de transporte</p></div></div><div class="newroute">
       <label>Origem<select data-ch="nr|from">${opt(0, ui.nr.from)}</select></label>
       <label>Destino<select data-ch="nr|to">${opt(0, ui.nr.to)}</select></label>
       <label>Recurso transportado<select data-ch="nr|res">${ropt(ui.nr.res)}</select></label>
@@ -820,7 +825,7 @@
       <div class="row sb" style="margin:12px 0"><b>Rotas de ${D.regions[rid].name} (${routes.length})</b><span class="tiny muted">Saem ou chegam em ${D.regions[rid].name}</span></div>
       <div class="col">`;
     h += routes.map((rt) => `<div class="route">
-        <div class="path">${regName(rt.from)} ${A.ic('ship', 16)} ${regName(rt.to)} <span class="chip">Cargueiro Nv ${rt.lvl}</span></div>
+        <div class="path">${A.ship('freighter', 'route-ship')}${regName(rt.from)} <span aria-hidden="true">→</span> ${regName(rt.to)} <span class="chip">Cargueiro Nv ${rt.lvl}</span></div>
         <div class="small" data-u="rstat|${rt.id}"></div><div class="bar"><i data-u="rprog|${rt.id}"></i></div>
         <div class="small muted" data-u="rinfo|${rt.id}"></div>
         <div class="cfg"><span class="muted">Prioridade:</span>${[0, 1, 2].map((i) => `<select data-ch="rres|${rt.id}|${i}" aria-label="Recurso ${i + 1} da rota ${esc(regName(rt.from))} → ${esc(regName(rt.to))}">${ropt(rt.res[i] || '', i > 0)}</select>`).join('')}
@@ -860,7 +865,7 @@
   function initMap() {
     mapEls = { pl: {}, routes: $('#routes'), dyson: $('#dyson') };
     for (const rid of RO.concat('terra')) mapEls.pl[rid] = document.getElementById('mp-' + rid);
-    let r = ''; for (const rt of S.run.routes) r += `<line class="route-line" id="rl-${rt.id}"/><circle class="shipdot" r="3" id="rs-${rt.id}"/>`;
+    let r = ''; for (const rt of S.run.routes) r += `<line class="route-line" id="rl-${rt.id}"/><g class="map-ship" id="rs-${rt.id}" aria-hidden="true">${A.mapShip()}</g>`;
     mapEls.routes.innerHTML = r;
     const n = S.run.dyson.stage * 8; let d = '';
     for (let i = 0; i < n; i++) { const ring = 34 + (i % 3) * 7; const a = i / n * 6.283; d += `<rect class="sat" x="${(Math.cos(a) * ring).toFixed(1)}" y="${(Math.sin(a) * ring).toFixed(1)}" width="3" height="3"/>`; }
@@ -874,7 +879,9 @@
       const a = P[rt.from], b = P[rt.to]; l.setAttribute('x1', a.x); l.setAttribute('y1', a.y); l.setAttribute('x2', b.x); l.setAttribute('y2', b.y);
       l.classList.toggle('win', E.routeInfo(S, rt, m).win);
       let k = rt.st === 'out' ? rt.t / rt.T : rt.st === 'wait' ? 1 : rt.st === 'back' ? 1 - rt.t / rt.T : 0;
-      s.setAttribute('cx', a.x + (b.x - a.x) * k); s.setAttribute('cy', a.y + (b.y - a.y) * k); s.style.opacity = rt.st === 'idle' ? 0.3 : 1;
+      const x = a.x + (b.x - a.x) * k, y = a.y + (b.y - a.y) * k;
+      const angle = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI - 25 + (rt.st === 'back' ? 180 : 0);
+      s.setAttribute('transform', `translate(${x} ${y}) rotate(${angle})`); s.style.opacity = rt.st === 'idle' ? 0.3 : 1;
     }
     if (mapEls.dyson && !H.reduceMotion()) mapEls.dyson.setAttribute('transform', `rotate(${(t * 6) % 360})`);
   }
@@ -986,7 +993,7 @@
     h += `<div class="panel disc-panel"><h3>Descobertas <span class="r small muted">${known}/${D.discOrder.length} · obtidas em missões, permanentes</span></h3><div class="row wrap small">${D.discOrder.map((d) => { const k = E.knows(S, d); return `<span class="chip ${k ? 'ok' : 'muted'}" title="${esc(k ? D.discoveries[d].desc : 'Obtida em ' + E.discSource(d, S))}">${k ? '✓' : A.ic('lock', 12)} ${D.discoveries[d].name}</span>`; }).join('')}</div><p class="tiny muted">Pesquisas avançadas exigem a descoberta correspondente, além dos dados.</p></div><div class="tree">`;
     for (const br in D.branches) {
       const B = D.branches[br];
-      h += `<div class="branch" style="--bc:${B.color}"><h4>${B.name}</h4>` + Object.keys(D.research).filter((id) => D.research[id].br === br).map((id) => {
+      h += `<div class="branch" style="--bc:${B.color}"><h4>${A.researchBadge(br)}<span>${B.name}</span></h4>` + Object.keys(D.research).filter((id) => D.research[id].br === br).map((id) => {
         const n = D.research[id]; const st = E.resState(S, id); const lvl = st.lvl;
         return `<button type="button" class="node ${sel === id ? 'sel' : ''}" data-a="rsel|${id}" data-u="rnode|${id}" aria-pressed="${sel === id}" aria-controls="res-detail"><span class="nn">${n.name}</span><span class="pips" aria-hidden="true">${Array.from({ length: n.max }, (_, i) => `<i class="${i < lvl ? 'f' : ''}"></i>`).join('')}</span>
           <span class="tiny muted">${st.max ? 'Completo' : st.locked ? A.ic('lock', 11) + ' ' + esc(st.why) : (n.cur === 'frag' ? A.rg('frag', IC_COST) : A.rg('data', IC_COST)) + ' ' + F.n(st.cost)}</span></button>`;
@@ -1005,7 +1012,7 @@
   // ================= TELA: EXPEDIÇÕES =================
   function renderExp() {
     const m = E.mods(S); const run = S.run;
-    let h = `<div class="screen-title"><h2>Expedições</h2>${run.flags.expeditions ? `<span class="chip cyan" data-u="slots"></span>` : ''}</div>`;
+    let h = `<div class="screen-title"><h2>Expedições</h2>${run.flags.expeditions ? `<span class="chip cyan" data-u="slots"></span>` : ''}</div><div class="panel transport-heading">${A.ship('probe')}<div><h3>Programa de sondas</h3><p class="small muted">Explore sinais e ruínas para trazer conhecimento à missão.</p></div></div>`;
     if (S.perm.chests.length) h += `<div class="panel"><h3>Baús de Suprimentos</h3><div class="chests">${S.perm.chests.map((c) => `<div class="chest-card">${A.img(A.paths.ui('chest'), A.chest(false))}<b class="small">${esc(c.title)}</b><button class="btn gold sm block" data-a="chest|${c.id}">Abrir</button></div>`).join('')}</div></div>`;
     if (!run.flags.expeditions) return h + `<div class="panel empty">${A.ic('lock', 28)}<p>As expedições exigem a <b>Doca Orbital</b>.<br>Ela é montada na missão “Montar a Doca Orbital” da Lua, fase Base Orbital.</p></div>`;
     if (run.exps.length) h += `<div class="panel"><h3>Sondas em campo</h3><div class="exp-grid">${run.exps.map((e) => { const d = D.expeditions[e.id]; return `<div class="exp run"><div class="hd">${d.spec ? A.portraitBox(d.spec, !S.perm.specs[d.spec]) : A.portraitBox(d.recruit, !S.perm.specs[d.recruit])}<div class="grow"><b>${d.name}</b><div class="small muted" data-u="extime|${e.uid}"></div></div></div><div class="bar"><i data-u="exprog|${e.uid}"></i></div><button class="btn gold" data-a="excol|${e.uid}" data-u="excol|${e.uid}">Coletar recompensas</button></div>`; }).join('')}</div></div>`;
@@ -1056,8 +1063,8 @@
       <div class="panel"><h3>Enxame de Dyson <span class="r gold">${run.dyson.stage}/${D.dyson.length} etapas</span></h3><div class="dyson-vis" data-u="dysonvis"></div>
         <p class="small muted">Etapas 1–${D.dysonRequired} formam o enxame (requisito do Colapso). Etapas extras rendem mais fragmentos. Bônus atual: +${F.pct(D.dysonEnergyPerStage * run.dyson.stage)} de energia em todas as regiões.</p>
         ${dInfo.avail ? projCard('dyson', `Etapa ${run.dyson.stage + 1} — entregue em Mercúrio`, 'Os recursos saem do estoque de Mercúrio. Use rotas para abastecê-lo.', 'gold') : dInfo.done ? '<p class="gold">Enxame completo!</p>' : '<p class="small muted">' + A.ic('lock', 14) + ' Disponível em Mercúrio, fase “Fundação do Enxame”.</p>'}</div>
-      <div class="panel"><h3>Anomalia de Netuno</h3>${run.core ? '<p class="purple">O Núcleo da Singularidade está ativo.</p>' : E.projectInfo(S, 'core').avail ? projCard('core', 'Núcleo da Singularidade', 'Entregue em Netuno.', 'purple') : `<p class="small muted">${A.ic('lock', 14)} ${run.regions.netuno.unlocked ? 'Conclua a fase “Sinal Fantasma” para revelar o projeto.' : 'Um sinal regular vem da borda do sistema. Alcance Netuno para investigá-lo.'}</p>`}</div>
-      <div class="panel"><h3>${D.universes[run.universe].name}</h3><p class="small">${esc(D.universes[run.universe].desc)}</p><ul class="small muted">${D.universes[run.universe].traits.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+      <div class="panel anomaly-panel"><div aria-hidden="true">${A.img(A.paths.ui('anomaly'), A.terrain('netuno'), 'anomaly-art')}</div><h3>Anomalia de Netuno</h3>${run.core ? '<p class="purple">O Núcleo da Singularidade está ativo.</p>' : E.projectInfo(S, 'core').avail ? projCard('core', 'Núcleo da Singularidade', 'Entregue em Netuno.', 'purple') : `<p class="small muted">${A.ic('lock', 14)} ${run.regions.netuno.unlocked ? 'Conclua a fase “Sinal Fantasma” para revelar o projeto.' : 'Um sinal regular vem da borda do sistema. Alcance Netuno para investigá-lo.'}</p>`}</div>
+      <div class="panel"><div aria-hidden="true">${A.universe(run.universe, 'current-universe')}</div><h3>${D.universes[run.universe].name}</h3><p class="small">${esc(D.universes[run.universe].desc)}</p><ul class="small muted">${D.universes[run.universe].traits.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
         ${Object.keys(run.choices || {}).length ? `<b class="small">Benefícios escolhidos neste universo</b><ul class="small">${Object.keys(run.choices).map((cid) => { const o = D.choiceOptions.find((x) => x.id === run.choices[cid]); return `<li>${esc(D.choices[cid].title)}: <b>${o.name}</b> — ${esc(o.desc)}</li>`; }).join('')}</ul>` : ''}
         <b class="small">Diretrizes deste universo (opcionais)</b><div class="col" style="margin-top:6px">${E.dirs(S).map((d) => `<div class="mis ${d.claimed ? '' : ''}" data-u="dir|${d.i}"><div class="t">${esc(E.mTitle(d.md, S, null))}${d.claimed ? ' <span class="ok">✓</span>' : ''}</div><div class="row"><div class="bar grow"><i></i></div><span class="pn small num"></span></div><div class="row sb"><div class="rw">${rewardHTML(d.md.rw, null)}</div><button class="btn gold sm" data-a="dir|${d.i}">${d.claimed ? 'Resgatada' : 'Resgatar'}</button></div></div>`).join('')}</div></div>
     </div><div class="col" style="gap:14px">
@@ -1068,12 +1075,12 @@
     if (can) {
       const offer = E.collapseOffer(S);
       if (!offer.includes(ui.uniSel)) ui.uniSel = null;
-      h += `<b id="uni-lbl">Escolha o destino</b><div class="uni-opts" style="margin-top:8px" role="group" aria-labelledby="uni-lbl">${offer.map((u) => { const U2 = D.universes[u]; return `<button type="button" class="uni-opt ${ui.uniSel === u ? 'sel' : ''}" data-a="uni|${u}" aria-pressed="${ui.uniSel === u}"><span class="sw blk" aria-hidden="true" style="background:radial-gradient(circle at 30% 50%, ${U2.sun}, transparent 45%), linear-gradient(90deg,#0b1630,#160c30)"></span><b>${U2.name}</b>${p.visited[u] ? '<span class="tiny muted">Já visitado</span>' : '<span class="tiny gold">Inédito</span>'}<span class="small">${esc(U2.desc)}</span><span class="ul blk">${U2.traits.map((t) => `<span class="li blk">${esc(t)}</span>`).join('')}</span></button>`; }).join('')}</div>
+      h += `<b id="uni-lbl">Escolha o destino</b><div class="uni-opts" style="margin-top:8px" role="group" aria-labelledby="uni-lbl">${offer.map((u) => { const U2 = D.universes[u]; return `<button type="button" class="uni-opt ${ui.uniSel === u ? 'sel' : ''}" data-a="uni|${u}" aria-pressed="${ui.uniSel === u}"><span class="sw blk" aria-hidden="true">${A.universe(u)}</span><b>${U2.name}</b>${p.visited[u] ? '<span class="tiny muted">Já visitado</span>' : '<span class="tiny gold">Inédito</span>'}<span class="small">${esc(U2.desc)}</span><span class="ul blk">${U2.traits.map((t) => `<span class="li blk">${esc(t)}</span>`).join('')}</span></button>`; }).join('')}</div>
         <button class="btn purple block" style="margin-top:12px" data-a="collapse" ${ui.uniSel ? '' : 'disabled'}>Iniciar Colapso</button>`;
     } else h += `<p class="small muted">Os destinos possíveis aparecem quando todos os requisitos forem cumpridos.</p>`;
     h += `</div>
       <div class="panel"><h3>Universos visitados</h3>${p.universes.length ? `<table class="t"><tr><th>#</th><th>Universo</th><th>Duração</th><th>Dyson</th><th>Fragmentos</th></tr>${p.universes.map((u, i) => `<tr><td>${i + 1}</td><td>${D.universes[u.u].short}</td><td>${F.t(u.time)}</td><td>${u.dyson}</td><td class="purple">+${u.frags}</td></tr>`).join('')}</table>` : '<p class="small muted">Nenhum Colapso realizado ainda.</p>'}</div>
-      <div class="panel"><h3>Conquistas <span class="r small muted">${Object.keys(p.ach).length}/${D.achievements.length}</span></h3><div class="ach-grid">${D.achievements.map((a) => `<div class="ach ${p.ach[a.id] ? 'on' : ''}"><b>${p.ach[a.id] ? '★ ' : ''}${a.name}</b><div class="tiny muted">${a.desc}</div></div>`).join('')}</div></div>
+      <div class="panel"><h3>Conquistas <span class="r small muted">${Object.keys(p.ach).length}/${D.achievements.length}</span></h3><div class="ach-grid">${D.achievements.map((a) => `<div class="ach ${p.ach[a.id] ? 'on' : ''}"><span aria-hidden="true">${A.medal(a.id)}</span><div><b>${a.name}</b><span class="sr-only">${p.ach[a.id] ? ' — conquistada' : ' — ainda não obtida'}</span><div class="tiny muted">${a.desc}</div></div></div>`).join('')}</div></div>
     </div></div>`;
     return h;
   }

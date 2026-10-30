@@ -68,7 +68,7 @@ Tempos medidos pelo bot (jogo perfeito, sem pausas; mediana de 5 inícios ligeir
 
 ## Catálogo gráfico
 
-Abra [assets/galeria-completa.html](assets/galeria-completa.html) para conferir as 47 artes: 11 especialistas, 4 avatares de comandante, 22 instalações, 9 cenários e o baú. O jogo mantém o primeiro modelo, com cabeçalho panorâmico e cartões de produção; o painel experimental de construção está desativado. Os prompts exatos e o inventário dos arquivos estão em [ASSETS.md](ASSETS.md).
+Abra [assets/galeria-completa.html](assets/galeria-completa.html) para conferir as 94 artes: 11 especialistas, 4 avatares de comandante, 22 instalações, 9 cenários, 17 ícones de recursos, 2 naves, 5 universos, 6 emblemas de pesquisa, 15 medalhas, baú, anomalia e logo. O jogo mantém o cabeçalho panorâmico e os cartões de produção; o painel experimental de construção está desativado. Os prompts exatos e o inventário dos arquivos estão em [ASSETS.md](ASSETS.md).
 
 ## Perfil local e pasta de saves
 

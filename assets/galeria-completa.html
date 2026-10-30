@@ -23,8 +23,8 @@
 </head>
 <body>
   <main class="page">
-    <header><div class="brand"><span class="sun" aria-hidden="true"></span><div><h1>HELIOS <span>IDLE</span></h1><p>Catálogo gráfico completo · <span id="total">47</span> artes</p></div></div><a class="play" href="../index.html">Abrir o jogo ↗</a></header>
-    <nav class="filters" aria-label="Filtrar artes"><button type="button" data-filter="all" aria-pressed="true">Todas</button><button type="button" data-filter="portraits" aria-pressed="false">Tripulação</button><button type="button" data-filter="commanders" aria-pressed="false">Comandantes</button><button type="button" data-filter="buildings" aria-pressed="false">Instalações</button><button type="button" data-filter="regions" aria-pressed="false">Cenários</button><button type="button" data-filter="ui" aria-pressed="false">Suprimentos</button></nav>
+    <header><div class="brand"><img src="ui/logo.png" width="48" height="48" alt=""><div><h1>HELIOS <span>IDLE</span></h1><p>Catálogo gráfico completo · <span id="total">94</span> artes</p></div></div><a class="play" href="../index.html">Abrir o jogo ↗</a></header>
+    <nav class="filters" aria-label="Filtrar artes"></nav>
     <div id="catalogo"></div>
     <noscript>Ative JavaScript para mostrar o catálogo. As imagens originais estão nas pastas portraits, buildings, regions e ui.</noscript>
     <footer><b>Explorar. Automatizar. Atravessar.</b><br>Clique em uma arte para abrir o arquivo original. O catálogo não altera sua partida.</footer>
@@ -41,7 +41,13 @@
         {id:'commanders',title:'Seu comandante',kind:'commander',cls:'portrait',grid:'portrait-grid',keys:Object.keys(D.commanderAvatars),def:key=>({name:D.commanderAvatars[key].name,role:D.commanderAvatars[key].label,color:D.commanderAvatars[key].color})},
         {id:'buildings',title:'Instalações',kind:'building',cls:'object',grid:'building-grid',keys:Object.keys(D.buildings),def:key=>({name:D.buildings[key].name,role:D.cats[D.buildings[key].cat].name,color:'#7fdce8'})},
         {id:'regions',title:'Cenários das regiões',kind:'region',cls:'region',grid:'region-grid',keys:D.regionOrder,def:key=>({name:D.regions[key].name,role:D.regions[key].sub,color:D.regions[key].color})},
-        {id:'ui',title:'Suprimentos',kind:'ui',cls:'object',grid:'ui-grid',keys:['chest'],def:()=>({name:'Baú de Suprimentos',role:'Cartas, ciência e recompensas',color:'#ffd071'})}
+        {id:'resources',title:'Recursos',kind:'resource',cls:'object',grid:'building-grid',keys:[...D.resOrder,'data','frag','energy'],def:key=>({name:D.res[key]?.name||({data:'Dados',frag:'Fragmentos',energy:'Energia'})[key],role:'Ícone de recurso',color:D.res[key]?.color||'#ffd071'})},
+        {id:'ships',title:'Naves',kind:'ship',cls:'object',grid:'ui-grid',keys:['freighter','probe'],def:key=>({name:key==='freighter'?'Cargueiro orbital':'Sonda exploratória',role:'Transporte e exploração',color:'#51e1f2'})},
+        {id:'universes',title:'Universos',kind:'universe',cls:'region',grid:'region-grid',keys:D.universeOrder,def:key=>({name:D.universes[key].name,role:D.universes[key].desc,color:D.universes[key].sun})},
+        {id:'research',title:'Pesquisa',kind:'research',cls:'object',grid:'ui-grid',keys:Object.keys(D.branches),def:key=>({name:D.branches[key].name,role:'Emblema do ramo',color:D.branches[key].color})},
+        {id:'achievements',title:'Conquistas',kind:'achievement',cls:'object',grid:'building-grid',keys:D.achievements.map(a=>a.id),def:key=>({name:D.achievements.find(a=>a.id===key).name,role:D.achievements.find(a=>a.id===key).desc,color:'#ffd071'})},
+        {id:'anomaly',title:'Anomalia',kind:'ui',cls:'region',grid:'region-grid',keys:['anomaly'],def:()=>({name:'Anomalia de Netuno',role:'Núcleo da Singularidade',color:'#b07cff'})},
+        {id:'ui',title:'Interface',kind:'ui',cls:'object',grid:'ui-grid',keys:['chest','logo'],def:key=>({name:key==='logo'?'HELIOS — emblema solar':'Baú de Suprimentos',role:key==='logo'?'Identidade da missão':'Cartas, ciência e recompensas',color:'#ffd071'})}
       ];
       let total=0;
       document.getElementById('catalogo').innerHTML=groups.map(g=>{
@@ -49,6 +55,7 @@
         return `<section data-group="${g.id}" aria-labelledby="h-${g.id}"><div class="section-head"><h2 id="h-${g.id}">${g.title}</h2><span class="count">${keys.length} artes</span></div><div class="grid ${g.grid}">${keys.map(key=>{const d=g.def(key),src='../'+M[g.kind][key];return `<a class="card ${g.cls}" href="${esc(src)}" target="_blank" rel="noopener" style="--accent:${esc(d.color)}"><figure><div class="image"><img src="${esc(src)}" alt="${esc(d.name+' — '+d.role)}" decoding="async"></div><figcaption><div class="name">${esc(d.name)}</div><div class="role">${esc(d.role)}</div></figcaption></figure></a>`}).join('')}</div></section>`
       }).join('');
       document.getElementById('total').textContent=total;
+      document.querySelector('.filters').innerHTML='<button type="button" data-filter="all" aria-pressed="true">Todas</button>'+groups.map(g=>`<button type="button" data-filter="${g.id}" aria-pressed="false">${g.title}</button>`).join('');
       document.querySelector('.filters').addEventListener('click',e=>{const b=e.target.closest('button[data-filter]');if(!b)return;document.querySelectorAll('.filters button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));document.querySelectorAll('[data-group]').forEach(x=>{x.hidden=b.dataset.filter!=='all'&&x.dataset.group!==b.dataset.filter})});
     })();
   </script>

@@ -4,9 +4,32 @@ O jogo combina ilustrações raster com arte de reserva em SVG. As imagens dispo
 
 Somente as imagens declaradas no manifesto são solicitadas. As demais continuam em SVG. O SVG permanece visível até a imagem carregar; se um arquivo declarado falhar, o jogo mantém a reserva e evita repetir a solicitação durante aquela sessão. Recarregue a página depois de corrigir ou adicionar arquivos.
 
-## Primeiro lote gráfico
+## Expansão visual — 30/10/2026
 
-O catálogo está concluído: **11 retratos, 4 avatares de comandante, 22 instalações, 9 cenários e 1 baú**, totalizando **47 artes ativas**. Abra [a galeria completa](assets/galeria-completa.html) para ver todas as imagens e filtrar por categoria. O primeiro lote abaixo foi preservado como registro.
+O catálogo ativo agora possui **94 artes**, incluindo 31 novas imagens geradas com `image_gen` embutido, uma chamada por arte. As artes do catálogo anterior foram preservadas.
+
+| Grupo | Novas artes | Uso no jogo |
+|---|---|---|
+| Interface | `assets/ui/anomaly.png`, `logo.png` | Anomalia de Netuno, cabeçalho e criação de comandante; favicon derivado do logo |
+| Naves | `assets/ships/freighter.png`, `probe.png` | Rotas, mapa, expedições e animação do Colapso |
+| Recursos | `assets/resources/icons/energy.png` | Energia, no mesmo carregador dos outros ícones |
+| Universos | 5 PNGs em `assets/universes/` | Universo atual e seleção de destino do Colapso |
+| Pesquisa | 6 PNGs em `assets/research/` | Cabeçalhos dos ramos de pesquisa |
+| Conquistas | 15 PNGs em `assets/achievements/` | Medalhas em cinza antes da conquista e coloridas depois |
+
+Os nomes, as descrições, os requisitos e os estados permanecem em texto acessível. O SVG de reserva continua funcionando caso um PNG falhe. Os planetas e controles pequenos mantêm os vetores próprios.
+
+Prompts exatos e caminhos das saídas originais: [artes principais](assets/prompts-key-art-final.md), [universos e pesquisa](assets/prompts-universes-research-final.md), [emblemas de Exploração e Singularidade](assets/prompts-research-extra.md), [conquistas](assets/prompts-achievements-final.md) e [medalhas finais](assets/prompts-achievements-extra.md).
+
+`tools/exportar-artes-finais.ps1` preserva os originais em `artifacts/artes-finais-originais/` e exporta cópias menores para o jogo, mantendo proporção e transparência. Os originais não entram na distribuição Android. O catálogo completo inclui também os 16 ícones de recursos do lote anterior.
+
+Verificação final: 31 novas artes exportadas de 58,77 MB para 9,37 MB (redução de 84,1%); 94 artes ativas sem caminhos ausentes; 99 PNGs íntegros, incluindo arquivos preservados e favicon. A galeria carregou as 94 artes sem imagens quebradas. A cópia `app/www` foi regenerada e suas imagens conferem com as fontes.
+
+No navegador, passaram 194 verificações gerais de interface e 22 específicas das novas artes em 1280 e 375 px, incluindo carregamento, seleção de universo, posição do cargueiro, retorno do SVG após falha e ausência de rolagem horizontal. Prévia final em `artifacts/preview-artes-finais.jpg`.
+
+## Primeiro lote gráfico — registro histórico
+
+Este lote concluiu **11 retratos, 4 avatares de comandante, 22 instalações, 9 cenários e 1 baú**, totalizando **47 artes** antes dos ícones de recursos e da expansão visual. Abra [a galeria completa](assets/galeria-completa.html) para ver o catálogo atual e filtrar por categoria. O primeiro lote abaixo foi preservado como registro.
 
 | Categoria | Arquivos registrados |
 |---|---|

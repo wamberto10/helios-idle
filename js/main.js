@@ -236,6 +236,7 @@
   };
   function playCollapseFx(sats, routes, uni, done) {
     const c = document.getElementById('fx'); const skip = document.getElementById('fxskip');
+    const probeArt = new Image(); const probeSrc = H.A.paths.ship('probe'); if (probeSrc) probeArt.src = probeSrc;
     const g = c.getContext('2d'); const w = c.width = innerWidth, h = c.height = innerHeight; const cx = w / 2, cy = h / 2;
     c.classList.add('on'); skip.classList.add('on');
     const reduce = H.reduceMotion(); const T = reduce ? 900 : 5200;
@@ -267,7 +268,10 @@
           const q = (t - 0.8) / 0.2;
           const gr = g.createRadialGradient(cx, cy, 0, cx, cy, 30 + q * 160); gr.addColorStop(0, uni.sun); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.beginPath(); g.arc(cx, cy, 30 + q * 160, 0, 6.283); g.fill();
           g.strokeStyle = 'rgba(63,224,255,.8)'; g.beginPath(); g.arc(cx, cy, q * Math.max(w, h) * 0.5, 0, 6.283); g.stroke();
-          g.fillStyle = '#fff'; g.save(); g.translate(cx + q * 120, cy - q * 60); g.rotate(-0.4); g.fillRect(-6, -2, 12, 4); g.fillStyle = '#3fe0ff'; g.fillRect(-12, -1, 6, 2); g.restore();
+          g.save(); g.translate(cx + q * 120, cy - q * 60); g.rotate(-0.4);
+          if (probeArt.complete && probeArt.naturalWidth) g.drawImage(probeArt, -30, -30, 60, 60);
+          else { g.fillStyle = '#fff'; g.fillRect(-6, -2, 12, 4); g.fillStyle = '#3fe0ff'; g.fillRect(-12, -1, 6, 2); }
+          g.restore();
           g.fillStyle = `rgba(232,240,255,${q})`; g.font = '700 22px "Exo 2", system-ui'; g.textAlign = 'center'; g.fillText(uni.name, cx, cy + 120);
         }
       }

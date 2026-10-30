@@ -33,7 +33,7 @@ const ok = (c, msg) => { const li = document.createElement('li'); li.className =
 const sec = (t) => { const li = document.createElement('li'); li.className = 'sec'; li.textContent = t; OUT.appendChild(li); };
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 async function until(fn, ms, step) { const t0 = Date.now(); while (Date.now() - t0 < (ms || 4000)) { try { if (fn()) return true; } catch (e) { /* ainda carregando */ } await wait(step || 50); } return false; }
-function cleanup() { for (const k of Object.keys(localStorage)) if (k.startsWith(PREFIX)) localStorage.removeItem(k); }
+function cleanup() { for (const k of Object.keys(localStorage)) if (k.startsWith(PREFIX) && k.includes('_' + RUN)) localStorage.removeItem(k); }
 async function openGame(slot, w, h, opts) {
   opts = opts || {};
   const f = document.createElement('iframe'); f.width = w || 900; f.height = h || 640;
@@ -462,6 +462,31 @@ async function tWiki() {
   ok(c.H.UI.st.screen === 'wiki' && c.d.documentElement.scrollWidth <= c.w.innerWidth + 1, 'celular: abre a enciclopédia sem estourar a largura');
   close(c);
 }
+async function tReview() {
+  sec('Revisão de layout: celular e textos');
+  const g = await openGame('revisao', 375, 812); await until(() => g.modal()); await g.closeAll();
+  const S = g.S(); S.settings.dev = true; g.H.dev('ready'); await g.closeAll();
+  // fileira de planetas mostra o planeta aberto
+  g.H.UI.go('region', { rid: 'netuno', rtab: 'prod' }); await wait(120); await g.closeAll();
+  const on = g.q('.region-switch .rs-btn.on'), bar = on.parentElement, a1 = on.getBoundingClientRect(), b1 = bar.getBoundingClientRect();
+  ok(a1.left >= b1.left - 1 && a1.right <= b1.right + 1, 'celular: o planeta aberto (Netuno) aparece na fileira de planetas');
+  // barra do estoque não passa por baixo do EXP
+  const hit = g.qa('.res').filter((box) => { const b = box.querySelector('.bar').getBoundingClientRect(), e = box.querySelector('.exp').getBoundingClientRect(); return b.right > e.left + 1 && b.bottom > e.top && b.top < e.bottom; });
+  ok(!hit.length, 'barra do estoque termina antes do botão EXP');
+  // armazém: melhoria mostra armazenamento, não rendimento
+  const reg = S.run.regions.netuno; reg.b.armazem = { n: 2, lvl: 1, p: 0 }; g.H.UI.frame(true); await wait(40);
+  const up = g.q('[data-u="bup|netuno|armazem"] .benefit');
+  ok(up && /armazenamento/.test(up.textContent) && !/Rendimento/.test(up.textContent), 'melhoria do armazém mostra o ganho de armazenamento');
+  // painel de detalhes da pesquisa é opaco (a árvore rola por trás sem misturar texto)
+  g.H.UI.go('research'); await wait(80); g.click('[data-a^="rsel|"]'); await wait(60);
+  const bg = g.w.getComputedStyle(g.q('.res-detail')).backgroundColor; const alpha = (bg.match(/rgba?\(([^)]+)\)/) || [, ''])[1].split(',')[3];
+  ok(alpha === undefined || +alpha >= 0.99, 'painel de detalhes da pesquisa com fundo opaco (' + bg + ')');
+  // nomes do mapa legíveis no celular
+  g.H.UI.go('map'); await wait(80);
+  const hMin = Math.min(...g.qa('#mapsvg text.lbl').map((t) => t.getBoundingClientRect().height));
+  ok(hMin >= 10, 'mapa no celular: nomes dos planetas com pelo menos 10 px (' + Math.round(hMin) + ')');
+  close(g);
+}
 async function tSolarSwap() {
   sec('Painel solar: botão ↑ no canto troca 1 painel por 1 coletor (só onde há coletor)');
   const g = await openGame('solarswap', 375, 812); await until(() => g.modal()); await g.closeAll();
@@ -608,10 +633,62 @@ async function tLayout() {
   }
 }
 
+async function tFinalArt() {
+  sec('Artes finais: carregamento, seleção de universo, mapa e reserva visual');
+  for (const width of [1280, 375]) {
+    const g = await openGame('artes-' + width, width, 900); await g.closeAll();
+    const S = g.S(), D = g.H.DATA;
+    S.settings.dev = true; g.H.dev('ready'); S.events = []; await g.closeAll();
+    S.perm.ach.auto1 = true;
+    const newArts = [
+      ...Object.values(g.H.ASSET_MANIFEST.ship), ...Object.values(g.H.ASSET_MANIFEST.universe),
+      ...Object.values(g.H.ASSET_MANIFEST.research), ...Object.values(g.H.ASSET_MANIFEST.achievement),
+      g.H.ASSET_MANIFEST.ui.anomaly, g.H.ASSET_MANIFEST.ui.logo, g.H.ASSET_MANIFEST.resource.energy,
+    ];
+    const loadFailures = (await Promise.all(newArts.map(src => new Promise(resolve => {
+      const img = new g.w.Image(); img.onload = () => resolve(''); img.onerror = () => resolve(src); img.src = src;
+    })))).filter(Boolean);
+    ok(!loadFailures.length, width + 'px: as 31 novas artes carregam' + (loadFailures.length ? ': ' + loadFailures.join(', ') : ''));
+    g.H.UI.go('sing');
+    ok(g.qa('.achievement-medal').length === 15 && g.q('.ach.on .sr-only').textContent.includes('conquistada'), width + 'px: medalhas mantêm nomes, descrições e estado acessível');
+    const option = g.q('.uni-opt'); g.click(option);
+    ok(g.q('.uni-opt[aria-pressed="true"]') && !g.q('[data-a="collapse"]').disabled, width + 'px: escolher um universo ilustrado habilita o Colapso');
+    const universeImage = g.q('.uni-opt .universe-art img');
+    universeImage.loading = 'eager'; await until(() => universeImage.naturalWidth > 0);
+    ok(g.q('.uni-opt .sw').getBoundingClientRect().height > 50, width + 'px: miniatura do universo mantém área visível');
+    const art = g.q('.anomaly-art'); const image = art.querySelector('img'); image.loading = 'eager';
+    await until(() => image.naturalWidth > 0 && art.classList.contains('has-image'));
+    image.src = 'data:image/png;base64,';
+    await until(() => !art.querySelector('img'));
+    ok(!art.classList.contains('has-image') && g.w.getComputedStyle(art.querySelector('svg')).visibility !== 'hidden', width + 'px: falha da imagem restaura a arte SVG');
+    g.H.UI.go('research'); ok(g.qa('.branch .research-badge').length === 6, width + 'px: seis ramos com emblema e nome');
+    Object.assign(S.run.regions.lua.st, { alloy: 500, fuel: 500, metal: 500 });
+    g.H.E.createRoute(S, 'lua', 'marte', ['metal']);
+    const route = S.run.routes[0]; route.st = 'out'; route.t = 10; route.T = 100;
+    g.H.UI.go('map'); g.H.UI.frame();
+    const ship = g.q('#rs-' + route.id);
+    ok(ship && ship.getAttribute('transform').startsWith('translate(') && !/NaN/.test(ship.getAttribute('transform')), width + 'px: cargueiro acompanha a rota sem posição inválida');
+    await until(() => ship.classList.contains('has-image'));
+    ok(ship.classList.contains('has-image') && g.w.getComputedStyle(ship.querySelector('circle')).visibility === 'hidden', width + 'px: imagem SVG do cargueiro carrega e oculta o marcador de reserva');
+    ship.querySelector('image').setAttribute('href', 'data:image/png;base64,');
+    await until(() => !ship.querySelector('image'));
+    ok(!ship.classList.contains('has-image') && g.w.getComputedStyle(ship.querySelector('circle')).visibility !== 'hidden', width + 'px: falha do cargueiro restaura o marcador no mapa');
+    const overflow = [];
+    for (const screen of ['sing', 'research', 'exp', 'region']) {
+      g.H.UI.go(screen, { rid: 'lua', rtab: 'routes' });
+      const de = g.d.documentElement; if (de.scrollWidth > de.clientWidth + 1) overflow.push(screen);
+    }
+    ok(!overflow.length, width + 'px: telas com artes sem rolagem horizontal' + (overflow.length ? ': ' + overflow.join(', ') : ''));
+    ok(!errs(g).length, width + 'px: artes sem erros de JavaScript'); close(g);
+  }
+}
+
 async function main() {
   document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
   const t0 = Date.now();
-  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tRoutesByPlanet, tWiki, tScrollKeep, tA11y, tLayout]) {
+  const tests = [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tRoutesByPlanet, tWiki, tReview, tScrollKeep, tA11y, tLayout, tFinalArt];
+  const params = new URLSearchParams(location.search);
+  for (const t of tests.filter(t => (params.get('only') !== 'artes' || t === tFinalArt) && (params.get('skip') !== 'artes' || t !== tFinalArt))) {
     try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }
     STAGE.innerHTML = '';
   }
