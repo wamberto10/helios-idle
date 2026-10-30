@@ -571,6 +571,28 @@ function testLastRegion() {
 }
 
 // =============== 14. BOTÃO OPERAR: TODAS AS INSTALAÇÕES MANUAIS ===============
+// =============== 17. GASES SÓ EM VÊNUS (save v3 → v4) ===============
+function testVenusGasHub() {
+  section('Gases só em Vênus: Júpiter importa; saves antigos desmontam as plataformas de Júpiter');
+  assert(D.regions.jupiter.build.plataforma === undefined && D.regions.venus.build.plataforma !== undefined, 'Plataforma Atmosférica só em Vênus');
+  const makers = D.regionOrder.filter((rid) => Object.keys(D.regions[rid].build).some((b) => D.buildings[b].out && D.buildings[b].out.gas));
+  assert(makers.length === 1 && makers[0] === 'venus' && D.resHub.gas === 'venus', 'gases são exclusivos de Vênus');
+  const S = fresh(); for (const r of ['marte', 'cinturao', 'mercurio', 'venus', 'jupiter']) E.unlockRegion(S, r, true);
+  const J = S.run.regions.jupiter;
+  assert(!J.b.plataforma && (J.st.gas || 0) >= 100, 'Júpiter começa sem plataforma e com gases para as refinarias');
+  // save antigo (v3) com 3 plataformas Nv 2 em Júpiter
+  J.b.plataforma = { n: 3, lvl: 2, p: 0 }; J.hold = { bid: 'plataforma' }; J.st = { metal: 10, alloy: 5, gas: 20 };
+  const o = JSON.parse(E.serialize(S)); o.v = 3;
+  const r = E.deserialize(JSON.stringify(o)); assert(r.ok, 'save v3 com plataformas em Júpiter carrega: ' + r.err);
+  const J2 = r.S.run.regions.jupiter, def = D.buildings.plataforma;
+  const metal = [0, 1, 2].reduce((a, i) => a + Math.ceil(def.cost.metal * Math.pow(def.g, i)), 0) + 40, alloy = [0, 1, 2].reduce((a, i) => a + Math.ceil(def.cost.alloy * Math.pow(def.g, i)), 0) + 15;
+  assert(!J2.b.plataforma && !J2.hold, 'plataformas e reserva removidas');
+  assert(J2.st.metal === 10 + metal && J2.st.alloy === 5 + alloy, 'construção e melhoria devolvidas (metal ' + J2.st.metal + ', ligas ' + J2.st.alloy + ')');
+  assert(J2.st.gas >= 150 && /desmontada/.test(r.S.run.log[0].text), 'Júpiter recebe gases e o diário explica');
+  const again = E.deserialize(E.serialize(r.S)); assert(again.ok && again.S.run.regions.jupiter.st.metal === J2.st.metal, 'carregar de novo não devolve outra vez');
+  const V = r.S.run.regions.venus; assert(!V.b.plataforma || V.b.plataforma.n === (S.run.regions.venus.b.plataforma || {}).n, 'plataformas de Vênus intocadas');
+}
+
 // =============== 16. ARTES NO TAMANHO DE INTERFACE ===============
 // Originais grandes ficam em artifacts/ (fora do git); o jogo só baixa cópias leves (tools/otimizar-artes.ps1).
 function testArtSizes() {
@@ -666,7 +688,7 @@ let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub, testArtSizes]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub, testArtSizes, testVenusGasHub]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');

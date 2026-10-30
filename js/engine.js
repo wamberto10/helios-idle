@@ -1432,6 +1432,28 @@
       }
       o.v = 3; return o;
     },
+    // v3 → v4: Júpiter deixou de coletar gases (o polo é Vênus). Construções que não existem mais numa região são
+    // desmontadas e devolvem o que custaram (construção e melhorias, sem descontos); Júpiter recebe gases para
+    // as refinarias seguirem até a rota de Vênus chegar. Carregar de novo não devolve outra vez (já não existem).
+    3: (o) => {
+      const regs = o.run && isObj(o.run.regions) ? o.run.regions : {};
+      for (const rid in regs) {
+        const reg = regs[rid], R = D.regions[rid]; if (!isObj(reg) || !R || !isObj(reg.b)) continue;
+        for (const bid in reg.b) {
+          const def = D.buildings[bid], bs = reg.b[bid]; if (!def || R.build[bid] !== undefined || !isObj(bs)) continue;
+          const n = Math.max(0, Math.floor(+bs.n || 0)), lvl = Math.max(1, Math.floor(+bs.lvl || 1)); const back = {};
+          for (let i = 0; i < n; i++) for (const r in def.cost) back[r] = (back[r] || 0) + Math.ceil(def.cost[r] * Math.pow(def.g, i));
+          if (n) for (let l = 1; l < lvl; l++) { const c = upgradeCostAt(bid, l, { costRed: 1 }); for (const r in c) back[r] = (back[r] || 0) + c[r]; }
+          if (!isObj(reg.st)) reg.st = {};
+          for (const r in back) reg.st[r] = (+reg.st[r] || 0) + back[r];
+          delete reg.b[bid];
+          if (isObj(reg.hold) && reg.hold.bid === bid) delete reg.hold;
+          if (n && rid === 'jupiter' && bid === 'plataforma') reg.st.gas = Math.max(+reg.st.gas || 0, 150);
+          if (n && Array.isArray(o.run.log)) o.run.log.unshift({ kind: 'gold', text: def.name + ' de ' + R.name + ' desmontada: ' + (bid === 'plataforma' ? 'os gases agora vêm de Vênus por rota. ' : '') + 'O material foi devolvido ao estoque.', t: +o.run.time || 0 });
+        }
+      }
+      o.v = 4; return o;
+    },
   };
   E.MIGRATIONS = MIGRATIONS;
 

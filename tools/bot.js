@@ -130,7 +130,13 @@ function ensureRoute(S, to, r, depth, need) {
     if (ex.res[0] !== r && (run.regions[to].st[r] || 0) < Math.max(60, need || 0) && reordered.get(ex) !== ex.trips) { reordered.set(ex, ex.trips); ex.res = [r].concat(ex.res.filter((x) => x !== r)); }
     if (ex.why === 'nofuel') { ensureSupply(S, ex.from, 'fuel', depth + 1); }
     if (ex.why === 'empty') { ensureSupply(S, ex.from, r, depth + 1); }
-    if (ex.lvl < 10) { const c = E.routeUpCost(S, ex); if (E.afford(from, c) && Object.keys(c).every((k) => (from.st[k] || 0) > c[k] * 2)) E.upgradeRoute(S, ex.id); }
+    if (ex.lvl < 10) {
+      // destino sem o recurso: amplia o cargueiro assim que puder e, se a origem não tem o material
+      // (ex.: Vênus não produz metal nem ligas), leva esse material até ela — como um jogador faria
+      const c = E.routeUpCost(S, ex); const starving = (run.regions[to].st[r] || 0) < 30;
+      if (E.afford(from, c) && (starving || Object.keys(c).every((k) => (from.st[k] || 0) > c[k] * 2))) E.upgradeRoute(S, ex.id);
+      else if (starving && depth < 3) for (const k in c) if ((from.st[k] || 0) < c[k]) ensureSupply(S, ex.from, k, depth + 1);
+    }
     return;
   }
   const src = sourceFor(S, to, r); if (!src) return;

@@ -6,7 +6,8 @@
   const D = {};
 
   D.SAVE_KEY = 'helios_idle_save';
-  D.SAVE_VERSION = 3; // v2: ciclos manuais registram máquinas/nível pagos (mc), cargueiros podem aguardar descarga, revisão (rev)
+  D.SAVE_VERSION = 4; // v4: construções que saíram de uma região (Plataforma Atmosférica em Júpiter) são desmontadas com reembolso
+  // v3: descobertas permanentes (perm.disc). v2: ciclos manuais registram máquinas/nível pagos (mc), cargueiros podem aguardar descarga, revisão (rev)
   D.AUTOSAVE_SEC = 20;
   D.OFFLINE_BASE_H = 8;
 
@@ -387,16 +388,17 @@
       ] },
 
     jupiter: { name: 'Júpiter', sub: 'O gigante e suas luas', au: 5.2, vis: 245, period: 3000, a0: 5.2, solar: 0.15, color: '#d8b48a', color2: '#8a5a3a',
-      role: 'Combustíveis avançados e tecnologia de fusão.',
+      role: 'Combustíveis avançados e tecnologia de fusão, com gases trazidos de Vênus.',
       specs: ['ion', 'aura', 'vega'],
       launch: { cost: { fuel: 300, alloy: 80, metal: 200 } },
-      build: { plataforma: 0, quimica: 0, ref_fusao: 0, reator: 0, painel: 0, armazem: 0 },
-      start: { b: { plataforma: 1, ref_fusao: 1, reator: 1 }, st: { alloy: 120, comp: 40, metal: 150, fuel: 60 } },
+      // sem coleta própria de gases: Vênus é o polo e abastece as refinarias de Júpiter por rota
+      build: { quimica: 0, ref_fusao: 0, reator: 0, painel: 0, armazem: 0 },
+      start: { b: { ref_fusao: 1, reator: 1 }, st: { alloy: 120, comp: 40, metal: 150, fuel: 60, gas: 150 } },
       phases: [
         { name: 'Gigante Gasoso', story: 'Tempestades maiores que a Terra. Nas camadas altas, hélio-3 espera.',
           missions: [
-            B('plataforma', 3, { data: 60 }),
-            P('gas', 600, { data: 60 }),
+            RT(1, { data: 60 }),
+            DL('gas', 600, { data: 60 }),
             B('ref_fusao', 2, { data: 60 }),
             C('ref_fusao', 10, REC('ion'), { title: 'Recrutar Íon', desc: 'Opere as refinarias de fusão {n} vezes. Íon chega de Europa.' }),
             P('fusion', 30, { data: 60 }),
@@ -412,7 +414,7 @@
             DY(3, { data: 70 }),
             RT(2, { data: 65 }),
             P('fusion', 500, { data: 65 }),
-            L('plataforma', 3, { data: 65 }),
+            L('reator', 3, { data: 65 }),
             PR(3, { data: 75 }),
           ] },
       ] },
