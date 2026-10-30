@@ -232,7 +232,7 @@
     switch (ui.screen) {
       case 'region': {
         const reg = run.regions[ui.rid];
-        return base + '|' + ui.rid + ui.rtab + '|' + E.bList(S, ui.rid).join(',') + '|' + E.activeMissions(S, ui.rid).map((x) => x.id).join(',') + '|' + run.routes.map((r) => r.id + r.res.join('') + r.auto + r.lvl).join(',') + '|' + run.dyson.stage + run.core + run.flags.expeditions + '|' + ui.regFilter + ui.nr.from + ui.nr.to + ui.nr.res + '|' + run.log.length + (run.log[0] && run.log[0].t);
+        return base + '|' + ui.rid + ui.rtab + '|' + E.bList(S, ui.rid).join(',') + '|' + E.solarInfo(S, ui.rid).primaryBid + '|' + E.activeMissions(S, ui.rid).map((x) => x.id).join(',') + '|' + run.routes.map((r) => r.id + r.res.join('') + r.auto + r.lvl).join(',') + '|' + run.dyson.stage + run.core + run.flags.expeditions + '|' + ui.regFilter + ui.nr.from + ui.nr.to + ui.nr.res + '|' + run.log.length + (run.log[0] && run.log[0].t);
       }
       case 'map': return base + '|' + ui.sel + run.routes.map((r) => r.id).join(',') + run.dyson.stage;
       case 'crew': return base + JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
@@ -249,6 +249,11 @@
     if (force || g !== ui.sig) { ui.sig = g; renderScreen(); }
     refreshModal();
     runUpdaters();
+    if (ui.restoreY !== undefined) { // depois de refazer a tela: conteúdo completo, volta à posição anterior
+      const sc = $('#screen'); if (sc) sc.style.minHeight = '';
+      if (ui.restoreY !== null && Math.abs(window.scrollY - ui.restoreY) > 1) window.scrollTo(0, ui.restoreY);
+      ui.restoreY = undefined;
+    }
     processEvents();
   };
   UI.go = function (screen, opts) {
@@ -263,15 +268,26 @@
     const oldBase = el.querySelector('.base-scroll');
     if (oldBase) baseScroll.set(oldBase.dataset.region, oldBase.scrollLeft);
     const io = $('#io'); const ioVal = io ? io.value : null; const sy = window.scrollY;
+    // A tela refeita só ganha o conteúdo dos atualizadores (data-u) depois: até lá ela mantém a altura anterior,
+    // para o navegador não limitar a rolagem; a posição é restaurada em UI.frame, já com tudo preenchido.
+    el.style.minHeight = el.offsetHeight + 'px';
     el.innerHTML = fn();
     if (Math.abs(window.scrollY - sy) > 1) window.scrollTo(0, sy); // atualização não move a página
+    ui.restoreY = ui.hl ? null : sy; // ao ir para uma instalação (ui.hl), a rolagem é intencional
     for (const d of el.querySelectorAll('details[data-coll]')) d.addEventListener('toggle', () => { ui.open[d.dataset.coll] = d.open; });
     mountRegionBase();
     const io2 = $('#io'); if (io2 && ioVal) io2.value = ioVal;
     if (key) { const t = findKey(el, key); if (t) t.focus({ preventScroll: true }); }
     ui.nodes = Array.from(document.querySelectorAll('#top [data-u], #nav [data-u], #screen [data-u]'));
     if (ui.screen === 'map') initMap();
-    if (ui.hl) { const b = document.getElementById('b-' + ui.hl); if (b) { b.classList.add('hl'); b.scrollIntoView({ behavior: H.reduceMotion() ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => b.classList.remove('hl'), 2200); } ui.hl = null; }
+    if (ui.hl) { const b = revealBuilding(ui.hl); if (b) { b.classList.add('hl'); b.scrollIntoView({ behavior: H.reduceMotion() ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => b.classList.remove('hl'), 2200); } ui.hl = null; }
+  }
+  // Missões e atalhos mantêm os IDs antigos, inclusive quando o módulo está recolhido no cartão solar.
+  function revealBuilding(bid) {
+    const node = document.getElementById('b-' + bid); if (!node) return null;
+    const details = node.closest('details.solar-options');
+    if (details) { details.open = true; ui.open[details.dataset.coll] = true; }
+    return node.closest('.solar-card') || node;
   }
   function mountRegionBase() {
     const host = $('#screen .base-map-host'); if (!host) return;
@@ -424,6 +440,25 @@
     return { reg, def, bs, auto, T, sp };
   }
   U.bcount = (el, a) => { const bs = S.run.regions[a[1]].b[a[2]] || { n: 0, lvl: 1 }; setT(el, bs.n ? '×' + bs.n + ' · Nível ' + bs.lvl : 'Não construída'); };
+  U.solarsummary = (el, a, m) => {
+    const s = E.solarInfo(S, a[1], m); const parts = [];
+    if (s.basicN) parts.push(F.n(s.basicN) + (s.basicN === 1 ? ' painel' : ' painéis') + ' · Nv ' + s.basicLevel);
+    if (s.collectorN) parts.push(F.n(s.collectorN) + (s.collectorN === 1 ? ' coletor' : ' coletores') + ' · Nv ' + s.collectorLevel);
+    setH(el, `<strong class="num cyan">${F.n(s.generation, 1)} MW solares</strong><span class="small muted">${parts.join(' + ') || 'Nenhuma unidade construída'}</span>`);
+  };
+  U.solarevolution = (el, a, m) => {
+    const rid = a[1], s = E.solarInfo(S, rid, m), reg = S.run.regions[rid];
+    const over = Object.keys(s.evolutionCost).filter((r) => s.evolutionCost[r] > E.cap(S, rid, r, m));
+    const label = s.collectorN ? 'Evoluir mais 1 painel' : 'Evoluir para Coletor Solar';
+    const level = s.evolutionLevel > s.collectorLevel ? `<p class="small muted">O coletor mantém o nível ${s.evolutionLevel} do painel. O custo inclui as melhorias necessárias dos coletores.</p>` : '';
+    setH(el.querySelector('.solar-evolution-preview'), s.basicN ? `<div class="solar-comparison num">${F.n(s.generation, 1)} → <b>${F.n(s.evolutionAfter, 1)} MW</b><span class="ok">+${F.n(s.evolutionGain, 1)} MW</span></div>${level}` : '');
+    // O botão permanece no DOM enquanto o estoque muda: atualizar a prévia não perde o foco.
+    const button = el.querySelector('.solar-evolve-btn'), focused = document.activeElement === button;
+    setT(button.querySelector('.solar-evolve-label'), label); setH(button.querySelector('.solar-evolution-costs'), costHTML(s.evolutionCost, reg)); setD(button, !s.canEvolve);
+    const help = el.querySelector('.solar-evolution-help'); setC(help, 'warn', over.length); setC(help, 'muted', !over.length);
+    setT(help, over.length ? 'O custo excede o armazenamento de ' + over.map((r) => D.res[r].name.toLowerCase()).join(', ') + '. Amplie o armazém ou construa um coletor novo nas opções abaixo.' : s.evolutionReason || 'O valor mostrado já desconta o metal básico do painel convertido.');
+    if (focused && button.disabled) el.closest('.solar-card').focus({ preventScroll: true });
+  };
   U.btag = (el, a, m) => {
     const def = D.buildings[a[2]]; const bs = S.run.regions[a[1]].b[a[2]] || {};
     let h;
@@ -454,7 +489,7 @@
     else if (!bs.n) { t = 'Construa para começar a operar.'; }
     else if (bs.pause) { t = 'Pausada'; }
     else if (E.manualWaiting(bs)) { cls = 'warn'; t = E.whyText(S, a[1], bs.why) + ' — o produto do ciclo aguarda espaço para descarregar'; }
-    else if (!auto) { if (bs.on) { cls = 'ok'; t = 'Ciclo manual em andamento…'; } else if (bs.why && bs.why !== 'manual') { cls = 'bad'; t = E.whyText(S, a[1], bs.why); } else { t = 'Aguardando comando — toque em Operar'; } }
+    else if (!auto) { if (bs.on) { cls = 'ok'; t = 'Ciclo manual em andamento…'; } else if (bs.why && bs.why !== 'manual') { cls = 'bad'; t = E.whyText(S, a[1], bs.why); } else { const c = E.canOperate(S, a[1], a[2], m); if (!c.ok && c.why && c.why !== 'running') { cls = c.why.startsWith('full') ? 'warn' : 'bad'; t = E.whyText(S, a[1], c.why) + ' — Operar indisponível'; } else t = 'Aguardando comando — toque em Operar'; } }
     else if (bs.why === 'energylow') { cls = 'warn'; t = 'Limitada por energia (' + F.pct(S.run.regions[a[1]].en.ratio) + ')'; }
     else if (bs.why === 'energy') { cls = 'bad'; t = 'Energia insuficiente'; }
     else if (bs.why) { cls = bs.why.startsWith('full') ? 'warn' : 'bad'; t = E.whyText(S, a[1], bs.why) + (bs.eff > 0.02 ? ' — ' + F.pct(bs.eff) + ' da capacidade' : ''); }
@@ -465,9 +500,9 @@
     const { def, bs, auto } = bInfo(a[1], a[2], m);
     setC(el, 'hidden', def.passive || auto || !bs.n);
     if (def.passive || auto || !bs.n) return;
-    const reg = S.run.regions[a[1]]; let can = !bs.on;
-    if (can && def.in) for (const r in def.in) if ((reg.st[r] || 0) < def.in[r] * bs.n) can = false;
-    setD(el, !can); setH(el, bs.on ? 'Operando…' : `${A.ic('play', 16)} Operar`); setC(el, 'pulse', can && S.run.regions.lua.phase === 0);
+    // mesma regra do motor (E.canOperate): insumos, espaço para o produto e material reservado; o motivo aparece no botão
+    const c = E.canOperate(S, a[1], a[2], m); const why = !c.ok && c.why && c.why !== 'running' ? E.whyText(S, a[1], c.why) : '';
+    setD(el, !c.ok); setH(el, bs.on ? 'Operando…' : `${A.ic('play', 16)}<span>Operar</span>${why ? `<span class="op-why">${esc(why)}</span>` : ''}`); setC(el, 'pulse', c.ok && S.run.regions.lua.phase === 0);
   };
   U.bbuild = (el, a, m) => {
     const rid = a[1], bid = a[2]; const reg = S.run.regions[rid]; const def = D.buildings[bid]; const bs = reg.b[bid] || { n: 0, lvl: 1 };
@@ -662,7 +697,7 @@
       pend: `<div class="pendsup o-pend" data-u="pend|${rid}"></div>`,
       bneck: `<div class="bneck o-bneck" data-u="bneck|${rid}"></div>`,
       proj: `<div class="o-proj col" style="gap:14px">${projectsHTML(rid)}</div>`,
-      bgrid: `<div class="bgrid o-bgrid">${E.bList(S, rid).map((b) => buildingCard(rid, b)).join('')}</div>`,
+      bgrid: `<div class="bgrid o-bgrid">${E.bList(S, rid).filter((b) => b !== 'coletor_solar').map((b) => buildingCard(rid, b)).join('')}</div>`,
       mis: `<div class="o-mis">${missionsHTML(rid)}</div>`,
       specs: collapsible('specs', 'Especialistas da região', specsHTML(rid, m), 'o-specs'),
       log: collapsible('log', 'Diário de bordo', `<div class="log">${S.run.log.slice(0, 10).map((l) => `<div class="${l.kind}">${esc(l.text)}</div>`).join('') || '<span class="muted small">Sem registros.</span>'}</div>`, 'o-log'),
@@ -671,9 +706,10 @@
     else h += `<div class="region-grid"><div class="main col" style="gap:14px">${P.stock}${P.energy}${P.pend}${P.bneck}${P.proj}${P.bgrid}</div><div class="side col" style="gap:14px">${P.mis}${P.specs}${P.log}</div></div>`;
     return h;
   }
-  function buildingCard(rid, bid) {
+  function buildingCard(rid, bid, solarModule) {
+    if (bid === 'painel' && !solarModule) return solarCard(rid);
     const def = D.buildings[bid];
-    return `<div class="bcard" id="b-${bid}" tabindex="-1" aria-label="Controles de ${esc(def.name)}">
+    return `<div class="${solarModule ? 'solar-module' : 'bcard'}" id="b-${bid}" tabindex="-1"${solarModule ? ' role="group"' : ''} aria-label="Controles de ${esc(def.name)}">
       <button class="pause-btn hidden" data-a="pause|${rid}|${bid}" data-u="bpause|${rid}|${bid}"></button>
       <div class="hd">${A.bIcon(bid)}<div class="grow"><div class="nm">${def.name}</div><div class="cnt" data-u="bcount|${rid}|${bid}"></div></div></div>
       <div class="row wrap"><span data-u="btag|${rid}|${bid}"></span><span class="tiny dim">${D.cats[def.cat].name}</span></div>
@@ -686,6 +722,25 @@
         <button class="btn" data-a="build|${rid}|${bid}" data-u="bbuild|${rid}|${bid}"></button>
         <button class="btn" data-a="up|${rid}|${bid}" data-u="bup|${rid}|${bid}"></button>
       </div><div class="hold" data-u="bhold|${rid}|${bid}"></div></div>`;
+  }
+  function solarCard(rid) {
+    const s = E.solarInfo(S, rid); const advanced = E.bAvail(S, rid, 'coletor_solar');
+    const key = 'solar-' + rid, open = !!ui.open[key];
+    const secondary = s.primaryBid === 'coletor_solar' ? 'painel' : 'coletor_solar';
+    const title = secondary === 'painel' ? 'Expansão econômica com painéis' : 'Construir coletor sem converter';
+    return `<section class="bcard solar-card" id="b-solar" tabindex="-1" aria-labelledby="solar-title-${rid}">
+      <h3 class="solar-title" id="solar-title-${rid}">Geração Solar</h3>
+      <div class="solar-summary" data-u="solarsummary|${rid}"></div>
+      ${buildingCard(rid, s.primaryBid, true)}
+      ${advanced ? `<div class="solar-evolution" data-u="solarevolution|${rid}">
+          <p class="solar-evolution-title">Painel Solar <span aria-hidden="true">→</span><span class="sr-only">para</span> Coletor Solar</p>
+          <p class="small muted">Converte 1 painel em 1 coletor. A quantidade total de unidades permanece a mesma.</p>
+          <div class="solar-evolution-preview"></div>
+          <button class="btn gold block solar-evolve-btn" data-a="solarevolve|${rid}" data-k="solar-evolve-${rid}" aria-describedby="solar-evolution-help-${rid}"><span class="solar-evolve-label"></span><span class="solar-evolution-costs"></span></button>
+          <p class="small solar-evolution-help" id="solar-evolution-help-${rid}"></p>
+        </div>
+        <details class="solar-options" data-coll="${key}"${open ? ' open' : ''}><summary>${title}</summary><p class="small muted">${secondary === 'painel' ? 'Painéis básicos usam apenas metais e continuam gerando junto dos coletores. As melhorias de cada grupo são independentes.' : 'Alternativa para expandir sem converter um painel ou pagar a diferença de níveis. O novo coletor usa o nível atual dos coletores.'}</p>${buildingCard(rid, secondary, true)}</details>` : ''}
+    </section>`;
   }
   function projectsHTML(rid) {
     let h = '';
@@ -1129,13 +1184,20 @@
     },
     planroute: (from, to, r) => { if (!D.regions[from] || !D.regions[to] || !D.res[r]) return; ui.rtab = 'routes'; ui.nr.from = from; ui.nr.to = to; ui.nr.res = r; ui.sig = ''; },
     base: (rid, bid) => {
-      const card = document.getElementById('b-' + bid); if (!card || rid !== ui.rid || !E.bAvail(S, rid, bid)) return;
+      if (rid !== ui.rid || !E.bAvail(S, rid, bid)) return;
+      const card = revealBuilding(bid); if (!card) return;
       sfx('click'); card.classList.add('hl'); card.focus({ preventScroll: true });
       card.scrollIntoView({ behavior: H.reduceMotion() ? 'auto' : 'smooth', block: 'center' });
       setTimeout(() => card.classList.remove('hl'), 2200);
     },
     op: (rid, bid, el) => { const r = E.operate(S, rid, bid); if (r.ok) sfx('click'); else UI.err(r); },
     build: (rid, bid, el) => { const r = E.build(S, rid, bid); if (r.ok) { sfx('buy'); floatNum(el, '+1'); H.save(); } else UI.err(r); },
+    solarevolve: (rid) => {
+      const r = E.evolveSolar(S, rid); if (!r.ok) return UI.err(r);
+      sfx('promote'); H.save(true); ui.sig = ''; UI.frame(true);
+      const next = document.querySelector(`[data-a="solarevolve|${rid}"]:not([disabled])`) || document.getElementById('b-solar');
+      if (next) next.focus({ preventScroll: true });
+    },
     up: (rid, bid, el) => { const r = E.upgrade(S, rid, bid); if (r.ok) { sfx('buy'); floatNum(el, 'Nv ' + S.run.regions[rid].b[bid].lvl); H.save(); } else UI.err(r); },
     pause: (rid, bid) => { E.togglePause(S, rid, bid); sfx('click'); },
     hold: (rid, bid) => { const r = E.setHold(S, rid, bid); if (!r.ok) return UI.err(r); sfx('click'); UI.toast(r.on ? 'Reserva criada: o material da próxima melhoria de <b>' + D.buildings[bid].name + '</b> fica guardado.' : 'Reserva cancelada.', r.on ? 'gold' : ''); H.save(); },

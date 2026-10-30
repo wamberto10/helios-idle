@@ -570,11 +570,63 @@ function testLastRegion() {
   assert(E.nextRegion('netuno') === undefined && E.projectInfo(S, 'launch:netuno').rid === 'urano', 'Netuno é a última região; o lançamento para ela continua normal');
 }
 
+// =============== 14. BOTÃO OPERAR: TODAS AS INSTALAÇÕES MANUAIS ===============
+function testOperateAll() {
+  section('Operar (ciclo manual): todas as instalações — botão = motor, produto entregue uma vez');
+  const manual = Object.keys(D.buildings).filter((b) => !D.buildings[b].passive);
+  const where = (bid) => RO.find((rid) => D.regions[rid].build[bid] !== undefined);
+  const setup = (bid) => {
+    const S = fresh(); const rid = where(bid); if (rid !== 'lua') E.unlockRegion(S, rid, true);
+    const reg = S.run.regions[rid]; reg.phase = D.regions[rid].phases.length; // tudo liberado na região
+    reg.b = { [bid]: { n: 2, lvl: 1, p: 0 }, painel: { n: 300, lvl: 1, p: 0 }, reator: { n: 20, lvl: 1, p: 0 } };
+    reg.st = {}; for (const r in (D.buildings[bid].in || {})) reg.st[r] = D.buildings[bid].in[r] * 2 * 3; // três ciclos de insumo
+    S.perm.specs = {}; // ninguém automatiza: modo manual
+    return { S, rid, reg };
+  };
+  let bad = [];
+  for (const bid of manual) {
+    const def = D.buildings[bid];
+    // 1) com insumos e espaço: o botão libera e o ciclo entrega o produto das 2 máquinas uma única vez
+    let { S, rid, reg } = setup(bid); let m = E.mods(S);
+    const c1 = E.canOperate(S, rid, bid, m); const before = Object.assign({}, reg.st); const d0 = S.perm.data;
+    const r1 = E.operate(S, rid, bid);
+    if (!c1.ok || !r1.ok) { bad.push(bid + ': não operou com insumos (' + (c1.why || r1.err) + ')'); continue; }
+    if (E.canOperate(S, rid, bid, m).ok) bad.push(bid + ': botão liberado durante o ciclo');
+    const T = def.t / E.speedOf(def, m); E.simulate(S, T + 1);
+    const bs = reg.b[bid];
+    for (const r in def.out) {
+      const exp = def.out[r] * 2 * E.yieldOf(def, { lvl: 1, n: 2 }, r, m) * (r === 'data' ? m.dataGain : 1);
+      const got = r === 'data' ? S.perm.data - d0 : (reg.st[r] || 0) - (before[r] || 0) + (def.in && def.in[r] ? def.in[r] * 2 : 0);
+      if (!near(got, exp, 1e-6)) bad.push(bid + ': entregou ' + got + ' de ' + r + ' (esperado ' + exp + ')');
+    }
+    if (bs.on || bs.mc) bad.push(bid + ': ciclo não terminou');
+    if (!E.canOperate(S, rid, bid, m).ok) bad.push(bid + ': botão não volta depois do ciclo');
+    // 2) sem um insumo: botão bloqueado com o motivo, e o motor também recusa
+    if (def.in) {
+      ({ S, rid, reg } = setup(bid)); m = E.mods(S); const r0 = Object.keys(def.in)[0]; reg.st[r0] = 0;
+      const c2 = E.canOperate(S, rid, bid, m); const o2 = E.operate(S, rid, bid);
+      if (c2.ok || o2.ok || c2.why !== 'no:' + r0) bad.push(bid + ': sem ' + r0 + ' deveria bloquear (' + c2.why + ')');
+      // 3) material reservado para melhoria: bloqueia com o motivo da reserva
+      ({ S, rid, reg } = setup(bid)); m = E.mods(S); reg.b[bid].lvl = 3; reg.hold = { bid };
+      const uc = E.uCost(S, rid, bid, m); const shared = Object.keys(def.in).find((r) => uc[r]);
+      if (shared) { reg.st[shared] = uc[shared]; const c3 = E.canOperate(S, rid, bid, m); if (c3.ok || !E.operate(S, rid, bid).ok === false || !/^(hold|no):/.test(c3.why)) bad.push(bid + ': reserva de ' + shared + ' deveria bloquear (' + c3.why + ')'); }
+    }
+    // 4) estoque do produto cheio: bloqueia (dados não ocupam estoque)
+    const outR = Object.keys(def.out).find((r) => r !== 'data');
+    if (outR) {
+      ({ S, rid, reg } = setup(bid)); m = E.mods(S); reg.st[outR] = E.cap(S, rid, outR, m);
+      const c4 = E.canOperate(S, rid, bid, m); const o4 = E.operate(S, rid, bid);
+      if (c4.ok || o4.ok || c4.why !== 'full:' + outR) bad.push(bid + ': estoque de ' + outR + ' cheio deveria bloquear (' + c4.why + ')');
+    }
+  }
+  assert(!bad.length, manual.length + ' instalações com Operar revisadas' + (bad.length ? ' — problemas: ' + bad.join('; ') : ''));
+}
+
 let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');

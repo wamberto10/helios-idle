@@ -395,6 +395,60 @@ async function tMobileUX() {
   const de = g.d.documentElement; ok(de.scrollWidth <= de.clientWidth + 1, 'sem rolagem horizontal');
   close(g);
 }
+async function tOperate() {
+  sec('Botão Operar: fundição fotovoltaica e todos os cartões manuais');
+  const g = await openGame('operar', 375, 812); await until(() => g.modal()); await g.closeAll();
+  const E = g.H.E, S = g.S();
+  for (const r of ['marte', 'cinturao', 'mercurio']) E.unlockRegion(S, r, true); S.events = [];
+  const M = S.run.regions.mercurio; M.st.metal = 500; M.st.alloy = 100; M.st.rare = 20; E.build(S, 'mercurio', 'fotovoltaica');
+  g.H.UI.go('region', { rid: 'mercurio' }); await wait(120); await g.closeAll();
+  const sel = '[data-u="bop|mercurio|fotovoltaica"]'; let b = g.q(sel); // botão do cartão (o gargalo também oferece Operar)
+  const ic = b.querySelector('svg').getBoundingClientRect(), tx = b.querySelector('span').getBoundingClientRect();
+  ok(b.getBoundingClientRect().height <= 48 && Math.abs((ic.top + ic.height / 2) - (tx.top + tx.height / 2)) < 6 && ic.right <= tx.left + 1, 'fundição: ícone e “Operar” na mesma linha, botão de altura normal');
+  ok(!b.disabled, 'fundição: com metal e metais raros o botão fica disponível');
+  g.click(b); ok(M.b.fotovoltaica.on && g.q(sel).disabled && /Operando/.test(g.q(sel).textContent), 'ao operar: insumos cobrados e “Operando…”');
+  const cell0 = M.st.cell || 0; E.simulate(S, D_T('fotovoltaica', g) + 1); g.H.UI.frame();
+  ok((M.st.cell || 0) - cell0 === 1 && !M.b.fotovoltaica.on && !g.q(sel).disabled, 'ciclo concluído: 1 célula solar entregue e o botão volta');
+  M.st.rare = 0; g.H.UI.frame(); b = g.q(sel);
+  ok(b.disabled && /Sem metais raros/.test(b.textContent), 'sem metais raros: botão bloqueado mostrando o motivo');
+  M.st.rare = 20; M.st.cell = E.cap(S, 'mercurio', 'cell'); g.H.UI.frame(); b = g.q(sel);
+  ok(b.disabled && /Armazenamento cheio/.test(b.textContent), 'estoque de células cheio: bloqueado com o motivo (antes parecia disponível e falhava)');
+  // todos os cartões com Operar visíveis numa partida avançada sem especialistas
+  S.settings.dev = true; g.H.dev('ready'); S.perm.specs = {}; await g.closeAll();
+  const wrong = [];
+  for (const rid of g.H.DATA.regionOrder) {
+    g.H.UI.go('region', { rid }); await wait(40);
+    for (const op of g.qa('[data-u^="bop|"]').filter((x) => !x.classList.contains('hidden'))) {
+      const svg = op.querySelector('svg'), sp = op.querySelector('span'); if (!svg || !sp) continue;
+      const a = svg.getBoundingClientRect(), t = sp.getBoundingClientRect();
+      if (Math.abs((a.top + a.height / 2) - (t.top + t.height / 2)) >= 6) wrong.push(op.dataset.u);
+    }
+  }
+  ok(!wrong.length, 'todos os botões Operar com ícone e texto alinhados' + (wrong.length ? ' — ' + wrong.join(', ') : ''));
+  close(g);
+}
+const D_T = (bid, g) => g.H.DATA.buildings[bid].t / g.H.E.speedOf(g.H.DATA.buildings[bid], g.H.E.mods(g.S()));
+async function tScrollKeep() {
+  sec('Rolagem: melhorar o cargueiro não move a tela; “Ir” ainda leva à instalação');
+  const g = await openGame('rolagem', 375, 812); await until(() => g.modal()); await g.closeAll();
+  const S = g.S(); S.settings.dev = true; g.H.dev('ready'); await g.closeAll();
+  for (const rid of ['lua', 'marte', 'cinturao']) Object.assign(S.run.regions[rid].st, { alloy: 5000, fuel: 5000, metal: 5000, comp: 500 });
+  for (const [a, b] of [['lua', 'marte'], ['lua', 'cinturao']]) g.H.E.createRoute(S, a, b, ['metal']);
+  g.H.UI.go('region', { rid: 'lua', rtab: 'routes' }); await wait(150);
+  const btns = g.qa('[data-a^="rup|"]'); const b = btns[btns.length - 1]; const key = b.dataset.a;
+  g.w.scrollTo(0, g.d.documentElement.scrollHeight); await wait(80); const y0 = g.w.scrollY; const top0 = b.getBoundingClientRect().top;
+  b.focus(); g.click(b); await until(() => g.q('[data-a="' + key + '"]') !== b && g.H.UI.st.restoreY === undefined, 2000); await wait(30); // espera a tela ser refeita e a posição restaurada
+  const b2 = g.q('[data-a="' + key + '"]');
+  ok(Math.abs(g.w.scrollY - y0) <= 2, 'a página fica no lugar ao ampliar o cargueiro (' + y0 + ' → ' + g.w.scrollY + ')');
+  ok(b2 && Math.abs(b2.getBoundingClientRect().top - top0) < 60, 'o botão continua sob o dedo');
+  ok(g.d.activeElement === b2, 'o foco continua no botão');
+  ok(!g.q('#screen').style.minHeight, 'a altura reservada durante a atualização é liberada');
+  // atalho “Ir” de missão ainda rola de propósito até a instalação
+  // rolagem instantânea: a animação suave não avança dentro dos quadros de teste do navegador embutido
+  S.settings.reduceMotion = true; g.H.UI.go('region', { rid: 'lua', rtab: 'prod' }); await wait(100); g.w.scrollTo(0, 0); g.H.UI.st.hl = 'observatorio'; g.H.UI.st.sig = ''; g.H.UI.frame(); await wait(400);
+  ok(g.w.scrollY > 100, 'ir para uma instalação continua rolando até ela (' + Math.round(g.w.scrollY) + ' px)');
+  close(g);
+}
 async function tA11y() {
   sec('Acessibilidade (auditoria 29/10): nomes, contraste, foco, estados, ordem e cortes');
   const g = await openGame('a11y', 375, 812); await until(() => g.modal()); await g.closeAll();
@@ -485,7 +539,7 @@ async function tLayout() {
 async function main() {
   document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
   const t0 = Date.now();
-  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tA11y, tLayout]) {
+  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tScrollKeep, tA11y, tLayout]) {
     try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }
     STAGE.innerHTML = '';
   }

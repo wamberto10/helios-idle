@@ -626,3 +626,24 @@ img.rg { display: inline-block; vertical-align: middle; object-fit: contain; fle
 .res .top { padding-right: 0; overflow-wrap: break-word; }
 .res .exp { top: auto; bottom: 8px; right: 6px; }
 .res .rate { padding-right: 50px; min-height: 22px; }
+
+/* Família solar: um cartão, evolução do modelo e expansão básica recolhível. */
+.solar-card .solar-title { margin: 0; color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.solar-summary { display: flex; flex-direction: column; gap: 3px; }
+.solar-summary > strong { font-size: 18px; }
+.solar-module { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.solar-evolution { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line2); padding-top: 12px; margin-top: 4px; }
+.solar-evolution p, .solar-options p { margin: 0; }
+.solar-evolution-title { font-size: 14px; font-weight: 700; }
+.solar-comparison { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; }
+.solar-comparison > .ok { margin-left: auto; font-size: 12px; }
+.solar-evolve-btn { flex-direction: column; gap: 6px; min-height: 48px; }
+.solar-evolve-btn .costs { justify-content: center; }
+.solar-options { border-top: 1px solid var(--line); padding-top: 4px; min-width: 0; }
+.solar-options > summary { min-height: 44px; display: list-item; padding: 10px 4px; cursor: pointer; color: var(--cyan); font-size: 13px; font-weight: 600; }
+.solar-options > p { margin: 4px 0 12px; }
+.solar-options[open] > .solar-module { padding-top: 4px; }
+
+/* botão Operar (largura total do cartão): ícone e texto na mesma linha; o motivo do bloqueio fica embaixo */
+.bcard .acts .btn.full-w { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px 8px; padding: 8px 12px; }
+.bcard .acts .btn.full-w .op-why { flex-basis: 100%; text-align: center; font-size: 12px; font-weight: 600; }

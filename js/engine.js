@@ -220,11 +220,17 @@
     for (const r in def.cost) c[r] = Math.ceil(def.cost[r] * Math.pow(def.g, n) * m.costRed);
     return c;
   };
-  E.uCost = function (S, rid, bid, m) {
-    m = m || E.mods(S);
-    const def = D.buildings[bid]; const lvl = (S.run.regions[rid].b[bid] || {}).lvl || 1; const c = {};
+  // A mesma curva é usada nas melhorias normais e na equiparação de nível da evolução solar.
+  // Receber o nível evita alterar um estado temporariamente só para consultar a prévia.
+  function upgradeCostAt(bid, lvl, m) {
+    const def = D.buildings[bid]; const c = {};
     for (const [r, a, from] of def.up) if (lvl >= from) c[r] = Math.ceil(a * Math.pow(def.ug, lvl - 1) * m.costRed);
     return c;
+  }
+  E.uCost = function (S, rid, bid, m) {
+    m = m || E.mods(S);
+    const lvl = (S.run.regions[rid].b[bid] || {}).lvl || 1;
+    return upgradeCostAt(bid, lvl, m);
   };
   E.afford = function (reg, cost) { for (const r in cost) if ((reg.st[r] || 0) + EPS < cost[r]) return false; return true; };
   E.pay = function (reg, cost) { for (const r in cost) reg.st[r] = Math.max(0, (reg.st[r] || 0) - cost[r]); };
@@ -263,6 +269,41 @@
       }
     }
     return { gen, use, ratio: use > EPS ? Math.min(1, gen / use) : 1 };
+  };
+  // Uma família no cartão, dois grupos persistidos: saves antigos mantêm quantidades e níveis exatos.
+  // Evoluir converte uma unidade básica e paga a diferença para um coletor no nível preservado.
+  E.solarInfo = function (S, rid, m) {
+    m = m || E.mods(S);
+    const reg = S.run.regions[rid]; const basic = reg && reg.b.painel; const collector = reg && reg.b.coletor_solar;
+    const basicN = basic ? basic.n : 0, basicLevel = basic ? basic.lvl : 1;
+    const collectorN = collector ? collector.n : 0, collectorLevel = collector ? collector.lvl : 1;
+    const evolutionLevel = Math.max(basicLevel, collectorLevel);
+    const generation = reg ? E.genOf(S, rid, 'painel', m, basicN, basicLevel) + E.genOf(S, rid, 'coletor_solar', m, collectorN, collectorLevel) : 0;
+    const evolutionAfter = basicN > 0 ? E.genOf(S, rid, 'painel', m, basicN - 1, basicLevel) + E.genOf(S, rid, 'coletor_solar', m, collectorN + 1, evolutionLevel) : generation;
+    let evolutionReason = '';
+    if (!reg || !reg.unlocked) evolutionReason = 'Região indisponível.';
+    else if (!E.bAvail(S, rid, 'coletor_solar')) evolutionReason = 'Esta região não comporta coletores solares.';
+    else if (!basicN) evolutionReason = 'Construa um painel básico para evoluir.';
+    const evolutionAvailable = !evolutionReason;
+    const evolutionCost = reg ? E.bCost(S, rid, 'coletor_solar', m) : {};
+    if (reg) {
+      // O crédito básico não cresce com o preço histórico: construir para converter nunca dá desconto extra.
+      const credit = Math.ceil(D.buildings.painel.cost.metal * m.costRed);
+      evolutionCost.metal = Math.max(0, (evolutionCost.metal || 0) - credit);
+      // Elevar o nível compartilhado dos coletores também melhora os antigos; todas essas etapas são pagas.
+      for (let lvl = collectorLevel; lvl < evolutionLevel; lvl++) {
+        const step = upgradeCostAt('coletor_solar', lvl, m);
+        for (const r in step) evolutionCost[r] = (evolutionCost[r] || 0) + step[r];
+      }
+      for (const r in evolutionCost) if (!evolutionCost[r]) delete evolutionCost[r];
+    }
+    const canEvolve = evolutionAvailable && E.afford(reg, evolutionCost);
+    if (evolutionAvailable && !canEvolve) evolutionReason = 'Recursos insuficientes para evoluir o painel.';
+    return {
+      primaryBid: collectorN > 0 ? 'coletor_solar' : 'painel', basicN, basicLevel, collectorN, collectorLevel,
+      totalN: basicN + collectorN, generation, evolutionAvailable, evolutionCost, evolutionLevel,
+      evolutionAfter, evolutionGain: evolutionAfter - generation, canEvolve, evolutionReason,
+    };
   };
   E.incoming = (S, rid, r) => S.run.routes.some((rt) => rt.to === rid && rt.res.includes(r) && (rt.st !== 'idle' || rt.auto));
 
@@ -571,6 +612,24 @@
     E.pay(reg, cost); const bs = E.bs(reg, bid); bs.n++; bs.blk = false;
     return { ok: true };
   };
+  E.evolveSolar = function (S, rid) {
+    // Recalcula preço e requisitos na ação: prévias antigas nunca autorizam conversões ou níveis grátis.
+    const info = E.solarInfo(S, rid);
+    if (!info.canEvolve) return { ok: false, err: info.evolutionReason };
+    const reg = S.run.regions[rid], basic = reg.b.painel;
+    E.pay(reg, info.evolutionCost);
+    const collector = E.bs(reg, 'coletor_solar');
+    basic.n--; basic.blk = false;
+    collector.n++; collector.lvl = info.evolutionLevel; collector.blk = false;
+    let holdCancelled = false;
+    if (reg.hold && ((reg.hold.bid === 'painel' && !basic.n) || (reg.hold.bid === 'coletor_solar' && info.evolutionLevel > info.collectorLevel))) {
+      delete reg.hold; holdCancelled = true;
+    }
+    reg.en = E.regionEnergy(S, rid, E.mods(S));
+    E.log(S, 'gold', 'Um painel de ' + D.regions[rid].name + ' evoluiu para Coletor Solar (nível ' + collector.lvl + ').' + (holdCancelled ? ' A reserva da melhoria anterior foi encerrada.' : ''));
+    return { ok: true, from: 'painel', to: 'coletor_solar', level: collector.lvl, cost: info.evolutionCost,
+      before: info.generation, after: info.evolutionAfter, gain: info.evolutionGain, holdCancelled };
+  };
   // ================= RESERVA PARA MELHORIA =================
   // Uma reserva por região: o custo da próxima melhoria da instalação escolhida vira um piso no estoque.
   // Consumidores da região, rotas que saem dela e entregas a projetos não usam esse material; quando o custo
@@ -617,6 +676,15 @@
     consume(reg, def, bs.n); bs.on = true; bs.p = 0; bs.why = ''; bs.blk = false;
     bs.mc = { n: bs.n, lvl: bs.lvl }; // o ciclo entrega o que foi pago agora
     return { ok: true };
+  };
+  // Mesma verificação de E.operate, sem efeitos: o botão Operar só fica disponível quando o ciclo pode começar
+  // (insumos, espaço para o produto, material reservado). why usa os códigos de E.whyText.
+  E.canOperate = function (S, rid, bid, m) {
+    const reg = S.run.regions[rid]; const bs = reg && reg.b[bid]; const def = D.buildings[bid];
+    if (!bs || !bs.n || !def || def.passive) return { ok: false, why: '' };
+    if (bs.on) return { ok: false, why: 'running' };
+    const lim = limitCycles(S, rid, reg, def, bs, m || E.mods(S));
+    return lim.n >= 1 ? { ok: true, why: '' } : { ok: false, why: lim.why };
   };
   E.toggleExport = function (S, rid, r) { const reg = S.run.regions[rid]; reg.exp[r] = !reg.exp[r]; if (!reg.exp[r]) delete reg.exp[r]; for (const b in reg.b) reg.b[b].blk = false; };
   E.togglePause = function (S, rid, bid) { const bs = S.run.regions[rid].b[bid]; if (bs) { bs.pause = !bs.pause; bs.blk = false; } };
@@ -797,8 +865,11 @@
     const max = md.t === 'pay' ? 1 : E.mTarget(S, rid, md, m);
     let cur = 0;
     switch (md.t) {
-      case 'build': cur = (reg.b[md.b] || {}).n || 0; break;
-      case 'level': cur = (reg.b[md.b] && reg.b[md.b].n) ? reg.b[md.b].lvl : 0; break;
+      // Um painel evoluído continua satisfazendo seus objetivos básicos; metas de coletor são específicas.
+      case 'build': cur = ((reg.b[md.b] || {}).n || 0) + (md.b === 'painel' ? ((reg.b.coletor_solar || {}).n || 0) : 0); break;
+      case 'level': cur = (reg.b[md.b] && reg.b[md.b].n) ? reg.b[md.b].lvl : 0;
+        if (md.b === 'painel' && reg.b.coletor_solar && reg.b.coletor_solar.n) cur = Math.max(cur, reg.b.coletor_solar.lvl);
+        break;
       case 'prod': cur = reg.stats.prod[md.r] || 0; break;
       case 'cycles': cur = reg.stats.cycles[md.b] || 0; break;
       case 'pay': { const pr = E.projectProgress(S, 'm:' + id, md.cost); cur = pr.need ? pr.have / pr.need : 1; break; }
