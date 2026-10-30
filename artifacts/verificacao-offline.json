@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-29T11:34:07.427Z",
+  "generatedAt": "2026-10-30T00:23:32.419Z",
   "universe": "padrao",
   "hours": 8,
   "method": "Bot até o ponto de controle; cópia do save recebe E.applyOffline com 8h de ausência (limite offline do jogo respeitado). Nada é comprado nem resgatado durante a ausência.",
@@ -8,13 +8,13 @@
       "strategy": "baseline",
       "point": "30 min do 1º universo",
       "gameMinutes": 30,
-      "oracle": 1,
+      "oracle": 2,
       "offlineUsedHours": 8,
-      "dataBefore": 269,
-      "dataGained": 2323,
+      "dataBefore": 256,
+      "dataGained": 5069,
       "researchUnchanged": true,
       "missionsUnchanged": true,
-      "missionsReadyAfter": 2,
+      "missionsReadyAfter": 0,
       "research": {
         "before": {
           "levels": 39,
@@ -29,7 +29,7 @@
           "total": 111,
           "percent": 35.14,
           "remainingCost": 490219,
-          "affordableLevels": 9,
+          "affordableLevels": 16,
           "nodesWaitingDiscovery": 3
         }
       },
@@ -41,27 +41,27 @@
       "gameMinutes": 60,
       "oracle": 2,
       "offlineUsedHours": 8,
-      "dataBefore": 388,
+      "dataBefore": 689,
       "dataGained": 5069,
       "researchUnchanged": true,
       "missionsUnchanged": true,
       "missionsReadyAfter": 0,
       "research": {
         "before": {
-          "levels": 44,
+          "levels": 50,
           "total": 111,
-          "percent": 39.64,
-          "remainingCost": 488974,
+          "percent": 45.05,
+          "remainingCost": 487142,
           "affordableLevels": 1,
-          "nodesWaitingDiscovery": 0
+          "nodesWaitingDiscovery": 1
         },
         "after": {
-          "levels": 44,
+          "levels": 50,
           "total": 111,
-          "percent": 39.64,
-          "remainingCost": 488974,
-          "affordableLevels": 14,
-          "nodesWaitingDiscovery": 0
+          "percent": 45.05,
+          "remainingCost": 487142,
+          "affordableLevels": 11,
+          "nodesWaitingDiscovery": 1
         }
       },
       "canBuyWholeRemainingTree": false
@@ -69,29 +69,29 @@
     {
       "strategy": "baseline",
       "point": "Colapso disponível no 1º universo",
-      "gameMinutes": 170.33,
+      "gameMinutes": 108.53,
       "oracle": 3,
       "offlineUsedHours": 8,
-      "dataBefore": 1628,
-      "dataGained": 133872,
+      "dataBefore": 1353,
+      "dataGained": 112064,
       "researchUnchanged": true,
       "missionsUnchanged": true,
       "missionsReadyAfter": 0,
       "research": {
         "before": {
-          "levels": 71,
+          "levels": 62,
           "total": 111,
-          "percent": 63.96,
-          "remainingCost": 471482,
+          "percent": 55.86,
+          "remainingCost": 481081,
           "affordableLevels": 1,
           "nodesWaitingDiscovery": 0
         },
         "after": {
-          "levels": 71,
+          "levels": 62,
           "total": 111,
-          "percent": 63.96,
-          "remainingCost": 471482,
-          "affordableLevels": 30,
+          "percent": 55.86,
+          "remainingCost": 481081,
+          "affordableLevels": 35,
           "nodesWaitingDiscovery": 0
         }
       },
@@ -101,27 +101,27 @@
       "strategy": "baseline",
       "point": "20 min do 2º universo",
       "gameMinutes": 20,
-      "oracle": 4,
+      "oracle": 3,
       "offlineUsedHours": 8,
-      "dataBefore": 1173,
-      "dataGained": 16247,
+      "dataBefore": 1800,
+      "dataGained": 12359,
       "researchUnchanged": true,
       "missionsUnchanged": true,
       "missionsReadyAfter": 1,
       "research": {
         "before": {
-          "levels": 75,
+          "levels": 73,
           "total": 111,
-          "percent": 67.57,
-          "remainingCost": 465210,
-          "affordableLevels": 0,
+          "percent": 65.77,
+          "remainingCost": 468395,
+          "affordableLevels": 1,
           "nodesWaitingDiscovery": 0
         },
         "after": {
-          "levels": 75,
+          "levels": 73,
           "total": 111,
-          "percent": 67.57,
-          "remainingCost": 465210,
+          "percent": 65.77,
+          "remainingCost": 468395,
           "affordableLevels": 7,
           "nodesWaitingDiscovery": 0
         }
@@ -134,26 +134,26 @@
       "gameMinutes": 30,
       "oracle": 2,
       "offlineUsedHours": 8,
-      "dataBefore": 106,
+      "dataBefore": 148,
       "dataGained": 223027,
       "researchUnchanged": true,
       "missionsUnchanged": true,
       "missionsReadyAfter": 0,
       "research": {
         "before": {
-          "levels": 50,
+          "levels": 54,
           "total": 111,
-          "percent": 45.05,
-          "remainingCost": 487142,
+          "percent": 48.65,
+          "remainingCost": 485650,
           "affordableLevels": 0,
           "nodesWaitingDiscovery": 4
         },
         "after": {
-          "levels": 50,
+          "levels": 54,
           "total": 111,
-          "percent": 45.05,
-          "remainingCost": 487142,
-          "affordableLevels": 47,
+          "percent": 48.65,
+          "remainingCost": 485650,
+          "affordableLevels": 43,
           "nodesWaitingDiscovery": 4
         }
       },
@@ -165,26 +165,26 @@
       "gameMinutes": 60,
       "oracle": 3,
       "offlineUsedHours": 8,
-      "dataBefore": 329,
-      "dataGained": 474758,
+      "dataBefore": 444,
+      "dataGained": 468939,
       "researchUnchanged": true,
       "missionsUnchanged": true,
       "missionsReadyAfter": 1,
       "research": {
         "before": {
-          "levels": 77,
+          "levels": 76,
           "total": 111,
-          "percent": 69.37,
-          "remainingCost": 461376,
+          "percent": 68.47,
+          "remainingCost": 463293,
           "affordableLevels": 0,
           "nodesWaitingDiscovery": 0
         },
         "after": {
-          "levels": 77,
+          "levels": 76,
           "total": 111,
-          "percent": 69.37,
-          "remainingCost": 461376,
-          "affordableLevels": 34,
+          "percent": 68.47,
+          "remainingCost": 463293,
+          "affordableLevels": 35,
           "nodesWaitingDiscovery": 0
         }
       },
@@ -193,29 +193,29 @@
     {
       "strategy": "farm",
       "point": "Colapso disponível no 1º universo",
-      "gameMinutes": 66.57,
+      "gameMinutes": 63.8,
       "oracle": 3,
       "offlineUsedHours": 8,
-      "dataBefore": 1005,
-      "dataGained": 475558,
+      "dataBefore": 1608,
+      "dataGained": 481984,
       "researchUnchanged": true,
       "missionsUnchanged": true,
       "missionsReadyAfter": 0,
       "research": {
         "before": {
-          "levels": 79,
+          "levels": 78,
           "total": 111,
-          "percent": 71.17,
-          "remainingCost": 456876,
+          "percent": 70.27,
+          "remainingCost": 459376,
           "affordableLevels": 0,
           "nodesWaitingDiscovery": 0
         },
         "after": {
-          "levels": 79,
+          "levels": 78,
           "total": 111,
-          "percent": 71.17,
-          "remainingCost": 456876,
-          "affordableLevels": 32,
+          "percent": 70.27,
+          "remainingCost": 459376,
+          "affordableLevels": 33,
           "nodesWaitingDiscovery": 0
         }
       },
@@ -227,7 +227,7 @@
       "gameMinutes": 20,
       "oracle": 4,
       "offlineUsedHours": 8,
-      "dataBefore": 3850,
+      "dataBefore": 3150,
       "dataGained": 696689,
       "researchUnchanged": true,
       "missionsUnchanged": true,

@@ -63,7 +63,7 @@
   E.newRun = function (S, uni) {
     const run = { universe: uni || 'padrao', time: 0, regions: {}, missions: {}, projects: {}, routes: [], routeSeq: 0, routesBuilt: 0,
       dyson: { stage: 0, auto: true }, core: false, exps: [], expSeq: 0, totals: { value: 0, prod: {} }, counters: { exped: 0, trips: 0 },
-      flags: {}, offer: null, dirs: {}, gpi: 0, log: [], started: Date.now() };
+      flags: {}, offer: null, dirs: {}, gpi: 0, log: [], started: Date.now(), choices: {} };
     RO.forEach((r) => { run.regions[r] = E.newRegion(); });
     const old = S.run; S.run = run;
     E.unlockRegion(S, 'lua', true);
@@ -182,6 +182,11 @@
     if (um.expReward) m.expReward *= um.expReward;
     if (um.expTime) m.expTime *= um.expTime;
     m.gen *= 1 + D.dysonEnergyPerStage * run.dyson.stage;
+    for (const cid in (run.choices || {})) { // benefícios escolhidos nos marcos (só neste universo)
+      const o = D.choiceOptions.find((x) => x.id === run.choices[cid]); if (!o) continue; const e = o.eff;
+      if (e.k === 'speed') m.speed[e.cat] *= 1 + e.v; else if (e.k === 'dataGain') m.dataGain *= 1 + e.v;
+      else if (e.k === 'logi') { m.cargo *= 1 + e.cargo; m.travel *= 1 - e.travel; }
+    }
     // ciência: escala própria (ver D.science)
     const orc = perm.specs.oraculo; const sc = D.science;
     m.sciSpeed = (orc ? sc.oracleSpeed[orc.lvl] : 1) * ((um.speed && um.speed.research) || 1) * Math.pow(m.globalSpeed, sc.globalSpeedExp);
@@ -750,22 +755,24 @@
 
   // ================= MISSÕES =================
   E.mid = (rid, ph, i) => rid + '.' + ph + '.' + i;
-  E.mTitle = function (md) {
+  // Título com a meta efetiva (Colapsos, Atalhos de Missão…) quando recebe o estado; sem estado, a meta base.
+  E.mTitle = function (md, S, rid, m) {
     if (md.title) return md.title;
-    const n = F.n(md.n);
+    const t = S && md.t !== 'pay' ? E.mTarget(S, rid, md, m || E.mods(S)) : md.n;
+    const n = F.n(t);
     switch (md.t) {
-      case 'build': return 'Construir ' + n + ' ' + (md.n === 1 ? D.buildings[md.b].name.toLowerCase().replace('dyson', 'Dyson') : D.buildings[md.b].pl);
-      case 'level': return 'Melhorar ' + D.buildings[md.b].name.toLowerCase().replace('dyson', 'Dyson') + ' até o nível ' + md.n;
+      case 'build': return 'Construir ' + n + ' ' + (t === 1 ? D.buildings[md.b].name.toLowerCase().replace('dyson', 'Dyson') : D.buildings[md.b].pl);
+      case 'level': return 'Melhorar ' + D.buildings[md.b].name.toLowerCase().replace('dyson', 'Dyson') + ' até o nível ' + t;
       case 'prod': return 'Produzir ' + n + ' ' + D.res[md.r].pl;
       case 'cycles': return 'Operar ' + D.buildings[md.b].pl + ' ' + n + ' vezes';
       case 'energy': return 'Gerar ' + n + ' MW de energia';
-      case 'route': return md.n === 1 ? 'Estabelecer uma rota de transporte' : 'Ter ' + n + ' rotas ligadas à região';
+      case 'route': return t === 1 ? 'Estabelecer uma rota de transporte' : 'Ter ' + n + ' rotas ligadas à região';
       case 'deliver': return 'Receber ' + n + ' ' + D.res[md.r].pl + ' por rotas';
       case 'ship': return 'Completar ' + n + ' viagens de carga';
-      case 'exped': return 'Concluir ' + n + (md.n === 1 ? ' expedição' : ' expedições') + ' (total)';
-      case 'research': return md.n === 1 ? 'Pesquisar uma tecnologia' : 'Ter ' + n + ' níveis de pesquisa';
-      case 'promote': return 'Promover um especialista ao nível ' + md.n;
-      case 'dyson': return 'Concluir a etapa ' + md.n + ' do enxame de Dyson';
+      case 'exped': return 'Concluir ' + n + (t === 1 ? ' expedição' : ' expedições') + ' (total)';
+      case 'research': return t === 1 ? 'Pesquisar uma tecnologia' : 'Ter ' + n + ' níveis de pesquisa';
+      case 'promote': return 'Promover um especialista ao nível ' + t;
+      case 'dyson': return 'Concluir a etapa ' + t + ' do enxame de Dyson';
       case 'total': return 'Ter ' + n + ' instalações na região';
       case 'data': return 'Gerar ' + n + ' dados de pesquisa na região';
       case 'core': return 'Construir o Núcleo da Singularidade';
@@ -775,6 +782,8 @@
     }
     return '?';
   };
+  // descrição com {n} substituído pela mesma meta efetiva do título e da barra
+  E.mDesc = (md, S, rid, m) => md.desc ? md.desc.replace(/{n}/g, F.n(S ? E.mTarget(S, rid, md, m || E.mods(S)) : md.n)) : '';
   E.depthMult = (S) => Math.min(D.collapse.depthMax, 1 + D.collapse.depthTarget * S.perm.collapses);
   E.mTarget = function (S, rid, md, m) {
     let n = md.n;
@@ -816,6 +825,17 @@
   E.activeMissions = (S, rid) => E.phaseMissions(S, rid).filter((x) => !x.claimed).slice(0, 3);
   // ================= PRÉVIA DE RECOMPENSAS =================
   // Sem efeitos colaterais: não gasta, não sorteia, não marca nada. Usa o mesmo arredondamento de E.grant.
+  // Cartas para especialista que já tem tudo o que precisa viram suprimentos limitados (mesma regra dos baús),
+  // entregues na região. Sem região (liquidação do Colapso) as cartas são mantidas como antes.
+  E.splitCards = function (S, cards, rid) {
+    const give = {}; let extra = 0;
+    for (const s in cards || {}) {
+      const n = cards[s]; if (!(n > 0)) continue;
+      if (!S.perm.specs[s] || !rid) { give[s] = n; continue; }
+      const useful = Math.min(n, E.cardsNeeded(S, s)); if (useful > 0) give[s] = useful; extra += n - useful;
+    }
+    return { give, extra };
+  };
   E.rewardPreview = function (S, rid, rw, m) {
     m = m || E.mods(S);
     const o = { data: 0, frags: 0, cards: {}, res: {}, pend: {}, spec: null, specCard: null, disc: null, discKnown: null, unlock: (rw && rw.unlock) || null };
@@ -829,8 +849,10 @@
         o.res[r] = fit; if (rw.res[r] - fit > EPS) o.pend[r] = rw.res[r] - fit;
       }
     }
-    if (rw.spec) { if (S.perm.specs[rw.spec]) o.specCard = rw.spec; else o.spec = rw.spec; }
-    if (rw.cards) for (const s in rw.cards) if (!rw.cardsOwned || S.perm.specs[s]) o.cards[s] = rw.cards[s];
+    if (rw.spec) { if (S.perm.specs[rw.spec]) { if (rid && E.cardsNeeded(S, rw.spec) <= 0) o.supCards = (o.supCards || 0) + 1; else o.specCard = rw.spec; } else o.spec = rw.spec; }
+    if (rw.cards) { const own = {}; for (const s in rw.cards) if (!rw.cardsOwned || S.perm.specs[s]) own[s] = rw.cards[s]; const sp = E.splitCards(S, own, rid); Object.assign(o.cards, sp.give); if (sp.extra) o.supCards = (o.supCards || 0) + sp.extra; }
+    if (o.supCards) o.sup = E.chestSupply(o.supCards);
+    if (rw.choice && D.choices[rw.choice]) o.choice = rw.choice;
     if (rw.disc && D.discoveries[rw.disc]) { if (E.knows(S, rw.disc)) o.discKnown = rw.disc; else o.disc = rw.disc; }
     return o;
   };
@@ -848,11 +870,20 @@
         const rest = rw.res[r] - add; if (rest > EPS) { reg.pend[r] = (reg.pend[r] || 0) + rest; out.pend[r] = rest; }
       }
     }
-    if (rw.spec) { // já recrutado: vira uma carta (informada em out.cards)
-      if (S.perm.specs[rw.spec]) { E.recruit(S, rw.spec); out.cards[rw.spec] = (out.cards[rw.spec] || 0) + 1; }
+    let supCards = 0;
+    if (rw.spec) { // já recrutado: vira uma carta (informada em out.cards); sem utilidade, vira suprimentos
+      if (S.perm.specs[rw.spec]) { if (rid && E.cardsNeeded(S, rw.spec) <= 0) supCards++; else { E.recruit(S, rw.spec); out.cards[rw.spec] = (out.cards[rw.spec] || 0) + 1; } }
       else { E.recruit(S, rw.spec); out.spec = rw.spec; }
     }
-    if (rw.cards) for (const s in rw.cards) { if (rw.cardsOwned && !S.perm.specs[s]) continue; E.addCards(S, s, rw.cards[s]); out.cards[s] = (out.cards[s] || 0) + rw.cards[s]; }
+    if (rw.cards) {
+      const own = {}; for (const s in rw.cards) if (!rw.cardsOwned || S.perm.specs[s]) own[s] = rw.cards[s];
+      const sp = E.splitCards(S, own, rid); supCards += sp.extra;
+      for (const s in sp.give) { E.addCards(S, s, sp.give[s]); out.cards[s] = (out.cards[s] || 0) + sp.give[s]; }
+    }
+    if (supCards && rid) { const reg = S.run.regions[rid]; if (!reg.pend) reg.pend = {}; const bundle = E.chestSupply(supCards); out.sup = {};
+      for (const r in bundle) { const add = Math.max(0, Math.min(bundle[r], E.localCap(S, rid, r, m) - (reg.st[r] || 0))); reg.st[r] = (reg.st[r] || 0) + add; const rest = bundle[r] - add; if (rest > EPS) reg.pend[r] = (reg.pend[r] || 0) + rest; out.sup[r] = bundle[r]; }
+      out.supCards = supCards; }
+    if (rw.choice && D.choices[rw.choice] && rw.pick) { S.run.choices[rw.choice] = rw.pick; out.choice = rw.choice; out.pick = rw.pick; }
     if (rw.unlock) { S.run.flags[rw.unlock] = true; out.unlock = rw.unlock; }
     if (rw.disc && D.discoveries[rw.disc]) { // permanente: só a primeira vez é novidade
       if (!E.knows(S, rw.disc)) { S.perm.disc[rw.disc] = 1; out.disc = rw.disc; E.log(S, 'gold', 'Descoberta: ' + D.discoveries[rw.disc].name + '. Novas pesquisas disponíveis.'); }
@@ -860,15 +891,48 @@
     }
     return out;
   };
-  E.claim = function (S, rid, id) {
+  // pick: opção escolhida quando a recompensa é um marco de escolha (obrigatória nesse caso)
+  E.claim = function (S, rid, id, pick) {
     const run = S.run; if (run.missions[id]) return { ok: false, err: 'Já resgatada' };
     const x = E.activeMissions(S, rid).find((a) => a.id === id); if (!x) return { ok: false, err: 'Missão inativa' };
     if (!E.mProg(S, rid, x.md, id).done) return { ok: false, err: 'Incompleta' };
+    const ch = x.md.rw && x.md.rw.choice;
+    if (ch && !D.choiceOptions.some((o) => o.id === pick)) return { ok: false, needChoice: ch, err: 'Escolha um benefício' };
     run.missions[id] = 1;
-    const got = E.grant(S, rid, x.md.rw, 'mission');
+    const got = E.grant(S, rid, ch ? Object.assign({}, x.md.rw, { pick }) : x.md.rw, 'mission');
     if (x.md.rw && x.md.rw.unlock === 'expeditions') E.log(S, 'story', 'A Doca Orbital está pronta. Sondas podem partir em expedições.');
     if (E.phaseMissions(S, rid).every((a) => a.claimed)) E.completePhase(S, rid);
     return { ok: true, got };
+  };
+  // Resgata, uma de cada vez, as missões ativas já concluídas da região (ou de todas, sem rid). Cada resgate
+  // passa por E.claim (mesmos requisitos, custos e entrega única); missões reveladas por um resgate entram se
+  // também já estiverem concluídas. Pagamentos não são feitos automaticamente. As mensagens viram um resumo.
+  E.claimable = (S, rid) => (rid ? [rid] : RO).filter((r) => S.run.regions[r].unlocked).reduce((a, r) => a + E.activeMissions(S, r).filter((x) => !(x.md.rw && x.md.rw.choice) && E.mProg(S, r, x.md, x.id).done).length, 0);
+  E.claimAll = function (S, rid) {
+    const sum = { count: 0, data: 0, frags: 0, cards: {}, disc: [], pend: {}, phases: 0, titles: [] };
+    if (!S.events) S.events = []; const ev0 = S.events.length; const gpi0 = S.run.gpi;
+    for (let guard = 0; guard < 400; guard++) {
+      let next = null;
+      for (const r of (rid ? [rid] : RO)) {
+        if (!S.run.regions[r].unlocked) continue;
+        const x = E.activeMissions(S, r).find((q) => !(q.md.rw && q.md.rw.choice) && E.mProg(S, r, q.md, q.id).done); if (x) { next = { r, x }; break; }
+      }
+      if (!next) break;
+      const title = E.mTitle(next.x.md, S, next.r); const res = E.claim(S, next.r, next.x.id); if (!res.ok) break;
+      const g = res.got; sum.count++; sum.data += g.data; sum.frags += g.frags; sum.titles.push(title);
+      for (const s in g.cards) sum.cards[s] = (sum.cards[s] || 0) + g.cards[s];
+      for (const k in g.pend || {}) sum.pend[k] = (sum.pend[k] || 0) + g.pend[k];
+      if (g.supCards) { sum.sup = true; sum.supCards = (sum.supCards || 0) + g.supCards; }
+      if (g.disc) sum.disc.push(g.disc);
+    }
+    sum.phases = S.run.gpi - gpi0;
+    // agrupa as mensagens: mantém recrutamentos, conquistas e novas regiões; o resto vai para o resumo (e segue no diário)
+    if (sum.count > 1) {
+      const kept = S.events.slice(ev0).filter((e) => ['recruit', 'ach', 'region'].includes(e.kind));
+      S.events.length = ev0; S.events.push(...kept);
+      E.emit(S, 'claimall', sum.count + ' missões resgatadas', { sum });
+    }
+    return sum;
   };
   E.completePhase = function (S, rid) {
     const run = S.run; const reg = run.regions[rid]; const def = D.regions[rid];
@@ -1010,12 +1074,14 @@
   E.expFragDone = (S, id) => !!S.run.flags[E.expFragKey(id)];
   // prévia sem sorteio: o garantido e cada bônus possível com sua chance, já com expReward e dataGain
   // (mesma ordem de arredondamento do resgate) e o limite de fragmento restante no universo
+  E.expSupplyRegion = (S, def) => (S.run.regions[def.region] && S.run.regions[def.region].unlocked ? def.region : 'lua');
   E.expPreview = function (S, id, m) {
     m = m || E.mods(S); const def = D.expeditions[id]; const fdone = E.expFragDone(S, id);
     const eff = (rw) => {
       const s = scaleRw(rw, m.expReward); const cards = Object.assign({}, s.cards || {}); let recruit = null;
       if (def.recruit && cards[def.recruit] && !S.perm.specs[def.recruit]) { recruit = def.recruit; cards[def.recruit]--; if (!cards[def.recruit]) delete cards[def.recruit]; }
-      return { data: s.data ? Math.round(s.data * m.dataGain) : 0, cards, recruit, frags: s.frags && !fdone ? 1 : 0, fragBlocked: !!(s.frags && fdone) };
+      const sp = E.splitCards(S, cards, E.expSupplyRegion(S, def));
+      return { data: s.data ? Math.round(s.data * m.dataGain) : 0, cards: sp.give, supCards: sp.extra, sup: sp.extra ? E.chestSupply(sp.extra) : null, recruit, frags: s.frags && !fdone ? 1 : 0, fragBlocked: !!(s.frags && fdone) };
     };
     return { g: eff(def.g), bonus: def.bonus.map(([p, rw]) => Object.assign({ p }, eff(rw))), fragDone: fdone };
   };
@@ -1029,7 +1095,8 @@
       // fragmento de descoberta: no máximo 1 por expedição em cada universo (repetições dão só cartas e dados)
       if (rw.frags) { if (S.run.flags[fk]) { total.fragsDone = (total.fragsDone || 0) + rw.frags; delete rw.frags; } else { rw.frags = 1; S.run.flags[fk] = true; } }
       if (def.recruit && rw.cards && rw.cards[def.recruit] && !S.perm.specs[def.recruit]) { E.recruit(S, def.recruit); rw.cards[def.recruit]--; total.recruit = def.recruit; }
-      const got = E.grant(S, null, rw, 'exp');
+      const got = E.grant(S, E.expSupplyRegion(S, def), rw, 'exp');
+      if (got.sup) { total.sup = total.sup || {}; for (const r in got.sup) total.sup[r] = (total.sup[r] || 0) + got.sup[r]; total.supCards = (total.supCards || 0) + got.supCards; }
       total.data += got.data; total.frags += got.frags;
       for (const s in got.cards) total.cards[s] = (total.cards[s] || 0) + got.cards[s];
     }
@@ -1097,12 +1164,12 @@
     if (lvl >= node.max) return { lvl, max: true };
     const reqMiss = (node.req || []).filter((r) => !(S.perm.research[r] > 0)); const disc = E.resDiscNeed(S, id);
     const locked = reqMiss.length > 0 || !!disc;
-    const why = reqMiss.length ? 'Requer ' + reqMiss.map((r) => D.research[r].name).join(', ') : disc ? 'Requer a descoberta “' + D.discoveries[disc].name + '” (' + E.discSource(disc) + ')' : '';
+    const why = reqMiss.length ? 'Requer ' + reqMiss.map((r) => D.research[r].name).join(', ') : disc ? 'Requer a descoberta “' + D.discoveries[disc].name + '” (' + E.discSource(disc, S) + ')' : '';
     const cost = E.resCost(id, lvl); const cur = node.cur === 'frag' ? 'frag' : 'data';
     const have = cur === 'frag' ? S.perm.frags : S.perm.data;
     return { lvl, locked, why, disc, cost, cur, can: !locked && have + EPS >= cost };
   };
-  E.discSource = (did) => { const [rid, p, i] = D.discoveries[did].from.split('.'); return D.regions[rid].name + ': ' + E.mTitle(D.regions[rid].phases[+p].missions[+i]); };
+  E.discSource = (did, S) => { const [rid, p, i] = D.discoveries[did].from.split('.'); return D.regions[rid].name + ': ' + E.mTitle(D.regions[rid].phases[+p].missions[+i], S, rid); };
   E.buyResearch = function (S, id) {
     const st = E.resState(S, id); if (st.max || !st.can) return { ok: false, err: st.max ? 'Pesquisa completa' : st.locked ? st.why : 'Recursos insuficientes' };
     if (st.cur === 'frag') S.perm.frags -= st.cost; else S.perm.data -= st.cost;
@@ -1164,7 +1231,7 @@
     for (const { rid, x } of pend.missions) {
       run.missions[x.id] = 1; const rw = x.md.rw || {};
       // parte permanente: dados, recrutamento/cartas, fragmentos e descobertas (materiais são locais e reiniciam)
-      const got = E.grant(S, null, { data: rw.data, spec: rw.spec, cards: rw.cards, cardsOwned: rw.cardsOwned, frags: rw.frags, disc: rw.disc }, 'collapse');
+      const got = E.grant(S, null, { data: rw.data, spec: rw.spec, cards: rw.cards, cardsOwned: rw.cardsOwned, frags: rw.frags, disc: rw.disc }, 'collapse'); // escolha e materiais são locais
       sum.missions++; sum.data += got.data; sum.frags += got.frags; if (got.disc) sum.disc.push(got.disc);
       for (const s in got.cards) sum.cards[s] = (sum.cards[s] || 0) + got.cards[s];
     }
@@ -1228,7 +1295,7 @@
     let left = sec;
     while (left > EPS) { const dt = Math.min(step, left); E.tick(S, dt, rep); left -= dt; }
     rep.missions = [];
-    for (const rid of RO) { if (!S.run.regions[rid].unlocked) continue; for (const x of E.activeMissions(S, rid)) if (!before.has(x.id) && E.mProg(S, rid, x.md, x.id).done) rep.missions.push(E.mTitle(x.md)); }
+    for (const rid of RO) { if (!S.run.regions[rid].unlocked) continue; for (const x of E.activeMissions(S, rid)) if (!before.has(x.id) && E.mProg(S, rid, x.md, x.id).done) rep.missions.push(E.mTitle(x.md, S, rid)); }
     rep.exps = S.run.exps.filter((e) => S.run.time >= e.end && !expBefore.has(e.uid)).map((e) => D.expeditions[e.id].name);
     return rep;
   };
@@ -1472,6 +1539,7 @@
     const tot = vObj(R, 'totals', rp, () => ({ value: 0, prod: {} })); vNum(tot, 'value', rp + '.totals', { def: 0, min: 0, clamp: true }); vNumMap(tot, 'prod', rp + '.totals', resKey);
     const cnt = vObj(R, 'counters', rp, () => ({ exped: 0, trips: 0 })); vNum(cnt, 'exped', rp + '.counters', { def: 0, min: 0, clamp: true }); vNum(cnt, 'trips', rp + '.counters', { def: 0, min: 0, clamp: true });
     const fl = vObj(R, 'flags', rp, DEF); for (const k of Object.keys(fl)) fl[k] = !!fl[k];
+    const chs = vObj(R, 'choices', rp, DEF); for (const k of Object.keys(chs)) if (!D.choices[k] || !D.choiceOptions.some((o) => o.id === chs[k])) delete chs[k];
     if (R.offer !== null && R.offer !== undefined) { if (!Array.isArray(R.offer) || R.offer.some((u) => !D.universes[u] || u === R.universe)) R.offer = null; } else R.offer = null;
     const dirs = vObj(R, 'dirs', rp, DEF); for (const k of Object.keys(dirs)) { if (!dirs[k]) delete dirs[k]; else dirs[k] = 1; }
     vNum(R, 'gpi', rp, { def: 0, int: true, min: 0 });

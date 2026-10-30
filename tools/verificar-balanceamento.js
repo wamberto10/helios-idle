@@ -45,13 +45,13 @@ for (const universe of universes) for (const strategy of ['baseline', 'farm']) {
       return out;
     };
     const claim = E.claim;
-    E.claim = function (S, rid, id) {
+    E.claim = function (S, rid, id, ...rest) {
       const x = active(S, rid).find(m => m.id === id);
       const h = histories.get(S), samples = h?.samples || [];
       const span = samples.length ? S.run.time - samples[0].start : 0;
       const production = span > 0 ? samples.reduce((s, p) => s + p.data, 0) / span : 0;
       const first = seen.get(S)?.missions[id];
-      const out = claim(S, rid, id);
+      const out = claim(S, rid, id, ...rest);
       if (out.ok && x) claims.push({ initialUniverse: universe, strategy, engineInstance,
         collapseCount: S.perm.collapses, universe: S.run.universe, time: S.run.time, id, region: rid,
         title: E.mTitle(x.md), type: x.md.t, reward: x.md.rw, received: out.got,

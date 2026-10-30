@@ -1,0 +1,197 @@
+{
+  "generatedAt": "2026-10-30T00:23:49.784Z",
+  "universe": "padrao",
+  "cycles": 2,
+  "offsets": [
+    0,
+    7,
+    13
+  ],
+  "method": "Tempo de bot (ações instantâneas a cada 2s): serve para comparar estratégias, não para prever o tempo de uma pessoa.",
+  "rows": [
+    {
+      "strategy": "normal",
+      "desc": "bot normal (pesquisa quando custa menos que metade do saldo)",
+      "c1": 109,
+      "research1": 58,
+      "c2": 59,
+      "research2": 68,
+      "oracleMin": 8,
+      "runs": [
+        [
+          109,
+          59
+        ],
+        [
+          131,
+          75
+        ],
+        [
+          108,
+          52
+        ]
+      ]
+    },
+    {
+      "strategy": "pesquisa",
+      "desc": "compra pesquisa assim que pode",
+      "c1": 146,
+      "research1": 64,
+      "c2": 59,
+      "research2": 75,
+      "oracleMin": 8,
+      "runs": [
+        [
+          167,
+          41
+        ],
+        [
+          146,
+          73
+        ],
+        [
+          109,
+          59
+        ]
+      ]
+    },
+    {
+      "strategy": "observatorios",
+      "desc": "até 10 observatórios Nv.5 na Lua e em Marte (pesquisa no ritmo normal)",
+      "c1": 66,
+      "research1": 68,
+      "c2": 36,
+      "research2": 81,
+      "oracleMin": 8,
+      "runs": [
+        [
+          66,
+          34
+        ],
+        [
+          69,
+          36
+        ],
+        [
+          66,
+          36
+        ]
+      ]
+    },
+    {
+      "strategy": "farm",
+      "desc": "observatórios + pesquisa imediata (o farm científico das auditorias)",
+      "c1": 67,
+      "research1": 71,
+      "c2": 35,
+      "research2": 84,
+      "oracleMin": 8,
+      "runs": [
+        [
+          67,
+          35
+        ],
+        [
+          67,
+          35
+        ],
+        [
+          65,
+          36
+        ]
+      ]
+    },
+    {
+      "strategy": "industria",
+      "desc": "melhora refinarias, forjas e fábricas da Lua e de Marte até o Nv.5",
+      "c1": 119,
+      "research1": 59,
+      "c2": 59,
+      "research2": 68,
+      "oracleMin": 8,
+      "runs": [
+        [
+          112,
+          71
+        ],
+        [
+          119,
+          59
+        ],
+        [
+          132,
+          59
+        ]
+      ]
+    },
+    {
+      "strategy": "energia",
+      "desc": "mantém geração ≥ 1,5× o consumo em todas as regiões",
+      "c1": 128,
+      "research1": 62,
+      "c2": 69,
+      "research2": 70,
+      "oracleMin": 8,
+      "runs": [
+        [
+          85,
+          69
+        ],
+        [
+          128,
+          57
+        ],
+        [
+          164,
+          72
+        ]
+      ]
+    },
+    {
+      "strategy": "expansao",
+      "desc": "sem observatórios extras: amplia refino, forjas, armazéns e geração na Lua e em Marte (como o farm faz para pagar os observatórios)",
+      "c1": 191,
+      "research1": 66,
+      "c2": 64,
+      "research2": 73,
+      "oracleMin": 8,
+      "runs": [
+        [
+          191,
+          64
+        ],
+        [
+          197,
+          66
+        ],
+        [
+          189,
+          63
+        ]
+      ]
+    },
+    {
+      "strategy": "logistica",
+      "desc": "melhora todos os cargueiros até o Nv.5",
+      "c1": 133,
+      "research1": 62,
+      "c2": 74,
+      "research2": 72,
+      "oracleMin": 8,
+      "runs": [
+        [
+          133,
+          61
+        ],
+        [
+          131,
+          75
+        ],
+        [
+          133,
+          74
+        ]
+      ]
+    }
+  ]
+}

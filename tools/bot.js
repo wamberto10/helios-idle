@@ -54,6 +54,14 @@ function ensurePower(S, rid, depth) {
     const v = E.genOf(S, rid, b, m, 1, bs.lvl) / sum(E.bCost(S, rid, b, m)); if (v > bv) { bv = v; best = b; up = false; }
     if (bs.n && bs.lvl < D.maxBuildingLevel) { const u = (E.genOf(S, rid, b, m, bs.n, bs.lvl + 1) - E.genOf(S, rid, b, m, bs.n, bs.lvl)) / sum(E.uCost(S, rid, b, m)); if (u > bv) { bv = u; best = b; up = true; } }
   }
+  // primeiro a melhor opção que já cabe no estoque; se nenhuma couber, vai atrás do material da melhor
+  let fb = null, fv = -1, fup = false;
+  for (const b of g) {
+    const bs = reg.b[b] || { n: 0, lvl: 1 }; const sum = (c) => Object.values(c).reduce((a, x) => a + x, 0);
+    const bc = E.bCost(S, rid, b, m); if (E.afford(reg, bc)) { const v = E.genOf(S, rid, b, m, 1, bs.lvl) / sum(bc); if (v > fv) { fv = v; fb = b; fup = false; } }
+    if (bs.n && bs.lvl < D.maxBuildingLevel) { const uc = E.uCost(S, rid, b, m); if (E.afford(reg, uc)) { const v = (E.genOf(S, rid, b, m, bs.n, bs.lvl + 1) - E.genOf(S, rid, b, m, bs.n, bs.lvl)) / sum(uc); if (v > fv) { fv = v; fb = b; fup = true; } } }
+  }
+  if (fb) { if (fup) E.upgrade(S, rid, fb); else E.build(S, rid, fb); return; }
   if (best) (up ? tryUpgrade : tryBuild)(S, rid, best, depth + 1);
 }
 // falta de energia sem dinheiro para geradores: pausa as máquinas de transformação de maior nível
@@ -202,13 +210,15 @@ function buyResearch(S, force) {
 const T = {};
 function mark(S, k) { if (T[k] === undefined) T[k] = S.run.time; }
 
+// marcos de escolha: opção do bot (BOT_CHOICE=ind|sci|log; padrão industrial)
+function botPick(S, x) { return x.md.rw && x.md.rw.choice ? (globalThis.BOT_CHOICE || (typeof process !== 'undefined' && process.env && process.env.BOT_CHOICE) || 'ind') : undefined; }
 function botStep(S) {
   const run = S.run; const m = E.mods(S);
   while (S.perm.chests.length) E.openChest(S, S.perm.chests[0].id);
   for (const e of run.exps.slice()) if (run.time >= e.end) E.collectExp(S, e.uid);
   for (const sid in S.perm.specs) while (E.canPromote(S, sid)) E.promote(S, sid);
   buyResearch(S, false);
-  for (let k = 0; k < 4; k++) for (const rid of RO) { if (!run.regions[rid].unlocked) continue; for (const x of E.activeMissions(S, rid)) if (E.mProg(S, rid, x.md, x.id, m).done) { mark(S, 'm_' + x.id); E.claim(S, rid, x.id); } }
+  for (let k = 0; k < 4; k++) for (const rid of RO) { if (!run.regions[rid].unlocked) continue; for (const x of E.activeMissions(S, rid)) if (E.mProg(S, rid, x.md, x.id, m).done) { mark(S, 'm_' + x.id); E.claim(S, rid, x.id, botPick(S, x)); } }
   for (const sid in S.perm.specs) mark(S, 'spec_' + sid);
   for (const rid of RO) if (run.regions[rid].unlocked) mark(S, 'reg_' + rid);
   if (run.dyson.stage) mark(S, 'dyson' + run.dyson.stage);

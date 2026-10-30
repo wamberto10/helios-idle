@@ -59,10 +59,11 @@
       return true;
     };
     me.heartbeat = function () {
-      if (me.role !== 'writer' || me.noLock) return;
+      if (me.role !== 'writer') return;
+      if (me.storedRev() > me.rev) { me.lose('stale'); return; } // vale também sem posse gravável
+      if (me.noLock) { if (!readLock() && writeLock()) me.noLock = false; return; } // posse volta a funcionar
       const l = readLock();
       if (l && l.id !== me.id && now() - l.t <= TTL) { me.lose('taken'); return; }
-      if (me.storedRev() > me.rev) { me.lose('stale'); return; }
       writeLock();
     };
     me.lose = function (why) {
@@ -87,8 +88,10 @@
       if (!me.noLock) {
         const l = readLock();
         if (l && l.id !== me.id && now() - l.t <= TTL) { me.lose('taken'); return { ok: false, status: 'readonly' }; }
-        if (me.storedRev() > me.rev) { me.lose('stale'); return { ok: false, status: 'stale' }; }
       }
+      // a revisão é conferida sempre, mesmo quando a posse não pôde ser gravada: uma aba desatualizada
+      // nunca grava por cima de um progresso mais recente
+      if (me.storedRev() > me.rev) { me.lose('stale'); return { ok: false, status: 'stale' }; }
       if (me.protect) return { ok: false, status: 'error', reason: 'protected' };
       const prev = S.rev; S.rev = Math.max(me.rev, 0) + 1;
       try { st.setItem(keys.save, E.serialize(S)); } catch (e) { S.rev = prev; return { ok: false, status: 'error', reason: H.storageErrorKind(e) }; }

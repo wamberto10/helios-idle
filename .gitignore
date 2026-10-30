@@ -4,3 +4,7 @@
 *.tmp
 Thumbs.db
 desktop.ini
+# aplicativo: gerados por tools/preparar-app.js e pelo Capacitor
+app/www/
+app/android/
+app/node_modules/

@@ -214,14 +214,14 @@
             B('extrator', 3, { data: 5, res: { metal: 10 } }),
             P('ore', 60, { data: 5 }),
             PAY({ metal: 30 }, 'Restaurar a estação abandonada', 'Os módulos da antiga Estação Selene ainda respondem. Entregue metal para religá-los.', { data: 10, res: { ore: 30 } }),
-            C('extrator', 12, REC('iris'), { title: 'Recrutar Íris', desc: 'Opere os extratores 12 vezes. A engenheira Íris acorda na estação restaurada.' }),
+            C('extrator', 12, REC('iris'), { title: 'Recrutar Íris', desc: 'Opere os extratores {n} vezes. A engenheira Íris acorda na estação restaurada.' }),
           ] },
         { name: 'Posto de Extração', story: 'Íris assume os extratores. As primeiras luzes da base se acendem na cratera.',
           missions: [
             B('esc_gelo', 2, { data: 10 }),
             P('metal', 100, { data: 10 }),
             L('extrator', 2, { data: 10 }),
-            C('refinaria', 20, REC('vulcano'), { title: 'Recrutar Vulcano', desc: 'Opere a refinaria 20 vezes. O robô Vulcano chega no próximo módulo de carga.' }),
+            C('refinaria', 20, REC('vulcano'), { title: 'Recrutar Vulcano', desc: 'Opere a refinaria {n} vezes. O robô Vulcano chega no próximo módulo de carga.' }),
             B('painel', 4, { data: 10, res: { metal: 20 } }),
             RS(1, { data: 15 }, { }),
             P('ice', 150, { data: 10 }),
@@ -232,7 +232,7 @@
             B('forja', 1, { data: 10 }),
             B('eletrolisador', 1, { data: 10 }),
             P('fuel', 30, { data: 15 }, { title: 'Produzir o primeiro combustível' }),
-            C('esc_gelo', 30, REC('nix'), { title: 'Recrutar Nix', desc: 'Opere as escavadoras de gelo 30 vezes. Nix vem estudar as crateras.' }),
+            C('esc_gelo', 30, REC('nix'), { title: 'Recrutar Nix', desc: 'Opere as escavadoras de gelo {n} vezes. Nix vem estudar as crateras.' }),
             P('alloy', 50, { data: 15 }),
             L('refinaria', 3, { data: 15 }),
             B('extrator', 6, { data: 15 }),
@@ -244,7 +244,7 @@
             B('observatorio', 1, { data: 15 }),
             P('alloy', 200, { data: 20 }),
             EX(1, { data: 20 }),
-            C('observatorio', 5, REC('oraculo'), { title: 'Recrutar Oráculo', desc: 'Opere o observatório 5 vezes. Uma IA responde ao sinal.' }),
+            C('observatorio', 5, REC('oraculo'), { title: 'Recrutar Oráculo', desc: 'Opere o observatório {n} vezes. Uma IA responde ao sinal.' }),
             L('forja', 2, { data: 20 }),
             P('fuel', 150, { data: 20 }),
             EN(40, { data: 25 }),
@@ -263,7 +263,7 @@
             B('extrator', 3, { data: 15 }),
             RT(1, { data: 20 }, { }),
             B('fabrica', 1, { data: 20 }),
-            SH(3, REC('vega'), { title: 'Recrutar Vega', desc: 'Complete 3 viagens de carga envolvendo Marte. A piloto Vega aceita o contrato.' }),
+            SH(3, REC('vega'), { title: 'Recrutar Vega', desc: 'Complete {n} viagens de carga envolvendo Marte. A piloto Vega aceita o contrato.' }),
             P('comp', 15, { data: 20 }),
             B('painel', 6, { data: 20 }),
             DL('fuel', 40, { data: 20 }),
@@ -336,7 +336,7 @@
             B('fotovoltaica', 1, { data: 40 }),
             P('cell', 15, { data: 40 }),
             B('coletor_solar', 2, { data: 40 }),
-            C('fotovoltaica', 15, REC('helio'), { title: 'Recrutar Hélio', desc: 'Opere a fundição fotovoltaica 15 vezes. A IA Hélio desperta nos arquivos solares.' }),
+            C('fotovoltaica', 15, REC('helio'), { title: 'Recrutar Hélio', desc: 'Opere a fundição fotovoltaica {n} vezes. A IA Hélio desperta nos arquivos solares.' }),
             DL('rare', 50, { data: 40 }),
             EN(120, { data: 40 }),
             L('fotovoltaica', 2, { data: 40 }),
@@ -367,7 +367,7 @@
             B('plataforma', 3, { data: 50 }),
             P('gas', 300, { data: 50 }),
             B('quimica', 2, { data: 50 }),
-            C('plataforma', 20, REC('aura'), { title: 'Recrutar Aura', desc: 'Opere as plataformas 20 vezes. Aura assume os céus de Vênus.' }),
+            C('plataforma', 20, REC('aura'), { title: 'Recrutar Aura', desc: 'Opere as plataformas {n} vezes. Aura assume os céus de Vênus.' }),
             P('fuel', 300, { data: 50 }),
             RT(1, { data: 50 }),
             L('plataforma', 2, { data: 50 }),
@@ -398,7 +398,7 @@
             B('plataforma', 3, { data: 60 }),
             P('gas', 600, { data: 60 }),
             B('ref_fusao', 2, { data: 60 }),
-            C('ref_fusao', 10, REC('ion'), { title: 'Recrutar Íon', desc: 'Opere as refinarias de fusão 10 vezes. Íon chega de Europa.' }),
+            C('ref_fusao', 10, REC('ion'), { title: 'Recrutar Íon', desc: 'Opere as refinarias de fusão {n} vezes. Íon chega de Europa.' }),
             P('fusion', 30, { data: 60 }),
             B('reator', 2, { data: 60 }),
             SH(6, { data: 60 }),
@@ -651,6 +651,23 @@
   for (const key in D.phaseCards) {
     const [rid, p, i] = key.split('.'); const md = D.regions[rid].phases[+p].missions[+i];
     md.rw = Object.assign({}, md.rw, { cards: D.phaseCards[key], cardsOwned: true });
+  }
+  // ---------------- MARCOS DE ESCOLHA ----------------
+  // Três marcos deixam o jogador escolher um benefício para o universo atual (some no Colapso: sem inflação
+  // permanente; uma escolha por marco em cada universo). eff usa os mesmos tipos dos modificadores.
+  D.choices = {
+    forjas:  { from: 'marte.1.7', title: 'Rumo da colônia de Marte' },
+    nuvens:  { from: 'venus.0.7', title: 'Prioridade das cidades de Vênus' },
+    aneis:   { from: 'saturno.0.7', title: 'Plano dos anéis de Saturno' },
+  };
+  D.choiceOptions = [
+    { id: 'ind', name: 'Industrial', desc: '+20% de velocidade nas instalações industriais (refino, forjas, fábricas, estaleiros) neste universo.', eff: { k: 'speed', cat: 'industry', v: 0.2 } },
+    { id: 'sci', name: 'Científico', desc: '+15% de dados de pesquisa de todas as fontes neste universo.', eff: { k: 'dataGain', v: 0.15 } },
+    { id: 'log', name: 'Logístico', desc: '+30% de carga e −15% de tempo de viagem dos cargueiros neste universo.', eff: { k: 'logi', cargo: 0.3, travel: 0.15 } },
+  ];
+  for (const id in D.choices) {
+    const [rid, p, i] = D.choices[id].from.split('.'); const md = D.regions[rid].phases[+p].missions[+i];
+    md.rw = Object.assign({}, md.rw, { choice: id });
   }
   for (const id in D.discoveries) { // a recompensa da missão-marco passa a conceder a descoberta
     const [rid, p, i] = D.discoveries[id].from.split('.'); const md = D.regions[rid].phases[+p].missions[+i];

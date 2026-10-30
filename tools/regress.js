@@ -7,7 +7,7 @@ if (!globalThis.H || !globalThis.H.E) {
   globalThis.H = {};
   for (const f of ['data.js', 'engine.js', 'session.js']) vm.runInThisContext(fs.readFileSync(path.join(__dirname, '..', 'js', f), 'utf8'), { filename: f });
 } else if (!globalThis.H.makeSession) vm.runInThisContext(fs.readFileSync(path.join(__dirname, '..', 'js', 'session.js'), 'utf8'), { filename: 'session.js' });
-const { DATA: D, E } = H;
+const { DATA: D, E, F } = H;
 const RO = D.regionOrder;
 
 let fails = 0, count = 0;
@@ -463,11 +463,109 @@ function testHold() {
   assert(rb.ok && !rb.S.run.regions.urano.hold, 'reserva inválida descartada ao carregar');
 }
 
+// =============== 9. SALVAMENTO E OFFLINE: FECHAMENTO, BACKUP, SUSPENSÃO, POSSE SEM GRAVAÇÃO ===============
+function testSaveOffline() {
+  section('Salvamento e offline: backup antigo, suspensão, posse sem gravação');
+  // backup antigo: o tempo desde o arquivo é creditado uma vez, dentro do limite offline
+  const B = fresh(); E.recruit(B, 'iris'); B.lastTick = 1e12; const old = E.serialize(B);
+  const r = E.deserialize(old); assert(r.ok && r.S.lastTick === 1e12, 'backup carregado mantém o horário do arquivo');
+  const t0 = r.S.run.time; const rep = E.applyOffline(r.S, 1e12 + 3 * 3600e3);
+  assert(rep && near(r.S.run.time - t0, 3 * 3600, 1e-6) && r.S.lastTick === 1e12 + 3 * 3600e3, 'restaurar backup de 3h atrás credita 3h');
+  assert(E.applyOffline(r.S, 1e12 + 3 * 3600e3) === null && near(r.S.run.time - t0, 3 * 3600, 1e-6), 'o mesmo intervalo não é aplicado duas vezes');
+  const R2 = E.deserialize(old).S; E.applyOffline(R2, 1e12 + 30 * 3600e3);
+  assert(near(R2.run.time - t0, E.offlineCapSec(R2), 1e-6), 'backup muito antigo respeita o limite offline (' + (E.offlineCapSec(R2) / 3600) + 'h)');
+  const F2 = E.deserialize(old).S; assert(E.applyOffline(F2, 1e12 - 5000) === null && F2.run.time === t0, 'horário do arquivo no futuro não gera tempo negativo');
+  // ausência de 1h e fechamento: o save guarda o lastTick do último passo; ao abrir, a hora é creditada uma vez
+  const C = fresh(); C.lastTick = 1e12; E.tick(C, 1); const closed = E.serialize(C); // fechou sem novos passos (aba suspensa)
+  const O = E.deserialize(closed).S; const c0 = O.run.time; E.applyOffline(O, 1e12 + 3600e3);
+  assert(near(O.run.time - c0, 3600, 1e-6), 'aba suspensa por 1h e fechada: a hora é creditada ao abrir');
+  const again = E.deserialize(E.serialize(O)).S; assert(E.applyOffline(again, 1e12 + 3600e3) === null, 'reabrir logo depois não credita de novo');
+  // posse sem gravação: duas abas viram gravadoras sem posse; a revisão impede sobrescrever o mais recente
+  const mem = {}; let lockFails = true;
+  const raw = { getItem: (k) => (k in mem ? mem[k] : null), setItem: (k, v) => { if (lockFails && k.endsWith('_lock')) { const e = new Error('falha'); e.name = 'QuotaExceededError'; throw e; } mem[k] = String(v); }, removeItem: (k) => { delete mem[k]; } };
+  const store = H.safeStorage(() => raw); let clock = 1e12; const now = () => clock;
+  const tab = (id) => H.makeSession({ storage: store, key: 'helios_teste2', now, id, ttl: 6000 });
+  const A = tab('A'), Bt = tab('B');
+  assert(A.claim(false) && A.noLock && Bt.claim(false) && Bt.noLock, 'sem posse gravável, as duas abas começam como gravadoras');
+  const SA = fresh(); SA.perm.data = 10; const SB = fresh(); SB.perm.data = 1;
+  let w = A.write(SA); assert(w.ok && E.peekRev(mem.helios_teste2) === 1, 'A grava a revisão 1');
+  SA.perm.data = 20; A.write(SA);
+  w = Bt.write(SB); assert(!w.ok && w.status === 'stale' && JSON.parse(mem.helios_teste2).perm.data === 20, 'B (desatualizada) não grava por cima mesmo sem posse');
+  assert(Bt.role === 'passive' && Bt.lost === 'stale', 'B passa a só exibir');
+  clock += 2000; lockFails = false; A.heartbeat(); assert(!A.noLock && A.lockState() === 'mine', 'quando a posse volta a gravar, A a assume');
+  const Cc = tab('C'); assert(!Cc.claim(false), 'com a posse restabelecida, nova aba fica em leitura');
+}
+
+// =============== 10. METAS EFETIVAS DAS MISSÕES ===============
+function testMissionTargets() {
+  section('Metas das missões: título, descrição, barra e conclusão usam a mesma meta efetiva');
+  const S = fresh(); S.perm.collapses = 2; const m = E.mods(S); // ×2 após dois Colapsos
+  const md = D.regions.lua.phases[0].missions[1]; // Produzir 60 minérios
+  const tgt = E.mTarget(S, 'lua', md, m); assert(tgt === Math.ceil(md.n * E.depthMult(S)) && tgt > md.n, 'meta efetiva maior que a base (' + tgt + ')');
+  assert(E.mTitle(md, S, 'lua').includes(F.n(tgt)) && !E.mTitle(md, S, 'lua').includes(' ' + md.n + ' '), 'título mostra ' + tgt + ', não ' + md.n);
+  S.run.regions.lua.stats.prod.ore = tgt - 1; assert(!E.mProg(S, 'lua', md, 'lua.0.1', m).done, 'com ' + (tgt - 1) + ' ainda não conclui');
+  S.run.regions.lua.stats.prod.ore = tgt; assert(E.mProg(S, 'lua', md, 'lua.0.1', m).done && E.mProg(S, 'lua', md, 'lua.0.1', m).max === tgt, 'conclui exatamente na meta mostrada');
+  const rec = D.regions.lua.phases[0].missions[3]; // Recrutar Íris: ciclos sem escala de Colapso
+  assert(E.mDesc(rec, S, 'lua').includes(String(E.mTarget(S, 'lua', rec, m))), 'descrição do recrutamento usa a meta efetiva');
+  S.perm.research.sg2 = 2; const m2 = E.mods(S); const t2 = E.mTarget(S, 'lua', rec, m2);
+  assert(t2 < rec.n && E.mDesc(rec, S, 'lua', m2).includes(String(t2)) && !E.mDesc(rec, S, 'lua', m2).includes(String(rec.n)), 'Atalhos de Missão: descrição mostra ' + t2 + ' em vez de ' + rec.n);
+  const lv = D.regions.lua.phases[1].missions[2]; assert(E.mTitle(lv, S, 'lua') === E.mTitle(lv), 'metas de nível não mudam com Colapsos');
+  for (const rid of RO) D.regions[rid].phases.forEach((ph) => ph.missions.forEach((x) => { if (x.desc && (x.t === 'cycles' || x.t === 'ship') && /[0-9]/.test(x.desc.split('{n}').join(''))) assert(false, 'descrição com número fixo: ' + x.desc); }));
+}
+
+// =============== 11. RESGATAR CONCLUÍDAS ===============
+function testClaimAll() {
+  section('Resgatar concluídas: só elegíveis, entrega única, pagamentos intactos, mensagens agrupadas');
+  const S = fresh(); const L = S.run.regions.lua;
+  L.b.extrator.n = 3; L.stats.prod.ore = 1e4; L.stats.cycles.extrator = 999; // cumpridas antes de aparecer
+  const d0 = S.perm.data; S.events = [];
+  const r = E.claimAll(S, 'lua');
+  assert(r.count === 3 && S.run.missions['lua.0.0'] && S.run.missions['lua.0.1'] && S.run.missions['lua.0.3'], 'resgata as três concluídas (' + r.count + ')');
+  assert(!S.run.missions['lua.0.2'] && L.phase === 0, 'missão de pagamento sem entrega continua pendente (custo preservado)');
+  assert(S.perm.specs.iris && near(S.perm.data - d0, r.data), 'recompensas creditadas uma vez (dados e recrutamento)');
+  assert(S.events.filter((e) => e.kind === 'claimall').length === 1 && S.events.some((e) => e.kind === 'recruit') && !S.events.some((e) => e.kind === 'gold'), 'mensagens agrupadas num resumo; recrutamento mantido');
+  assert(E.claimAll(S, 'lua').count === 0 && near(S.perm.data - d0, r.data), 'repetir não paga de novo');
+  // depois de pagar, a fase fecha e as próximas já cumpridas também entram
+  L.st.metal = 100; E.contribute(S, 'm:lua.0.2'); L.b.esc_gelo = { n: 2, lvl: 1, p: 0 }; L.stats.prod.metal = 1e4; L.stats.prod.ice = 1e4; L.b.extrator.lvl = 2; L.b.painel.n = 4; L.b.armazem = { n: 1, lvl: 1, p: 0 }; S.perm.research.min1 = 1; L.stats.cycles.refinaria = 99;
+  const chests = S.perm.chests.length; const r2 = E.claimAll(S, 'lua');
+  assert(L.phase === 2 && r2.phases === 2 && S.perm.chests.length === chests + 2, 'fases concluídas em sequência, com um baú cada (' + r2.count + ' missões)');
+  assert(E.claimable(S, 'lua') === 0, 'nada elegível sobra');
+  const C = clone(S); assert(E.claimAll(C, 'lua').count === 0, 'salvar e carregar não reabre resgates');
+}
+
+// =============== 12. CARTAS SEM USO E MARCOS DE ESCOLHA ===============
+function testRewardsV2() {
+  section('Cartas sem uso viram suprimentos; marcos de escolha valem só no universo');
+  const S = fresh(); S.run.flags.expeditions = true; S.perm.specs.iris = { lvl: D.specMaxLevel, cards: 0 }; S.perm.specs.vulcano = { lvl: 9, cards: 0 };
+  const pv = E.expPreview(S, 'insp_lua');
+  assert(!pv.g.cards.iris && pv.g.supCards === 2 && pv.g.sup.metal === E.chestSupply(2).metal, 'prévia da expedição mostra suprimentos no lugar das cartas de Íris (nível máximo)');
+  const uid = ++S.run.expSeq; S.run.exps.push({ id: 'insp_lua', uid, end: 0, dur: 1, bonus: [] });
+  const L = S.run.regions.lua; const m0 = L.st.metal || 0, c0 = S.perm.specs.iris.cards; const r = E.collectExp(S, uid, true, true);
+  const metal = (L.st.metal - m0) + ((L.pend || {}).metal || 0);
+  assert(S.perm.specs.iris.cards === c0 && near(metal, pv.g.sup.metal) && r.total.sup.metal === pv.g.sup.metal, 'crédito igual à prévia: nenhuma carta inútil, suprimentos entregues');
+  const need = E.cardsNeeded(S, 'vulcano'); const sp = E.splitCards(S, { vulcano: need + 3 }, 'lua');
+  assert(sp.give.vulcano === need && sp.extra === 3, 'só a parte útil vira carta; o excedente vira suprimentos');
+  const mrw = { cards: { iris: 4 }, cardsOwned: true }; const mp = E.rewardPreview(S, 'lua', mrw); const mg = E.grant(S, 'lua', mrw, 'mission');
+  assert(!mp.cards.iris && mp.supCards === 4 && mg.supCards === 4 && !mg.cards.iris, 'missão: mesma regra, prévia = crédito');
+  const rp = E.rewardPreview(S, 'lua', { spec: 'iris' }); assert(rp.supCards === 1 && !rp.specCard, 'recrutamento repetido de especialista completo também vira suprimentos');
+  // marcos de escolha
+  const C = fresh(); E.unlockRegion(C, 'marte', true); const M = C.run.regions.marte; M.phase = 1; for (let i = 0; i < 7; i++) C.run.missions['marte.1.' + i] = 1; M.stats.prod.metal = 1e5;
+  let cr = E.claim(C, 'marte', 'marte.1.7'); assert(!cr.ok && cr.needChoice === 'forjas' && !C.run.missions['marte.1.7'], 'marco de escolha exige uma opção');
+  assert(E.claimAll(C, 'marte').count === 0, '“Resgatar concluídas” não escolhe pelo jogador');
+  const sp0 = E.mods(C).speed.industry; cr = E.claim(C, 'marte', 'marte.1.7', 'ind');
+  assert(cr.ok && C.run.choices.forjas === 'ind' && near(E.mods(C).speed.industry, sp0 * 1.2), 'opção industrial: +20% de velocidade industrial');
+  assert(!E.claim(C, 'marte', 'marte.1.7', 'sci').ok && C.run.choices.forjas === 'ind', 'uma escolha por marco');
+  const K = clone(C); assert(K.run.choices.forjas === 'ind', 'escolha salva');
+  readyToCollapse(C); E.doCollapse(C, E.collapseOffer(C)[0]); assert(!Object.keys(C.run.choices).length && near(E.mods(C).speed.industry, 1), 'no Colapso o benefício termina (sem inflação permanente)');
+  const bad = JSON.parse(E.serialize(K)); bad.run.choices = { forjas: 'tudo', inventado: 'ind' }; const rb = E.deserialize(JSON.stringify(bad));
+  assert(rb.ok && !Object.keys(rb.S.run.choices).length, 'escolhas inválidas descartadas ao carregar');
+}
+
 let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');

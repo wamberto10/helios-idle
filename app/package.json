@@ -1,0 +1,20 @@
+{
+  "name": "helios-idle-app",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Casca Capacitor do HELIOS IDLE. A versão web continua na raiz do projeto.",
+  "scripts": {
+    "preparar": "node ../tools/preparar-app.js",
+    "sync": "node ../tools/preparar-app.js && npx cap sync android",
+    "abrir": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "latest",
+    "@capacitor/app": "latest",
+    "@capacitor/core": "latest",
+    "@capacitor/preferences": "latest"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "latest"
+  }
+}

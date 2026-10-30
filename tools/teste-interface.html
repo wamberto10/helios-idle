@@ -17,7 +17,7 @@
 </head>
 <body>
 <h1>HELIOS IDLE — testes de interface</h1>
-<p>Carrega o jogo real (<code>index.html</code> com <code>ui.js</code> e <code>main.js</code>) em quadros isolados com <code>?slot=</code>: o salvamento pessoal não é lido nem alterado. Abra por um servidor local (<code>iniciar.bat</code> ou <code>python -m http.server 8765</code>) em <code>http://localhost:8765/tools/teste-interface.html</code>. Duração: cerca de 40 segundos.</p>
+<p>Carrega o jogo real (<code>index.html</code> com <code>ui.js</code> e <code>main.js</code>) em quadros isolados com <code>?slot=</code>: o salvamento pessoal não é lido nem alterado. Abra por um servidor local (<code>iniciar.bat</code> ou <code>python -m http.server 8765</code>) em <code>http://localhost:8765/tools/teste-interface.html</code>. Duração: cerca de 1 minuto.</p>
 <button id="go">Executar novamente</button>
 <div id="sum">Executando…</div>
 <ol id="out"></ol>
@@ -306,6 +306,95 @@ async function tOfflineTwoTabs() {
   ok(Date.now() - st.lastTick < 5000, 'o intervalo ficou registrado como usado');
   close(A); close(B);
 }
+async function tCloseAfterAbsence() {
+  sec('Offline: aba suspensa por 1h e depois fechada; retomada após suspensão');
+  const g = await openGame('fechar'); await until(() => g.modal()); await g.closeAll();
+  const S = g.S(); g.H._test.suspend(); const t0 = S.run.time; S.lastTick = Date.now() - 3600e3; // o sistema suspendeu a aba por 1h
+  g.w.dispatchEvent(new g.w.Event('pagehide'));
+  const st = JSON.parse(localStorage.getItem(slotKey('fechar')));
+  ok(Date.now() - st.lastTick > 3500e3, 'ao fechar, a hora suspensa não é descartada (o save guarda o último instante simulado)');
+  close(g);
+  const g2 = await openGame('fechar');
+  ok(await until(() => g2.modal() && /Bem-vindo\(a\) de volta/.test(g2.modal().textContent), 3000), 'ao reabrir, o relatório offline aparece');
+  const gained = g2.S().run.time - t0; ok(gained > 3590 && gained < 3700, 'a hora foi creditada uma vez (' + Math.round(gained) + 's)');
+  close(g2);
+  const g3 = await openGame('fechar'); await wait(400); const again = g3.S().run.time - t0;
+  ok(again < 3700, 'reabrir de novo não credita a mesma hora outra vez (' + Math.round(again) + 's)');
+  await g3.closeAll();
+  // retomada após suspensão sem fechar
+  const S3 = g3.S(); g3.H._test.suspend(); const r0 = S3.run.time; S3.lastTick = Date.now() - 1800e3;
+  g3.H._test.resume(); await wait(300);
+  const got = g3.S().run.time - r0; ok(got > 1790 && got < 1830, 'retomada após 30 min suspensa credita 30 min (' + Math.round(got) + 's)');
+  ok(g3.modal() && /Bem-vindo\(a\) de volta/.test(g3.modal().textContent), 'relatório da retomada');
+  await wait(400); ok(g3.S().run.time - r0 < 1835, 'o intervalo não é aplicado duas vezes');
+  ok(Date.now() - JSON.parse(localStorage.getItem(slotKey('fechar'))).lastTick < 5000, 'o intervalo ficou registrado no save');
+  close(g3);
+}
+async function tBackupRestore() {
+  sec('Backup antigo: importar credita o tempo desde o arquivo');
+  const g = await openGame('backup'); await until(() => g.modal()); await g.closeAll();
+  const old = H.E.newState(); H.E.setProfile(old, { name: 'Backup Teste', avatar: 'atlas' }); H.E.recruit(old, 'iris'); old.events = [];
+  old.perm.data = 321; old.lastTick = Date.now() - 2 * 3600e3;
+  g.click('[data-a="nav|settings"]'); g.q('#io').value = H.E.exportStr(old); g.click('[data-a="import"]'); await wait(40);
+  g.click('#modal [data-a="import2"]'); await wait(120);
+  const t = g.S().run.time; ok(t > 7150 && t < 7300, 'o backup de 2h atrás recebeu 2h de produção (' + Math.round(t) + 's)');
+  ok(await until(() => g.modal() && /Bem-vindo\(a\) de volta/.test(g.modal().textContent), 2000), 'relatório offline após a restauração');
+  const st = JSON.parse(localStorage.getItem(slotKey('backup')));
+  ok(Math.round(st.perm.data) >= 321 && Date.now() - st.lastTick < 5000 && Math.abs(st.run.time - t) < 60, 'o resultado foi gravado com o intervalo marcado como usado');
+  close(g);
+}
+async function tLockWriteFail() {
+  sec('Duas abas com falha na gravação da posse: a desatualizada não grava por cima');
+  const A = await openGame('semposse'); await until(() => A.modal()); await A.closeAll();
+  const B = await openGame('semposse'); await wait(250); ok(B.lock(), 'B começa em leitura');
+  const key = slotKey('semposse');
+  for (const g of [A, B]) { const p = g.w.Storage.prototype, o = p.setItem; p.setItem = function (k, v) { if (/_lock$/.test(k)) throw new g.w.DOMException('falha simulada', 'QuotaExceededError'); return o.call(this, k, v); }; }
+  localStorage.removeItem(key + '_lock'); // a posse expirou e não pode mais ser gravada
+  ok(await until(() => B.H.session.role === 'writer' && !B.lock(), 4000, 100), 'B assume sem conseguir gravar a posse');
+  // sem posse gravável, as duas podem estar ativas por um instante; a regra é a revisão: quem tem a mais nova grava,
+  // a outra é recusada e nunca sobrescreve
+  const stored = H.E.peekRev(localStorage.getItem(key));
+  const [X, Y] = A.H.session.role === 'writer' && A.H.session.rev === stored ? [A, B] : [B, A];
+  X.S().perm.data = 555; ok(X.H.save(true).ok, 'a aba com a revisão mais nova grava');
+  Y.S().perm.data = 1; const r = Y.H.save(true);
+  ok(!r.ok && Math.round(JSON.parse(localStorage.getItem(key)).perm.data) === 555, 'a aba desatualizada é recusada e não sobrescreve');
+  ok(await until(() => Y.lock(), 3000), 'a aba desatualizada mostra o aviso');
+  close(A); close(B);
+}
+async function tClaimAllUI() {
+  sec('Missões: resgatar concluídas, próximas da fase e marco de escolha');
+  const g = await openGame('resgatar', 375, 812); await until(() => g.modal()); await g.closeAll();
+  const S = g.S(); const L = S.run.regions.lua; L.b.extrator.n = 3; L.stats.prod.ore = 1e4; L.stats.cycles.extrator = 999; S.events = [];
+  g.H.UI.go('region', { rid: 'lua' }); await wait(80); g.H.UI.frame();
+  const btn = g.q('[data-a="claimall|lua"]'); ok(btn && /Resgatar concluídas \(2\)/.test(btn.textContent), 'botão “Resgatar concluídas (2)” mostra as duas ativas prontas');
+  ok(g.q('details.next-mis') && /Próximas nesta fase/.test(g.q('details.next-mis').textContent), 'prévia compacta das próximas missões da fase');
+  g.click(btn); await wait(120); g.H.UI.frame();
+  ok(S.run.missions['lua.0.0'] && S.run.missions['lua.0.1'] && S.run.missions['lua.0.3'] && !S.run.missions['lua.0.2'], 'resgata só as concluídas (o pagamento continua pendente)');
+  const toasts = g.qa('#toasts .toast').map((t) => t.textContent); ok(toasts.some((t) => /3 missões resgatadas/.test(t)) && toasts.length <= 3, 'um resumo agrupado no lugar de várias mensagens (' + toasts.length + ' avisos)');
+  await g.closeAll();
+  // marco de escolha
+  g.H.E.unlockRegion(S, 'marte', true); const M = S.run.regions.marte; M.phase = 1; for (let i = 0; i < 7; i++) S.run.missions['marte.1.' + i] = 1; M.stats.prod.metal = 1e5;
+  g.H.UI.go('region', { rid: 'marte' }); await wait(80); g.H.UI.frame();
+  g.click('[data-a="claim|marte|marte.1.7"]'); await wait(60);
+  ok(g.modal() && g.qa('#modal .choice-opt').length === 3, 'o marco abre a escolha entre três benefícios');
+  g.click('#modal [data-a="claimpick|marte|marte.1.7|log"]'); await wait(60);
+  ok(S.run.choices.forjas === 'log' && S.run.missions['marte.1.7'], 'a opção escolhida é aplicada e a missão resgatada uma vez');
+  close(g);
+}
+async function tMobileUX() {
+  sec('Celular (375 px): prioridade, toque e seções recolhíveis');
+  const g = await openGame('mobileux', 375, 812); await until(() => g.modal()); await g.closeAll();
+  g.H.UI.go('region', { rid: 'lua' }); await wait(120);
+  const top = (s) => g.q(s).getBoundingClientRect().top;
+  ok(top('.o-mis') < top('.o-bneck') && top('.o-bneck') < top('.o-stock') && top('.o-stock') < top('.o-bgrid'), 'ordem: missões, gargalo, estoque, instalações');
+  ok(g.q('details.o-specs') && !g.q('details.o-specs').open && !g.q('details.o-log').open, 'especialistas e diário ficam recolhidos');
+  g.q('details.o-log').open = true; g.q('details.o-log').dispatchEvent(new g.w.Event('toggle')); g.H.UI.st.sig = ''; g.H.UI.frame(true); await wait(40);
+  ok(g.q('details.o-log').open, 'seção aberta continua aberta depois de atualizar a tela');
+  const small = g.qa('.btn, .tab, .rs-btn, .pause-btn:not(.hidden), .nav-btn').filter((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.height < 43; });
+  ok(!small.length, 'botões com pelo menos ~44 px de altura' + (small.length ? ' — menores: ' + small.slice(0, 3).map((e) => e.className + ' ' + Math.round(e.getBoundingClientRect().height)).join(', ') : ''));
+  const de = g.d.documentElement; ok(de.scrollWidth <= de.clientWidth + 1, 'sem rolagem horizontal');
+  close(g);
+}
 async function tLayout() {
   sec('Layout no computador e no celular (sem rolagem horizontal)');
   for (const [w, h, label] of [[1280, 800, 'computador'], [375, 812, 'celular']]) {
@@ -328,7 +417,7 @@ async function tLayout() {
 async function main() {
   document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
   const t0 = Date.now();
-  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tLayout]) {
+  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tLayout]) {
     try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }
     STAGE.innerHTML = '';
   }

@@ -9,7 +9,7 @@
   let baseRun = null;
   // painel visual da base (mapa com as instalações): desligado por enquanto; os cartões de instalação continuam
   const SHOW_BASE_PANEL = false;
-  const ui = UI.st = { screen: 'region', rid: 'lua', sel: 'lua', rtab: 'prod', resSel: null, uniSel: null, hl: null, sig: '', nodes: [], nr: { from: 'lua', to: '', res: 'metal' }, regFilter: true, modalOpen: false, queue: [] };
+  const ui = UI.st = { open: {}, screen: 'region', rid: 'lua', sel: 'lua', rtab: 'prod', resSel: null, uniSel: null, hl: null, sig: '', nodes: [], nr: { from: 'lua', to: '', res: 'metal' }, regFilter: true, modalOpen: false, queue: [] };
   const $ = (s, r) => (r || document).querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const setT = (el, v) => { if (el._t !== v) { el.textContent = v; el._t = v; } };
@@ -36,9 +36,13 @@
     for (const c in p.cards) s += `<span class="chip gold">${p.cards[c]}× carta ${D.specs[c].name}</span>`;
     if (p.disc) s += `<span class="chip purple" title="${esc(D.discoveries[p.disc].desc)}">◆ Descoberta: ${D.discoveries[p.disc].name}</span>`;
     if (p.discKnown) s += `<span class="chip muted" title="Descobertas são permanentes">Descoberta já conhecida: ${D.discoveries[p.discKnown].name}</span>`;
+    if (p.sup) s += supChip(p.sup, p.supCards);
+    if (p.choice) s += `<span class="chip ok">◇ Escolha: industrial, científico ou logístico (neste universo)</span>`;
     if (p.unlock === 'expeditions') s += `<span class="chip ok">Libera expedições</span>`;
     return s;
   }
+  // suprimentos entregues no lugar de cartas sem uso (especialista já tem tudo o que precisa)
+  const supChip = (sup, n) => `<span class="chip">${Object.keys(sup).map((r) => A.rg(r) + ' ' + F.n(sup[r])).join(' ')} <span class="muted">no lugar de ${n} carta${n > 1 ? 's' : ''} sem uso</span></span>`;
   const rarColor = (sid) => D.rarities[D.specs[sid].rarity].color;
   const regName = (rid) => rid === 'terra' ? 'Terra' : D.regions[rid].name;
 
@@ -192,7 +196,7 @@
     else if (!e.shiftKey && ae === last) { e.preventDefault(); first.focus(); }
   }
   function floatNum(el, text) {
-    if (!el || S.settings.reduceMotion) return;
+    if (!el || H.reduceMotion()) return;
     const r = el.getBoundingClientRect(); const f = document.createElement('div');
     f.className = 'float-num'; f.textContent = text; f.style.left = (r.left + r.width / 2 - 20) + 'px'; f.style.top = (r.top - 6) + 'px';
     document.body.appendChild(f); setTimeout(() => f.remove(), 950);
@@ -228,7 +232,7 @@
       case 'crew': return base + JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
       case 'research': return base + JSON.stringify(p.research) + Object.keys(p.disc || {}).join() + ui.resSel;
       case 'exp': return base + JSON.stringify(p.research) + run.exps.map((e) => e.uid).join(',') + '|' + p.chests.map((c) => c.id).join(',') + run.flags.expeditions + Object.keys(run.flags).filter((k) => k.startsWith('frag:')).join(',') +JSON.stringify(Object.values(p.specs).map((s) => s.lvl));
-      case 'sing': return base + run.dyson.stage + run.core + E.canCollapse(S) + ui.uniSel + JSON.stringify(run.dirs) + (run.offer || []).join() + JSON.stringify(p.research) + Object.keys(p.ach).length;
+      case 'sing': return base + run.dyson.stage + run.core + E.canCollapse(S) + ui.uniSel + JSON.stringify(run.dirs) + JSON.stringify(run.choices || {}) + (run.offer || []).join() + JSON.stringify(p.research) + Object.keys(p.ach).length;
       default: return base + JSON.stringify(S.settings);
     }
   }
@@ -252,14 +256,16 @@
     const ae = document.activeElement; const key = ae && el.contains(ae) ? focusKey(ae) : null;
     const oldBase = el.querySelector('.base-scroll');
     if (oldBase) baseScroll.set(oldBase.dataset.region, oldBase.scrollLeft);
-    const io = $('#io'); const ioVal = io ? io.value : null;
+    const io = $('#io'); const ioVal = io ? io.value : null; const sy = window.scrollY;
     el.innerHTML = fn();
+    if (Math.abs(window.scrollY - sy) > 1) window.scrollTo(0, sy); // atualização não move a página
+    for (const d of el.querySelectorAll('details[data-coll]')) d.addEventListener('toggle', () => { ui.open[d.dataset.coll] = d.open; });
     mountRegionBase();
     const io2 = $('#io'); if (io2 && ioVal) io2.value = ioVal;
     if (key) { const t = findKey(el, key); if (t) t.focus({ preventScroll: true }); }
     ui.nodes = Array.from(document.querySelectorAll('#top [data-u], #nav [data-u], #screen [data-u]'));
     if (ui.screen === 'map') initMap();
-    if (ui.hl) { const b = document.getElementById('b-' + ui.hl); if (b) { b.classList.add('hl'); b.scrollIntoView({ behavior: S.settings.reduceMotion ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => b.classList.remove('hl'), 2200); } ui.hl = null; }
+    if (ui.hl) { const b = document.getElementById('b-' + ui.hl); if (b) { b.classList.add('hl'); b.scrollIntoView({ behavior: H.reduceMotion() ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => b.classList.remove('hl'), 2200); } ui.hl = null; }
   }
   function mountRegionBase() {
     const host = $('#screen .base-map-host'); if (!host) return;
@@ -351,6 +357,17 @@
     const other = reg.hold && D.buildings[reg.hold.bid];
     setH(el, `<button class="btn ghost sm" data-a="hold|${rid}|${bid}" title="Guarda o material da próxima melhoria: as instalações da região param de consumi-lo e a melhoria é feita quando o custo completar.">Reservar material para melhorar${other ? ' (substitui a reserva de ' + other.name + ')' : ''}</button>`);
   };
+  // resgatar todas as concluídas da região (aparece com duas ou mais prontas)
+  U.claimall = (el, a) => {
+    const n = E.claimable(S, a[1]);
+    setH(el, n >= 2 ? `<button class="btn gold block" data-a="claimall|${a[1]}">Resgatar concluídas (${n})</button>` : '');
+  };
+  // prévia compacta das próximas missões da fase (meta efetiva; ✓ = já cumprida, entra pronta)
+  U.nextmis = (el, a, m) => {
+    const rid = a[1]; const act = E.activeMissions(S, rid).map((x) => x.id);
+    const rest = E.phaseMissions(S, rid).filter((x) => !x.claimed && !act.includes(x.id));
+    setH(el, rest.map((x) => { const p = E.mProg(S, rid, x.md, x.id, m); return `<li>${p.done ? '<span class="ok">✓</span> ' : ''}${esc(E.mTitle(x.md, S, rid, m))}${p.done ? '' : ` <span class="muted">(${F.n(Math.min(p.cur, p.max))}/${F.n(p.max)})</span>`}</li>`; }).join(''));
+  };
   U.pend = (el, a) => {
     const p = S.run.regions[a[1]].pend || {}; const ks = Object.keys(p).filter((r) => p[r] >= 0.5);
     setH(el, ks.length ? `<div class="panel small"><span class="warn">${A.ic('warn', 14)}</span> Suprimentos de recompensa aguardando espaço: ${ks.map((r) => A.rg(r) + ' ' + F.n(p[r])).join(' ')} <span class="muted">— entram no estoque assim que houver espaço (construa armazéns, use ou transporte o material).</span></div>` : '');
@@ -360,7 +377,12 @@
     setC(el, 'energy', b.kind === 'energy'); setC(el, 'input', b.kind === 'input'); setC(el, 'full', b.kind === 'full'); setC(el, 'ok', b.kind === 'ok');
     const ic = b.kind === 'ok' ? `<span class="ok">${A.ic('check')}</span>` : b.kind === 'manual' ? `<span class="cyan">${A.ic('play')}</span>` : `<span class="warn">${A.ic('warn')}</span>`;
     const btn = b.src ? `<button class="btn sm" data-a="planroute|${b.src}|${a[1]}|${b.res}">${b.route !== null ? 'Ver rotas' : 'Planejar rota'}</button>` : '';
-    setH(el, `${ic}<div><span class="muted tiny">GARGALO ATUAL</span><b>${esc(b.text)}</b><span class="small muted">${esc(b.hint)}</span>${btn}</div>`);
+    let act = btn;
+    if (!act && b.kind === 'energy') act = `<button class="btn sm" data-a="bfix|${a[1]}|power">Ver geradores</button>`;
+    else if (!act && b.kind === 'full' && b.bid) { const r = (S.run.regions[a[1]].b[b.bid].why || '').split(':')[1]; if (r) act = `<button class="btn sm" data-a="exp|${a[1]}|${r}">Ligar EXP (${esc(D.res[r].name.toLowerCase())})</button><button class="btn sm ghost" data-a="bfix|${a[1]}|armazem">Construir armazém</button>`; }
+    else if (!act && b.kind === 'manual' && b.bid) act = `<button class="btn sm gold" data-a="op|${a[1]}|${b.bid}">Operar ${esc(D.buildings[b.bid].name.toLowerCase())}</button>`;
+    else if (!act && b.kind === 'input' && b.bid) act = `<button class="btn sm" data-a="bfix|${a[1]}|${b.bid}">Ver instalação</button>`;
+    setH(el, `${ic}<div><span class="muted tiny">GARGALO ATUAL</span><b>${esc(b.text)}</b><span class="small muted">${esc(b.hint)}</span>${act ? `<div class="bneck-acts">${act}</div>` : ''}</div>`);
   };
   // instalações
   U.basecount = (el, a) => {
@@ -476,6 +498,7 @@
     const num = el.querySelector('.pn');
     if (num) setT(num, x.md.t === 'pay' ? F.pct(Math.min(1, p.cur)) : F.n(Math.min(p.cur, p.max)) + ' / ' + F.n(p.max));
     const cl = el.querySelector('[data-a^="claim"]'); if (cl) { setD(cl, !p.done); setC(cl, 'pulse', p.done); }
+    const tEl = el.querySelector('.t'); if (tEl) setT(tEl, E.mTitle(x.md, S, rid, m)); const dEl = el.querySelector('.d'); if (dEl) setT(dEl, E.mDesc(x.md, S, rid, m));
     const rwEl = el.querySelector('.rw'); if (rwEl) setH(rwEl, rewardHTML(x.md.rw, rid, m));
     if (x.md.t === 'pay') {
       const pr = E.projectProgress(S, 'm:' + id, x.md.cost); const reg = S.run.regions[rid];
@@ -576,12 +599,28 @@
     for (const e of ev) {
       if (e.kind === 'recruit') { sfx('promote'); enqueue(() => recruitModal(e.sid)); }
       else if (e.kind === 'phase') { sfx('chest'); }
+      else if (e.kind === 'claimall') { sfx('claim'); UI.toast(claimAllText(e.sum), 'gold'); }
       else if (e.kind === 'region') { sfx('promote'); UI.toast(`<b class="gold">Nova região:</b> ${esc(e.text)}`, 'gold'); }
       else if (e.kind === 'ach') { sfx('claim'); UI.toast(`<b class="gold">Conquista:</b> ${esc(e.text)}`, 'ach'); }
       else if (!ui.silent) UI.toast(esc(e.text), e.kind === 'story' ? '' : e.kind);
     }
   }
 
+  // marco de escolha: três benefícios para o universo atual
+  function choiceModal(rid, id, cid) {
+    const c = D.choices[cid];
+    UI.modal(`<h2 class="gold">${esc(c.title)}</h2><p class="small">Escolha um benefício para este universo. Ele termina no próximo Colapso; o marco pode ser escolhido de novo no universo seguinte.</p><div class="choice-list">${D.choiceOptions.map((o) => `<button class="choice-opt" data-a="claimpick|${rid}|${id}|${o.id}"><b>${o.name}</b><span class="small">${esc(o.desc)}</span></button>`).join('')}</div><div class="foot"><button class="btn ghost" data-a="close">Decidir depois</button></div>`);
+  }
+  function claimAllText(s) {
+    const p = ['<b>' + s.count + ' missões resgatadas</b>'];
+    if (s.data) p.push('+' + F.n(s.data) + ' dados');
+    const c = Object.keys(s.cards); if (c.length) p.push(c.map((k) => s.cards[k] + '× ' + D.specs[k].name).join(', '));
+    if (s.disc.length) p.push('descoberta: ' + s.disc.map((d) => D.discoveries[d].name).join(', '));
+    if (s.phases) p.push(s.phases + (s.phases > 1 ? ' fases concluídas (baús recebidos)' : ' fase concluída (baú recebido)'));
+    if (s.sup) p.push('suprimentos no lugar de ' + s.supCards + ' carta(s) sem uso');
+    const pk = Object.keys(s.pend); if (pk.length) p.push(pk.map((k) => F.n(s.pend[k]) + ' ' + D.res[k].name.toLowerCase()).join(', ') + ' aguardam espaço');
+    return p.join(' · ');
+  }
   // ================= TELA: REGIÃO =================
   function relevantRes(rid) {
     const reg = S.run.regions[rid]; const set = new Set();
@@ -607,14 +646,14 @@
     const res = relevantRes(rid);
     if (SHOW_BASE_PANEL) h += `<section class="base-panel" aria-labelledby="base-title"><div class="base-toolbar"><div><span class="base-eyebrow">Área de construção</span><h3 id="base-title">Base de ${R.name}</h3></div><span class="base-count" data-u="basecount|${rid}"></span></div><div class="base-map-host" data-region="${rid}"></div><div class="base-help"><span>Selecione uma instalação para ver produção e melhorias.</span><span class="base-pan-hint">↔ Deslize para explorar a base</span></div></section>`;
     h += `<div class="region-grid"><div class="main col" style="gap:14px">
-      <div class="panel"><h3>Estoque da região <span class="r small muted">EXP = exportar excedente à Terra quando cheio</span></h3><div class="res-strip">${res.map((r) => `<div class="res"><div class="top">${A.rg(r)} ${D.res[r].name}</div><div class="val" data-u="resv|${rid}|${r}"></div><div class="rate" data-u="resr|${rid}|${r}"></div><div class="bar"><i data-u="resb|${rid}|${r}"></i></div><button class="exp" data-a="exp|${rid}|${r}" data-u="rese|${rid}|${r}" aria-label="Exportar excedente de ${D.res[r].name}" title="Exportar excedente: quando o estoque enche, a produção continua, os cargueiros descarregam e o excesso vai para a Terra"></button></div>`).join('')}</div></div>
-      <div class="panel"><div class="energy" data-u="energy|${rid}"></div></div>
-      <div class="pendsup" data-u="pend|${rid}"></div>
-      <div class="bneck" data-u="bneck|${rid}"></div>
-      ${projectsHTML(rid)}
-      <div class="bgrid">${E.bList(S, rid).map((b) => buildingCard(rid, b)).join('')}</div>
-    </div><div class="side col" style="gap:14px">${missionsHTML(rid)}${specsHTML(rid, m)}
-      <div class="panel"><h3>Diário de bordo</h3><div class="log">${S.run.log.slice(0, 10).map((l) => `<div class="${l.kind}">${esc(l.text)}</div>`).join('') || '<span class="muted small">Sem registros.</span>'}</div></div>
+      <div class="panel o-stock"><h3>Estoque da região <span class="r small muted">EXP = exportar excedente à Terra quando cheio</span></h3><div class="res-strip">${res.map((r) => `<div class="res"><div class="top">${A.rg(r)} ${D.res[r].name}</div><div class="val" data-u="resv|${rid}|${r}"></div><div class="rate" data-u="resr|${rid}|${r}"></div><div class="bar"><i data-u="resb|${rid}|${r}"></i></div><button class="exp" data-a="exp|${rid}|${r}" data-u="rese|${rid}|${r}" aria-label="Exportar excedente de ${D.res[r].name}" title="Exportar excedente: quando o estoque enche, a produção continua, os cargueiros descarregam e o excesso vai para a Terra"></button></div>`).join('')}</div></div>
+      <div class="panel o-energy"><div class="energy" data-u="energy|${rid}"></div></div>
+      <div class="pendsup o-pend" data-u="pend|${rid}"></div>
+      <div class="bneck o-bneck" data-u="bneck|${rid}"></div>
+      <div class="o-proj col" style="gap:14px">${projectsHTML(rid)}</div>
+      <div class="bgrid o-bgrid">${E.bList(S, rid).map((b) => buildingCard(rid, b)).join('')}</div>
+    </div><div class="side col" style="gap:14px"><div class="o-mis">${missionsHTML(rid)}</div>${collapsible('specs', 'Especialistas da região', specsHTML(rid, m), 'o-specs')}
+      ${collapsible('log', 'Diário de bordo', `<div class="log">${S.run.log.slice(0, 10).map((l) => `<div class="${l.kind}">${esc(l.text)}</div>`).join('') || '<span class="muted small">Sem registros.</span>'}</div>`, 'o-log')}
     </div></div>`;
     return h;
   }
@@ -657,15 +696,16 @@
       return h;
     }
     const act = E.activeMissions(S, rid); const all = E.phaseMissions(S, rid); const left = all.filter((x) => !x.claimed).length - act.length;
+    h += `<div class="claimall" data-u="claimall|${rid}"></div>`;
     h += '<div class="mis-list">' + act.map((x) => {
       const md = x.md; const pay = md.t === 'pay';
-      return `<div class="mis" data-u="mis|${rid}|${x.id}"><div class="t">${esc(E.mTitle(md))}</div>${md.desc ? `<div class="d">${esc(md.desc)}</div>` : ''}
+      return `<div class="mis" data-u="mis|${rid}|${x.id}"><div class="t">${esc(E.mTitle(md, S, rid))}</div>${md.desc ? `<div class="d">${esc(E.mDesc(md, S, rid))}</div>` : ''}
         ${pay ? `<div class="costs paylist"></div>` : ''}
         <div class="row"><div class="bar grow"><i></i></div><span class="pn small num"></span></div>
         <div class="rw">${rewardHTML(md.rw, rid)}</div>
         <div class="ma">${pay ? `<button class="btn sm" data-a="contrib|m:${x.id}">Entregar</button>` : `<button class="btn ghost sm" data-a="goto|${rid}|${x.id}">Ir</button>`}<button class="btn gold sm" data-a="claim|${rid}|${x.id}">Resgatar</button></div></div>`;
     }).join('') + '</div>';
-    if (left > 0) h += `<div class="small dim" style="margin-top:8px">+${left} missão(ões) nesta fase. Recompensa da fase: Baú de Suprimentos.</div>`;
+    if (left > 0) h += `<details class="next-mis"><summary class="small">Próximas nesta fase (${left}) · recompensa da fase: Baú de Suprimentos</summary><ul class="small" data-u="nextmis|${rid}"></ul></details>`;
     return h + '</div>';
   }
   function specHow(sid) {
@@ -680,10 +720,16 @@
     if (sid === 'reliquia') return 'Expedição “Ruínas Precursoras” no Universo Ancestral.';
     return '';
   }
+  // seção recolhível com estado preservado entre atualizações (aberta no computador, fechada no celular)
+  const narrow = () => !!(window.matchMedia && matchMedia('(max-width: 960px)').matches);
+  function collapsible(key, title, body, cls) {
+    const open = key in ui.open ? ui.open[key] : !narrow();
+    return `<details class="panel coll ${cls || ''}" data-coll="${key}" ${open ? 'open' : ''}><summary><h3>${title}</h3></summary>${body}</details>`;
+  }
   function specsHTML(rid, m) {
     const cats = new Set(E.bList(S, rid).map((b) => D.buildings[b].cat));
     const list = D.specOrder.filter((s) => (D.cats[D.specs[s].cat] && cats.has(D.specs[s].cat)) || D.regions[rid].specs.includes(s));
-    return `<div class="panel"><h3>Especialistas da região</h3><div class="spec-mini">${list.map((sid) => {
+    return `<div class="spec-mini">${list.map((sid) => {
       const s = S.perm.specs[sid];
       return `<button type="button" class="sm" data-a="spec|${sid}" style="border-color:${s ? rarColor(sid) : 'var(--line)'}" aria-label="${s ? esc(D.specs[sid].name + ', nível ' + s.lvl + '. Abrir detalhes') : 'Especialista desconhecido. Como obter'}">${A.portraitBox(sid, !s)}<span class="blk"><b>${s ? D.specs[sid].name : '???'}</b><span class="tiny muted blk">${s ? 'Nv ' + s.lvl + ' · ' + E.specLabel(sid, s.lvl) : esc(howToGet(sid))}</span></span></button>`;
     }).join('')}</div></div>`;
@@ -763,7 +809,7 @@
       let k = rt.st === 'out' ? rt.t / rt.T : rt.st === 'wait' ? 1 : rt.st === 'back' ? 1 - rt.t / rt.T : 0;
       s.setAttribute('cx', a.x + (b.x - a.x) * k); s.setAttribute('cy', a.y + (b.y - a.y) * k); s.style.opacity = rt.st === 'idle' ? 0.3 : 1;
     }
-    if (mapEls.dyson && !S.settings.reduceMotion) mapEls.dyson.setAttribute('transform', `rotate(${(t * 6) % 360})`);
+    if (mapEls.dyson && !H.reduceMotion()) mapEls.dyson.setAttribute('transform', `rotate(${(t * 6) % 360})`);
   }
   function mapInfoHTML(m) {
     const rid = ui.sel;
@@ -870,7 +916,7 @@
     const sel = ui.resSel;
     let h = `<div class="screen-title"><h2>Pesquisa</h2><span class="chip cyan">${A.rg('data')} <span data-u="data"></span> dados</span><span class="chip purple">${A.rg('frag')} <span data-u="frags"></span> fragmentos</span><span class="muted small">Projetos permanentes: são preservados no Colapso.</span></div>`;
     const known = D.discOrder.filter((d) => E.knows(S, d)).length;
-    h += `<div class="panel disc-panel"><h3>Descobertas <span class="r small muted">${known}/${D.discOrder.length} · obtidas em missões, permanentes</span></h3><div class="row wrap small">${D.discOrder.map((d) => { const k = E.knows(S, d); return `<span class="chip ${k ? 'ok' : 'muted'}" title="${esc(k ? D.discoveries[d].desc : 'Obtida em ' + E.discSource(d))}">${k ? '✓' : A.ic('lock', 12)} ${D.discoveries[d].name}</span>`; }).join('')}</div><p class="tiny muted">Pesquisas avançadas exigem a descoberta correspondente, além dos dados.</p></div><div class="tree">`;
+    h += `<div class="panel disc-panel"><h3>Descobertas <span class="r small muted">${known}/${D.discOrder.length} · obtidas em missões, permanentes</span></h3><div class="row wrap small">${D.discOrder.map((d) => { const k = E.knows(S, d); return `<span class="chip ${k ? 'ok' : 'muted'}" title="${esc(k ? D.discoveries[d].desc : 'Obtida em ' + E.discSource(d, S))}">${k ? '✓' : A.ic('lock', 12)} ${D.discoveries[d].name}</span>`; }).join('')}</div><p class="tiny muted">Pesquisas avançadas exigem a descoberta correspondente, além dos dados.</p></div><div class="tree">`;
     for (const br in D.branches) {
       const B = D.branches[br];
       h += `<div class="branch" style="--bc:${B.color}"><h4>${B.name}</h4>` + Object.keys(D.research).filter((id) => D.research[id].br === br).map((id) => {
@@ -883,7 +929,7 @@
     if (sel) {
       const n = D.research[sel]; const st = E.resState(S, sel);
       h += `<div class="panel res-detail" id="res-detail" aria-live="polite"><div class="row sb wrap"><div><b>${n.name}</b> <span class="muted small">(${D.branches[n.br].name} · nível ${st.lvl}/${n.max})</span><div class="small">${esc(n.desc)}</div>
-        <div class="small">Efeito atual: <b class="cyan">${st.lvl ? effText(sel, st.lvl) : 'nenhum'}</b>${st.max ? '' : ` → próximo: <b class="gold">${effText(sel, st.lvl + 1)}</b>`}</div>${n.disc ? `<div class="small">${E.knows(S, n.disc.d) ? '<span class="ok">✓</span>' : A.ic('lock', 12)} Descoberta exigida${n.disc.from > 1 ? ' a partir do nível ' + n.disc.from : ''}: <b>${D.discoveries[n.disc.d].name}</b> <span class="muted">(${esc(E.discSource(n.disc.d))})</span></div>` : ''}${n.opt ? '<div class="small muted">Opcional: não é exigido para avançar.</div>' : ''}${!st.max && st.locked ? `<div class="small bad">${esc(st.why)}</div>` : ''}</div>
+        <div class="small">Efeito atual: <b class="cyan">${st.lvl ? effText(sel, st.lvl) : 'nenhum'}</b>${st.max ? '' : ` → próximo: <b class="gold">${effText(sel, st.lvl + 1)}</b>`}</div>${n.disc ? `<div class="small">${E.knows(S, n.disc.d) ? '<span class="ok">✓</span>' : A.ic('lock', 12)} Descoberta exigida${n.disc.from > 1 ? ' a partir do nível ' + n.disc.from : ''}: <b>${D.discoveries[n.disc.d].name}</b> <span class="muted">(${esc(E.discSource(n.disc.d, S))})</span></div>` : ''}${n.opt ? '<div class="small muted">Opcional: não é exigido para avançar.</div>' : ''}${!st.max && st.locked ? `<div class="small bad">${esc(st.why)}</div>` : ''}</div>
         ${st.max ? '<span class="chip ok">Completo</span>' : `<button class="btn ${n.cur === 'frag' ? 'purple' : ''}" data-a="rbuy|${sel}|${st.lvl}" data-k="rbuy" data-u="rbuy|${sel}">Pesquisar · ${n.cur === 'frag' ? A.rg('frag') : A.rg('data')} ${F.n(st.cost)}</button>`}</div></div>`;
     } else h += '<p class="small muted">Toque em um projeto para ver o benefício e o custo antes de confirmar.</p>';
     return h;
@@ -905,6 +951,7 @@
         if (q.recruit) o.push(`<span class="chip gold">★ Recruta ${D.specs[q.recruit].name}</span>`);
         for (const c in q.cards) o.push(`<span class="chip gold">${q.cards[c]}× ${D.specs[c].name}</span>`);
         if (q.data) o.push(`<span class="chip cyan">${A.rg('data')} ${F.n(q.data)}</span>`);
+        if (q.sup) o.push(supChip(q.sup, q.supCards));
         if (q.frags) o.push(`<span class="chip purple" title="No máximo 1 por expedição em cada universo">${A.rg('frag')} 1 (1ª vez no universo)</span>`);
         if (q.fragBlocked) o.push(`<span class="chip muted" title="Volta a ser possível depois do próximo Colapso">${A.rg('frag')} já obtido neste universo</span>`);
         return o.join(''); };
@@ -922,7 +969,7 @@
     UI.modal(`<h2 class="gold">${esc(ch.title)}</h2><div class="chest-anim" id="chanim">${A.img(A.paths.ui('chest'), A.chest(false))}</div><div id="chrev" class="hidden"><div class="reveal">${cards.map((s, i) => `<div class="rc" style="--rar:${rarColor(s)};animation-delay:${i * 0.12}s">${A.portraitBox(s, false)}<b>${D.specs[s].name}</b><span class="gold">+${ch.cards[s]} carta${ch.cards[s] > 1 ? 's' : ''}</span></div>`).join('')}</div>
       <p style="text-align:center"><span class="chip cyan">${A.rg('data')} +${F.n(res.data)} dados de pesquisa</span></p>${res.sup ? `<p class="small" style="text-align:center">Toda a tripulação já tem as cartas que precisa: o baú trouxe suprimentos para ${D.regions[res.sup.rid].name}: ${Object.keys(res.sup.res).map((r) => A.rg(r) + ' ' + F.n(res.sup.res[r] + ((res.sup.pend || {})[r] || 0))).join(' ')}${Object.keys(res.sup.pend || {}).length ? ' <span class="warn">(parte aguarda espaço no estoque)</span>' : ''}.</p>` : ''}</div><div class="foot"><button class="btn gold" data-a="close">Ótimo!</button></div>`);
     const go = () => { const a = $('#chanim'); if (!a) return; a.querySelector('svg').classList.add('open'); a.classList.add('burst'); setTimeout(() => { const r = $('#chrev'); if (r) r.classList.remove('hidden'); if (a) a.classList.add('hidden'); }, S.settings.reduceMotion ? 0 : 650); };
-    setTimeout(go, S.settings.reduceMotion ? 0 : 250);
+    setTimeout(go, H.reduceMotion() ? 0 : 250);
   }
 
   // ================= TELA: SINGULARIDADE =================
@@ -944,7 +991,8 @@
         ${dInfo.avail ? projCard('dyson', `Etapa ${run.dyson.stage + 1} — entregue em Mercúrio`, 'Os recursos saem do estoque de Mercúrio. Use rotas para abastecê-lo.', 'gold') : dInfo.done ? '<p class="gold">Enxame completo!</p>' : '<p class="small muted">' + A.ic('lock', 14) + ' Disponível em Mercúrio, fase “Fundação do Enxame”.</p>'}</div>
       <div class="panel"><h3>Anomalia de Netuno</h3>${run.core ? '<p class="purple">O Núcleo da Singularidade está ativo.</p>' : E.projectInfo(S, 'core').avail ? projCard('core', 'Núcleo da Singularidade', 'Entregue em Netuno.', 'purple') : `<p class="small muted">${A.ic('lock', 14)} ${run.regions.netuno.unlocked ? 'Conclua a fase “Sinal Fantasma” para revelar o projeto.' : 'Um sinal regular vem da borda do sistema. Alcance Netuno para investigá-lo.'}</p>`}</div>
       <div class="panel"><h3>${D.universes[run.universe].name}</h3><p class="small">${esc(D.universes[run.universe].desc)}</p><ul class="small muted">${D.universes[run.universe].traits.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
-        <b class="small">Diretrizes deste universo (opcionais)</b><div class="col" style="margin-top:6px">${E.dirs(S).map((d) => `<div class="mis ${d.claimed ? '' : ''}" data-u="dir|${d.i}"><div class="t">${esc(E.mTitle(d.md))}${d.claimed ? ' <span class="ok">✓</span>' : ''}</div><div class="row"><div class="bar grow"><i></i></div><span class="pn small num"></span></div><div class="row sb"><div class="rw">${rewardHTML(d.md.rw, null)}</div><button class="btn gold sm" data-a="dir|${d.i}">${d.claimed ? 'Resgatada' : 'Resgatar'}</button></div></div>`).join('')}</div></div>
+        ${Object.keys(run.choices || {}).length ? `<b class="small">Benefícios escolhidos neste universo</b><ul class="small">${Object.keys(run.choices).map((cid) => { const o = D.choiceOptions.find((x) => x.id === run.choices[cid]); return `<li>${esc(D.choices[cid].title)}: <b>${o.name}</b> — ${esc(o.desc)}</li>`; }).join('')}</ul>` : ''}
+        <b class="small">Diretrizes deste universo (opcionais)</b><div class="col" style="margin-top:6px">${E.dirs(S).map((d) => `<div class="mis ${d.claimed ? '' : ''}" data-u="dir|${d.i}"><div class="t">${esc(E.mTitle(d.md, S, null))}${d.claimed ? ' <span class="ok">✓</span>' : ''}</div><div class="row"><div class="bar grow"><i></i></div><span class="pn small num"></span></div><div class="row sb"><div class="rw">${rewardHTML(d.md.rw, null)}</div><button class="btn gold sm" data-a="dir|${d.i}">${d.claimed ? 'Resgatada' : 'Resgatar'}</button></div></div>`).join('')}</div></div>
     </div><div class="col" style="gap:14px">
       <div class="panel" style="border-color:rgba(176,124,255,.45)"><h3 class="purple">Colapso</h3><div data-u="creq"></div><div class="sep"></div><div data-u="frag"></div><div class="sep"></div>
         <div class="lists"><div><b class="bad">Será reiniciado</b><ul><li>Instalações e níveis locais</li><li>Estoques de materiais</li><li>Rotas comerciais e cargas a bordo (são materiais locais)</li><li>Regiões liberadas</li><li>Missões locais</li><li>Enxame de Dyson</li></ul></div>
@@ -1021,7 +1069,7 @@
     if (restore && !parsed.ok) { UI.toast(parsed.err, 'err'); return; }
     ui.folderCandidate = null; UI.closeModal();
     if (restore) {
-      const applied = H.replaceState(parsed.S);
+      const applied = H.replaceState(parsed.S, { offline: true });
       if (applied.status === 'readonly' || applied.status === 'stale') { H.folderSave.cancelChoice(); UI.toast(H.saveMessage(applied), 'err'); return; }
     }
     try {
@@ -1058,11 +1106,16 @@
     mapsel: (r) => { ui.sel = r; sfx('click'); ui.sig = ''; },
     rtab: (t) => { ui.rtab = t; ui.sig = ''; },
     // aviso de gargalo: abre a aba de rotas com origem, destino e recurso já escolhidos
+    // ação do gargalo: destaca a instalação certa (gerador, armazém ou a instalação parada)
+    bfix: (rid, what) => {
+      const pick = what === 'power' ? E.bList(S, rid).filter((b) => D.buildings[b].gen).sort((x, y) => (S.run.regions[rid].b[y] ? 1 : 0) - (S.run.regions[rid].b[x] ? 1 : 0))[0] : what;
+      if (!pick) return; ui.rtab = 'prod'; ui.hl = pick; ui.sig = ''; sfx('click');
+    },
     planroute: (from, to, r) => { if (!D.regions[from] || !D.regions[to] || !D.res[r]) return; ui.rtab = 'routes'; ui.nr.from = from; ui.nr.to = to; ui.nr.res = r; ui.sig = ''; },
     base: (rid, bid) => {
       const card = document.getElementById('b-' + bid); if (!card || rid !== ui.rid || !E.bAvail(S, rid, bid)) return;
       sfx('click'); card.classList.add('hl'); card.focus({ preventScroll: true });
-      card.scrollIntoView({ behavior: S.settings.reduceMotion || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth', block: 'center' });
+      card.scrollIntoView({ behavior: H.reduceMotion() ? 'auto' : 'smooth', block: 'center' });
       setTimeout(() => card.classList.remove('hl'), 2200);
     },
     op: (rid, bid, el) => { const r = E.operate(S, rid, bid); if (r.ok) sfx('click'); else UI.err(r); },
@@ -1071,16 +1124,26 @@
     pause: (rid, bid) => { E.togglePause(S, rid, bid); sfx('click'); },
     hold: (rid, bid) => { const r = E.setHold(S, rid, bid); if (!r.ok) return UI.err(r); sfx('click'); UI.toast(r.on ? 'Reserva criada: o material da próxima melhoria de <b>' + D.buildings[bid].name + '</b> fica guardado.' : 'Reserva cancelada.', r.on ? 'gold' : ''); H.save(); },
     exp: (rid, r) => { E.toggleExport(S, rid, r); sfx('click'); },
+    claimpick: (rid, id, opt) => {
+      const r = E.claim(S, rid, id, opt); UI.closeModal();
+      if (!r.ok) return UI.err(r);
+      sfx('claim'); H.save(); const o = D.choiceOptions.find((x) => x.id === opt);
+      UI.toast('Benefício escolhido: <b>' + o.name + '</b> — ' + esc(o.desc), 'gold');
+    },
     claim: (rid, id, el) => {
+      const pre = E.activeMissions(S, rid).find((q) => q.id === id);
+      if (pre && pre.md.rw && pre.md.rw.choice && E.mProg(S, rid, pre.md, id).done) { choiceModal(rid, id, pre.md.rw.choice); return; }
       const r = E.claim(S, rid, id);
       if (r.ok) {
         sfx('claim'); if (r.got.data) floatNum(el, '+' + r.got.data + ' dados'); H.save();
         const g = r.got; const parts = [];
         for (const s in g.cards) parts.push(g.cards[s] + '× carta de ' + D.specs[s].name);
+        if (g.sup) parts.push('suprimentos (' + Object.keys(g.sup).map((k) => F.n(g.sup[k]) + ' ' + D.res[k].name.toLowerCase()).join(', ') + ') no lugar de cartas sem uso');
         if (parts.length) UI.toast('Recebido: ' + parts.join(', '), 'gold');
         const pend = Object.keys(g.pend || {}); if (pend.length) UI.toast(pend.map((k) => F.n(g.pend[k]) + ' ' + D.res[k].name.toLowerCase()).join(', ') + ' aguardam espaço no estoque e entram assim que couberem.', 'warn');
       } else UI.err(r);
     },
+    claimall: (rid) => { const s = E.claimAll(S, rid); if (!s.count) return; sfx('claim'); H.save(); },
     contrib: (key) => { const r = E.contribute(S, key); if (r.ok) { sfx(r.done ? 'promote' : 'buy'); if (r.done) H.save(); } else UI.err(r); },
     goto: (rid, id) => {
       const x = E.activeMissions(S, rid).find((q) => q.id === id); if (!x) return; const md = x.md; sfx('click');
@@ -1142,7 +1205,7 @@
     import2: () => {
       const ns = ui.pendingImport; if (!ns) return;
       UI.closeModal(); // também descarta pendingImport
-      const r = H.replaceState(ns);
+      const r = H.replaceState(ns, { offline: true });
       if (r.ok) UI.toast('Progresso importado e salvo.', 'gold');
       else if (r.status === 'readonly' || r.status === 'stale') UI.toast('Esta aba está em modo de leitura; a importação não foi aplicada.', 'err');
       else UI.toast('Progresso importado nesta aba, mas não foi salvo: ' + (r.msg || '') + '. Use Exportar para guardar uma cópia.', 'err');

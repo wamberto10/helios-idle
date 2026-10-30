@@ -533,3 +533,56 @@ button.node { align-items: stretch; }
 .bcard .hold:empty { display: none; }
 .bcard .hold { margin-top: 6px; }
 .bcard .hold-on { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 6px 8px; border: 1px dashed rgba(255, 200, 87, .45); border-radius: 10px; }
+
+/* missões: resgatar concluídas e próximas da fase */
+.claimall:empty { display: none; }
+.claimall { margin: 0 0 10px; }
+.next-mis { margin-top: 10px; }
+.next-mis summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; color: var(--muted); }
+.next-mis ul { margin: 4px 0 0; padding-left: 18px; }
+.next-mis li { margin: 3px 0; }
+
+/* marco de escolha */
+.choice-list { display: grid; gap: 8px; margin: 10px 0; }
+.choice-opt { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-align: left; min-height: 44px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line2); background: rgba(63, 224, 255, .06); color: inherit; font: inherit; cursor: pointer; }
+.choice-opt:hover, .choice-opt:focus-visible { border-color: var(--cyan); }
+
+/* ---------- celular em retrato (360–430 px) e telas de toque ---------- */
+details.coll > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-height: 44px; }
+details.coll > summary::-webkit-details-marker { display: none; }
+details.coll > summary h3 { margin: 0; }
+details.coll > summary::after { content: '▾'; color: var(--muted); transition: transform .2s; }
+details.coll:not([open]) > summary::after { transform: rotate(-90deg); }
+.bneck-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.bneck .btn { display: inline-flex; width: auto; margin-top: 0; }
+@media (max-width: 960px) {
+  /* uma coluna com ordem de prioridade: objetivo, gargalo, ação; detalhes depois */
+  .region-grid { display: flex; flex-direction: column; gap: 14px; }
+  .region-grid > .main, .region-grid > .side { display: contents; }
+  .o-mis { order: 1; } .o-bneck { order: 2; } .o-pend { order: 3; } .o-proj { order: 4; } .o-stock { order: 5; }
+  .o-energy { order: 6; } .o-bgrid { order: 7; } .o-specs { order: 8; } .o-log { order: 9; }
+  .o-proj:empty, .o-pend:empty { display: none; }
+  #top { padding-top: calc(8px + env(safe-area-inset-top)); }
+  #screen { padding-bottom: calc(var(--nav-h) + 24px + env(safe-area-inset-bottom)); padding-left: calc(12px + env(safe-area-inset-left)); padding-right: calc(12px + env(safe-area-inset-right)); }
+  #toasts { bottom: calc(var(--nav-h) + 12px + env(safe-area-inset-bottom)); }
+  .res-detail { bottom: calc(var(--nav-h) + 10px + env(safe-area-inset-bottom)); }
+  .fx-skip { bottom: calc(18px + env(safe-area-inset-bottom)); }
+  body.kbd #nav { display: none; } /* teclado aberto: a navegação não cobre o campo */
+  body.kbd #screen { padding-bottom: 24px; }
+}
+@media (max-width: 560px) {
+  /* cabeçalho da região compacto: a barra de fase já aparece nas missões */
+  .region-head .phase-bar, .region-head .over .small.muted:last-child { display: none; }
+  .region-head .over { min-height: 96px; padding-top: 12px; padding-bottom: 12px; }
+  .mis .t { font-size: 15px; } .small { font-size: 13px; } .tiny { font-size: 11.5px; }
+}
+@media (pointer: coarse), (max-width: 960px) {
+  /* alvos de toque de ~44×44 px */
+  .btn, .btn.sm, .tab, .rs-btn, .nav-btn, .choice-opt, .commander-chip, #top button { min-height: 44px; }
+  .btn.sm { padding-left: 14px; padding-right: 14px; }
+  .res .exp { min-width: 44px; min-height: 36px; }
+  .res .exp::after { content: ''; position: absolute; inset: -6px -4px; } /* área de toque maior que o desenho */
+  .pause-btn { width: 44px; height: 44px; }
+  .commander-chip { min-width: 44px; }
+  .node { min-height: 48px; }
+}

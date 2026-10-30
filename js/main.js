@@ -53,6 +53,7 @@
       H.saveState.failing = true; H.saveState.reason = r.reason;
     }
     if (S.profile && (r.ok || r.status === 'error') && !ses.protect) H.folderSave.schedule(E.serialize(S));
+    if (r.ok && H.onSaved) H.onSaved(); // aplicativo: espelho no armazenamento nativo
     return r;
   };
   H.saveMessage = function (r) {
@@ -72,15 +73,33 @@
     return { S: E.newState(), fresh: true, err: r.err, backup };
   }
   // Troca a partida (importação ou reinício) — chamada só depois da validação e da confirmação.
-  H.replaceState = function (ns) {
+  // opts.offline: importação ou backup restaurado — credita o tempo desde o horário do arquivo (limite offline do
+  // jogo). O intervalo fica registrado no lastTick e não é concedido de novo.
+  H.replaceState = function (ns, opts) {
     if (ses.role !== 'writer') return { ok: false, status: 'readonly' };
-    S = ns; S.lastTick = Date.now(); H.applySettings(); UI.setState(S); UI.ensureProfile();
-    return H.save(true, true);
+    S = ns; const now = Date.now(); let rep = null;
+    if (opts && opts.offline && typeof S.lastTick === 'number' && isFinite(S.lastTick) && S.lastTick < now) rep = E.applyOffline(S, now);
+    else S.lastTick = now;
+    H.applySettings(); UI.setState(S); UI.ensureProfile();
+    const r = H.save(true, true); r.offline = rep;
+    if (rep) UI.offlineReport(rep);
+    return r;
   };
+  // Contabiliza o tempo pendente antes de salvar ao fechar, ocultar ou transferir a aba: intervalos curtos são
+  // simulados agora; longos (aba suspensa) ficam no lastTick antigo e são creditados uma vez ao voltar, como offline.
+  function settle(now) {
+    if (!S || !running || ses.role !== 'writer') return;
+    const dt = (now - (S.lastTick || now)) / 1000;
+    if (dt > 0 && dt <= 120) { S.lastTick = now; if (dt > 1) E.simulate(S, dt); else E.tick(S, dt); }
+  }
+  H._settle = settle;
+  // movimento reduzido: ajuste do jogo ou preferência do sistema (vale para CSS e para as animações em JS)
+  const mqReduce = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
+  H.reduceMotion = () => !!((S && S.settings.reduceMotion) || (mqReduce && mqReduce.matches));
+  if (mqReduce && mqReduce.addEventListener) mqReduce.addEventListener('change', () => { if (S) document.body.classList.toggle('reduce-motion', H.reduceMotion()); });
   H.applySettings = function () {
     F.sci = !!S.settings.sci;
-    const rm = S.settings.reduceMotion || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches && S.settings.reduceMotion !== false && false);
-    document.body.classList.toggle('reduce-motion', !!S.settings.reduceMotion);
+    document.body.classList.toggle('reduce-motion', H.reduceMotion());
     const u = D.universes[S.run.universe];
     document.documentElement.style.setProperty('--sun', u.sun);
     document.body.style.filter = '';
@@ -162,7 +181,7 @@
     }, 100);
   }
   // outra aba pediu a partida: salva o progresso desta, libera a posse e passa a só exibir
-  function handOver() { S.lastTick = Date.now(); H.save(true); running = false; ses.release(); showLock('moved'); }
+  function handOver() { settle(Date.now()); H.save(true); running = false; ses.release(); showLock('moved'); }
   // assume a partida a partir da versão mais recente gravada (nunca do estado antigo desta aba)
   function takeOver(force) {
     if (!ses.claim(force)) return false;
@@ -219,7 +238,7 @@
     const c = document.getElementById('fx'); const skip = document.getElementById('fxskip');
     const g = c.getContext('2d'); const w = c.width = innerWidth, h = c.height = innerHeight; const cx = w / 2, cy = h / 2;
     c.classList.add('on'); skip.classList.add('on');
-    const reduce = S.settings.reduceMotion; const T = reduce ? 900 : 5200;
+    const reduce = H.reduceMotion(); const T = reduce ? 900 : 5200;
     const parts = []; const N = reduce ? 0 : 260 + sats * 30;
     for (let i = 0; i < N; i++) { const a = Math.random() * 6.283, r = 60 + Math.random() * Math.max(w, h) * 0.6; parts.push({ a, r, s: 0.6 + Math.random() * 1.6, c: Math.random() < 0.2 ? '#ffc857' : Math.random() < 0.5 ? '#3fe0ff' : '#b07cff' }); }
     const lines = []; for (let i = 0; i < Math.max(3, routes); i++) lines.push([Math.random() * 6.283, Math.random() * 6.283, 120 + Math.random() * 200]);
@@ -288,15 +307,18 @@
     else { showLock('other'); H.ready = true; }
     stepTimer = setInterval(step, 100);
     requestAnimationFrame(frame);
-    document.addEventListener('visibilitychange', () => { if (document.hidden) { if (running) H.save(true); } else step(); });
-    window.addEventListener('pagehide', () => { if (frozen) return; if (running) { S.lastTick = Date.now(); H.save(true); } running = false; ses.release(); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) { if (running) { settle(Date.now()); H.save(true); } } else step(); });
+    window.addEventListener('pagehide', () => { if (frozen) return; if (running) { settle(Date.now()); H.save(true); } running = false; ses.release(); });
     window.addEventListener('pageshow', (e) => { if (e.persisted) { running = false; ses.role = 'passive'; showLock('taken'); passiveCheck(); } });
-    window.addEventListener('beforeunload', () => { if (running) H.save(true); });
+    window.addEventListener('beforeunload', () => { if (running) { settle(Date.now()); H.save(true); } });
     window.addEventListener('storage', (e) => {
       if (e.key === ses.keys.req && running && ses.isReleaseRequest(e.newValue)) handOver();
       else if (e.key === ses.keys.lock && running) ses.heartbeat(); // perdeu a posse → onLost
       else if (e.key === ses.keys.save && running && ses.storedRev() > ses.rev) ses.lose('stale');
     });
+    const isText = (t) => t && (t.tagName === 'TEXTAREA' || (t.tagName === 'INPUT' && !/^(checkbox|radio|button|submit|range)$/i.test(t.type)));
+    document.addEventListener('focusin', (e) => { if (isText(e.target)) document.body.classList.add('kbd'); });
+    document.addEventListener('focusout', (e) => { if (isText(e.target)) setTimeout(() => { if (!isText(document.activeElement)) document.body.classList.remove('kbd'); }, 60); });
     let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => drawStars(D.universes[S.run.universe].hue), 200); });
   }
   let stepTimer = 0, frozen = false;
@@ -305,8 +327,14 @@
     H._errors = [];
     window.addEventListener('error', (e) => H._errors.push(String(e.message)));
     window.addEventListener('unhandledrejection', (e) => H._errors.push(String(e.reason)));
-    H._test = { freeze() { frozen = true; running = false; clearInterval(stepTimer); }, running: () => running };
+    H._test = { freeze() { frozen = true; running = false; clearInterval(stepTimer); }, running: () => running,
+      // aba suspensa pelo sistema: o laço para, mas a aba continua responsável (sem evento de fechamento)
+      suspend() { clearInterval(stepTimer); }, resume() { clearInterval(stepTimer); stepTimer = setInterval(step, 100); step(); } };
   }
+  // ciclo de vida (aplicativo): sair para o segundo plano salva; voltar aplica o tempo ausente pelo laço normal
+  H.lifecycle = { pause() { if (running) { settle(Date.now()); H.save(true); } }, resume() { step(); } };
   H.boot = boot;
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  // no aplicativo, app-bridge.js pode restaurar o save nativo antes do início (H.bootGate)
+  const start = () => { if (H.bootGate && H.bootGate.then) H.bootGate.then(boot, boot); else boot(); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })(window.H = window.H || {});
