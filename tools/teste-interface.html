@@ -427,6 +427,29 @@ async function tOperate() {
   ok(!wrong.length, 'todos os botões Operar com ícone e texto alinhados' + (wrong.length ? ' — ' + wrong.join(', ') : ''));
   close(g);
 }
+async function tSolarSwap() {
+  sec('Painel solar: botão ↑ no canto troca 1 painel por 1 coletor (só onde há coletor)');
+  const g = await openGame('solarswap', 375, 812); await until(() => g.modal()); await g.closeAll();
+  const E = g.H.E, S = g.S(); g.H.UI.go('region', { rid: 'lua' }); await wait(80);
+  const up = () => g.q('#b-painel .evolve-btn');
+  ok(g.q('#b-painel.bcard') && !g.q('.solar-card') && up() && up().classList.contains('hidden'), 'Lua: painel em cartão normal, sem o botão ↑ (não há coletor solar)');
+  for (const r of ['marte', 'cinturao', 'mercurio']) E.unlockRegion(S, r, true); S.events = [];
+  const M = S.run.regions.mercurio; M.phase = 2; M.b.painel = { n: 3, lvl: 1, p: 0 }; M.b.coletor_solar = { n: 1, lvl: 1, p: 0 };
+  M.st.metal = 0; M.st.cell = 0;
+  g.H.UI.go('region', { rid: 'mercurio' }); await wait(120); await g.closeAll();
+  ok(g.q('#b-painel.bcard') && g.q('#b-coletor_solar.bcard'), 'Mercúrio: painel e coletor com cartões próprios, no layout normal');
+  ok(up() && !up().classList.contains('hidden') && !up().classList.contains('ready') && /Recursos insuficientes/.test(up().getAttribute('aria-label')), 'sem recursos: ↑ visível, sem destaque, com o motivo no nome acessível');
+  g.click(up()); await wait(80);
+  const sw = g.q('#modal [data-a="solarevolve|mercurio"]');
+  ok(sw && sw.disabled && /Recursos insuficientes/.test(g.q('#modal').textContent), 'janela mostra custo e motivo; “Trocar” bloqueado');
+  const cost = E.solarInfo(S, 'mercurio').evolutionCost; for (const r in cost) M.st[r] = cost[r] * 2; g.H.UI.frame(); await wait(40);
+  ok(!g.q('#modal [data-a="solarevolve|mercurio"]').disabled, 'com recursos a janela se atualiza e libera a troca');
+  g.click('#modal [data-a="solarevolve|mercurio"]'); await wait(80);
+  ok(M.b.painel.n === 2 && M.b.coletor_solar.n === 2 && g.H.UI.st.modalOpen && /2 painéis/.test(g.q('#modal').textContent), 'troca feita: 3→2 painéis, 1→2 coletores; janela segue aberta com a próxima troca');
+  g.H.UI.closeModal(); M.b.painel.n = 0; g.H.UI.frame(); await wait(40);
+  ok(up().classList.contains('hidden'), 'sem painéis para trocar: o botão ↑ some');
+  close(g);
+}
 const D_T = (bid, g) => g.H.DATA.buildings[bid].t / g.H.E.speedOf(g.H.DATA.buildings[bid], g.H.E.mods(g.S()));
 async function tScrollKeep() {
   sec('Rolagem: melhorar o cargueiro não move a tela; “Ir” ainda leva à instalação');
@@ -539,7 +562,7 @@ async function tLayout() {
 async function main() {
   document.getElementById('go').disabled = true; OUT.innerHTML = ''; pass = fail = 0; cleanup();
   const t0 = Date.now();
-  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tScrollKeep, tA11y, tLayout]) {
+  for (const t of [tProfile, tFolderUI, tModalFocus, tLiveSpec, tKeyboard, tSaveFailure, tImport, tTabs, tOfflineTwoTabs, tCloseAfterAbsence, tBackupRestore, tLockWriteFail, tClaimAllUI, tMobileUX, tOperate, tSolarSwap, tScrollKeep, tA11y, tLayout]) {
     try { await t(); } catch (e) { ok(false, t.name + ' lançou exceção: ' + (e && e.message)); }
     STAGE.innerHTML = '';
   }

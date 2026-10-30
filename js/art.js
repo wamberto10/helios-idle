@@ -225,7 +225,7 @@
     lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/>',
     check: '<path d="M4 12l5 5L20 6" fill="none" stroke="currentColor" stroke-width="2.6"/>',
     warn: '<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 17v1.5" stroke="#050a18" stroke-width="2"/>',
-    play: '<path d="M7 4l13 8-13 8z"/>', pause: '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>',
+    play: '<path d="M7 4l13 8-13 8z"/>', up: '<path d="M12 3l8 9h-5v9H9v-9H4z"/>', pause: '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>',
     bolt: '<path d="M13 2L5 13h6l-1 9 8-11h-6z"/>', ship: '<path d="M22 12L4 6l4 6-4 6z"/>', sound: '<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8a5 5 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="1.8"/>',
   };
   A.ic = (n, size) => `<svg class="ic" viewBox="0 0 24 24" width="${size || 20}" height="${size || 20}" fill="currentColor" aria-hidden="true">${NAV[n] || ''}</svg>`;
