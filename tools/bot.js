@@ -142,7 +142,14 @@ function ensureRoute(S, to, r, depth, need) {
   const src = sourceFor(S, to, r); if (!src) return;
   const same = run.routes.find((rt) => rt.from === src && rt.to === to);
   if (same && same.res.length < 2) { same.res.push(r); return; }
-  if (tryCost(S, src, E.routeCost(S, null, src), depth)) E.createRoute(S, src, to, [r]);
+  if (tryCost(S, src, E.routeCost(S, null, src), depth)) { E.createRoute(S, src, to, [r]); return; }
+  // sem dinheiro para outra rota: troca no cargueiro existente um recurso que o destino já tem de sobra
+  // (armazém quase cheio) pelo que está faltando, como um jogador faria
+  if (same) {
+    const reg = run.regions[to], m = E.mods(S);
+    const i = same.res.findIndex((x) => (reg.st[x] || 0) >= E.cap(S, to, x, m) * 0.9);
+    if (i >= 0) same.res[i] = r;
+  }
 }
 
 // Rota parada com destino cheio: o destino não está consumindo o recurso. Como um jogador faria,

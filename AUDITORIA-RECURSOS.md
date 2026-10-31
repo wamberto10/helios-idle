@@ -2,6 +2,31 @@
 
 Data: 30/10/2026. Base: código atual, já com gases só em Vênus e a troca de geradores até o Reator de Fusão. Nenhum valor do jogo foi alterado nesta auditoria. Ela substitui as medições de [BALANCO.md](BALANCO.md) (27/10).
 
+## Aplicado em 30/10/2026: ligas e componentes nos planetas externos
+
+**Diagnóstico:** as missões que mais seguravam o fim da partida (laboratórios de Netuno, 8–12 min cada; processador criogênico de Urano) esperavam ligas e componentes. Esses recursos sobram nos planetas internos (89% das ligas descartadas), mas chegam devagar aos externos.
+
+**O que mudou:**
+- **Jogo:** Saturno e Urano começam com 320 ligas e 120 componentes (antes 160 e 60); Netuno com 440 e 180 (antes 220 e 90).
+- **Bot:** sem dinheiro para abrir outra rota, troca no cargueiro existente um recurso que o destino já tem de sobra (armazém 90% cheio) pelo que falta. Antes, uma campanha de farm travou 526 min com Netuno sem componentes e as ligas lotadas.
+
+**Testado e descartado:**
+- Ligas e componentes compactos (×2 no cargueiro e no armazém): instável, 5 de 15 partidas acima de 140 min.
+- Sem combustível na origem, o destino paga a viagem: tira o atraso do Energético em Mercúrio (Marte sem combustível), mas a média não melhora (83 min).
+- Bot usando 3 recursos por cargueiro: o porão dividido atrasa as entregas (média 84, um 2º Colapso de 129 min).
+
+**Resultado** (15 partidas: 5 universos × 3 inícios):
+
+| Versão | 1º Colapso: média | Pior caso |
+|---|---|---|
+| Antes | 81 min | 94 min |
+| Só a correção do bot | 80 min | 88 min |
+| Bot e estoque inicial maior | 76 min | 82 min |
+
+Verificação de campanhas: 1º Colapso de 55 a 78 min, 2º de 32 a 42 min, nenhuma travada.
+
+**Ainda sem solução:** 89% das ligas e 90% dos satélites Dyson são descartados; Júpiter e Saturno terminam gerando 8 a 18 vezes a energia que usam; a missão "Construir 5 reatores" de Saturno dá energia sem uso; a melhoria do laboratório para o Nv 3 (240 ligas) passa do armazém básico de Netuno (225).
+
 ## Aplicado em 30/10/2026: Reator de Fusão queima combustível de fusão
 
 **O que mudou:**

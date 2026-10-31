@@ -425,12 +425,14 @@
           ] },
       ] },
 
+    // Saturno, Urano e Netuno começam com o dobro de ligas e componentes (antes 160/60, 160/60, 220/90):
+    // longe do Sol, eles chegam devagar por rota e seguravam as melhorias do fim da partida
     saturno: { name: 'Saturno', sub: 'Senhor dos anéis', au: 9.5, vis: 282, period: 4500, a0: 0.2, solar: 0.08, color: '#e6cf8f', color2: '#9a8550', rings: true,
       role: 'Gelo dos anéis e grandes estaleiros.',
       specs: ['nix', 'vulcano', 'vega'],
       launch: { cost: { fusion: 40, alloy: 100, fuel: 200 } },
       build: { esc_gelo: 0, eletrolisador: 0, estaleiro: 0, reator: 0, armazem: 0, painel: 0 },
-      start: { b: { esc_gelo: 1, eletrolisador: 1, reator: 1 }, st: { alloy: 160, comp: 60, fusion: 20, metal: 150 } },
+      start: { b: { esc_gelo: 1, eletrolisador: 1, reator: 1 }, st: { alloy: 320, comp: 120, fusion: 20, metal: 150 } },
       phases: [
         { name: 'Anéis de Gelo', story: 'Os anéis são feitos de gelo quase puro. Um oceano congelado em órbita.',
           missions: [
@@ -461,7 +463,7 @@
       specs: ['nix', 'ion', 'oraculo'],
       launch: { cost: { hull: 10, fuel: 300, fusion: 30 } },
       build: { esc_gelo: 0, eletrolisador: 0, criogenico: 0, reator: 0, armazem: 0, painel: 0 },
-      start: { b: { esc_gelo: 1, criogenico: 1, reator: 2 }, st: { alloy: 160, comp: 60, rare: 30, fusion: 20, metal: 150 } },
+      start: { b: { esc_gelo: 1, criogenico: 1, reator: 2 }, st: { alloy: 320, comp: 120, rare: 30, fusion: 20, metal: 150 } },
       phases: [
         { name: 'Gelo Profundo', story: 'A −220 °C, a matéria se comporta de formas estranhas. E úteis.',
           missions: [
@@ -492,7 +494,7 @@
       specs: ['oraculo', 'nix', 'ion'],
       launch: { cost: { cryo: 30, fuel: 400, alloy: 100 } },
       build: { esc_gelo: 0, eletrolisador: 0, obs_profundo: 0, lab_anomalia: 0, reator: 0, armazem: 0 },
-      start: { b: { esc_gelo: 1, obs_profundo: 1, reator: 2 }, st: { alloy: 220, comp: 90, cryo: 10, fusion: 100, metal: 200, hull: 2 } },
+      start: { b: { esc_gelo: 1, obs_profundo: 1, reator: 2 }, st: { alloy: 440, comp: 180, cryo: 10, fusion: 100, metal: 200, hull: 2 } },
       phases: [
         { name: 'Sinal Fantasma', story: 'Um pulso regular, vindo de lugar nenhum. Oráculo diz que ele conta para trás.',
           missions: [
