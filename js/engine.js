@@ -245,6 +245,10 @@
     if (bid === 'reator') g *= m.genReactor;
     return g;
   };
+  // fração do combustível que o gerador conseguiu queimar no último passo (1 = abastecido)
+  E.fuelOf = (def, bs) => def.burn && bs && bs.fuel !== undefined ? bs.fuel : 1;
+  // combustível por segundo de todas as unidades de um gerador
+  E.burnOf = (def, n) => { const o = {}; for (const r in def.burn || {}) o[r] = def.burn[r] * n; return o; };
   E.useOf = (def, n, m) => (def.e || 0) * n * m.use * m.useCat[def.cat] * Math.pow(Math.max(1e-9, E.speedOf(def, m)), D.energySpeedExp);
   E.isSci = (def) => !!(def.out && def.out.data);
   E.speedOf = (def, m) => E.isSci(def) ? m.sciSpeed : m.speed[def.cat] * m.globalSpeed;
@@ -263,7 +267,7 @@
     const reg = S.run.regions[rid]; let gen = 0, use = 0;
     for (const bid in reg.b) {
       const bs = reg.b[bid]; if (!bs.n) continue; const def = D.buildings[bid];
-      if (def.gen) gen += E.genOf(S, rid, bid, m, bs.n, bs.lvl);
+      if (def.gen) gen += E.genOf(S, rid, bid, m, bs.n, bs.lvl) * E.fuelOf(def, bs);
       else if (!def.passive) {
         // automática: todas as máquinas; ciclo manual: só as máquinas pagas no início (parado se aguarda espaço)
         if (E.isAuto(m, def) && !bs.pause) use += E.useOf(def, bs.n, m);
@@ -449,9 +453,26 @@
     }
   }
   E.pendingTotal = (reg) => Object.values(reg.pend || {}).reduce((a, b) => a + b, 0);
+  // Geradores a combustível (Reator de Fusão) queimam antes de a energia ser calculada; o que faltar
+  // reduz a geração na mesma proporção. Material reservado para melhoria também pode ser queimado:
+  // apagar a região para guardar combustível seria pior para o jogador.
+  function burnTick(S, rid, reg, dt) {
+    for (const bid in reg.b) {
+      const def = D.buildings[bid], bs = reg.b[bid]; if (!def.burn) continue;
+      if (!bs.n) { delete bs.fuel; continue; }
+      let f = 1;
+      for (const r in def.burn) {
+        const need = def.burn[r] * bs.n * dt; if (!(need > 0)) continue;
+        const have = reg.st[r] || 0; const take = Math.min(have, need);
+        reg.st[r] = have - take; addFlow(reg, r, -take);
+        f = Math.min(f, take / need);
+      }
+      bs.fuel = f;
+    }
+  }
   function regionTick(S, rid, dt, m, rep) {
     const reg = S.run.regions[rid];
-    flushPending(S, rid, m); holdTick(S, rid, m);
+    flushPending(S, rid, m); holdTick(S, rid, m); burnTick(S, rid, reg, dt);
     const en = E.regionEnergy(S, rid, m); reg.en = en; const ratio = en.ratio;
     const ids = Object.keys(reg.b).sort((a, b) => D.buildings[a].tier - D.buildings[b].tier);
     const auto = [];
@@ -742,6 +763,16 @@
   // gargalo principal da região
   E.bottleneck = function (S, rid) {
     const reg = S.run.regions[rid]; const m = E.mods(S);
+    // déficit causado por gerador sem combustível: aponta o combustível, não “construa geradores”
+    if (reg.en.ratio < 0.999) for (const bid in reg.b) {
+      const def = D.buildings[bid], bs = reg.b[bid]; if (!def.burn || !bs.n || E.fuelOf(def, bs) >= 0.999) continue;
+      const r = Object.keys(def.burn)[0], sp = E.surplusFor(S, rid, r, m), here = D.regions[rid].name;
+      return { kind: 'input', bid, res: r, src: sp ? sp.rid : undefined, route: sp ? sp.route : undefined,
+        text: def.name + ': sem ' + D.res[r].name.toLowerCase() + ' (gerando ' + F.pct(E.fuelOf(def, bs)) + ')',
+        hint: sp ? D.res[r].name + ' sobrando em ' + D.regions[sp.rid].name + ' (' + F.n(sp.st) + '). ' + (sp.route !== null ? 'Melhore o cargueiro ' + D.regions[sp.rid].name + ' → ' + here + ' ou adicione outro.' : 'Crie uma rota ' + D.regions[sp.rid].name + ' → ' + here + '.')
+          : D.resHub[r] === rid ? 'A produção de ' + D.res[r].name.toLowerCase() + ' daqui não acompanha os reatores. Cada reator queima ' + F.n(def.burn[r] * 60, 1) + ' por minuto.'
+          : 'Traga ' + D.res[r].name.toLowerCase() + ' de ' + D.regions[D.resHub[r]].name + ' por rota. Cada reator queima ' + F.n(def.burn[r] * 60, 1) + ' por minuto.' };
+    }
     if (reg.en.ratio < 0.999) return { kind: 'energy', text: 'Energia insuficiente: ' + F.n(reg.en.gen) + ' / ' + F.n(reg.en.use) + ' MW', hint: 'Construa ou melhore geradores. Instalações ficam mais lentas (' + F.pct(reg.en.ratio) + '). Sem material para geradores? Pause as instalações de transformação para a extração e o refino voltarem à velocidade.' };
     const ids = Object.keys(reg.b).filter((b) => reg.b[b].n && !D.buildings[b].passive).sort((a, b) => D.buildings[b].tier - D.buildings[a].tier);
     for (const bid of ids) {
@@ -1469,6 +1500,19 @@
     // desmontadas e devolvem o que custaram (construção e melhorias, sem descontos); Júpiter recebe gases para
     // as refinarias seguirem até a rota de Vênus chegar. Carregar de novo não devolve outra vez (já não existem).
     3: (o) => { dismantleGone(o); o.v = 4; return o; },
+    // v4 → v5: reatores passam a queimar combustível de fusão. Para nenhuma região apagar ao carregar,
+    // cada uma com reator recebe 10 min de combustível para o número de reatores que tem (sem tirar nada).
+    4: (o) => {
+      const regs = o.run && isObj(o.run.regions) ? o.run.regions : {}; let any = false;
+      for (const rid in regs) {
+        const reg = regs[rid], bs = isObj(reg) && isObj(reg.b) ? reg.b.reator : null; if (!isObj(bs)) continue;
+        const n = Math.max(0, Math.floor(+bs.n || 0)); if (!n) continue;
+        if (!isObj(reg.st)) reg.st = {};
+        reg.st.fusion = Math.max(+reg.st.fusion || 0, Math.ceil(D.buildings.reator.burn.fusion * n * 600)); any = true;
+      }
+      if (any && Array.isArray(o.run.log)) o.run.log.unshift({ kind: 'gold', text: 'Os reatores de fusão agora queimam combustível de fusão. Cada planeta com reator recebeu 10 min de combustível; leve mais por rota a partir de Júpiter.', t: +o.run.time || 0 });
+      o.v = 5; return o;
+    },
   };
   E.MIGRATIONS = MIGRATIONS;
 

@@ -154,8 +154,26 @@ function unblockDest(S, rt) {
     if (bs.n && def.in && def.in[r] && bs.why && bs.why.startsWith('full:') && !to.exp[bs.why.slice(5)]) { E.toggleExport(S, rt.to, bs.why.slice(5)); did = true; }
   }
   // nenhum consumidor travado: o destino não usa o recurso; liga EXP nele para os cargueiros descarregarem
-  if (!did) for (const r of rt.res) if (!to.exp[r]) { E.toggleExport(S, rt.to, r); did = true; }
+  // (só enquanto a missão de viagens precisar; depois é desligado em botStep)
+  if (!did) for (const r of rt.res) if (!to.exp[r]) { E.toggleExport(S, rt.to, r); tripExp.add(rt.to + '|' + r); did = true; }
   return did;
+}
+const tripExp = new Set();
+// Exportação ligada só para os cargueiros descarregarem. Acabadas as missões de rota e de viagens da
+// região, um recurso caro (fusão, raros, supercondutores) que ela não usa seria jogado fora para sempre
+// (ex.: fusão em Saturno, ~70% de toda a fusão): desmonta a rota que só leva esse recurso e desliga a
+// exportação, como um jogador faria. Rotas mistas e recursos básicos ficam como estão.
+function releaseTripExports(S) {
+  for (const k of [...tripExp]) {
+    const [rid, r] = k.split('|'); const reg = S.run.regions[rid];
+    if (E.cargoMult(r) <= 1) { tripExp.delete(k); continue; }
+    if (E.activeMissions(S, rid).some((x) => (x.md.t === 'ship' || x.md.t === 'route' || x.md.t === 'deliver') && !E.mProg(S, rid, x.md, x.id).done)) continue;
+    tripExp.delete(k);
+    const into = S.run.routes.filter((rt) => rt.to === rid && rt.res.includes(r));
+    if (into.some((rt) => rt.res.length > 1)) continue;
+    for (const rt of into) E.removeRoute(S, rt.id);
+    if (reg.exp[r]) E.toggleExport(S, rid, r);
+  }
 }
 function botMission(S, rid, x) {
   const md = x.md; const run = S.run;
@@ -237,6 +255,26 @@ function botStep(S) {
   energyRescue(S);
   // reserva de melhoria só enquanto uma missão de nível daquela instalação estiver ativa
   for (const rid of RO) { const reg = run.regions[rid]; if (!reg.unlocked || !reg.hold) continue; if (!E.activeMissions(S, rid).some((x) => x.md.t === 'level' && x.md.b === reg.hold.bid && !E.mProg(S, rid, x.md, x.id).done)) E.setHold(S, rid, reg.hold.bid); }
+  releaseTripExports(S);
+  // reatores queimam combustível de fusão: com menos de 2 min de estoque, garante a rota (como um jogador faria)
+  for (const rid of RO) {
+    const reg = run.regions[rid]; if (!reg.unlocked) continue;
+    for (const b in reg.b) {
+      const def = D.buildings[b], bs = reg.b[b]; if (!def.burn || !bs.n) continue;
+      for (const r in def.burn) if (!producers(S, rid, r).length && (reg.st[r] || 0) < def.burn[r] * bs.n * 120) ensureRoute(S, rid, r, 1, def.burn[r] * bs.n * 300);
+    }
+  }
+  // instalação parada esperando um insumo das cadeias finais (raros, supercondutores, fusão) que a
+  // região não produz e que nenhuma rota traz: cria a rota, como um jogador faria ao ver o aviso.
+  // Só essas: para os básicos, rotas extras encarecem as próximas rotas da origem (×1,6 cada)
+  for (const rid of RO) {
+    const reg = run.regions[rid]; if (!reg.unlocked) continue;
+    for (const b in reg.b) {
+      const bs = reg.b[b]; if (!bs.n || !bs.why || !bs.why.startsWith('no:')) continue;
+      const r = bs.why.slice(3);
+      if (E.cargoMult(r) > 1 && !producers(S, rid, r).length && !run.routes.some((rt) => rt.to === rid && rt.res.includes(r))) ensureRoute(S, rid, r, 1);
+    }
+  }
   // missões ativas
   for (const rid of RO) {
     const reg = run.regions[rid]; if (!reg.unlocked) continue;

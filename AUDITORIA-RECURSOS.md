@@ -2,6 +2,53 @@
 
 Data: 30/10/2026. Base: código atual, já com gases só em Vênus e a troca de geradores até o Reator de Fusão. Nenhum valor do jogo foi alterado nesta auditoria. Ela substitui as medições de [BALANCO.md](BALANCO.md) (27/10).
 
+## Aplicado em 30/10/2026: Reator de Fusão queima combustível de fusão
+
+**O que mudou:**
+- Cada reator queima 1 de combustível de fusão a cada 20 s (3 por minuto), em qualquer nível. Sem combustível, gera na proporção do que conseguiu queimar.
+- O cartão mostra o consumo e avisa quando falta ("sem combustível de fusão: gerando X%"). O aviso de gargalo aponta a rota a partir de Júpiter, e a janela de troca de gerador avisa que o reator queima combustível. A enciclopédia lista o reator entre os que usam fusão.
+- **Saves antigos (v4 → v5):** cada planeta com reator recebe 10 min de combustível para os reatores que tem, sem tirar nada do estoque. O diário explica a mudança.
+- **Bot:** com menos de 2 min de combustível num planeta com reator, garante a rota de fusão.
+
+**Testado e descartado:** remover o "Exportar excedente". As 15 partidas travaram, a primeira já aos 30 min no Cinturão ("Produzir 2,50K minérios"): o armazém enche e a produção para. O jogo tem 42 missões "Produzir X" que dependem de o excedente ter destino.
+
+**Resultado** (média dos 5 universos):
+
+| Medida | Antes | Depois |
+|---|---|---|
+| Combustível de fusão produzido | 2.500–3.100 | 3.700–5.400 |
+| Fusão consumida (insumo e reatores) | 300–720 | 1.400–2.900 |
+| Fusão exportada sem uso | 0–10% | 0% |
+| Laboratório de Anomalia esperando fusão | 12–18% | 0% |
+| 1º Colapso (15 partidas) | média 81, pior 88 min | média 81, pior 94 min |
+| 2º Colapso (verificação de campanhas) | 35–44 min | 32–47 min |
+
+A energia no fim continua sobrando em todos os planetas: de 1,4× (Cinturão) a 18× (Júpiter). O caso mais lento (94 min) é no Energético, que já era o universo mais lento.
+
+## Aplicado em 30/10/2026: fusão para o Laboratório de Anomalia
+
+**Diagnóstico:** a falta de combustível de fusão em Netuno vinha quase toda do bot que faz as medições, não do jogo. A Refinaria de Fusão de Júpiter fica parada 38–55% do tempo com o estoque cheio: produção sobra.
+- **Fusão jogada fora em Saturno.** Para cumprir as missões de viagens, o bot ligava "Exportar excedente" em Saturno e nunca desligava. A rota Júpiter → Saturno, usada para o lançamento de Urano, continuava levando fusão que era exportada: cerca de 70% de toda a fusão do jogo no Padrão e no Ancestral.
+- **Rota para o laboratório só quando uma missão pedia.** O bot não reagia ao aviso "esperando combustível de fusão" no cartão do laboratório.
+
+**O que mudou:**
+- **Bot:** acabadas as missões de rota e de viagens de uma região, desmonta a rota que só leva um recurso caro (fusão, raros, supercondutores) que ela não usa e desliga a exportação. Também cria a rota quando uma instalação espera um desses recursos e nenhuma rota o traz.
+- **Jogo:** Netuno começa com 100 de combustível de fusão (antes 30). Isso cobre os minutos entre construir o laboratório e a chegada do primeiro cargueiro de Júpiter.
+
+**Testado e descartado:** a ampliação do cargueiro ser paga pelo destino quando a origem não tem os recursos. O tempo de laboratório parado não mudou (~29% com ou sem), e em uma partida Netuno gastou os componentes nas rotas que chegam e travou numa missão até 268 min.
+
+**Resultado:**
+
+| Medida | Antes | Depois |
+|---|---|---|
+| Laboratório de Anomalia parado por falta (fusão + supercondutores) | 41–48% (27–73% por universo) | 20% em média (12–34%) |
+| Laboratório esperando só fusão | 23–73% | 12–18% |
+| Fusão exportada sem uso | até 74% | 0–10% |
+| 1º Colapso (15 partidas) | média 81, pior 88 min | média 81, pior 88 min |
+| 2º Colapso (verificação de campanhas) | 31–44 min | 35–44 min |
+
+Meta do laboratório (menos de 25% parado) alcançada na média. No Padrão ele ainda espera supercondutores 22% do tempo.
+
 ## Aplicado em 30/10/2026: logística das cadeias finais, combustível e armazém
 
 **O que mudou:**
@@ -29,7 +76,7 @@ Data: 30/10/2026. Base: código atual, já com gases só em Vênus e a troca de 
 
 **Ritmo:** 5 universos × 3 inícios (0, 7 e 13 s parados), com média de 81 min e pior caso de 88, iguais à versão anterior. O 2º universo segue em 36–43 min.
 
-**Meta não alcançada:** o Laboratório de Anomalia continua abaixo do esperado (meta: menos de 25% parado). O limite agora é a rota Júpiter → Netuno, a mais longa do jogo, cuja ampliação é paga em Júpiter, que não produz metal nem ligas. Deixar a fusão ×4 só levou a 41%.
+**Meta não alcançada** (resolvida depois; ver "fusão para o Laboratório de Anomalia" acima): o Laboratório de Anomalia continua abaixo do esperado (meta: menos de 25% parado). O limite agora é a rota Júpiter → Netuno, a mais longa do jogo, cuja ampliação é paga em Júpiter, que não produz metal nem ligas. Deixar a fusão ×4 só levou a 41%.
 
 ## Aplicado em 30/10/2026: destino aos básicos (recomendação 1)
 

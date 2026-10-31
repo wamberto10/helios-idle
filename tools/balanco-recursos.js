@@ -22,6 +22,8 @@ function load() {
   rep('      for (const r in net) {\n        const s = reg.st[r] || 0; let ns = s + net[r];', '      if (H.__aud) for (const r in net) { const used = (made[r] || 0) - net[r]; if (used > 0) H.__aud("use", reg, r, used); }\n      for (const r in net) {\n        const s = reg.st[r] || 0; let ns = s + net[r];');
   rep("from.st.fuel = Math.max(0, from.st.fuel - info.fuel);", 'if (H.__aud) H.__aud("routeFuel", from, "fuel", Math.min(info.fuel, from.st.fuel || 0)); from.st.fuel = Math.max(0, from.st.fuel - info.fuel);');
   rep("if (add > 0) { reg.st[r] = (reg.st[r] || 0) + add; reg.pend[r] -= add; addFlow(reg, r, add); }", 'if (add > 0) { if (H.__aud) H.__aud("gain", reg, r, add); reg.st[r] = (reg.st[r] || 0) + add; reg.pend[r] -= add; addFlow(reg, r, add); }');
+  // combustível queimado pelos reatores conta como insumo consumido
+  rep('const take = Math.min(have, need);', 'const take = Math.min(have, need); if (H.__aud) H.__aud("use", reg, r, take);');
   vm.runInContext(engine, c);
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'tools/bot.js'), 'utf8'), c);
   return c;

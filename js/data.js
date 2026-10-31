@@ -6,7 +6,8 @@
   const D = {};
 
   D.SAVE_KEY = 'helios_idle_save';
-  D.SAVE_VERSION = 4; // v4: construções que saíram de uma região (Plataforma Atmosférica em Júpiter) são desmontadas com reembolso
+  D.SAVE_VERSION = 5; // v4: construções que saíram de uma região (Plataforma Atmosférica em Júpiter) são desmontadas com reembolso
+                      // v5: reatores queimam combustível de fusão; planetas com reator recebem 10 min de combustível
   // v3: descobertas permanentes (perm.disc). v2: ciclos manuais registram máquinas/nível pagos (mc), cargueiros podem aguardar descarga, revisão (rev)
   D.AUTOSAVE_SEC = 20;
   D.OFFLINE_BASE_H = 8;
@@ -63,9 +64,11 @@
     coletor_solar: { name: 'Coletor Solar', pl: 'coletores solares', cat: 'power', tier: 0, passive: true, gen: 15, solar: true,
       cost: { metal: 40, cell: 3 }, g: 1.28, up: [['metal', 60, 1], ['cell', 6, 2], ['comp', 8, 4]], ug: 1.8,
       desc: 'Grande espelho de captação. Ideal perto do Sol.' },
-    reator: { name: 'Reator de Fusão', pl: 'reatores de fusão', cat: 'power', tier: 0, passive: true, gen: 60,
+    // burn: combustível queimado por reator a cada segundo, em qualquer nível (1 a cada 20 s). Sem combustível,
+    // gera na proporção do que conseguiu queimar. Dá destino à fusão de Júpiter e leva rotas a cada planeta.
+    reator: { name: 'Reator de Fusão', pl: 'reatores de fusão', cat: 'power', tier: 0, passive: true, gen: 60, burn: { fusion: 0.05 },
       cost: { alloy: 40, comp: 12, fusion: 8 }, g: 1.32, up: [['alloy', 80, 1], ['comp', 30, 1], ['fusion', 15, 3]], ug: 1.9,
-      desc: 'Energia constante em qualquer órbita.' },
+      desc: 'Energia constante em qualquer órbita, enquanto houver combustível de fusão.' },
     // a partir do nível 5, cada nível do armazém dá +10% de carga aos cargueiros que saem da região
     armazem: { name: 'Armazém', pl: 'armazéns', cat: 'storage', tier: 0, passive: true, storage: 0.6, routeCargo: 0.1, routeCargoFrom: 5,
       cost: { metal: 30 }, g: 1.5, up: [['metal', 60, 1], ['alloy', 20, 2], ['comp', 10, 4]], ug: 1.9,
@@ -489,7 +492,7 @@
       specs: ['oraculo', 'nix', 'ion'],
       launch: { cost: { cryo: 30, fuel: 400, alloy: 100 } },
       build: { esc_gelo: 0, eletrolisador: 0, obs_profundo: 0, lab_anomalia: 0, reator: 0, armazem: 0 },
-      start: { b: { esc_gelo: 1, obs_profundo: 1, reator: 2 }, st: { alloy: 220, comp: 90, cryo: 10, fusion: 30, metal: 200, hull: 2 } },
+      start: { b: { esc_gelo: 1, obs_profundo: 1, reator: 2 }, st: { alloy: 220, comp: 90, cryo: 10, fusion: 100, metal: 200, hull: 2 } },
       phases: [
         { name: 'Sinal Fantasma', story: 'Um pulso regular, vindo de lugar nenhum. Oráculo diz que ele conta para trás.',
           missions: [

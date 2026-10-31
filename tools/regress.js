@@ -445,7 +445,7 @@ function testChests() {
 function testHold() {
   section('Reserva para melhoria: material protegido, melhoria paga uma vez, cancelável');
   const S = fresh(); E.unlockRegion(S, 'urano', true); const U = S.run.regions.urano; S.perm.specs.nix = { lvl: 3, cards: 0 };
-  U.b = { criogenico: { n: 2, lvl: 2, p: 0 }, reator: { n: 10, lvl: 1, p: 0 } }; U.st = { ice: 400, rare: 30, alloy: 500, comp: 500 };
+  U.b = { criogenico: { n: 2, lvl: 2, p: 0 }, reator: { n: 10, lvl: 1, p: 0 } }; U.st = { ice: 400, rare: 30, alloy: 500, comp: 500, fusion: 1000 };
   const T = clone(S); E.simulate(T, 120); assert((T.run.regions.urano.st.rare || 0) < 30, 'sem reserva o processador gasta os raros');
   const c2 = E.uCost(S, 'urano', 'criogenico'); assert(c2.rare > 0, 'melhoria do nível 2 exige metais raros (' + c2.rare + ')');
   assert(E.setHold(S, 'urano', 'criogenico').on, 'reserva criada');
@@ -594,6 +594,27 @@ function testCargoBonus() {
   assert(E.storeCargo(S, 'mercurio') === 1, 'o bônus vale só para quem sai da região do armazém');
 }
 
+function testReactorFuel() {
+  section('Reator de Fusão: queima 1 combustível de fusão a cada 20 s; sem combustível gera menos');
+  const S = fresh(); for (const r of ['marte', 'cinturao', 'mercurio', 'venus', 'jupiter', 'saturno']) E.unlockRegion(S, r, true);
+  const Sa = S.run.regions.saturno, def = D.buildings.reator, m = E.mods(S);
+  Sa.b = { reator: { n: 2, lvl: 1, p: 0 } }; Sa.st = { fusion: 100 };
+  E.simulate(S, 60);
+  assert(near(Sa.st.fusion, 100 - 2 * def.burn.fusion * 60, 1e-6), 'abastecido: 2 reatores queimam 6 em 1 min (sobrou ' + Sa.st.fusion + ')');
+  assert(Sa.b.reator.fuel === 1 && near(Sa.en.gen, E.genOf(S, 'saturno', 'reator', m, 2, 1), 1e-6), 'abastecido: gera o valor cheio');
+  Sa.st.fusion = 3; E.tick(S, 60);
+  assert(near(Sa.b.reator.fuel, 0.5) && near(Sa.en.gen, E.genOf(S, 'saturno', 'reator', m, 2, 1) * 0.5, 1e-6) && !(Sa.st.fusion > 1e-9), 'metade do combustível: gera metade e o estoque zera');
+  E.tick(S, 1); assert(Sa.b.reator.fuel === 0 && Sa.en.gen === 0, 'sem combustível: não gera');
+  Sa.en = { gen: 0, use: 10, ratio: 0 }; const b = E.bottleneck(S, 'saturno');
+  assert(b.kind === 'input' && b.res === 'fusion' && b.bid === 'reator' && /Júpiter/.test(b.hint), 'aviso aponta o combustível e Júpiter: ' + b.text + ' / ' + b.hint);
+  // save v4: cada região com reator recebe 10 min de combustível, sem tirar o que já tinha
+  Sa.st.fusion = 0; S.run.regions.jupiter.st.fusion = 999;
+  const o = JSON.parse(E.serialize(S)); o.v = 4; const r = E.deserialize(JSON.stringify(o));
+  assert(r.ok && r.S.run.regions.saturno.st.fusion === Math.ceil(def.burn.fusion * 2 * 600), 'save v4: Saturno recebe 10 min para 2 reatores (' + (r.ok && r.S.run.regions.saturno.st.fusion) + ')');
+  assert(r.S.run.regions.jupiter.st.fusion === 999 && /queimam combustível/.test(r.S.run.log[0].text), 'quem já tinha mais fica igual; o diário explica');
+  const again = E.deserialize(E.serialize(r.S)); assert(again.ok && again.S.run.regions.saturno.st.fusion === r.S.run.regions.saturno.st.fusion, 'carregar de novo não dá combustível outra vez');
+}
+
 // =============== 18. PRIMEIROS PASSOS ===============
 function testFirstSteps() {
   section('Primeiros passos: gargalo aponta o que dá para operar; sem aviso repetido da introdução');
@@ -622,7 +643,7 @@ function testVenusGasHub() {
   const metal = [0, 1, 2].reduce((a, i) => a + Math.ceil(def.cost.metal * Math.pow(def.g, i)), 0) + 40, alloy = [0, 1, 2].reduce((a, i) => a + Math.ceil(def.cost.alloy * Math.pow(def.g, i)), 0) + 15;
   assert(!J2.b.plataforma && !J2.hold, 'plataformas e reserva removidas');
   assert(J2.st.metal === 10 + metal && J2.st.alloy === 5 + alloy, 'construção e melhoria devolvidas (metal ' + J2.st.metal + ', ligas ' + J2.st.alloy + ')');
-  assert(J2.st.gas >= 150 && /desmontada/.test(r.S.run.log[0].text), 'Júpiter recebe gases e o diário explica');
+  assert(J2.st.gas >= 150 && r.S.run.log.some((l) => /desmontada/.test(l.text)), 'Júpiter recebe gases e o diário explica');
   const again = E.deserialize(E.serialize(r.S)); assert(again.ok && again.S.run.regions.jupiter.st.metal === J2.st.metal, 'carregar de novo não devolve outra vez');
   const V = r.S.run.regions.venus; assert(!V.b.plataforma || V.b.plataforma.n === (S.run.regions.venus.b.plataforma || {}).n, 'plataformas de Vênus intocadas');
 }
@@ -670,6 +691,8 @@ function testSurplusHub() {
 function testOperateAll() {
   section('Operar (ciclo manual): todas as instalações — botão = motor, produto entregue uma vez');
   const manual = Object.keys(D.buildings).filter((b) => !D.buildings[b].passive);
+  // os reatores aqui só dão energia; a queima de combustível tem teste próprio (testReactorFuel)
+  const keepBurn = D.buildings.reator.burn; delete D.buildings.reator.burn;
   const where = (bid) => RO.find((rid) => D.regions[rid].build[bid] !== undefined);
   const setup = (bid) => {
     const S = fresh(); const rid = where(bid); if (rid !== 'lua') E.unlockRegion(S, rid, true);
@@ -715,6 +738,7 @@ function testOperateAll() {
       if (c4.ok || o4.ok || c4.why !== 'full:' + outR) bad.push(bid + ': estoque de ' + outR + ' cheio deveria bloquear (' + c4.why + ')');
     }
   }
+  D.buildings.reator.burn = keepBurn;
   assert(!bad.length, manual.length + ' instalações com Operar revisadas' + (bad.length ? ' — problemas: ' + bad.join('; ') : ''));
 }
 
@@ -722,7 +746,7 @@ let OPTS = {};
 function run(opts) {
   OPTS = opts || {}; const t0 = Date.now(); fails = 0; count = 0;
   console.log('Testes de regressão (motor e abas)');
-  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub, testArtSizes, testVenusGasHub, testFirstSteps, testCargoBonus]) {
+  for (const t of [testImport, testMigration, testManual, testProduction, testRoutes, testSessions, testExpFrags, testScience, testDiscoveries, testDiscMigration, testRewardPreview, testPendingSupplies, testCollapseDirs, testChests, testHold, testSaveOffline, testMissionTargets, testClaimAll, testRewardsV2, testLastRegion, testOperateAll, testSurplusHub, testArtSizes, testVenusGasHub, testFirstSteps, testCargoBonus, testReactorFuel]) {
     try { t(); } catch (e) { fails++; console.log('  ✗ FALHA: ' + t.name + ' lançou exceção: ' + (e.stack || e)); }
   }
   console.log('  ' + (count - fails) + '/' + count + ' verificações OK em ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');

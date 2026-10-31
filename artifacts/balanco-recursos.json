@@ -1,10 +1,10 @@
 {
- "generated": "2026-10-30T22:16:09.705Z",
+ "generated": "2026-10-31T00:30:39.178Z",
  "universes": [
   {
    "universe": "padrao",
    "name": "Universo Padrão",
-   "collapseMin": 83,
+   "collapseMin": 81,
    "regionsAtMin": {
     "lua": 0,
     "marte": 8,
@@ -12,43 +12,43 @@
     "mercurio": 18,
     "venus": 23,
     "jupiter": 28,
-    "saturno": 39,
+    "saturno": 36,
     "urano": 47,
-    "netuno": 57
+    "netuno": 58
    },
    "resources": {
     "ore": {
      "name": "Minério",
      "value": 1,
      "start": 0,
-     "produced": 8155556.17,
+     "produced": 6331355.39,
      "gained": 30,
-     "usedAsInput": 7313994.64,
-     "spent": 7029,
+     "usedAsInput": 5876882.1,
+     "spent": 4000,
      "routeFuel": 0,
      "project": 0,
-     "exported": 827543.53,
-     "end": 7019,
+     "exported": 445913.29,
+     "end": 4590,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 1728315.18,
-       "use": 1726077.18,
+       "prod": 1639100.61,
+       "use": 1636862.61,
        "exp": 0
       },
       "marte": {
-       "prod": 2279959.93,
-       "use": 2274400.93,
+       "prod": 2155420.22,
+       "use": 2150941.22,
        "exp": 0
       },
       "cinturao": {
-       "prod": 2528714.88,
-       "use": 1695673.35,
-       "exp": 827543.53
+       "prod": 983882.88,
+       "use": 537569.59,
+       "exp": 445913.29
       },
       "mercurio": {
-       "prod": 1618566.18,
-       "use": 1617843.18,
+       "prod": 1552951.67,
+       "use": 1551508.67,
        "exp": 0
       }
      }
@@ -57,35 +57,35 @@
      "name": "Metal",
      "value": 3,
      "start": 25,
-     "produced": 4519616.91,
+     "produced": 3756453.36,
      "gained": 1155,
-     "usedAsInput": 3034348.38,
-     "spent": 76000,
+     "usedAsInput": 2606117.89,
+     "spent": 54431,
      "routeFuel": 0,
      "project": 127200,
-     "exported": 1275165.26,
-     "end": 8058.27,
+     "exported": 965840.47,
+     "end": 4019,
      "reconcile": 25,
      "byRegion": {
       "lua": {
-       "prod": 1725658.18,
-       "use": 860294.9,
-       "exp": 802666.28
+       "prod": 1636443.61,
+       "use": 815687.62,
+       "exp": 750842
       },
       "marte": {
-       "prod": 1137200.47,
-       "use": 1074683.47,
-       "exp": 55366.72
+       "prod": 1075470.61,
+       "use": 1055751.92,
+       "exp": 39890.7
       },
       "cinturao": {
-       "prod": 847836.67,
-       "use": 610896.48,
-       "exp": 228606.19
+       "prod": 268784.8,
+       "use": 265849.8,
+       "exp": 0
       },
       "mercurio": {
-       "prod": 808921.59,
-       "use": 488473.52,
-       "exp": 188526.07
+       "prod": 775754.34,
+       "use": 468828.56,
+       "exp": 175107.78
       }
      }
     },
@@ -93,39 +93,39 @@
      "name": "Ligas",
      "value": 10,
      "start": 0,
-     "produced": 2566121.94,
+     "produced": 2056914.29,
      "gained": 815,
-     "usedAsInput": 23829.64,
-     "spent": 27411,
+     "usedAsInput": 223332.27,
+     "spent": 24210,
      "routeFuel": 0,
      "project": 38930,
-     "exported": 2471202.3,
-     "end": 5564,
+     "exported": 1766907.02,
+     "end": 4350,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 736961.57,
+       "prod": 698458.97,
        "use": 0,
-       "exp": 722707.57
+       "exp": 683325.97
       },
       "marte": {
-       "prod": 1209151.6,
-       "use": 22119.64,
-       "exp": 1170978.96
+       "prod": 955285.93,
+       "use": 221766.27,
+       "exp": 721404.65
       },
       "cinturao": {
-       "prod": 356200.49,
+       "prod": 154923.25,
        "use": 0,
-       "exp": 353339.49
+       "exp": 153427.25
       },
       "mercurio": {
-       "prod": 263808.28,
+       "prod": 248246.14,
        "use": 0,
-       "exp": 224176.28
+       "exp": 208749.14
       },
       "saturno": {
        "prod": 0,
-       "use": 1710,
+       "use": 1566,
        "exp": 0
       }
      }
@@ -134,29 +134,29 @@
      "name": "Componentes",
      "value": 30,
      "start": 0,
-     "produced": 24059,
+     "produced": 264567.28,
      "gained": 260,
-     "usedAsInput": 9321.1,
-     "spent": 7256,
+     "usedAsInput": 11802.53,
+     "spent": 6158,
      "routeFuel": 0,
      "project": 3230,
-     "exported": 0,
-     "end": 4511.9,
+     "exported": 240192.28,
+     "end": 3444.47,
      "reconcile": 0,
      "byRegion": {
       "marte": {
-       "prod": 24059,
+       "prod": 264567.28,
        "use": 0,
-       "exp": 0
+       "exp": 240192.28
       },
       "mercurio": {
        "prod": 0,
-       "use": 8466.1,
+       "use": 11019.53,
        "exp": 0
       },
       "saturno": {
        "prod": 0,
-       "use": 855,
+       "use": 783,
        "exp": 0
       }
      }
@@ -165,30 +165,30 @@
      "name": "Gelo",
      "value": 1,
      "start": 0,
-     "produced": 642444.94,
+     "produced": 605900.03,
      "gained": 0,
-     "usedAsInput": 125227.16,
+     "usedAsInput": 117210.51,
      "spent": 0,
      "routeFuel": 0,
      "project": 0,
-     "exported": 514067.78,
-     "end": 3150,
+     "exported": 485610.94,
+     "end": 3078.57,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 76408.48,
-       "use": 74878.48,
+       "prod": 73427.49,
+       "use": 71968.91,
        "exp": 0
       },
       "saturno": {
-       "prod": 430685.8,
-       "use": 2050.74,
-       "exp": 428185.05
+       "prod": 402489.88,
+       "use": 1980.57,
+       "exp": 400059.3
       },
       "urano": {
-       "prod": 134630.67,
-       "use": 48297.94,
-       "exp": 85882.72
+       "prod": 129262.67,
+       "use": 43261.03,
+       "exp": 85551.64
       },
       "netuno": {
        "prod": 720,
@@ -201,24 +201,24 @@
      "name": "Gases",
      "value": 2,
      "start": 0,
-     "produced": 283917.87,
+     "produced": 157773.87,
      "gained": 150,
-     "usedAsInput": 179206.67,
+     "usedAsInput": 106278.67,
      "spent": 0,
      "routeFuel": 0,
      "project": 0,
-     "exported": 103606.2,
+     "exported": 50390.2,
      "end": 1255,
      "reconcile": 0,
      "byRegion": {
       "venus": {
-       "prod": 283917.87,
-       "use": 158106.67,
-       "exp": 103606.2
+       "prod": 157773.87,
+       "use": 88026.67,
+       "exp": 50390.2
       },
       "jupiter": {
        "prod": 0,
-       "use": 21100,
+       "use": 18252,
        "exp": 0
       }
      }
@@ -227,40 +227,40 @@
      "name": "Combustível",
      "value": 4,
      "start": 0,
-     "produced": 295233.6,
+     "produced": 205808.4,
      "gained": 200,
      "usedAsInput": 0,
      "spent": 4145,
-     "routeFuel": 40568,
+     "routeFuel": 40799,
      "project": 26500,
-     "exported": 217646.6,
-     "end": 6574,
+     "exported": 128609.4,
+     "end": 5955,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 63293,
+       "prod": 60817,
        "use": 0,
        "exp": 0
       },
       "venus": {
-       "prod": 189315,
+       "prod": 105219,
        "use": 0,
-       "exp": 180547
+       "exp": 95908
       },
       "jupiter": {
-       "prod": 1823,
+       "prod": 3466,
        "use": 0,
        "exp": 0
       },
       "saturno": {
-       "prod": 1788,
+       "prod": 1683,
        "use": 0,
        "exp": 0
       },
       "urano": {
-       "prod": 39014.6,
+       "prod": 34623.4,
        "use": 0,
-       "exp": 37099.6
+       "exp": 32701.4
       }
      }
     },
@@ -268,29 +268,29 @@
      "name": "Metais Raros",
      "value": 20,
      "start": 0,
-     "produced": 13048,
+     "produced": 14426,
      "gained": 50,
-     "usedAsInput": 10688.27,
-     "spent": 52,
+     "usedAsInput": 13131.24,
+     "spent": 49,
      "routeFuel": 0,
      "project": 40,
      "exported": 0,
-     "end": 2317.73,
+     "end": 1255.76,
      "reconcile": 0,
      "byRegion": {
       "cinturao": {
-       "prod": 13048,
+       "prod": 14426,
        "use": 0,
        "exp": 0
       },
       "mercurio": {
        "prod": 0,
-       "use": 10069.97,
+       "use": 12516,
        "exp": 0
       },
       "urano": {
        "prod": 0,
-       "use": 618.3,
+       "use": 615.24,
        "exp": 0
       }
      }
@@ -299,20 +299,20 @@
      "name": "Células Solares",
      "value": 60,
      "start": 0,
-     "produced": 15096.45,
+     "produced": 18765.5,
      "gained": 0,
-     "usedAsInput": 12699.15,
+     "usedAsInput": 16529.3,
      "spent": 137,
      "routeFuel": 0,
      "project": 70,
-     "exported": 1596.3,
-     "end": 594,
+     "exported": 1732.2,
+     "end": 297,
      "reconcile": 0,
      "byRegion": {
       "mercurio": {
-       "prod": 15096.45,
-       "use": 12699.15,
-       "exp": 1596.3
+       "prod": 18765.5,
+       "use": 16529.3,
+       "exp": 1732.2
       }
      }
     },
@@ -320,29 +320,34 @@
      "name": "Comb. de Fusão",
      "value": 80,
      "start": 0,
-     "produced": 5885.32,
-     "gained": 70,
-     "usedAsInput": 263.93,
-     "spent": 114,
+     "produced": 4047.64,
+     "gained": 140,
+     "usedAsInput": 2176.53,
+     "spent": 126,
      "routeFuel": 0,
      "project": 160,
-     "exported": 4333,
-     "end": 1084.39,
+     "exported": 0,
+     "end": 1725.11,
      "reconcile": 0,
      "byRegion": {
       "jupiter": {
-       "prod": 5885.32,
-       "use": 0,
+       "prod": 4047.64,
+       "use": 592.2,
        "exp": 0
       },
       "saturno": {
        "prod": 0,
-       "use": 0,
-       "exp": 4333
+       "use": 576,
+       "exp": 0
+      },
+      "urano": {
+       "prod": 0,
+       "use": 206.8,
+       "exp": 0
       },
       "netuno": {
        "prod": 0,
-       "use": 263.93,
+       "use": 801.53,
        "exp": 0
       }
      }
@@ -351,18 +356,18 @@
      "name": "Módulos Estruturais",
      "value": 200,
      "start": 0,
-     "produced": 638,
+     "produced": 584,
      "gained": 2,
      "usedAsInput": 0,
      "spent": 20,
      "routeFuel": 0,
      "project": 195,
      "exported": 0,
-     "end": 425,
+     "end": 371,
      "reconcile": 0,
      "byRegion": {
       "saturno": {
-       "prod": 638,
+       "prod": 584,
        "use": 0,
        "exp": 0
       }
@@ -372,24 +377,24 @@
      "name": "Supercondutores",
      "value": 150,
      "start": 0,
-     "produced": 2142,
+     "produced": 2117,
      "gained": 10,
-     "usedAsInput": 757.27,
+     "usedAsInput": 1004.35,
      "spent": 16,
      "routeFuel": 0,
      "project": 200,
      "exported": 0,
-     "end": 1178.73,
+     "end": 906.65,
      "reconcile": 0,
      "byRegion": {
       "urano": {
-       "prod": 2142,
+       "prod": 2117,
        "use": 0,
        "exp": 0
       },
       "netuno": {
        "prod": 0,
-       "use": 757.27,
+       "use": 1004.35,
        "exp": 0
       }
      }
@@ -398,20 +403,20 @@
      "name": "Matéria Exótica",
      "value": 1000,
      "start": 0,
-     "produced": 167,
+     "produced": 399.38,
      "gained": 0,
      "usedAsInput": 0,
      "spent": 0,
      "routeFuel": 0,
      "project": 95,
-     "exported": 0,
+     "exported": 232.38,
      "end": 72,
      "reconcile": 0,
      "byRegion": {
       "netuno": {
-       "prod": 167,
+       "prod": 399.38,
        "use": 0,
-       "exp": 0
+       "exp": 232.38
       }
      }
     },
@@ -419,20 +424,20 @@
      "name": "Satélites Dyson",
      "value": 400,
      "start": 0,
-     "produced": 4233.05,
+     "produced": 5509.77,
      "gained": 0,
      "usedAsInput": 0,
      "spent": 0,
      "routeFuel": 0,
      "project": 260,
-     "exported": 3825.05,
-     "end": 148,
+     "exported": 5141.77,
+     "end": 108,
      "reconcile": 0,
      "byRegion": {
       "mercurio": {
-       "prod": 4233.05,
+       "prod": 5509.77,
        "use": 0,
-       "exp": 3825.05
+       "exp": 5141.77
       }
      }
     }
@@ -554,32 +559,32 @@
     },
     "40": {
      "prod": {
-      "ore": 1424913.77,
-      "metal": 752063.32,
-      "alloy": 365278.84,
-      "comp": 7175,
-      "ice": 19055.93,
+      "ore": 1437405.29,
+      "metal": 761543.9,
+      "alloy": 366268.98,
+      "comp": 22292.12,
+      "ice": 22524.63,
       "gas": 38925.87,
-      "fuel": 38035.38,
+      "fuel": 37808.38,
       "rare": 3078,
       "cell": 2845.2,
-      "fusion": 775.66,
-      "hull": 6.5,
+      "fusion": 818.99,
+      "hull": 22.63,
       "cryo": 0,
       "exotic": 0,
-      "sat": 630.2
+      "sat": 624.6
      },
      "use": {
-      "ore": 1138397.41,
-      "metal": 441950.7,
-      "alloy": 7737.39,
-      "comp": 1273.4,
-      "ice": 15900.65,
-      "gas": 25345,
+      "ore": 1150888.93,
+      "metal": 456810.89,
+      "alloy": 21769.67,
+      "comp": 1283.7,
+      "ice": 15554.06,
+      "gas": 25485,
       "fuel": 0,
       "rare": 1902.47,
-      "cell": 1890.6,
-      "fusion": 0,
+      "cell": 1873.8,
+      "fusion": 107.7,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
@@ -587,12 +592,12 @@
      },
      "spent": {
       "ore": 3768,
-      "metal": 40703,
-      "alloy": 14067,
-      "comp": 3601,
+      "metal": 40361,
+      "alloy": 14630,
+      "comp": 3746,
       "ice": 0,
       "gas": 0,
-      "fuel": 1429,
+      "fuel": 1459,
       "rare": 0,
       "cell": 68,
       "fusion": 51,
@@ -619,19 +624,19 @@
      },
      "exp": {
       "ore": 278699.36,
-      "metal": 256600.21,
-      "alloy": 337302.45,
-      "comp": 0,
-      "ice": 1395.29,
-      "gas": 12786.87,
-      "fuel": 23785,
+      "metal": 252087.62,
+      "alloy": 324241.31,
+      "comp": 15004.12,
+      "ice": 5210.57,
+      "gas": 12646.87,
+      "fuel": 23311,
       "rare": 0,
-      "cell": 360.6,
+      "cell": 377.4,
       "fusion": 0,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
-      "sat": 469.2
+      "sat": 463.6
      },
      "routeFuel": {
       "ore": 0,
@@ -640,7 +645,7 @@
       "comp": 0,
       "ice": 0,
       "gas": 0,
-      "fuel": 8988,
+      "fuel": 8958,
       "rare": 0,
       "cell": 0,
       "fusion": 0,
@@ -660,7 +665,7 @@
       "rare": 40,
       "cell": 70,
       "fusion": 50,
-      "hull": 0,
+      "hull": 6,
       "cryo": 0,
       "exotic": 0,
       "sat": 65
@@ -668,86 +673,86 @@
     }
    },
    "fullPct": {
-    "lua.ore": 91,
-    "lua.metal": 82,
-    "lua.alloy": 86,
-    "lua.ice": 51,
-    "lua.fuel": 44,
-    "marte.ore": 86,
-    "marte.metal": 28,
-    "marte.alloy": 87,
-    "marte.comp": 73,
-    "cinturao.ore": 98,
-    "cinturao.metal": 82,
+    "lua.ore": 89,
+    "lua.metal": 80,
+    "lua.alloy": 87,
+    "lua.ice": 53,
+    "lua.fuel": 49,
+    "marte.ore": 93,
+    "marte.metal": 20,
+    "marte.alloy": 88,
+    "marte.comp": 77,
+    "cinturao.ore": 58,
+    "cinturao.metal": 54,
     "cinturao.alloy": 94,
-    "cinturao.rare": 89,
-    "mercurio.ore": 51,
-    "mercurio.metal": 58,
-    "mercurio.alloy": 81,
-    "mercurio.comp": 3,
+    "cinturao.rare": 88,
+    "mercurio.ore": 63,
+    "mercurio.metal": 56,
+    "mercurio.alloy": 80,
+    "mercurio.comp": 4,
     "mercurio.rare": 1,
-    "mercurio.cell": 77,
-    "mercurio.sat": 75,
-    "venus.gas": 76,
-    "venus.fuel": 90,
+    "mercurio.cell": 25,
+    "mercurio.sat": 76,
+    "venus.gas": 68,
+    "venus.fuel": 86,
     "jupiter.gas": 0,
-    "jupiter.fuel": 46,
-    "jupiter.fusion": 0,
-    "saturno.alloy": 52,
-    "saturno.comp": 49,
-    "saturno.ice": 99,
+    "jupiter.fuel": 38,
+    "jupiter.fusion": 47,
+    "saturno.alloy": 53,
+    "saturno.comp": 52,
+    "saturno.ice": 98,
     "saturno.fuel": 94,
-    "saturno.hull": 65,
+    "saturno.hull": 71,
     "urano.ice": 99,
     "urano.fuel": 94,
-    "urano.rare": 13,
-    "urano.cryo": 77,
-    "netuno.ice": 95,
+    "urano.rare": 12,
+    "urano.cryo": 76,
+    "netuno.ice": 96,
     "netuno.fuel": 0,
     "netuno.fusion": 0,
     "netuno.cryo": 0,
-    "netuno.exotic": 6
+    "netuno.exotic": 39
    },
    "emptyPct": {
     "lua.ore": 0,
     "lua.metal": 1,
     "lua.alloy": 5,
     "lua.ice": 5,
-    "lua.fuel": 4,
-    "marte.ore": 3,
-    "marte.metal": 5,
+    "lua.fuel": 5,
+    "marte.ore": 1,
+    "marte.metal": 37,
     "marte.alloy": 2,
     "marte.comp": 0,
-    "cinturao.ore": 0,
-    "cinturao.metal": 0,
+    "cinturao.ore": 40,
+    "cinturao.metal": 34,
     "cinturao.alloy": 0,
     "cinturao.rare": 0,
-    "mercurio.ore": 44,
-    "mercurio.metal": 37,
-    "mercurio.alloy": 13,
-    "mercurio.comp": 10,
-    "mercurio.rare": 0,
-    "mercurio.cell": 2,
-    "mercurio.sat": 8,
+    "mercurio.ore": 32,
+    "mercurio.metal": 40,
+    "mercurio.alloy": 14,
+    "mercurio.comp": 8,
+    "mercurio.rare": 13,
+    "mercurio.cell": 17,
+    "mercurio.sat": 9,
     "venus.gas": 0,
     "venus.fuel": 0,
-    "jupiter.gas": 50,
-    "jupiter.fuel": 4,
-    "jupiter.fusion": 14,
-    "saturno.alloy": 25,
-    "saturno.comp": 6,
+    "jupiter.gas": 29,
+    "jupiter.fuel": 1,
+    "jupiter.fusion": 3,
+    "saturno.alloy": 21,
+    "saturno.comp": 5,
     "saturno.ice": 0,
     "saturno.fuel": 0,
-    "saturno.hull": 11,
+    "saturno.hull": 6,
     "urano.ice": 0,
     "urano.fuel": 0,
     "urano.rare": 8,
     "urano.cryo": 0,
-    "netuno.ice": 1,
+    "netuno.ice": 0,
     "netuno.fuel": 100,
-    "netuno.fusion": 46,
-    "netuno.cryo": 6,
-    "netuno.exotic": 65
+    "netuno.fusion": 12,
+    "netuno.cryo": 16,
+    "netuno.exotic": 36
    },
    "why": {
     "lua.extrator": {
@@ -759,8 +764,8 @@
      "full:metal": 9
     },
     "lua.esc_gelo": {
-     "operando": 69,
-     "full:ice": 31
+     "operando": 67,
+     "full:ice": 33
     },
     "lua.eletrolisador": {
      "operando": 51,
@@ -769,7 +774,7 @@
     "lua.forja": {
      "operando": 90,
      "hold:metal": 0,
-     "full:alloy": 9
+     "full:alloy": 10
     },
     "lua.observatorio": {
      "operando": 100
@@ -785,25 +790,25 @@
      "hold:metal": 2
     },
     "marte.fabrica": {
-     "operando": 26,
+     "operando": 79,
      "hold:metal": 2,
      "hold:alloy": 1,
-     "full:comp": 72
+     "full:comp": 18
     },
     "cinturao.min_ast": {
      "operando": 100
     },
     "cinturao.refinaria": {
-     "operando": 59,
-     "full:metal": 41
+     "operando": 55,
+     "full:metal": 45
     },
     "cinturao.garimpo": {
      "operando": 10,
      "full:rare": 90
     },
     "cinturao.forja": {
-     "operando": 57,
-     "full:alloy": 43,
+     "operando": 53,
+     "full:alloy": 47,
      "hold:metal": 0
     },
     "mercurio.extrator": {
@@ -815,17 +820,19 @@
      "full:metal": 1
     },
     "mercurio.fotovoltaica": {
-     "operando": 98,
-     "full:cell": 2
+     "operando": 85,
+     "full:cell": 2,
+     "no:rare": 13
     },
     "mercurio.forja": {
      "operando": 99,
      "full:alloy": 1
     },
     "mercurio.fab_sat": {
-     "no:comp": 10,
-     "operando": 87,
-     "full:sat": 3
+     "no:comp": 8,
+     "operando": 77,
+     "full:sat": 4,
+     "no:cell": 11
     },
     "venus.plataforma": {
      "operando": 100
@@ -834,27 +841,28 @@
      "operando": 100
     },
     "jupiter.ref_fusao": {
-     "operando": 49,
-     "no:gas": 51
+     "operando": 25,
+     "no:gas": 30,
+     "full:fusion": 45
     },
     "jupiter.quimica": {
-     "operando": 6,
-     "no:gas": 31,
-     "full:fuel": 63
+     "operando": 14,
+     "no:gas": 28,
+     "full:fuel": 58
     },
     "saturno.esc_gelo": {
      "operando": 100
     },
     "saturno.eletrolisador": {
-     "operando": 6,
-     "full:fuel": 94
+     "operando": 5,
+     "full:fuel": 95
     },
     "saturno.estaleiro": {
      "operando": 3,
-     "no:alloy": 24,
-     "hold:alloy": 3,
-     "no:comp": 5,
-     "full:hull": 65
+     "no:alloy": 21,
+     "hold:comp": 3,
+     "no:comp": 1,
+     "full:hull": 71
     },
     "urano.esc_gelo": {
      "operando": 100
@@ -862,24 +870,27 @@
     "urano.criogenico": {
      "operando": 16,
      "no:rare": 8,
-     "full:cryo": 76
+     "full:cryo": 75,
+     "hold:rare": 1
     },
     "urano.eletrolisador": {
-     "operando": 83,
-     "full:fuel": 17
+     "operando": 75,
+     "full:fuel": 25
     },
     "netuno.esc_gelo": {
      "operando": 5,
-     "full:ice": 95
+     "full:ice": 83,
+     "energy": 12
     },
     "netuno.obs_profundo": {
-     "operando": 94,
-     "no:cryo": 6
+     "operando": 83,
+     "no:cryo": 15,
+     "energy": 2
     },
     "netuno.lab_anomalia": {
-     "operando": 19,
-     "no:fusion": 73,
-     "full:exotic": 8
+     "operando": 72,
+     "full:exotic": 17,
+     "no:cryo": 11
     }
    },
    "energy": {
@@ -922,47 +933,47 @@
      [
       40,
       343,
-      207
+      187
      ],
      [
       45,
       378,
-      204
+      206
      ],
      [
       50,
       413,
-      218
+      220
      ],
      [
       55,
-      539,
+      628,
       220
      ],
      [
       60,
-      539,
+      628,
       220
      ],
      [
       65,
-      539,
+      628,
       220
      ],
      [
       70,
-      539,
+      628,
       220
      ],
      [
       75,
-      539,
-      233
+      628,
+      222
      ],
      [
       80,
-      539,
-      233
+      628,
+      235
      ]
     ],
     "marte": [
@@ -989,57 +1000,57 @@
      [
       30,
       326,
-      187
+      183
      ],
      [
       35,
       326,
-      217
+      229
      ],
      [
       40,
       356,
-      224
+      214
      ],
      [
       45,
       393,
-      220
+      243
      ],
      [
       50,
       430,
-      227
+      252
      ],
      [
       55,
-      560,
-      228
+      654,
+      252
      ],
      [
       60,
-      560,
-      235
+      654,
+      252
      ],
      [
       65,
-      560,
-      235
+      654,
+      252
      ],
      [
       70,
-      560,
-      235
+      654,
+      252
      ],
      [
       75,
-      560,
-      255
+      654,
+      260
      ],
      [
       80,
-      560,
-      259
+      654,
+      283
      ]
     ],
     "cinturao": [
@@ -1066,7 +1077,7 @@
      [
       40,
       183,
-      84
+      76
      ],
      [
       45,
@@ -1076,37 +1087,37 @@
      [
       50,
       221,
-      213
+      87
      ],
      [
       55,
-      345,
-      235
+      335,
+      128
      ],
      [
       60,
-      345,
-      235
+      335,
+      128
      ],
      [
       65,
-      345,
-      235
+      335,
+      128
      ],
      [
       70,
-      345,
-      235
+      335,
+      128
      ],
      [
       75,
-      345,
-      250
+      335,
+      131
      ],
      [
       80,
-      345,
-      250
+      335,
+      140
      ]
     ],
     "mercurio": [
@@ -1133,7 +1144,7 @@
      [
       40,
       651,
-      222
+      201
      ],
      [
       45,
@@ -1143,37 +1154,37 @@
      [
       50,
       786,
-      256
+      258
      ],
      [
       55,
-      1023,
-      274
+      1194,
+      309
      ],
      [
       60,
-      1023,
-      274
+      1194,
+      309
      ],
      [
       65,
-      1023,
-      274
+      1194,
+      319
      ],
      [
       70,
-      1023,
-      283
+      1194,
+      319
      ],
      [
       75,
-      1023,
-      292
+      1194,
+      321
      ],
      [
       80,
-      1023,
-      292
+      1194,
+      330
      ]
     ],
     "venus": [
@@ -1195,150 +1206,150 @@
      [
       40,
       158,
-      56
+      51
      ],
      [
       45,
       174,
-      62
+      51
      ],
      [
       50,
       190,
-      62
+      51
      ],
      [
       55,
-      248,
-      62
+      289,
+      51
      ],
      [
       60,
-      248,
-      62
+      289,
+      51
      ],
      [
       65,
-      248,
-      62
+      289,
+      51
      ],
      [
       70,
-      248,
-      62
+      289,
+      51
      ],
      [
       75,
-      248,
-      62
+      289,
+      51
      ],
      [
       80,
-      248,
-      62
+      289,
+      51
      ]
     ],
     "jupiter": [
      [
       30,
-      139,
-      34
+      228,
+      25
      ],
      [
       35,
-      561,
-      62
+      1171,
+      72
      ],
      [
       40,
-      1223,
-      129
+      1281,
+      113
      ],
      [
       45,
-      1349,
-      122
+      1413,
+      113
      ],
      [
       50,
-      1476,
-      122
+      1546,
+      113
      ],
      [
       55,
-      1922,
-      122
+      2030,
+      134
      ],
      [
       60,
-      1922,
-      122
+      2030,
+      134
      ],
      [
       65,
-      1922,
-      122
+      2030,
+      134
      ],
      [
       70,
-      1922,
-      122
+      2030,
+      134
      ],
      [
       75,
-      1922,
-      143
+      2030,
+      134
      ],
      [
       80,
-      1922,
-      143
+      2030,
+      134
      ]
     ],
     "saturno": [
      [
       40,
-      152,
-      77
+      232,
+      70
      ],
      [
       45,
-      339,
+      760,
       99
      ],
      [
       50,
-      922,
+      1383,
       106
      ],
      [
       55,
-      1201,
+      1802,
       106
      ],
      [
       60,
-      1201,
+      1802,
       106
      ],
      [
       65,
-      1201,
+      1802,
       106
      ],
      [
       70,
-      1201,
+      1802,
       106
      ],
      [
       75,
-      1201,
-      114
+      1802,
+      106
      ],
      [
       80,
-      1201,
+      1802,
       114
      ]
     ],
@@ -1351,7 +1362,7 @@
      [
       55,
       479,
-      68
+      60
      ],
      [
       60,
@@ -1388,33 +1399,33 @@
      [
       65,
       479,
-      63
+      106
      ],
      [
       70,
-      479,
+      718,
       106
      ],
      [
       75,
-      479,
-      106
+      718,
+      148
      ],
      [
       80,
-      479,
+      1077,
       191
      ]
     ]
    },
    "data": {
-    "totalValue": 54435304.17
+    "totalValue": 52627459.19
    }
   },
   {
    "universe": "abundante",
    "name": "Universo Abundante",
-   "collapseMin": 72,
+   "collapseMin": 75,
    "regionsAtMin": {
     "lua": 0,
     "marte": 8,
@@ -1422,8 +1433,8 @@
     "mercurio": 15,
     "venus": 24,
     "jupiter": 30,
-    "saturno": 38,
-    "urano": 47,
+    "saturno": 40,
+    "urano": 48,
     "netuno": 55
    },
    "resources": {
@@ -1431,34 +1442,34 @@
      "name": "Minério",
      "value": 1,
      "start": 0,
-     "produced": 10539762.87,
+     "produced": 11386077.51,
      "gained": 30,
-     "usedAsInput": 8355363.87,
+     "usedAsInput": 9205135.88,
      "spent": 9727,
      "routeFuel": 0,
      "project": 0,
-     "exported": 2166154,
-     "end": 8548,
+     "exported": 2162425.63,
+     "end": 8819,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 1804455.57,
-       "use": 1802217.57,
+       "prod": 1962650.51,
+       "use": 1960412.51,
        "exp": 0
       },
       "marte": {
-       "prod": 3499278.98,
-       "use": 2338365.81,
-       "exp": 1156705.17
+       "prod": 3756287.88,
+       "use": 2535088.24,
+       "exp": 1216720.63
       },
       "cinturao": {
-       "prod": 3411125.43,
-       "use": 2392090.59,
-       "exp": 1009448.84
+       "prod": 3668934.41,
+       "use": 2713643.42,
+       "exp": 945705
       },
       "mercurio": {
-       "prod": 1824902.89,
-       "use": 1822689.89,
+       "prod": 1998204.7,
+       "use": 1995991.7,
        "exp": 0
       }
      }
@@ -1467,35 +1478,35 @@
      "name": "Metal",
      "value": 3,
      "start": 25,
-     "produced": 5218721.58,
+     "produced": 5737824.56,
      "gained": 1155,
-     "usedAsInput": 3572607.63,
-     "spent": 89996,
+     "usedAsInput": 3975311.29,
+     "spent": 93391,
      "routeFuel": 0,
      "project": 127200,
-     "exported": 1422303.95,
-     "end": 7769,
+     "exported": 1533982.18,
+     "end": 9095.09,
      "reconcile": 25,
      "byRegion": {
       "lua": {
-       "prod": 1849520.65,
-       "use": 898590.51,
-       "exp": 908666.14
+       "prod": 2012461.44,
+       "use": 977687.99,
+       "exp": 987410.46
       },
       "marte": {
-       "prod": 1200814.95,
-       "use": 1156310.97,
-       "exp": 42684.98
+       "prod": 1302127,
+       "use": 1269043.82,
+       "exp": 32978.1
       },
       "cinturao": {
-       "prod": 1231750.59,
-       "use": 888532.92,
-       "exp": 298012.68
+       "prod": 1397350.3,
+       "use": 1045843.5,
+       "exp": 304965.8
       },
       "mercurio": {
-       "prod": 936635.38,
-       "use": 629173.23,
-       "exp": 172940.15
+       "prod": 1025885.82,
+       "use": 682735.99,
+       "exp": 208627.83
       }
      }
     },
@@ -1503,39 +1514,39 @@
      "name": "Ligas",
      "value": 10,
      "start": 0,
-     "produced": 2771504.85,
+     "produced": 3077672.51,
      "gained": 815,
-     "usedAsInput": 217985.34,
-     "spent": 29718,
+     "usedAsInput": 237890.02,
+     "spent": 31506,
      "routeFuel": 0,
      "project": 38930,
-     "exported": 2479853.6,
-     "end": 5832.91,
+     "exported": 2764057.74,
+     "end": 6103.75,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 782558.06,
+       "prod": 853744.54,
        "use": 0,
-       "exp": 768634.06
+       "exp": 838018.54
       },
       "marte": {
-       "prod": 1102403.56,
-       "use": 216335.25,
-       "exp": 875774.31
+       "prod": 1213807.7,
+       "use": 236089.77,
+       "exp": 967287.93
       },
       "cinturao": {
-       "prod": 529737.67,
+       "prod": 622523.93,
        "use": 0,
-       "exp": 518941.67
+       "exp": 611456.93
       },
       "mercurio": {
-       "prod": 356805.56,
+       "prod": 387596.34,
        "use": 0,
-       "exp": 316503.56
+       "exp": 347294.34
       },
       "saturno": {
        "prod": 0,
-       "use": 1650.09,
+       "use": 1800.25,
        "exp": 0
       }
      }
@@ -1544,29 +1555,29 @@
      "name": "Componentes",
      "value": 30,
      "start": 0,
-     "produced": 247407.13,
+     "produced": 270287.94,
      "gained": 260,
-     "usedAsInput": 8066.25,
-     "spent": 7834,
+     "usedAsInput": 8969.53,
+     "spent": 8318,
      "routeFuel": 0,
      "project": 3230,
-     "exported": 223871.13,
-     "end": 4665.75,
+     "exported": 245007.94,
+     "end": 5022.47,
      "reconcile": 0,
      "byRegion": {
       "marte": {
-       "prod": 247407.13,
+       "prod": 270287.94,
        "use": 0,
-       "exp": 223871.13
+       "exp": 245007.94
       },
       "mercurio": {
        "prod": 0,
-       "use": 7241.2,
+       "use": 8069.4,
        "exp": 0
       },
       "saturno": {
        "prod": 0,
-       "use": 825.05,
+       "use": 900.13,
        "exp": 0
       }
      }
@@ -1575,30 +1586,30 @@
      "name": "Gelo",
      "value": 1,
      "start": 0,
-     "produced": 423585.6,
+     "produced": 476693.05,
      "gained": 0,
-     "usedAsInput": 112128.14,
+     "usedAsInput": 102752.47,
      "spent": 0,
      "routeFuel": 0,
      "project": 0,
-     "exported": 308307.46,
+     "exported": 370790.58,
      "end": 3150,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 77723.95,
-       "use": 76193.95,
+       "prod": 81388.73,
+       "use": 79858.73,
        "exp": 0
       },
       "saturno": {
-       "prod": 244420.17,
-       "use": 2163.66,
-       "exp": 241806.51
+       "prod": 290428.03,
+       "use": 2131.62,
+       "exp": 287846.42
       },
       "urano": {
-       "prod": 100721.48,
-       "use": 33770.53,
-       "exp": 66500.95
+       "prod": 104156.28,
+       "use": 20762.12,
+       "exp": 82944.17
       },
       "netuno": {
        "prod": 720,
@@ -1611,24 +1622,24 @@
      "name": "Gases",
      "value": 2,
      "start": 0,
-     "produced": 230450.7,
+     "produced": 137997.9,
      "gained": 150,
-     "usedAsInput": 150268.33,
+     "usedAsInput": 103632.67,
      "spent": 0,
      "routeFuel": 0,
      "project": 0,
-     "exported": 78473.37,
-     "end": 1859,
+     "exported": 33509.57,
+     "end": 1005.67,
      "reconcile": 0,
      "byRegion": {
       "venus": {
-       "prod": 230450.7,
-       "use": 139893.33,
-       "exp": 78473.37
+       "prod": 137997.9,
+       "use": 83793.33,
+       "exp": 33509.57
       },
       "jupiter": {
        "prod": 0,
-       "use": 10375,
+       "use": 19839.33,
        "exp": 0
       }
      }
@@ -1637,40 +1648,40 @@
      "name": "Combustível",
      "value": 4,
      "start": 0,
-     "produced": 269279.39,
+     "produced": 192236.83,
      "gained": 200,
      "usedAsInput": 0,
-     "spent": 4163,
-     "routeFuel": 38070,
+     "spent": 4390,
+     "routeFuel": 51116,
      "project": 26500,
-     "exported": 192479.39,
-     "end": 8267,
+     "exported": 102774.44,
+     "end": 7656.39,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 66172,
+       "prod": 69282,
        "use": 0,
        "exp": 0
       },
       "venus": {
-       "prod": 172429.62,
+       "prod": 103090.02,
        "use": 0,
-       "exp": 167065.62
+       "exp": 89343.02
       },
       "jupiter": {
-       "prod": 1551,
+       "prod": 2399.39,
        "use": 0,
        "exp": 0
       },
       "saturno": {
-       "prod": 1900,
+       "prod": 1917,
        "use": 0,
        "exp": 0
       },
       "urano": {
-       "prod": 27226.77,
+       "prod": 15548.42,
        "use": 0,
-       "exp": 25413.77
+       "exp": 13431.42
       }
      }
     },
@@ -1678,29 +1689,29 @@
      "name": "Metais Raros",
      "value": 20,
      "start": 0,
-     "produced": 12572,
+     "produced": 13335,
      "gained": 50,
-     "usedAsInput": 8261.7,
+     "usedAsInput": 9057.37,
      "spent": 52,
      "routeFuel": 0,
      "project": 40,
      "exported": 0,
-     "end": 4268.3,
+     "end": 4235.63,
      "reconcile": 0,
      "byRegion": {
       "cinturao": {
-       "prod": 12572,
+       "prod": 13335,
        "use": 0,
        "exp": 0
       },
       "mercurio": {
        "prod": 0,
-       "use": 7668.28,
+       "use": 8472.36,
        "exp": 0
       },
       "urano": {
        "prod": 0,
-       "use": 593.42,
+       "use": 585.01,
        "exp": 0
       }
      }
@@ -1709,9 +1720,9 @@
      "name": "Células Solares",
      "value": 60,
      "start": 0,
-     "produced": 11805.8,
+     "produced": 13048.1,
      "gained": 0,
-     "usedAsInput": 10861.8,
+     "usedAsInput": 12104.1,
      "spent": 199,
      "routeFuel": 0,
      "project": 70,
@@ -1720,8 +1731,8 @@
      "reconcile": 0,
      "byRegion": {
       "mercurio": {
-       "prod": 11805.8,
-       "use": 10861.8,
+       "prod": 13048.1,
+       "use": 12104.1,
        "exp": 0
       }
      }
@@ -1730,24 +1741,34 @@
      "name": "Comb. de Fusão",
      "value": 80,
      "start": 0,
-     "produced": 2582,
-     "gained": 70,
-     "usedAsInput": 306.8,
+     "produced": 5401.34,
+     "gained": 140,
+     "usedAsInput": 1404.94,
      "spent": 114,
      "routeFuel": 0,
      "project": 160,
      "exported": 0,
-     "end": 2071.2,
+     "end": 3862.4,
      "reconcile": 0,
      "byRegion": {
       "jupiter": {
-       "prod": 2582,
-       "use": 0,
+       "prod": 5401.34,
+       "use": 388.15,
+       "exp": 0
+      },
+      "saturno": {
+       "prod": 0,
+       "use": 464.3,
+       "exp": 0
+      },
+      "urano": {
+       "prod": 0,
+       "use": 153.7,
        "exp": 0
       },
       "netuno": {
        "prod": 0,
-       "use": 306.8,
+       "use": 398.8,
        "exp": 0
       }
      }
@@ -1756,18 +1777,18 @@
      "name": "Módulos Estruturais",
      "value": 200,
      "start": 0,
-     "produced": 634,
+     "produced": 692,
      "gained": 2,
      "usedAsInput": 0,
      "spent": 20,
      "routeFuel": 0,
      "project": 195,
      "exported": 0,
-     "end": 421,
+     "end": 479,
      "reconcile": 0,
      "byRegion": {
       "saturno": {
-       "prod": 634,
+       "prod": 692,
        "use": 0,
        "exp": 0
       }
@@ -1777,24 +1798,24 @@
      "name": "Supercondutores",
      "value": 150,
      "start": 0,
-     "produced": 2251,
+     "produced": 2192,
      "gained": 10,
-     "usedAsInput": 599.63,
-     "spent": 17,
+     "usedAsInput": 556.04,
+     "spent": 16,
      "routeFuel": 0,
      "project": 200,
      "exported": 0,
-     "end": 1444.37,
+     "end": 1429.96,
      "reconcile": 0,
      "byRegion": {
       "urano": {
-       "prod": 2251,
+       "prod": 2192,
        "use": 0,
        "exp": 0
       },
       "netuno": {
        "prod": 0,
-       "use": 599.63,
+       "use": 556.04,
        "exp": 0
       }
      }
@@ -1824,20 +1845,20 @@
      "name": "Satélites Dyson",
      "value": 400,
      "start": 0,
-     "produced": 3724.21,
+     "produced": 4150.73,
      "gained": 0,
      "usedAsInput": 0,
      "spent": 0,
      "routeFuel": 0,
      "project": 260,
-     "exported": 3275.21,
+     "exported": 3701.73,
      "end": 189,
      "reconcile": 0,
      "byRegion": {
       "mercurio": {
-       "prod": 3724.21,
+       "prod": 4150.73,
        "use": 0,
-       "exp": 3275.21
+       "exp": 3701.73
       }
      }
     }
@@ -1959,32 +1980,32 @@
     },
     "40": {
      "prod": {
-      "ore": 2804215.45,
-      "metal": 1193683.36,
-      "alloy": 516298.02,
-      "comp": 53830.11,
-      "ice": 18810.74,
-      "gas": 40007.82,
-      "fuel": 41153.39,
-      "rare": 3310,
-      "cell": 3094.8,
-      "fusion": 780.47,
+      "ore": 2815307.5,
+      "metal": 1218181.8,
+      "alloy": 543161.67,
+      "comp": 54445.83,
+      "ice": 18284.01,
+      "gas": 33580.62,
+      "fuel": 38060.65,
+      "rare": 3424,
+      "cell": 2790,
+      "fusion": 588.08,
       "hull": 6.7,
       "cryo": 0,
       "exotic": 0,
-      "sat": 803.13
+      "sat": 698.48
      },
      "use": {
-      "ore": 1851452.84,
-      "metal": 712135.79,
-      "alloy": 55276.03,
-      "comp": 1582.2,
-      "ice": 15372.87,
-      "gas": 27273.33,
+      "ore": 1892801.82,
+      "metal": 754744.31,
+      "alloy": 56053.63,
+      "comp": 1379,
+      "ice": 16903.03,
+      "gas": 23575.73,
       "fuel": 0,
-      "rare": 2030.09,
-      "cell": 2353.8,
-      "fusion": 0,
+      "rare": 1832.81,
+      "cell": 2049,
+      "fusion": 49.06,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
@@ -1992,12 +2013,12 @@
      },
      "spent": {
       "ore": 5467,
-      "metal": 47941,
-      "alloy": 15613,
-      "comp": 3927,
+      "metal": 51878,
+      "alloy": 17111,
+      "comp": 4282,
       "ice": 0,
       "gas": 0,
-      "fuel": 1438,
+      "fuel": 1777,
       "rare": 0,
       "cell": 143,
       "fusion": 51,
@@ -2023,20 +2044,20 @@
       "sat": 0
      },
      "exp": {
-      "ore": 943485.6,
-      "metal": 419544.58,
-      "alloy": 439273.99,
-      "comp": 45643.11,
-      "ice": 1677.87,
-      "gas": 12004.49,
-      "fuel": 27474.46,
+      "ore": 912988.68,
+      "metal": 398978.49,
+      "alloy": 464358.04,
+      "comp": 46162.83,
+      "ice": 0,
+      "gas": 9257.29,
+      "fuel": 22350.06,
       "rare": 0,
       "cell": 0,
       "fusion": 0,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
-      "sat": 606.13
+      "sat": 501.48
      },
      "routeFuel": {
       "ore": 0,
@@ -2045,7 +2066,7 @@
       "comp": 0,
       "ice": 0,
       "gas": 0,
-      "fuel": 8339,
+      "fuel": 9677,
       "rare": 0,
       "cell": 0,
       "fusion": 0,
@@ -2075,50 +2096,50 @@
    "fullPct": {
     "lua.ore": 97,
     "lua.metal": 84,
-    "lua.alloy": 87,
-    "lua.ice": 76,
-    "lua.fuel": 31,
+    "lua.alloy": 88,
+    "lua.ice": 74,
+    "lua.fuel": 34,
     "marte.ore": 98,
-    "marte.metal": 24,
+    "marte.metal": 16,
     "marte.alloy": 89,
     "marte.comp": 82,
-    "cinturao.ore": 97,
-    "cinturao.metal": 78,
-    "cinturao.alloy": 92,
-    "cinturao.rare": 90,
+    "cinturao.ore": 95,
+    "cinturao.metal": 76,
+    "cinturao.alloy": 93,
+    "cinturao.rare": 92,
     "mercurio.ore": 63,
-    "mercurio.metal": 60,
+    "mercurio.metal": 62,
     "mercurio.alloy": 87,
-    "mercurio.comp": 6,
-    "mercurio.rare": 13,
+    "mercurio.comp": 8,
+    "mercurio.rare": 14,
     "mercurio.cell": 88,
-    "mercurio.sat": 67,
-    "venus.gas": 79,
-    "venus.fuel": 87,
-    "jupiter.gas": 30,
-    "jupiter.fuel": 58,
-    "jupiter.fusion": 58,
-    "saturno.alloy": 39,
-    "saturno.comp": 38,
+    "mercurio.sat": 71,
+    "venus.gas": 60,
+    "venus.fuel": 80,
+    "jupiter.gas": 0,
+    "jupiter.fuel": 6,
+    "jupiter.fusion": 0,
+    "saturno.alloy": 50,
+    "saturno.comp": 47,
     "saturno.ice": 98,
-    "saturno.fuel": 90,
-    "saturno.hull": 53,
-    "urano.ice": 98,
-    "urano.fuel": 89,
-    "urano.rare": 4,
-    "urano.cryo": 68,
-    "netuno.ice": 93,
+    "saturno.fuel": 93,
+    "saturno.hull": 65,
+    "urano.ice": 99,
+    "urano.fuel": 88,
+    "urano.rare": 16,
+    "urano.cryo": 73,
+    "netuno.ice": 95,
     "netuno.fuel": 0,
-    "netuno.fusion": 9,
-    "netuno.cryo": 0,
-    "netuno.exotic": 35
+    "netuno.fusion": 0,
+    "netuno.cryo": 1,
+    "netuno.exotic": 36
    },
    "emptyPct": {
     "lua.ore": 0,
     "lua.metal": 1,
     "lua.alloy": 5,
-    "lua.ice": 7,
-    "lua.fuel": 8,
+    "lua.ice": 9,
+    "lua.fuel": 6,
     "marte.ore": 0,
     "marte.metal": 26,
     "marte.alloy": 0,
@@ -2128,31 +2149,31 @@
     "cinturao.alloy": 0,
     "cinturao.rare": 0,
     "mercurio.ore": 27,
-    "mercurio.metal": 36,
-    "mercurio.alloy": 9,
-    "mercurio.comp": 20,
+    "mercurio.metal": 33,
+    "mercurio.alloy": 8,
+    "mercurio.comp": 17,
     "mercurio.rare": 0,
     "mercurio.cell": 1,
-    "mercurio.sat": 18,
+    "mercurio.sat": 17,
     "venus.gas": 0,
     "venus.fuel": 0,
-    "jupiter.gas": 18,
-    "jupiter.fuel": 2,
-    "jupiter.fusion": 2,
-    "saturno.alloy": 36,
+    "jupiter.gas": 66,
+    "jupiter.fuel": 0,
+    "jupiter.fusion": 30,
+    "saturno.alloy": 21,
     "saturno.comp": 11,
     "saturno.ice": 0,
     "saturno.fuel": 0,
-    "saturno.hull": 9,
+    "saturno.hull": 6,
     "urano.ice": 0,
-    "urano.fuel": 1,
-    "urano.rare": 6,
-    "urano.cryo": 1,
+    "urano.fuel": 0,
+    "urano.rare": 8,
+    "urano.cryo": 0,
     "netuno.ice": 0,
     "netuno.fuel": 100,
-    "netuno.fusion": 25,
-    "netuno.cryo": 10,
-    "netuno.exotic": 39
+    "netuno.fusion": 22,
+    "netuno.cryo": 7,
+    "netuno.exotic": 45
    },
    "why": {
     "lua.extrator": {
@@ -2160,20 +2181,20 @@
      "full:ore": 10
     },
     "lua.refinaria": {
-     "operando": 91,
-     "full:metal": 9
+     "operando": 92,
+     "full:metal": 8
     },
     "lua.esc_gelo": {
-     "operando": 70,
-     "full:ice": 30
+     "operando": 65,
+     "full:ice": 35
     },
     "lua.eletrolisador": {
-     "operando": 68,
-     "full:fuel": 32
+     "operando": 62,
+     "full:fuel": 38
     },
     "lua.forja": {
      "hold:metal": 0,
-     "operando": 90,
+     "operando": 91,
      "full:alloy": 9
     },
     "lua.observatorio": {
@@ -2186,29 +2207,29 @@
      "operando": 100
     },
     "marte.forja": {
-     "operando": 98,
-     "hold:metal": 2
+     "operando": 99,
+     "hold:metal": 1
     },
     "marte.fabrica": {
      "operando": 98,
      "hold:metal": 2,
-     "hold:alloy": 1
+     "hold:alloy": 0
     },
     "cinturao.min_ast": {
      "operando": 100
     },
     "cinturao.refinaria": {
-     "operando": 80,
-     "full:metal": 20
+     "operando": 81,
+     "full:metal": 19
     },
     "cinturao.garimpo": {
-     "operando": 8,
-     "full:rare": 92
+     "operando": 10,
+     "full:rare": 90
     },
     "cinturao.forja": {
-     "operando": 79,
+     "operando": 80,
      "hold:metal": 0,
-     "full:alloy": 21
+     "full:alloy": 20
     },
     "mercurio.extrator": {
      "operando": 98,
@@ -2219,17 +2240,17 @@
      "full:metal": 2
     },
     "mercurio.fotovoltaica": {
-     "operando": 77,
-     "full:cell": 23
+     "operando": 78,
+     "full:cell": 22
     },
     "mercurio.forja": {
      "operando": 98,
      "full:alloy": 2
     },
     "mercurio.fab_sat": {
-     "no:comp": 21,
-     "operando": 72,
-     "full:sat": 7
+     "no:comp": 18,
+     "operando": 73,
+     "full:sat": 9
     },
     "venus.plataforma": {
      "operando": 100
@@ -2238,55 +2259,55 @@
      "operando": 100
     },
     "jupiter.ref_fusao": {
-     "operando": 26,
-     "no:gas": 17,
-     "full:fusion": 57
+     "operando": 33,
+     "no:gas": 67
     },
     "jupiter.quimica": {
-     "no:gas": 17,
-     "operando": 11,
-     "full:fuel": 73
+     "operando": 28,
+     "no:gas": 67,
+     "full:fuel": 6
     },
     "saturno.esc_gelo": {
      "operando": 100
     },
     "saturno.eletrolisador": {
-     "operando": 9,
-     "full:fuel": 91
+     "operando": 7,
+     "full:fuel": 93
     },
     "saturno.estaleiro": {
-     "no:alloy": 37,
      "operando": 2,
-     "no:comp": 9,
-     "full:hull": 52
+     "no:alloy": 22,
+     "hold:alloy": 4,
+     "no:comp": 8,
+     "full:hull": 64
     },
     "urano.esc_gelo": {
      "operando": 100
     },
     "urano.criogenico": {
-     "operando": 27,
-     "no:rare": 6,
-     "full:cryo": 67
+     "operando": 23,
+     "no:rare": 8,
+     "full:cryo": 69
     },
     "urano.eletrolisador": {
-     "operando": 85,
-     "full:fuel": 15
+     "operando": 83,
+     "full:fuel": 17
     },
     "netuno.esc_gelo": {
-     "operando": 7,
-     "full:ice": 93
+     "operando": 5,
+     "full:ice": 72,
+     "energy": 23
     },
     "netuno.obs_profundo": {
-     "operando": 86,
-     "no:cryo": 10,
-     "hold:cryo": 4
+     "operando": 85,
+     "no:cryo": 7,
+     "hold:cryo": 7,
+     "energy": 2
     },
     "netuno.lab_anomalia": {
-     "operando": 32,
-     "no:fusion": 27,
-     "hold:cryo": 1,
-     "no:cryo": 1,
-     "full:exotic": 39
+     "operando": 55,
+     "hold:cryo": 7,
+     "full:exotic": 37
     }
    },
    "energy": {
@@ -2324,42 +2345,47 @@
      [
       35,
       401,
-      228
+      226
      ],
      [
       40,
       438,
-      228
+      226
      ],
      [
       45,
       484,
-      214
+      212
      ],
      [
       50,
       529,
-      219
+      228
      ],
      [
       55,
       689,
-      233
+      230
      ],
      [
       60,
       689,
-      246
+      243
      ],
      [
       65,
       689,
-      246
+      243
      ],
      [
       70,
       689,
-      246
+      243
+     ],
+     [
+      75,
+      689,
+      243
      ]
     ],
     "marte": [
@@ -2396,7 +2422,7 @@
      [
       40,
       329,
-      244
+      239
      ],
      [
       45,
@@ -2427,6 +2453,11 @@
       70,
       517,
       277
+     ],
+     [
+      75,
+      517,
+      277
      ]
     ],
     "cinturao": [
@@ -2452,42 +2483,47 @@
      ],
      [
       35,
-      200,
-      194
+      234,
+      226
      ],
      [
       40,
-      273,
-      206
+      256,
+      226
      ],
      [
       45,
-      301,
-      194
+      282,
+      213
      ],
      [
       50,
-      329,
-      249
+      309,
+      256
      ],
      [
       55,
-      429,
+      402,
       273
      ],
      [
       60,
-      429,
+      402,
       293
      ],
      [
       65,
-      429,
+      402,
       293
      ],
      [
       70,
-      429,
+      402,
+      293
+     ],
+     [
+      75,
+      402,
       293
      ]
     ],
@@ -2520,7 +2556,7 @@
      [
       45,
       635,
-      294
+      316
      ],
      [
       50,
@@ -2545,6 +2581,11 @@
      [
       70,
       905,
+      345
+     ],
+     [
+      75,
+      905,
       355
      ]
     ],
@@ -2567,115 +2608,130 @@
      [
       40,
       148,
-      74
+      60
      ],
      [
       45,
       163,
-      67
+      54
      ],
      [
       50,
       179,
-      67
+      54
      ],
      [
       55,
       233,
-      67
+      54
      ],
      [
       60,
       233,
-      67
+      54
      ],
      [
       65,
       233,
-      67
+      54
      ],
      [
       70,
       233,
-      67
+      54
+     ],
+     [
+      75,
+      233,
+      54
      ]
     ],
     "jupiter": [
      [
       35,
-      423,
-      52
+      464,
+      70
      ],
      [
       40,
-      1223,
-      111
+      1339,
+      122
      ],
      [
       45,
-      1350,
-      101
+      134,
+      111
      ],
      [
       50,
-      1477,
-      101
+      1617,
+      111
      ],
      [
       55,
-      1924,
-      122
+      2106,
+      111
      ],
      [
       60,
-      1924,
-      122
+      2106,
+      111
      ],
      [
       65,
-      1924,
-      122
+      2106,
+      135
      ],
      [
       70,
-      1924,
-      122
+      2106,
+      135
+     ],
+     [
+      75,
+      2106,
+      135
      ]
     ],
     "saturno": [
      [
       40,
       152,
-      80
+      77
      ],
      [
       45,
-      358,
-      75
+      509,
+      104
      ],
      [
       50,
-      942,
-      107
+      924,
+      111
      ],
      [
       55,
-      1228,
+      1204,
       111
      ],
      [
       60,
-      1228,
+      1204,
       119
      ],
      [
       65,
-      1228,
+      1204,
       119
      ],
      [
       70,
-      1228,
+      1204,
+      119
+     ],
+     [
+      75,
+      1204,
       119
      ]
     ],
@@ -2683,55 +2739,65 @@
      [
       50,
       368,
-      50
+      60
      ],
      [
       55,
-      479,
-      69
+      25,
+      17
      ],
      [
       60,
-      479,
-      69
+      504,
+      60
      ],
      [
       65,
-      479,
-      69
+      504,
+      60
      ],
      [
       70,
-      479,
-      69
+      504,
+      60
+     ],
+     [
+      75,
+      504,
+      60
      ]
     ],
     "netuno": [
      [
       60,
-      479,
-      106
+      0,
+      1
      ],
      [
       65,
-      479,
-      148
+      958,
+      106
      ],
      [
       70,
-      479,
+      958,
+      191
+     ],
+     [
+      75,
+      958,
       191
      ]
     ]
    },
    "data": {
-    "totalValue": 66582275.63
+    "totalValue": 72782736.12
    }
   },
   {
    "universe": "energetico",
    "name": "Universo Energético",
-   "collapseMin": 88,
+   "collapseMin": 94,
    "regionsAtMin": {
     "lua": 0,
     "marte": 8,
@@ -2740,42 +2806,42 @@
     "venus": 30,
     "jupiter": 35,
     "saturno": 45,
-    "urano": 53,
-    "netuno": 66
+    "urano": 51,
+    "netuno": 69
    },
    "resources": {
     "ore": {
      "name": "Minério",
      "value": 1,
      "start": 0,
-     "produced": 8341597.18,
+     "produced": 9526946.48,
      "gained": 30,
-     "usedAsInput": 7474146.85,
+     "usedAsInput": 8554506.27,
      "spent": 6858,
      "routeFuel": 0,
      "project": 0,
-     "exported": 853332.32,
-     "end": 7290,
+     "exported": 958143.21,
+     "end": 7469,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 1822931.31,
-       "use": 1820693.31,
+       "prod": 2044159.55,
+       "use": 2041921.55,
        "exp": 0
       },
       "marte": {
-       "prod": 2357188.34,
-       "use": 2351899.34,
+       "prod": 2649146.99,
+       "use": 2644127.99,
        "exp": 0
       },
       "cinturao": {
-       "prod": 2575630.58,
-       "use": 1716254.25,
-       "exp": 853332.32
+       "prod": 3030013.65,
+       "use": 2066367.44,
+       "exp": 958143.21
       },
       "mercurio": {
-       "prod": 1585846.95,
-       "use": 1585299.95,
+       "prod": 1803626.3,
+       "use": 1802089.3,
        "exp": 0
       }
      }
@@ -2784,35 +2850,35 @@
      "name": "Metal",
      "value": 3,
      "start": 25,
-     "produced": 4767609.07,
+     "produced": 5437096.7,
      "gained": 1155,
-     "usedAsInput": 3155596.03,
-     "spent": 69801,
+     "usedAsInput": 3610130.62,
+     "spent": 64030,
      "routeFuel": 0,
      "project": 89280,
-     "exported": 1448076.04,
-     "end": 6011,
+     "exported": 1668633.08,
+     "end": 6178,
      "reconcile": 25,
      "byRegion": {
       "lua": {
-       "prod": 1865217.53,
-       "use": 908140.39,
-       "exp": 886439.13
+       "prod": 2092664.58,
+       "use": 1018754.51,
+       "exp": 1009258.06
       },
       "marte": {
-       "prod": 1205644.4,
-       "use": 1199186.03,
-       "exp": 23019.37
+       "prod": 1355921.16,
+       "use": 1355988.2,
+       "exp": 16982.96
       },
       "cinturao": {
-       "prod": 883743.71,
-       "use": 659870.05,
-       "exp": 206983.66
+       "prod": 1064052,
+       "use": 739413.35,
+       "exp": 307378.65
       },
       "mercurio": {
-       "prod": 813003.43,
-       "use": 388399.55,
-       "exp": 331633.88
+       "prod": 924458.97,
+       "use": 495974.56,
+       "exp": 335013.41
       }
      }
     },
@@ -2820,35 +2886,35 @@
      "name": "Ligas",
      "value": 10,
      "start": 0,
-     "produced": 2579096.22,
+     "produced": 2955284.1,
      "gained": 815,
-     "usedAsInput": 190881.03,
-     "spent": 25236,
+     "usedAsInput": 209412.43,
+     "spent": 23699,
      "routeFuel": 0,
      "project": 27410,
-     "exported": 2330819.26,
-     "end": 5564.92,
+     "exported": 2690125.74,
+     "end": 5451.92,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 792230.22,
+       "prod": 892539.54,
        "use": 0,
-       "exp": 777603.22
+       "exp": 876839.54
       },
       "marte": {
-       "prod": 1183133.76,
-       "use": 189463.95,
-       "exp": 980380.81
+       "prod": 1350167.97,
+       "use": 207995.35,
+       "exp": 1131470.61
       },
       "cinturao": {
-       "prod": 396278.13,
+       "prod": 444070.39,
        "use": 0,
-       "exp": 393215.13
+       "exp": 441278.39
       },
       "mercurio": {
-       "prod": 207454.1,
+       "prod": 268506.2,
        "use": 0,
-       "exp": 179620.1
+       "exp": 240537.2
       },
       "saturno": {
        "prod": 0,
@@ -2861,24 +2927,24 @@
      "name": "Componentes",
      "value": 30,
      "start": 0,
-     "produced": 218915.67,
+     "produced": 241594.65,
      "gained": 260,
-     "usedAsInput": 12768.86,
-     "spent": 6563,
+     "usedAsInput": 14931.94,
+     "spent": 6034,
      "routeFuel": 0,
      "project": 2273,
-     "exported": 193100.67,
-     "end": 4470.14,
+     "exported": 214234.65,
+     "end": 4381.06,
      "reconcile": 0,
      "byRegion": {
       "marte": {
-       "prod": 218915.67,
+       "prod": 241594.65,
        "use": 0,
-       "exp": 193100.67
+       "exp": 214234.65
       },
       "mercurio": {
        "prod": 0,
-       "use": 12060.32,
+       "use": 14223.4,
        "exp": 0
       },
       "saturno": {
@@ -2892,30 +2958,30 @@
      "name": "Gelo",
      "value": 1,
      "start": 0,
-     "produced": 585274.41,
+     "produced": 834260.62,
      "gained": 0,
-     "usedAsInput": 107210.14,
+     "usedAsInput": 116827.44,
      "spent": 0,
      "routeFuel": 0,
      "project": 0,
-     "exported": 474914.27,
+     "exported": 714283.18,
      "end": 3150,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 65260.19,
-       "use": 63730.19,
+       "prod": 69442.89,
+       "use": 67912.89,
        "exp": 0
       },
       "saturno": {
-       "prod": 381908.47,
-       "use": 1845.87,
-       "exp": 379612.6
+       "prod": 598842.74,
+       "use": 2229.13,
+       "exp": 596163.61
       },
       "urano": {
-       "prod": 137385.75,
-       "use": 41634.08,
-       "exp": 95301.67
+       "prod": 165255,
+       "use": 46685.42,
+       "exp": 118119.57
       },
       "netuno": {
        "prod": 720,
@@ -2928,24 +2994,24 @@
      "name": "Gases",
      "value": 2,
      "start": 0,
-     "produced": 281693.17,
+     "produced": 330141.49,
      "gained": 150,
-     "usedAsInput": 182336.62,
+     "usedAsInput": 224464.33,
      "spent": 0,
      "routeFuel": 0,
      "project": 0,
-     "exported": 97526.84,
-     "end": 1979.71,
+     "exported": 104572.16,
+     "end": 1255,
      "reconcile": 0,
      "byRegion": {
       "venus": {
-       "prod": 281693.17,
-       "use": 171513.33,
-       "exp": 97526.84
+       "prod": 330141.49,
+       "use": 200913.33,
+       "exp": 104572.16
       },
       "jupiter": {
        "prod": 0,
-       "use": 10823.29,
+       "use": 23551,
        "exp": 0
       }
      }
@@ -2954,40 +3020,40 @@
      "name": "Combustível",
      "value": 4,
      "start": 0,
-     "produced": 302972.56,
+     "produced": 349796.61,
      "gained": 200,
      "usedAsInput": 0,
-     "spent": 4199,
-     "routeFuel": 35189,
+     "spent": 4352,
+     "routeFuel": 46568,
      "project": 19000,
-     "exported": 238604.56,
-     "end": 6180,
+     "exported": 271955.61,
+     "end": 8121,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 54651,
+       "prod": 58502,
        "use": 0,
        "exp": 0
       },
       "venus": {
-       "prod": 211196.48,
+       "prod": 247532.72,
        "use": 0,
-       "exp": 206197.48
+       "exp": 235944.72
       },
       "jupiter": {
-       "prod": 1336,
+       "prod": 3863,
        "use": 0,
        "exp": 0
       },
       "saturno": {
-       "prod": 1657,
+       "prod": 1951,
        "use": 0,
        "exp": 0
       },
       "urano": {
-       "prod": 34132.08,
+       "prod": 37947.89,
        "use": 0,
-       "exp": 32407.08
+       "exp": 36010.89
       }
      }
     },
@@ -2995,29 +3061,29 @@
      "name": "Metais Raros",
      "value": 20,
      "start": 0,
-     "produced": 15027,
+     "produced": 16887,
      "gained": 50,
-     "usedAsInput": 12505.02,
+     "usedAsInput": 14725.26,
      "spent": 52,
      "routeFuel": 0,
      "project": 40,
      "exported": 0,
-     "end": 2479.98,
+     "end": 2119.74,
      "reconcile": 0,
      "byRegion": {
       "cinturao": {
-       "prod": 15027,
+       "prod": 16887,
        "use": 0,
        "exp": 0
       },
       "mercurio": {
        "prod": 0,
-       "use": 11878,
+       "use": 13962,
        "exp": 0
       },
       "urano": {
        "prod": 0,
-       "use": 627.02,
+       "use": 763.26,
        "exp": 0
       }
      }
@@ -3026,19 +3092,19 @@
      "name": "Células Solares",
      "value": 60,
      "start": 0,
-     "produced": 18307.32,
+     "produced": 21527.1,
      "gained": 0,
-     "usedAsInput": 18090.48,
+     "usedAsInput": 21335.1,
      "spent": 134,
      "routeFuel": 0,
      "project": 58,
      "exported": 0,
-     "end": 24.84,
+     "end": 0,
      "reconcile": 0,
      "byRegion": {
       "mercurio": {
-       "prod": 18307.32,
-       "use": 18090.48,
+       "prod": 21527.1,
+       "use": 21335.1,
        "exp": 0
       }
      }
@@ -3047,24 +3113,34 @@
      "name": "Comb. de Fusão",
      "value": 80,
      "start": 0,
-     "produced": 2273,
-     "gained": 70,
-     "usedAsInput": 324.27,
-     "spent": 114,
+     "produced": 4663.41,
+     "gained": 140,
+     "usedAsInput": 2881.37,
+     "spent": 126,
      "routeFuel": 0,
      "project": 157,
      "exported": 0,
-     "end": 1747.73,
+     "end": 1639.04,
      "reconcile": 0,
      "byRegion": {
       "jupiter": {
-       "prod": 2273,
-       "use": 0,
+       "prod": 4663.41,
+       "use": 630.78,
+       "exp": 0
+      },
+      "saturno": {
+       "prod": 0,
+       "use": 697.3,
+       "exp": 0
+      },
+      "urano": {
+       "prod": 0,
+       "use": 255.8,
        "exp": 0
       },
       "netuno": {
        "prod": 0,
-       "use": 324.27,
+       "use": 1297.49,
        "exp": 0
       }
      }
@@ -3094,24 +3170,24 @@
      "name": "Supercondutores",
      "value": 150,
      "start": 0,
-     "produced": 1988,
+     "produced": 2717,
      "gained": 10,
-     "usedAsInput": 718.43,
+     "usedAsInput": 1453.52,
      "spent": 16,
      "routeFuel": 0,
      "project": 173,
      "exported": 0,
-     "end": 1090.57,
+     "end": 1084.48,
      "reconcile": 0,
      "byRegion": {
       "urano": {
-       "prod": 1988,
+       "prod": 2717,
        "use": 0,
        "exp": 0
       },
       "netuno": {
        "prod": 0,
-       "use": 718.43,
+       "use": 1453.52,
        "exp": 0
       }
      }
@@ -3120,20 +3196,20 @@
      "name": "Matéria Exótica",
      "value": 1000,
      "start": 0,
-     "produced": 167,
+     "produced": 623.84,
      "gained": 0,
      "usedAsInput": 0,
      "spent": 0,
      "routeFuel": 0,
      "project": 95,
-     "exported": 0,
+     "exported": 456.84,
      "end": 72,
      "reconcile": 0,
      "byRegion": {
       "netuno": {
-       "prod": 167,
+       "prod": 623.84,
        "use": 0,
-       "exp": 0
+       "exp": 456.84
       }
      }
     },
@@ -3141,20 +3217,20 @@
      "name": "Satélites Dyson",
      "value": 400,
      "start": 0,
-     "produced": 6202.06,
+     "produced": 7316.04,
      "gained": 0,
      "usedAsInput": 0,
      "spent": 0,
      "routeFuel": 0,
      "project": 183,
-     "exported": 5911.06,
-     "end": 108,
+     "exported": 6985.04,
+     "end": 148,
      "reconcile": 0,
      "byRegion": {
       "mercurio": {
-       "prod": 6202.06,
+       "prod": 7316.04,
        "use": 0,
-       "exp": 5911.06
+       "exp": 6985.04
       }
      }
     }
@@ -3276,32 +3352,32 @@
     },
     "40": {
      "prod": {
-      "ore": 1177105.49,
-      "metal": 620277.22,
-      "alloy": 269734.48,
-      "comp": 31662.39,
-      "ice": 12949.08,
+      "ore": 1215969.36,
+      "metal": 646596.32,
+      "alloy": 282489.72,
+      "comp": 32950.29,
+      "ice": 12960.55,
       "gas": 18884.53,
-      "fuel": 23126.8,
-      "rare": 2032,
-      "cell": 1191.6,
-      "fusion": 112.53,
+      "fuel": 22400,
+      "rare": 1981,
+      "cell": 1186.8,
+      "fusion": 212.69,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
-      "sat": 292.2
+      "sat": 290.6
      },
      "use": {
-      "ore": 921182.17,
-      "metal": 369010.46,
-      "alloy": 34562.51,
-      "comp": 584.4,
-      "ice": 12569.61,
-      "gas": 12826.93,
+      "ore": 960632.28,
+      "metal": 386019.94,
+      "alloy": 35936.27,
+      "comp": 581.2,
+      "ice": 11600.55,
+      "gas": 13126.53,
       "fuel": 0,
-      "rare": 799.4,
-      "cell": 876.6,
-      "fusion": 0,
+      "rare": 796.2,
+      "cell": 871.8,
+      "fusion": 31.7,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
@@ -3309,9 +3385,9 @@
      },
      "spent": {
       "ore": 3184,
-      "metal": 31741,
-      "alloy": 9654,
-      "comp": 2360,
+      "metal": 32030,
+      "alloy": 9951,
+      "comp": 2436,
       "ice": 0,
       "gas": 0,
       "fuel": 1011,
@@ -3340,20 +3416,20 @@
       "sat": 0
      },
      "exp": {
-      "ore": 248496.68,
-      "metal": 208649.76,
-      "alloy": 220622.97,
-      "comp": 26634.39,
+      "ore": 249303.08,
+      "metal": 217375.4,
+      "alloy": 231531.44,
+      "comp": 28091.29,
       "ice": 0,
-      "gas": 5120.2,
-      "fuel": 12671,
+      "gas": 4830.2,
+      "fuel": 12588,
       "rare": 0,
       "cell": 0,
       "fusion": 0,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
-      "sat": 150.2
+      "sat": 148.6
      },
      "routeFuel": {
       "ore": 0,
@@ -3362,7 +3438,7 @@
       "comp": 0,
       "ice": 0,
       "gas": 0,
-      "fuel": 5797,
+      "fuel": 5682,
       "rare": 0,
       "cell": 0,
       "fusion": 0,
@@ -3390,86 +3466,86 @@
     }
    },
    "fullPct": {
-    "lua.ore": 91,
-    "lua.metal": 81,
+    "lua.ore": 92,
+    "lua.metal": 84,
     "lua.alloy": 89,
-    "lua.ice": 68,
-    "lua.fuel": 43,
+    "lua.ice": 71,
+    "lua.fuel": 47,
     "marte.ore": 70,
-    "marte.metal": 28,
+    "marte.metal": 16,
     "marte.alloy": 90,
-    "marte.comp": 79,
-    "cinturao.ore": 96,
-    "cinturao.metal": 91,
-    "cinturao.alloy": 95,
+    "marte.comp": 82,
+    "cinturao.ore": 97,
+    "cinturao.metal": 92,
+    "cinturao.alloy": 96,
     "cinturao.rare": 90,
-    "mercurio.ore": 57,
-    "mercurio.metal": 78,
-    "mercurio.alloy": 85,
+    "mercurio.ore": 82,
+    "mercurio.metal": 77,
+    "mercurio.alloy": 88,
     "mercurio.comp": 7,
-    "mercurio.rare": 20,
-    "mercurio.cell": 63,
-    "mercurio.sat": 73,
-    "venus.gas": 82,
-    "venus.fuel": 92,
-    "jupiter.gas": 36,
-    "jupiter.fuel": 65,
-    "jupiter.fusion": 50,
-    "saturno.alloy": 58,
+    "mercurio.rare": 16,
+    "mercurio.cell": 54,
+    "mercurio.sat": 75,
+    "venus.gas": 75,
+    "venus.fuel": 89,
+    "jupiter.gas": 0,
+    "jupiter.fuel": 28,
+    "jupiter.fusion": 0,
+    "saturno.alloy": 61,
     "saturno.comp": 59,
     "saturno.ice": 98,
-    "saturno.fuel": 95,
+    "saturno.fuel": 94,
     "saturno.hull": 74,
-    "urano.ice": 100,
+    "urano.ice": 99,
     "urano.fuel": 95,
-    "urano.rare": 22,
-    "urano.cryo": 75,
-    "netuno.ice": 95,
+    "urano.rare": 14,
+    "urano.cryo": 76,
+    "netuno.ice": 96,
     "netuno.fuel": 0,
-    "netuno.fusion": 29,
+    "netuno.fusion": 0,
     "netuno.cryo": 0,
-    "netuno.exotic": 36
+    "netuno.exotic": 46
    },
    "emptyPct": {
     "lua.ore": 0,
     "lua.metal": 1,
     "lua.alloy": 4,
-    "lua.ice": 7,
+    "lua.ice": 6,
     "lua.fuel": 5,
-    "marte.ore": 12,
-    "marte.metal": 11,
+    "marte.ore": 13,
+    "marte.metal": 33,
     "marte.alloy": 1,
     "marte.comp": 0,
-    "cinturao.ore": 0,
+    "cinturao.ore": 1,
     "cinturao.metal": 0,
     "cinturao.alloy": 0,
     "cinturao.rare": 0,
-    "mercurio.ore": 34,
-    "mercurio.metal": 20,
-    "mercurio.alloy": 11,
-    "mercurio.comp": 22,
-    "mercurio.rare": 11,
-    "mercurio.cell": 7,
-    "mercurio.sat": 16,
+    "mercurio.ore": 11,
+    "mercurio.metal": 21,
+    "mercurio.alloy": 9,
+    "mercurio.comp": 18,
+    "mercurio.rare": 17,
+    "mercurio.cell": 11,
+    "mercurio.sat": 14,
     "venus.gas": 0,
     "venus.fuel": 0,
-    "jupiter.gas": 24,
-    "jupiter.fuel": 3,
-    "jupiter.fusion": 1,
-    "saturno.alloy": 16,
-    "saturno.comp": 7,
+    "jupiter.gas": 70,
+    "jupiter.fuel": 2,
+    "jupiter.fusion": 10,
+    "saturno.alloy": 19,
+    "saturno.comp": 3,
     "saturno.ice": 0,
     "saturno.fuel": 0,
-    "saturno.hull": 4,
+    "saturno.hull": 6,
     "urano.ice": 0,
     "urano.fuel": 0,
-    "urano.rare": 9,
-    "urano.cryo": 4,
+    "urano.rare": 7,
+    "urano.cryo": 0,
     "netuno.ice": 0,
     "netuno.fuel": 100,
-    "netuno.fusion": 18,
-    "netuno.cryo": 10,
-    "netuno.exotic": 45
+    "netuno.fusion": 10,
+    "netuno.cryo": 22,
+    "netuno.exotic": 33
    },
    "why": {
     "lua.extrator": {
@@ -3477,21 +3553,21 @@
      "full:ore": 9
     },
     "lua.refinaria": {
-     "operando": 91,
-     "full:metal": 9
+     "operando": 92,
+     "full:metal": 8
     },
     "lua.esc_gelo": {
-     "operando": 61,
-     "full:ice": 39
+     "operando": 57,
+     "full:ice": 43
     },
     "lua.eletrolisador": {
-     "operando": 56,
-     "full:fuel": 44
+     "operando": 53,
+     "full:fuel": 47
     },
     "lua.forja": {
      "operando": 91,
      "hold:metal": 0,
-     "full:alloy": 9
+     "full:alloy": 8
     },
     "lua.observatorio": {
      "operando": 100
@@ -3515,16 +3591,16 @@
      "operando": 100
     },
     "cinturao.refinaria": {
-     "operando": 50,
-     "full:metal": 50
+     "operando": 56,
+     "full:metal": 44
     },
     "cinturao.garimpo": {
-     "operando": 10,
-     "full:rare": 90
+     "operando": 11,
+     "full:rare": 89
     },
     "cinturao.forja": {
-     "operando": 49,
-     "full:alloy": 51,
+     "operando": 53,
+     "full:alloy": 46,
      "hold:metal": 0
     },
     "mercurio.extrator": {
@@ -3536,19 +3612,19 @@
      "full:metal": 2
     },
     "mercurio.fotovoltaica": {
-     "operando": 60,
-     "full:cell": 28,
-     "no:rare": 12
+     "operando": 59,
+     "full:cell": 24,
+     "no:rare": 17
     },
     "mercurio.forja": {
      "operando": 98,
      "full:alloy": 2
     },
     "mercurio.fab_sat": {
-     "operando": 64,
-     "no:comp": 23,
+     "operando": 65,
+     "no:comp": 18,
      "full:sat": 7,
-     "no:cell": 6
+     "no:cell": 10
     },
     "venus.plataforma": {
      "operando": 100
@@ -3557,14 +3633,13 @@
      "operando": 100
     },
     "jupiter.ref_fusao": {
-     "operando": 26,
-     "no:gas": 25,
-     "full:fusion": 49
+     "operando": 30,
+     "no:gas": 70
     },
     "jupiter.quimica": {
-     "operando": 2,
-     "no:gas": 17,
-     "full:fuel": 81
+     "operando": 7,
+     "no:gas": 60,
+     "full:fuel": 32
     },
     "saturno.esc_gelo": {
      "operando": 100
@@ -3575,36 +3650,37 @@
     },
     "saturno.estaleiro": {
      "operando": 2,
-     "no:alloy": 15,
-     "hold:alloy": 2,
-     "no:comp": 7,
+     "no:alloy": 18,
+     "hold:alloy": 3,
+     "no:comp": 3,
      "full:hull": 74
     },
     "urano.esc_gelo": {
      "operando": 100
     },
     "urano.criogenico": {
-     "operando": 17,
-     "no:rare": 9,
-     "full:cryo": 74
+     "operando": 15,
+     "no:rare": 7,
+     "full:cryo": 77
     },
     "urano.eletrolisador": {
-     "operando": 74,
-     "full:fuel": 26
+     "operando": 65,
+     "full:fuel": 35
     },
     "netuno.esc_gelo": {
      "operando": 5,
-     "full:ice": 95
+     "full:ice": 85,
+     "energy": 10
     },
     "netuno.obs_profundo": {
-     "operando": 91,
-     "no:cryo": 9
+     "operando": 75,
+     "no:cryo": 23,
+     "energy": 1
     },
     "netuno.lab_anomalia": {
-     "operando": 26,
-     "no:fusion": 23,
-     "no:cryo": 4,
-     "full:exotic": 47
+     "operando": 76,
+     "full:exotic": 2,
+     "no:cryo": 22
     }
    },
    "energy": {
@@ -3657,7 +3733,7 @@
      [
       50,
       564,
-      219
+      208
      ],
      [
       55,
@@ -3682,7 +3758,7 @@
      [
       75,
       804,
-      238
+      225
      ],
      [
       80,
@@ -3691,6 +3767,11 @@
      ],
      [
       85,
+      804,
+      238
+     ],
+     [
+      90,
       804,
       238
      ]
@@ -3734,7 +3815,7 @@
      [
       45,
       370,
-      211
+      215
      ],
      [
       50,
@@ -3744,27 +3825,27 @@
      [
       55,
       521,
-      229
+      236
      ],
      [
       60,
       679,
-      230
+      237
      ],
      [
       65,
       679,
-      230
+      237
      ],
      [
       70,
       679,
-      230
+      237
      ],
      [
       75,
       679,
-      258
+      237
      ],
      [
       80,
@@ -3773,6 +3854,11 @@
      ],
      [
       85,
+      679,
+      258
+     ],
+     [
+      90,
       679,
       258
      ]
@@ -3821,37 +3907,42 @@
      [
       55,
       309,
-      174
+      218
      ],
      [
       60,
       402,
-      242
+      235
      ],
      [
       65,
       402,
-      242
+      235
      ],
      [
       70,
       402,
-      242
+      235
      ],
      [
       75,
       402,
-      258
+      235
      ],
      [
       80,
       402,
-      258
+      250
      ],
      [
       85,
       402,
-      258
+      250
+     ],
+     [
+      90,
+      402,
+      250
      ]
     ],
     "mercurio": [
@@ -3898,32 +3989,37 @@
      [
       60,
       1998,
-      297
+      306
      ],
      [
       65,
       1998,
-      297
+      306
      ],
      [
       70,
       1998,
-      297
+      306
      ],
      [
       75,
       1998,
-      305
+      306
      ],
      [
       80,
       1998,
-      316
+      314
      ],
      [
       85,
       1998,
-      316
+      325
+     ],
+     [
+      90,
+      1998,
+      325
      ]
     ],
     "venus": [
@@ -3940,7 +4036,7 @@
      [
       45,
       148,
-      60
+      74
      ],
      [
       50,
@@ -3981,105 +4077,125 @@
       85,
       271,
       67
+     ],
+     [
+      90,
+      271,
+      67
      ]
     ],
     "jupiter": [
      [
       35,
-      125,
+      7,
       17
      ],
      [
       40,
-      888,
-      62
+      624,
+      72
      ],
      [
       45,
-      1276,
-      129
+      1341,
+      133
      ],
      [
       50,
-      1418,
-      122
+      1503,
+      121
      ],
      [
       55,
-      1551,
-      122
+      174,
+      121
      ],
      [
       60,
-      2021,
-      122
+      2141,
+      121
      ],
      [
       65,
-      2021,
-      122
+      2141,
+      121
      ],
      [
       70,
-      2021,
-      122
+      2141,
+      121
      ],
      [
       75,
-      2021,
-      122
+      2141,
+      121
      ],
      [
       80,
-      2021,
-      122
+      2141,
+      145
      ],
      [
       85,
-      2021,
-      122
+      2141,
+      145
+     ],
+     [
+      90,
+      2141,
+      145
      ]
     ],
     "saturno": [
      [
+      45,
+      152,
+      73
+     ],
+     [
       50,
-      510,
-      102
+      678,
+      99
      ],
      [
       55,
       925,
-      105
+      106
      ],
      [
       60,
       1205,
-      105
+      106
      ],
      [
       65,
       1205,
-      105
+      106
      ],
      [
       70,
       1205,
-      105
+      106
      ],
      [
       75,
       1205,
-      112
+      106
      ],
      [
       80,
       1205,
-      112
+      114
      ],
      [
       85,
       1205,
-      112
+      114
+     ],
+     [
+      90,
+      1205,
+      114
      ]
     ],
     "urano": [
@@ -4096,7 +4212,7 @@
      [
       65,
       479,
-      68
+      60
      ],
      [
       70,
@@ -4115,6 +4231,11 @@
      ],
      [
       85,
+      479,
+      68
+     ],
+     [
+      90,
       479,
       68
      ]
@@ -4132,24 +4253,29 @@
      ],
      [
       80,
-      479,
-      191
+      1077,
+      106
      ],
      [
       85,
-      479,
+      1077,
+      191
+     ],
+     [
+      90,
+      1077,
       191
      ]
     ]
    },
    "data": {
-    "totalValue": 61999049.71
+    "totalValue": 71601689.43
    }
   },
   {
    "universe": "congelado",
    "name": "Universo Congelado",
-   "collapseMin": 80,
+   "collapseMin": 75,
    "regionsAtMin": {
     "lua": 0,
     "marte": 8,
@@ -4157,43 +4283,43 @@
     "mercurio": 19,
     "venus": 24,
     "jupiter": 28,
-    "saturno": 38,
-    "urano": 49,
-    "netuno": 59
+    "saturno": 36,
+    "urano": 45,
+    "netuno": 53
    },
    "resources": {
     "ore": {
      "name": "Minério",
      "value": 1,
      "start": 0,
-     "produced": 7851457.7,
+     "produced": 6895155.08,
      "gained": 30,
-     "usedAsInput": 6346117.36,
-     "spent": 6026,
+     "usedAsInput": 6166163.96,
+     "spent": 5317,
      "routeFuel": 0,
      "project": 0,
-     "exported": 1493674.34,
-     "end": 5670,
+     "exported": 717224.12,
+     "end": 6480,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 1623072.46,
-       "use": 1620834.46,
+       "prod": 1574599.99,
+       "use": 1572361.99,
        "exp": 0
       },
       "marte": {
-       "prod": 2070941.92,
-       "use": 2066493.92,
+       "prod": 2032455.02,
+       "use": 2027166.02,
        "exp": 0
       },
       "cinturao": {
-       "prod": 2859686.98,
-       "use": 1361579.64,
-       "exp": 1493674.34
+       "prod": 2107756.42,
+       "use": 1386712.31,
+       "exp": 717224.12
       },
       "mercurio": {
-       "prod": 1297756.34,
-       "use": 1297209.34,
+       "prod": 1180343.65,
+       "use": 1179923.65,
        "exp": 0
       }
      }
@@ -4202,35 +4328,35 @@
      "name": "Metal",
      "value": 3,
      "start": 25,
-     "produced": 4164134.88,
+     "produced": 4049415.18,
      "gained": 1155,
-     "usedAsInput": 2696076.79,
-     "spent": 59895,
+     "usedAsInput": 2550621.53,
+     "spent": 68212,
      "routeFuel": 0,
      "project": 127200,
-     "exported": 1276574.88,
-     "end": 5543.21,
+     "exported": 1298583.93,
+     "end": 5952.72,
      "reconcile": 25,
      "byRegion": {
       "lua": {
-       "prod": 1689158.55,
-       "use": 807630.8,
-       "exp": 814926.75
+       "prod": 1641113.08,
+       "use": 783394.56,
+       "exp": 790877.51
       },
       "marte": {
-       "prod": 1078351.99,
-       "use": 1061606.96,
-       "exp": 28033.81
+       "prod": 1059276.34,
+       "use": 920503.22,
+       "exp": 116355.4
       },
       "cinturao": {
-       "prod": 719464,
-       "use": 478289.65,
-       "exp": 234963.35
+       "prod": 732580.26,
+       "use": 516808.54,
+       "exp": 234589.72
       },
       "mercurio": {
-       "prod": 677160.34,
-       "use": 348549.38,
-       "exp": 198650.96
+       "prod": 616445.51,
+       "use": 329915.21,
+       "exp": 156761.29
       }
      }
     },
@@ -4238,39 +4364,39 @@
      "name": "Ligas",
      "value": 10,
      "start": 0,
-     "produced": 2260934.6,
+     "produced": 2245101.24,
      "gained": 815,
-     "usedAsInput": 181496.3,
-     "spent": 23173,
+     "usedAsInput": 54898.63,
+     "spent": 28138,
      "routeFuel": 0,
      "project": 38930,
-     "exported": 2013396.01,
-     "end": 4754.29,
+     "exported": 2118892.22,
+     "end": 5057.39,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 718560.53,
+       "prod": 697732.86,
        "use": 0,
-       "exp": 703964.53
+       "exp": 681235.86
       },
       "marte": {
-       "prod": 1053663.3,
-       "use": 180136.59,
-       "exp": 861936.71
+       "prod": 1040771.7,
+       "use": 53395.02,
+       "exp": 972160.68
       },
       "cinturao": {
-       "prod": 294727.59,
+       "prod": 318419.7,
        "use": 0,
-       "exp": 292632.59
+       "exp": 316439.7
       },
       "mercurio": {
-       "prod": 193983.19,
+       "prod": 188176.99,
        "use": 0,
-       "exp": 154862.19
+       "exp": 149055.99
       },
       "saturno": {
        "prod": 0,
-       "use": 1359.71,
+       "use": 1503.61,
        "exp": 0
       }
      }
@@ -4279,30 +4405,30 @@
      "name": "Componentes",
      "value": 30,
      "start": 0,
-     "produced": 219092.08,
+     "produced": 67874.87,
      "gained": 260,
-     "usedAsInput": 8991.47,
-     "spent": 5979,
+     "usedAsInput": 5923.81,
+     "spent": 7602,
      "routeFuel": 0,
      "project": 3230,
-     "exported": 197277.08,
-     "end": 3874.53,
+     "exported": 47251.06,
+     "end": 4128,
      "reconcile": 0,
      "byRegion": {
       "marte": {
-       "prod": 219092.08,
+       "prod": 67874.87,
        "use": 0,
-       "exp": 197277.08
+       "exp": 40490.87
       },
       "mercurio": {
        "prod": 0,
-       "use": 8311.62,
+       "use": 5172,
        "exp": 0
       },
       "saturno": {
        "prod": 0,
-       "use": 679.85,
-       "exp": 0
+       "use": 751.81,
+       "exp": 6760.19
       }
      }
     },
@@ -4310,30 +4436,30 @@
      "name": "Gelo",
      "value": 1,
      "start": 0,
-     "produced": 823744.35,
+     "produced": 834572.63,
      "gained": 0,
-     "usedAsInput": 82765.33,
+     "usedAsInput": 90507.72,
      "spent": 0,
      "routeFuel": 0,
      "project": 0,
-     "exported": 737829.02,
+     "exported": 740914.91,
      "end": 3150,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 51349.47,
-       "use": 49819.47,
+       "prod": 52403.23,
+       "use": 50873.23,
        "exp": 0
       },
       "saturno": {
-       "prod": 527875.8,
-       "use": 1524.49,
-       "exp": 525901.31
+       "prod": 561969.18,
+       "use": 1881.83,
+       "exp": 559637.35
       },
       "urano": {
-       "prod": 243799.08,
-       "use": 31421.37,
-       "exp": 211927.71
+       "prod": 219480.22,
+       "use": 37752.65,
+       "exp": 181277.57
       },
       "netuno": {
        "prod": 720,
@@ -4346,24 +4472,24 @@
      "name": "Gases",
      "value": 2,
      "start": 0,
-     "produced": 128745.67,
+     "produced": 116999.11,
      "gained": 150,
-     "usedAsInput": 84322.52,
+     "usedAsInput": 82667.2,
      "spent": 0,
      "routeFuel": 0,
      "project": 0,
-     "exported": 42786.7,
-     "end": 1786.46,
+     "exported": 32744.62,
+     "end": 1737.29,
      "reconcile": 0,
      "byRegion": {
       "venus": {
-       "prod": 128745.67,
-       "use": 75438.97,
-       "exp": 42786.7
+       "prod": 116999.11,
+       "use": 68532.31,
+       "exp": 32744.62
       },
       "jupiter": {
        "prod": 0,
-       "use": 8883.54,
+       "use": 14134.9,
        "exp": 0
       }
      }
@@ -4372,40 +4498,40 @@
      "name": "Combustível",
      "value": 4,
      "start": 0,
-     "produced": 216101.51,
+     "produced": 215393.93,
      "gained": 200,
      "usedAsInput": 0,
-     "spent": 4141,
-     "routeFuel": 31788,
+     "spent": 4077,
+     "routeFuel": 37518,
      "project": 26500,
-     "exported": 149602.51,
-     "end": 4270,
+     "exported": 140840.84,
+     "end": 6658.1,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 56831,
+       "prod": 58339,
        "use": 0,
        "exp": 0
       },
       "venus": {
-       "prod": 122060.67,
+       "prod": 110925.91,
        "use": 0,
-       "exp": 117534.67
+       "exp": 101159.91
       },
       "jupiter": {
-       "prod": 1631,
+       "prod": 2464.1,
        "use": 0,
        "exp": 0
       },
       "saturno": {
-       "prod": 1742,
+       "prod": 2180,
        "use": 0,
        "exp": 0
       },
       "urano": {
-       "prod": 33836.84,
+       "prod": 41484.92,
        "use": 0,
-       "exp": 32067.84
+       "exp": 39680.92
       }
      }
     },
@@ -4413,29 +4539,29 @@
      "name": "Metais Raros",
      "value": 20,
      "start": 0,
-     "produced": 10460,
+     "produced": 8115,
      "gained": 50,
-     "usedAsInput": 8592.72,
+     "usedAsInput": 5759.35,
      "spent": 52,
      "routeFuel": 0,
      "project": 40,
      "exported": 0,
-     "end": 1825.28,
+     "end": 2313.65,
      "reconcile": 0,
      "byRegion": {
       "cinturao": {
-       "prod": 10460,
+       "prod": 8115,
        "use": 0,
        "exp": 0
       },
       "mercurio": {
        "prod": 0,
-       "use": 8035,
+       "use": 5203.58,
        "exp": 0
       },
       "urano": {
        "prod": 0,
-       "use": 557.72,
+       "use": 555.77,
        "exp": 0
       }
      }
@@ -4444,19 +4570,19 @@
      "name": "Células Solares",
      "value": 60,
      "start": 0,
-     "produced": 12633.13,
+     "produced": 8137,
      "gained": 0,
-     "usedAsInput": 12467.43,
+     "usedAsInput": 7758,
      "spent": 93,
      "routeFuel": 0,
      "project": 70,
      "exported": 0,
-     "end": 2.7,
+     "end": 216,
      "reconcile": 0,
      "byRegion": {
       "mercurio": {
-       "prod": 12633.13,
-       "use": 12467.43,
+       "prod": 8137,
+       "use": 7758,
        "exp": 0
       }
      }
@@ -4465,24 +4591,34 @@
      "name": "Comb. de Fusão",
      "value": 80,
      "start": 0,
-     "produced": 2262,
-     "gained": 70,
-     "usedAsInput": 310.22,
+     "produced": 3722.64,
+     "gained": 140,
+     "usedAsInput": 1617.15,
      "spent": 114,
      "routeFuel": 0,
      "project": 160,
      "exported": 0,
-     "end": 1747.78,
+     "end": 1971.49,
      "reconcile": 0,
      "byRegion": {
       "jupiter": {
-       "prod": 2262,
-       "use": 0,
+       "prod": 3722.64,
+       "use": 518.64,
+       "exp": 0
+      },
+      "saturno": {
+       "prod": 0,
+       "use": 517.1,
+       "exp": 0
+      },
+      "urano": {
+       "prod": 0,
+       "use": 181.6,
        "exp": 0
       },
       "netuno": {
        "prod": 0,
-       "use": 310.22,
+       "use": 399.81,
        "exp": 0
       }
      }
@@ -4491,18 +4627,18 @@
      "name": "Módulos Estruturais",
      "value": 200,
      "start": 0,
-     "produced": 526,
+     "produced": 584,
      "gained": 2,
      "usedAsInput": 0,
      "spent": 20,
      "routeFuel": 0,
      "project": 195,
      "exported": 0,
-     "end": 313,
+     "end": 371,
      "reconcile": 0,
      "byRegion": {
       "saturno": {
-       "prod": 526,
+       "prod": 584,
        "use": 0,
        "exp": 0
       }
@@ -4512,24 +4648,24 @@
      "name": "Supercondutores",
      "value": 150,
      "start": 0,
-     "produced": 2016,
+     "produced": 1770.21,
      "gained": 10,
-     "usedAsInput": 687.76,
+     "usedAsInput": 561.75,
      "spent": 16,
      "routeFuel": 0,
      "project": 200,
      "exported": 0,
-     "end": 1122.24,
+     "end": 1002.46,
      "reconcile": 0,
      "byRegion": {
       "urano": {
-       "prod": 2016,
+       "prod": 1770.21,
        "use": 0,
        "exp": 0
       },
       "netuno": {
        "prod": 0,
-       "use": 687.76,
+       "use": 561.75,
        "exp": 0
       }
      }
@@ -4559,20 +4695,20 @@
      "name": "Satélites Dyson",
      "value": 400,
      "start": 0,
-     "produced": 4365.93,
+     "produced": 2703.93,
      "gained": 0,
      "usedAsInput": 0,
      "spent": 0,
      "routeFuel": 0,
      "project": 260,
-     "exported": 3997.93,
+     "exported": 2335.93,
      "end": 108,
      "reconcile": 0,
      "byRegion": {
       "mercurio": {
-       "prod": 4365.93,
+       "prod": 2703.93,
        "use": 0,
-       "exp": 3997.93
+       "exp": 2335.93
       }
      }
     }
@@ -4694,48 +4830,48 @@
     },
     "40": {
      "prod": {
-      "ore": 1413614.93,
-      "metal": 689540.2,
-      "alloy": 330067.56,
-      "comp": 24638.25,
-      "ice": 17271.46,
+      "ore": 1452408.34,
+      "metal": 713053.06,
+      "alloy": 328908.85,
+      "comp": 6076,
+      "ice": 30746.56,
       "gas": 31076.81,
-      "fuel": 40831.13,
-      "rare": 2091,
-      "cell": 1601.6,
-      "fusion": 787.31,
-      "hull": 6.7,
+      "fuel": 40008.78,
+      "rare": 2107,
+      "cell": 1657.4,
+      "fusion": 934.56,
+      "hull": 51.89,
       "cryo": 0,
       "exotic": 0,
-      "sat": 464.01
+      "sat": 476.03
      },
      "use": {
-      "ore": 1008757.57,
-      "metal": 417337.87,
-      "alloy": 25086.85,
-      "comp": 925.4,
-      "ice": 11483.66,
-      "gas": 22156.97,
+      "ore": 1047007.31,
+      "metal": 397832.63,
+      "alloy": 6657.26,
+      "comp": 1007.1,
+      "ice": 10938.77,
+      "gas": 22258.97,
       "fuel": 0,
-      "rare": 1058.23,
-      "cell": 1368.6,
-      "fusion": 0,
+      "rare": 1094.21,
+      "cell": 1403.4,
+      "fusion": 109.64,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
       "sat": 0
      },
      "spent": {
-      "ore": 2600,
-      "metal": 33641,
-      "alloy": 12131,
-      "comp": 3041,
+      "ore": 2994,
+      "metal": 34826,
+      "alloy": 12552,
+      "comp": 3166,
       "ice": 0,
       "gas": 0,
-      "fuel": 1371,
+      "fuel": 1401,
       "rare": 0,
-      "cell": 43,
-      "fusion": 51,
+      "cell": 64,
+      "fusion": 61,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
@@ -4758,20 +4894,20 @@
       "sat": 0
      },
      "exp": {
-      "ore": 398303.07,
-      "metal": 224984.54,
-      "alloy": 286754.71,
-      "comp": 18364.25,
-      "ice": 4027.79,
-      "gas": 8173.62,
-      "fuel": 27378.24,
+      "ore": 398837.03,
+      "metal": 262447.81,
+      "alloy": 301904.59,
+      "comp": 0,
+      "ice": 18047.78,
+      "gas": 8071.62,
+      "fuel": 26726.24,
       "rare": 0,
       "cell": 0,
       "fusion": 0,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
-      "sat": 339.01
+      "sat": 306.03
      },
      "routeFuel": {
       "ore": 0,
@@ -4780,7 +4916,7 @@
       "comp": 0,
       "ice": 0,
       "gas": 0,
-      "fuel": 7798,
+      "fuel": 8259,
       "rare": 0,
       "cell": 0,
       "fusion": 0,
@@ -4791,8 +4927,8 @@
      },
      "project": {
       "ore": 0,
-      "metal": 10100,
-      "alloy": 3330,
+      "metal": 15041.62,
+      "alloy": 5430,
       "comp": 230,
       "ice": 0,
       "gas": 0,
@@ -4800,111 +4936,111 @@
       "rare": 40,
       "cell": 70,
       "fusion": 50,
-      "hull": 6,
+      "hull": 14,
       "cryo": 0,
       "exotic": 0,
-      "sat": 65
+      "sat": 110
      }
     }
    },
    "fullPct": {
-    "lua.ore": 88,
-    "lua.metal": 80,
-    "lua.alloy": 87,
-    "lua.ice": 93,
-    "lua.fuel": 46,
-    "marte.ore": 94,
-    "marte.metal": 20,
-    "marte.alloy": 85,
-    "marte.comp": 79,
-    "cinturao.ore": 97,
-    "cinturao.metal": 87,
+    "lua.ore": 87,
+    "lua.metal": 79,
+    "lua.alloy": 85,
+    "lua.ice": 92,
+    "lua.fuel": 45,
+    "marte.ore": 92,
+    "marte.metal": 43,
+    "marte.alloy": 84,
+    "marte.comp": 74,
+    "cinturao.ore": 95,
+    "cinturao.metal": 90,
     "cinturao.alloy": 93,
-    "cinturao.rare": 89,
-    "mercurio.ore": 49,
-    "mercurio.metal": 62,
-    "mercurio.alloy": 76,
-    "mercurio.comp": 12,
-    "mercurio.rare": 14,
-    "mercurio.cell": 77,
-    "mercurio.sat": 77,
-    "venus.gas": 75,
-    "venus.fuel": 91,
-    "jupiter.gas": 41,
-    "jupiter.fuel": 69,
-    "jupiter.fusion": 71,
-    "saturno.alloy": 48,
-    "saturno.comp": 58,
+    "cinturao.rare": 91,
+    "mercurio.ore": 36,
+    "mercurio.metal": 56,
+    "mercurio.alloy": 74,
+    "mercurio.comp": 28,
+    "mercurio.rare": 10,
+    "mercurio.cell": 58,
+    "mercurio.sat": 78,
+    "venus.gas": 64,
+    "venus.fuel": 86,
+    "jupiter.gas": 0,
+    "jupiter.fuel": 26,
+    "jupiter.fusion": 57,
+    "saturno.alloy": 47,
+    "saturno.comp": 65,
     "saturno.ice": 99,
     "saturno.fuel": 95,
-    "saturno.hull": 66,
+    "saturno.hull": 65,
     "urano.ice": 99,
     "urano.fuel": 94,
-    "urano.rare": 8,
-    "urano.cryo": 75,
-    "netuno.ice": 98,
+    "urano.rare": 0,
+    "urano.cryo": 78,
+    "netuno.ice": 99,
     "netuno.fuel": 0,
-    "netuno.fusion": 0,
+    "netuno.fusion": 1,
     "netuno.cryo": 0,
-    "netuno.exotic": 8
+    "netuno.exotic": 33
    },
    "emptyPct": {
     "lua.ore": 0,
-    "lua.metal": 1,
+    "lua.metal": 2,
     "lua.alloy": 5,
     "lua.ice": 2,
     "lua.fuel": 5,
     "marte.ore": 0,
-    "marte.metal": 7,
+    "marte.metal": 2,
     "marte.alloy": 0,
     "marte.comp": 4,
     "cinturao.ore": 0,
     "cinturao.metal": 0,
     "cinturao.alloy": 0,
     "cinturao.rare": 1,
-    "mercurio.ore": 37,
-    "mercurio.metal": 34,
-    "mercurio.alloy": 19,
-    "mercurio.comp": 12,
-    "mercurio.rare": 6,
-    "mercurio.cell": 6,
-    "mercurio.sat": 15,
+    "mercurio.ore": 52,
+    "mercurio.metal": 40,
+    "mercurio.alloy": 20,
+    "mercurio.comp": 9,
+    "mercurio.rare": 21,
+    "mercurio.cell": 21,
+    "mercurio.sat": 12,
     "venus.gas": 0,
     "venus.fuel": 0,
-    "jupiter.gas": 12,
-    "jupiter.fuel": 3,
-    "jupiter.fusion": 2,
-    "saturno.alloy": 23,
-    "saturno.comp": 4,
+    "jupiter.gas": 15,
+    "jupiter.fuel": 0,
+    "jupiter.fusion": 4,
+    "saturno.alloy": 29,
+    "saturno.comp": 0,
     "saturno.ice": 0,
     "saturno.fuel": 0,
-    "saturno.hull": 15,
+    "saturno.hull": 8,
     "urano.ice": 0,
     "urano.fuel": 0,
-    "urano.rare": 10,
+    "urano.rare": 6,
     "urano.cryo": 0,
     "netuno.ice": 0,
     "netuno.fuel": 100,
-    "netuno.fusion": 41,
-    "netuno.cryo": 12,
-    "netuno.exotic": 45
+    "netuno.fusion": 25,
+    "netuno.cryo": 10,
+    "netuno.exotic": 49
    },
    "why": {
     "lua.extrator": {
-     "operando": 90,
-     "full:ore": 10
+     "operando": 89,
+     "full:ore": 11
     },
     "lua.refinaria": {
-     "operando": 91,
-     "full:metal": 9
+     "operando": 90,
+     "full:metal": 10
     },
     "lua.esc_gelo": {
-     "operando": 54,
-     "full:ice": 46
+     "operando": 56,
+     "full:ice": 44
     },
     "lua.eletrolisador": {
-     "operando": 52,
-     "full:fuel": 48
+     "operando": 55,
+     "full:fuel": 45
     },
     "lua.forja": {
      "operando": 90,
@@ -4926,25 +5062,25 @@
      "full:alloy": 0
     },
     "marte.fabrica": {
-     "operando": 82,
+     "operando": 32,
      "hold:metal": 3,
      "hold:alloy": 0,
-     "full:comp": 15
+     "full:comp": 64
     },
     "cinturao.min_ast": {
      "operando": 100
     },
     "cinturao.refinaria": {
-     "operando": 54,
-     "full:metal": 46
+     "operando": 57,
+     "full:metal": 43
     },
     "cinturao.garimpo": {
-     "operando": 10,
-     "full:rare": 90
+     "operando": 9,
+     "full:rare": 91
     },
     "cinturao.forja": {
-     "operando": 52,
-     "full:alloy": 48,
+     "operando": 55,
+     "full:alloy": 45,
      "hold:metal": 0
     },
     "mercurio.extrator": {
@@ -4956,19 +5092,19 @@
      "full:metal": 1
     },
     "mercurio.fotovoltaica": {
-     "operando": 75,
-     "full:cell": 18,
-     "no:rare": 6
+     "operando": 62,
+     "full:cell": 16,
+     "no:rare": 22
     },
     "mercurio.forja": {
      "operando": 99,
      "full:alloy": 1
     },
     "mercurio.fab_sat": {
-     "no:comp": 12,
-     "operando": 74,
-     "full:sat": 8,
-     "no:cell": 6
+     "no:comp": 10,
+     "operando": 60,
+     "full:sat": 9,
+     "no:cell": 21
     },
     "venus.plataforma": {
      "operando": 100
@@ -4977,55 +5113,57 @@
      "operando": 100
     },
     "jupiter.ref_fusao": {
-     "operando": 19,
-     "no:gas": 11,
-     "full:fusion": 70
+     "operando": 58,
+     "no:gas": 15,
+     "full:fusion": 27
     },
     "jupiter.quimica": {
-     "operando": 3,
-     "no:gas": 11,
-     "full:fuel": 86
+     "operando": 41,
+     "no:gas": 16,
+     "full:fuel": 44
     },
     "saturno.esc_gelo": {
      "operando": 100
     },
     "saturno.eletrolisador": {
-     "operando": 5,
-     "full:fuel": 95
+     "operando": 6,
+     "full:fuel": 94
     },
     "saturno.estaleiro": {
-     "operando": 2,
-     "no:alloy": 23,
-     "hold:alloy": 4,
-     "no:comp": 5,
-     "full:hull": 66
+     "no:alloy": 28,
+     "hold:alloy": 3,
+     "operando": 3,
+     "full:hull": 65
     },
     "urano.esc_gelo": {
-     "operando": 98,
-     "full:ice": 2
+     "operando": 94,
+     "full:ice": 6
     },
     "urano.criogenico": {
      "operando": 17,
-     "no:rare": 8,
-     "full:cryo": 75
+     "no:rare": 6,
+     "full:cryo": 77
     },
     "urano.eletrolisador": {
-     "operando": 78,
-     "full:fuel": 22
+     "operando": 81,
+     "full:fuel": 19
     },
     "netuno.esc_gelo": {
-     "operando": 3,
-     "full:ice": 97
+     "operando": 2,
+     "full:ice": 74,
+     "energy": 24
     },
     "netuno.obs_profundo": {
-     "operando": 87,
-     "no:cryo": 13
+     "operando": 83,
+     "no:cryo": 9,
+     "hold:cryo": 7,
+     "energy": 1
     },
     "netuno.lab_anomalia": {
-     "operando": 27,
-     "no:fusion": 54,
-     "no:cryo": 8,
-     "full:exotic": 11
+     "operando": 57,
+     "hold:cryo": 8,
+     "no:cryo": 2,
+     "full:exotic": 34
     }
    },
    "energy": {
@@ -5057,7 +5195,7 @@
      ],
      [
       30,
-      434,
+      389,
       221
      ],
      [
@@ -5067,48 +5205,43 @@
      ],
      [
       40,
-      475,
-      243
+      524,
+      245
      ],
      [
       45,
       524,
-      247
+      245
      ],
      [
       50,
-      524,
+      747,
       253
      ],
      [
       55,
-      747,
-      255
+      871,
+      253
      ],
      [
       60,
       871,
-      255
+      271
      ],
      [
       65,
       871,
-      255
+      275
      ],
      [
       70,
       871,
-      255
+      275
      ],
      [
       75,
       871,
-      273
-     ],
-     [
-      80,
-      871,
-      273
+      275
      ]
     ],
     "marte": [
@@ -5134,56 +5267,51 @@
      ],
      [
       30,
-      444,
-      249
+      398,
+      246
      ],
      [
       35,
       444,
-      289
+      276
      ],
      [
       40,
-      486,
-      289
+      536,
+      282
      ],
      [
       45,
       536,
-      288
+      282
      ],
      [
       50,
-      536,
-      330
+      764,
+      321
      ],
      [
       55,
-      764,
-      331
+      892,
+      341
      ],
      [
       60,
       892,
-      331
+      370
      ],
      [
       65,
       892,
-      331
+      370
      ],
      [
       70,
       892,
-      331
+      370
      ],
      [
       75,
-      892,
-      360
-     ],
-     [
-      80,
       892,
       370
      ]
@@ -5201,7 +5329,7 @@
      ],
      [
       30,
-      214,
+      192,
       110
      ],
      [
@@ -5211,8 +5339,8 @@
      ],
      [
       40,
-      234,
-      119
+      258,
+      111
      ],
      [
       45,
@@ -5221,38 +5349,33 @@
      ],
      [
       50,
-      258,
-      114
+      368,
+      275
      ],
      [
       55,
       429,
-      294
+      275
      ],
      [
       60,
-      501,
-      294
+      429,
+      295
      ],
      [
       65,
-      501,
-      294
+      429,
+      295
      ],
      [
       70,
-      501,
-      294
+      429,
+      295
      ],
      [
       75,
-      501,
-      315
-     ],
-     [
-      80,
-      501,
-      315
+      429,
+      295
      ]
     ],
     "mercurio": [
@@ -5268,8 +5391,8 @@
      ],
      [
       30,
-      476,
-      204
+      427,
+      190
      ],
      [
       35,
@@ -5278,8 +5401,8 @@
      ],
      [
       40,
-      521,
-      218
+      575,
+      229
      ],
      [
       45,
@@ -5288,38 +5411,33 @@
      ],
      [
       50,
-      575,
-      232
+      819,
+      252
      ],
      [
       55,
-      819,
-      258
+      955,
+      280
      ],
      [
       60,
       955,
-      287
+      290
      ],
      [
       65,
       955,
-      287
+      290
      ],
      [
       70,
       955,
-      287
+      290
      ],
      [
       75,
       955,
-      306
-     ],
-     [
-      80,
-      955,
-      306
+      299
      ]
     ],
     "venus": [
@@ -5330,7 +5448,7 @@
      ],
      [
       30,
-      120,
+      108,
       47
      ],
      [
@@ -5340,8 +5458,8 @@
      ],
      [
       40,
-      132,
-      47
+      145,
+      43
      ],
      [
       45,
@@ -5350,12 +5468,12 @@
      ],
      [
       50,
-      145,
+      207,
       43
      ],
      [
       55,
-      207,
+      241,
       43
      ],
      [
@@ -5375,11 +5493,6 @@
      ],
      [
       75,
-      241,
-      43
-     ],
-     [
-      80,
       241,
       43
      ]
@@ -5387,180 +5500,165 @@
     "jupiter": [
      [
       30,
-      139,
+      143,
       25
      ],
      [
       35,
-      839,
+      1155,
       62
      ],
      [
       40,
-      1222,
-      129
+      1394,
+      96
      ],
      [
       45,
-      1348,
-      116
+      1394,
+      96
      ],
      [
       50,
-      1348,
-      116
+      1987,
+      96
      ],
      [
       55,
-      1921,
-      116
+      1999,
+      96
      ],
      [
       60,
-      1922,
-      138
+      1999,
+      96
      ],
      [
       65,
-      1922,
-      138
+      1999,
+      117
      ],
      [
       70,
-      1922,
-      138
+      1999,
+      117
      ],
      [
       75,
-      1922,
-      138
-     ],
-     [
-      80,
-      1922,
-      138
+      1999,
+      117
      ]
     ],
     "saturno": [
      [
       40,
-      154,
-      96
+      338,
+      132
      ],
      [
       45,
-      506,
+      674,
       132
      ],
      [
       50,
-      842,
+      1200,
       136
      ],
      [
       55,
-      1200,
+      1201,
       136
      ],
      [
       60,
       1201,
-      136
+      146
      ],
      [
       65,
       1201,
-      136
+      148
      ],
      [
       70,
       1201,
-      136
+      148
      ],
      [
       75,
       1201,
-      146
-     ],
-     [
-      80,
-      1201,
-      146
+      148
      ]
     ],
     "urano": [
      [
       50,
-      336,
+      479,
       58
      ],
      [
       55,
       479,
-      60
+      62
      ],
      [
       60,
       479,
-      64
+      62
      ],
      [
       65,
       479,
-      64
+      70
      ],
      [
       70,
       479,
-      64
+      70
      ],
      [
       75,
       479,
-      64
-     ],
-     [
-      80,
-      479,
-      64
+      70
      ]
     ],
     "netuno": [
      [
-      60,
+      55,
       479,
       63
      ],
      [
+      60,
+      0,
+      1
+     ],
+     [
       65,
-      479,
+      958,
       106
      ],
      [
       70,
-      479,
-      106
+      958,
+      191
      ],
      [
       75,
-      479,
-      148
-     ],
-     [
-      80,
-      479,
+      958,
       191
      ]
     ]
    },
    "data": {
-    "totalValue": 54940732.92
+    "totalValue": 48040041.21
    }
   },
   {
    "universe": "ancestral",
    "name": "Universo Ancestral",
-   "collapseMin": 77,
+   "collapseMin": 74,
    "regionsAtMin": {
     "lua": 0,
     "marte": 8,
@@ -5568,43 +5666,43 @@
     "mercurio": 18,
     "venus": 25,
     "jupiter": 30,
-    "saturno": 41,
-    "urano": 49,
-    "netuno": 58
+    "saturno": 37,
+    "urano": 47,
+    "netuno": 54
    },
    "resources": {
     "ore": {
      "name": "Minério",
      "value": 1,
      "start": 0,
-     "produced": 7007521.76,
+     "produced": 6431138.4,
      "gained": 30,
-     "usedAsInput": 5960849.13,
-     "spent": 5075,
+     "usedAsInput": 5905543.98,
+     "spent": 4604,
      "routeFuel": 0,
      "project": 0,
-     "exported": 1035687.63,
-     "end": 5940,
+     "exported": 516970.41,
+     "end": 4050,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 1605680.2,
-       "use": 1603442.2,
+       "prod": 1609309,
+       "use": 1607071,
        "exp": 0
       },
       "marte": {
-       "prod": 2017263.28,
-       "use": 2012317.28,
+       "prod": 1981655.12,
+       "use": 1978100.12,
        "exp": 0
       },
       "cinturao": {
-       "prod": 2184037.2,
-       "use": 1144968.57,
-       "exp": 1035687.63
+       "prod": 1644767.28,
+       "use": 1125385.87,
+       "exp": 516970.41
       },
       "mercurio": {
-       "prod": 1200541.08,
-       "use": 1200121.08,
+       "prod": 1195407,
+       "use": 1194987,
        "exp": 0
       }
      }
@@ -5613,35 +5711,35 @@
      "name": "Metal",
      "value": 3,
      "start": 25,
-     "produced": 3781726.67,
+     "produced": 3755888.49,
      "gained": 1155,
-     "usedAsInput": 2650481.14,
-     "spent": 62656,
+     "usedAsInput": 2530408.02,
+     "spent": 55450,
      "routeFuel": 0,
-     "project": 120920.11,
-     "exported": 943900.24,
-     "end": 4924.17,
+     "project": 127200,
+     "exported": 1037610.47,
+     "end": 6375,
      "reconcile": 25,
      "byRegion": {
       "lua": {
-       "prod": 1603023.2,
-       "use": 797812.24,
-       "exp": 731418.96
+       "prod": 1606652,
+       "use": 799587.24,
+       "exp": 727559.76
       },
       "marte": {
-       "prod": 1006158.64,
-       "use": 980985.31,
-       "exp": 44999.16
+       "prod": 989050.06,
+       "use": 929588.29,
+       "exp": 74121.77
       },
       "cinturao": {
-       "prod": 572484.28,
-       "use": 459877.2,
-       "exp": 103931.08
+       "prod": 562692.93,
+       "use": 408306.77,
+       "exp": 163086.16
       },
       "mercurio": {
-       "prod": 600060.54,
-       "use": 411806.39,
-       "exp": 63551.04
+       "prod": 597493.5,
+       "use": 392925.73,
+       "exp": 72842.77
       }
      }
     },
@@ -5649,39 +5747,39 @@
      "name": "Ligas",
      "value": 10,
      "start": 0,
-     "produced": 2111146.57,
+     "produced": 1965950.77,
      "gained": 815,
-     "usedAsInput": 141156.37,
-     "spent": 24603,
+     "usedAsInput": 194602.52,
+     "spent": 25203,
      "routeFuel": 0,
      "project": 38930,
-     "exported": 1902369.21,
-     "end": 4903,
+     "exported": 1703950.59,
+     "end": 4079.67,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 677314.68,
+       "prod": 679800.93,
        "use": 0,
-       "exp": 661763.68
+       "exp": 660246.93
       },
       "marte": {
-       "prod": 961377.66,
-       "use": 139446.37,
-       "exp": 809673.29
+       "prod": 841021.17,
+       "use": 193047.19,
+       "exp": 639741.98
       },
       "cinturao": {
-       "prod": 268104.42,
+       "prod": 238021.66,
        "use": 0,
-       "exp": 266270.42
+       "exp": 236542.66
       },
       "mercurio": {
-       "prod": 204349.82,
+       "prod": 207107.01,
        "use": 0,
-       "exp": 164661.82
+       "exp": 167419.01
       },
       "saturno": {
        "prod": 0,
-       "use": 1710,
+       "use": 1555.33,
        "exp": 0
       }
      }
@@ -5690,29 +5788,29 @@
      "name": "Componentes",
      "value": 30,
      "start": 0,
-     "produced": 164198.11,
+     "produced": 233399.66,
      "gained": 260,
-     "usedAsInput": 14268.8,
-     "spent": 6312,
+     "usedAsInput": 8167.17,
+     "spent": 6415,
      "routeFuel": 0,
      "project": 3230,
-     "exported": 136661.11,
-     "end": 3986.2,
+     "exported": 212488.66,
+     "end": 3358.83,
      "reconcile": 0,
      "byRegion": {
       "marte": {
-       "prod": 164198.11,
+       "prod": 233399.66,
        "use": 0,
-       "exp": 136661.11
+       "exp": 212488.66
       },
       "mercurio": {
        "prod": 0,
-       "use": 13413.8,
+       "use": 7389.5,
        "exp": 0
       },
       "saturno": {
        "prod": 0,
-       "use": 855,
+       "use": 777.67,
        "exp": 0
       }
      }
@@ -5721,30 +5819,30 @@
      "name": "Gelo",
      "value": 1,
      "start": 0,
-     "produced": 479585.55,
+     "produced": 420240.35,
      "gained": 0,
-     "usedAsInput": 107443.38,
+     "usedAsInput": 99263.65,
      "spent": 0,
      "routeFuel": 0,
      "project": 0,
-     "exported": 368992.17,
+     "exported": 317826.7,
      "end": 3150,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 70745.38,
-       "use": 69215.38,
+       "prod": 69512.42,
+       "use": 67982.42,
        "exp": 0
       },
       "saturno": {
-       "prod": 257294.61,
-       "use": 2070.86,
-       "exp": 254773.75
+       "prod": 271317.36,
+       "use": 2259.43,
+       "exp": 268607.93
       },
       "urano": {
-       "prod": 150825.57,
-       "use": 36157.14,
-       "exp": 114218.42
+       "prod": 78690.57,
+       "use": 29021.8,
+       "exp": 49218.77
       },
       "netuno": {
        "prod": 720,
@@ -5757,24 +5855,24 @@
      "name": "Gases",
      "value": 2,
      "start": 0,
-     "produced": 199602.13,
+     "produced": 118818.13,
      "gained": 150,
-     "usedAsInput": 133079.33,
+     "usedAsInput": 85641.73,
      "spent": 0,
      "routeFuel": 0,
      "project": 0,
-     "exported": 64693.13,
-     "end": 1979.67,
+     "exported": 31796.6,
+     "end": 1529.8,
      "reconcile": 0,
      "byRegion": {
       "venus": {
-       "prod": 199602.13,
-       "use": 123760,
-       "exp": 64693.13
+       "prod": 118818.13,
+       "use": 73893.33,
+       "exp": 31796.6
       },
       "jupiter": {
        "prod": 0,
-       "use": 9319.33,
+       "use": 11748.4,
        "exp": 0
       }
      }
@@ -5783,40 +5881,35 @@
      "name": "Combustível",
      "value": 4,
      "start": 0,
-     "produced": 238485,
+     "produced": 170388.6,
      "gained": 200,
      "usedAsInput": 0,
-     "spent": 4415,
-     "routeFuel": 32751,
+     "spent": 4696,
+     "routeFuel": 36978,
      "project": 26500,
-     "exported": 170083,
-     "end": 4936,
+     "exported": 97285.6,
+     "end": 5129,
      "reconcile": 0,
      "byRegion": {
       "lua": {
-       "prod": 58570,
+       "prod": 57513,
        "use": 0,
        "exp": 0
       },
       "venus": {
-       "prod": 148178,
+       "prod": 88338,
        "use": 0,
-       "exp": 143524
-      },
-      "jupiter": {
-       "prod": 1364,
-       "use": 0,
-       "exp": 0
+       "exp": 76815
       },
       "saturno": {
-       "prod": 1812,
+       "prod": 1977,
        "use": 0,
        "exp": 0
       },
       "urano": {
-       "prod": 28561,
+       "prod": 22560.6,
        "use": 0,
-       "exp": 26559
+       "exp": 20470.6
       }
      }
     },
@@ -5824,29 +5917,29 @@
      "name": "Metais Raros",
      "value": 20,
      "start": 0,
-     "produced": 194894.08,
+     "produced": 182996.8,
      "gained": 50,
-     "usedAsInput": 19002.5,
+     "usedAsInput": 11236.71,
      "spent": 47,
      "routeFuel": 0,
      "project": 40,
-     "exported": 174071.08,
-     "end": 1783.5,
+     "exported": 170701.8,
+     "end": 1021.29,
      "reconcile": 0,
      "byRegion": {
       "cinturao": {
-       "prod": 194894.08,
+       "prod": 182996.8,
        "use": 0,
-       "exp": 174071.08
+       "exp": 170701.8
       },
       "mercurio": {
        "prod": 0,
-       "use": 18416.5,
+       "use": 10697,
        "exp": 0
       },
       "urano": {
        "prod": 0,
-       "use": 586,
+       "use": 539.71,
        "exp": 0
       }
      }
@@ -5855,20 +5948,20 @@
      "name": "Células Solares",
      "value": 60,
      "start": 0,
-     "produced": 27613.75,
+     "produced": 16034.5,
      "gained": 0,
-     "usedAsInput": 20120.7,
+     "usedAsInput": 11084.25,
      "spent": 187,
      "routeFuel": 0,
      "project": 70,
-     "exported": 6939.05,
-     "end": 297,
+     "exported": 4693.25,
+     "end": 0,
      "reconcile": 0,
      "byRegion": {
       "mercurio": {
-       "prod": 27613.75,
-       "use": 20120.7,
-       "exp": 6939.05
+       "prod": 16034.5,
+       "use": 11084.25,
+       "exp": 4693.25
       }
      }
     },
@@ -5876,24 +5969,34 @@
      "name": "Comb. de Fusão",
      "value": 80,
      "start": 0,
-     "produced": 2232,
-     "gained": 70,
-     "usedAsInput": 316,
+     "produced": 3785.53,
+     "gained": 140,
+     "usedAsInput": 1510.93,
      "spent": 114,
      "routeFuel": 0,
      "project": 160,
      "exported": 0,
-     "end": 1712,
+     "end": 2140.6,
      "reconcile": 0,
      "byRegion": {
       "jupiter": {
-       "prod": 2232,
-       "use": 0,
+       "prod": 3785.53,
+       "use": 478.53,
+       "exp": 0
+      },
+      "saturno": {
+       "prod": 0,
+       "use": 467.6,
+       "exp": 0
+      },
+      "urano": {
+       "prod": 0,
+       "use": 160,
        "exp": 0
       },
       "netuno": {
        "prod": 0,
-       "use": 316,
+       "use": 404.8,
        "exp": 0
       }
      }
@@ -5902,18 +6005,18 @@
      "name": "Módulos Estruturais",
      "value": 200,
      "start": 0,
-     "produced": 638,
+     "produced": 580,
      "gained": 2,
      "usedAsInput": 0,
      "spent": 20,
      "routeFuel": 0,
      "project": 195,
      "exported": 0,
-     "end": 425,
+     "end": 367,
      "reconcile": 0,
      "byRegion": {
       "saturno": {
-       "prod": 638,
+       "prod": 580,
        "use": 0,
        "exp": 0
       }
@@ -5923,24 +6026,24 @@
      "name": "Supercondutores",
      "value": 150,
      "start": 0,
-     "produced": 2143,
+     "produced": 2011,
      "gained": 10,
-     "usedAsInput": 659.3,
+     "usedAsInput": 527.33,
      "spent": 16,
      "routeFuel": 0,
      "project": 200,
      "exported": 0,
-     "end": 1277.7,
+     "end": 1277.67,
      "reconcile": 0,
      "byRegion": {
       "urano": {
-       "prod": 2143,
+       "prod": 2011,
        "use": 0,
        "exp": 0
       },
       "netuno": {
        "prod": 0,
-       "use": 659.3,
+       "use": 527.33,
        "exp": 0
       }
      }
@@ -5970,20 +6073,20 @@
      "name": "Satélites Dyson",
      "value": 400,
      "start": 0,
-     "produced": 6706.9,
+     "produced": 3694.75,
      "gained": 0,
      "usedAsInput": 0,
      "spent": 0,
      "routeFuel": 0,
      "project": 260,
-     "exported": 6298.9,
+     "exported": 3286.75,
      "end": 148,
      "reconcile": 0,
      "byRegion": {
       "mercurio": {
-       "prod": 6706.9,
+       "prod": 3694.75,
        "use": 0,
-       "exp": 6298.9
+       "exp": 3286.75
       }
      }
     }
@@ -6105,32 +6208,32 @@
     },
     "40": {
      "prod": {
-      "ore": 1438479.07,
-      "metal": 812638.96,
-      "alloy": 384846.82,
-      "comp": 21466.14,
-      "ice": 15043.95,
+      "ore": 1429346.3,
+      "metal": 810567.88,
+      "alloy": 374748.91,
+      "comp": 23601.73,
+      "ice": 20378.67,
       "gas": 31381.33,
-      "fuel": 33759.58,
+      "fuel": 34675.4,
       "rare": 48097.6,
-      "cell": 4302.45,
-      "fusion": 765.9,
-      "hull": 0,
+      "cell": 4381.2,
+      "fusion": 918.34,
+      "hull": 23.38,
       "cryo": 0,
       "exotic": 0,
-      "sat": 737.5
+      "sat": 756.5
      },
      "use": {
-      "ore": 1188453.43,
-      "metal": 486975.92,
-      "alloy": 21258.97,
-      "comp": 1475,
-      "ice": 13683.95,
-      "gas": 22917,
+      "ore": 1179981.6,
+      "metal": 478711.6,
+      "alloy": 23315.55,
+      "comp": 1548.5,
+      "ice": 14945.17,
+      "gas": 23066.81,
       "fuel": 0,
-      "rare": 2875.63,
-      "cell": 2212.5,
-      "fusion": 0,
+      "rare": 2928.13,
+      "cell": 2269.5,
+      "fusion": 93.8,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
@@ -6138,15 +6241,15 @@
      },
      "spent": {
       "ore": 2872,
-      "metal": 29789,
-      "alloy": 9989,
-      "comp": 2355,
+      "metal": 33169,
+      "alloy": 12652,
+      "comp": 3035,
       "ice": 0,
       "gas": 0,
-      "fuel": 1204,
+      "fuel": 1567,
       "rare": 0,
-      "cell": 96,
-      "fusion": 51,
+      "cell": 136,
+      "fusion": 61,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
@@ -6154,15 +6257,15 @@
      },
      "gain": {
       "ore": 30,
-      "metal": 655,
-      "alloy": 275,
-      "comp": 50,
+      "metal": 805,
+      "alloy": 435,
+      "comp": 110,
       "ice": 0,
       "gas": 150,
       "fuel": 200,
       "rare": 20,
       "cell": 0,
-      "fusion": 0,
+      "fusion": 20,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
@@ -6170,19 +6273,19 @@
      },
      "exp": {
       "ore": 243583.64,
-      "metal": 282450.04,
-      "alloy": 347423.85,
-      "comp": 15370.14,
-      "ice": 0,
-      "gas": 7734.33,
-      "fuel": 21610,
-      "rare": 43911.6,
-      "cell": 1659.95,
+      "metal": 285195.06,
+      "alloy": 332224.9,
+      "comp": 16812.73,
+      "ice": 3673.5,
+      "gas": 7523.33,
+      "fuel": 20920,
+      "rare": 43859.6,
+      "cell": 1665.95,
       "fusion": 0,
       "hull": 0,
       "cryo": 0,
       "exotic": 0,
-      "sat": 540.5
+      "sat": 538.5
      },
      "routeFuel": {
       "ore": 0,
@@ -6191,7 +6294,7 @@
       "comp": 0,
       "ice": 0,
       "gas": 0,
-      "fuel": 7400,
+      "fuel": 8134,
       "rare": 0,
       "cell": 0,
       "fusion": 0,
@@ -6202,120 +6305,120 @@
      },
      "project": {
       "ore": 0,
-      "metal": 10100,
-      "alloy": 3330,
+      "metal": 10737.22,
+      "alloy": 4535.46,
       "comp": 230,
       "ice": 0,
       "gas": 0,
-      "fuel": 782.58,
+      "fuel": 800,
       "rare": 40,
       "cell": 70,
       "fusion": 50,
-      "hull": 0,
+      "hull": 13,
       "cryo": 0,
       "exotic": 0,
-      "sat": 65
+      "sat": 110
      }
     }
    },
    "fullPct": {
-    "lua.ore": 89,
-    "lua.metal": 80,
+    "lua.ore": 88,
+    "lua.metal": 78,
     "lua.alloy": 85,
-    "lua.ice": 53,
+    "lua.ice": 74,
     "lua.fuel": 30,
     "marte.ore": 97,
-    "marte.metal": 33,
-    "marte.alloy": 88,
-    "marte.comp": 75,
-    "cinturao.ore": 98,
+    "marte.metal": 46,
+    "marte.alloy": 89,
+    "marte.comp": 78,
+    "cinturao.ore": 96,
     "cinturao.metal": 88,
-    "cinturao.alloy": 95,
-    "cinturao.rare": 87,
-    "mercurio.ore": 38,
-    "mercurio.metal": 37,
-    "mercurio.alloy": 78,
-    "mercurio.comp": 4,
+    "cinturao.alloy": 94,
+    "cinturao.rare": 88,
+    "mercurio.ore": 24,
+    "mercurio.metal": 42,
+    "mercurio.alloy": 77,
+    "mercurio.comp": 16,
     "mercurio.rare": 3,
-    "mercurio.cell": 77,
-    "mercurio.sat": 69,
-    "venus.gas": 75,
-    "venus.fuel": 91,
-    "jupiter.gas": 39,
-    "jupiter.fuel": 64,
+    "mercurio.cell": 51,
+    "mercurio.sat": 67,
+    "venus.gas": 66,
+    "venus.fuel": 80,
+    "jupiter.gas": 2,
+    "jupiter.fuel": 9,
     "jupiter.fusion": 55,
-    "saturno.alloy": 45,
-    "saturno.comp": 50,
-    "saturno.ice": 98,
-    "saturno.fuel": 92,
-    "saturno.hull": 59,
+    "saturno.alloy": 44,
+    "saturno.comp": 51,
+    "saturno.ice": 99,
+    "saturno.fuel": 91,
+    "saturno.hull": 58,
     "urano.ice": 98,
-    "urano.fuel": 90,
-    "urano.rare": 7,
-    "urano.cryo": 68,
+    "urano.fuel": 88,
+    "urano.rare": 13,
+    "urano.cryo": 74,
     "netuno.ice": 94,
     "netuno.fuel": 0,
-    "netuno.fusion": 0,
-    "netuno.cryo": 0,
-    "netuno.exotic": 13
+    "netuno.fusion": 1,
+    "netuno.cryo": 7,
+    "netuno.exotic": 34
    },
    "emptyPct": {
     "lua.ore": 2,
     "lua.metal": 1,
     "lua.alloy": 5,
-    "lua.ice": 19,
+    "lua.ice": 5,
     "lua.fuel": 5,
     "marte.ore": 0,
-    "marte.metal": 19,
+    "marte.metal": 4,
     "marte.alloy": 2,
     "marte.comp": 0,
     "cinturao.ore": 0,
     "cinturao.metal": 0,
     "cinturao.alloy": 0,
     "cinturao.rare": 0,
-    "mercurio.ore": 58,
-    "mercurio.metal": 59,
+    "mercurio.ore": 71,
+    "mercurio.metal": 53,
     "mercurio.alloy": 16,
-    "mercurio.comp": 19,
-    "mercurio.rare": 6,
-    "mercurio.cell": 3,
+    "mercurio.comp": 20,
+    "mercurio.rare": 23,
+    "mercurio.cell": 20,
     "mercurio.sat": 11,
     "venus.gas": 0,
     "venus.fuel": 0,
-    "jupiter.gas": 22,
-    "jupiter.fuel": 9,
-    "jupiter.fusion": 1,
-    "saturno.alloy": 32,
-    "saturno.comp": 3,
+    "jupiter.gas": 17,
+    "jupiter.fuel": 0,
+    "jupiter.fusion": 5,
+    "saturno.alloy": 30,
+    "saturno.comp": 5,
     "saturno.ice": 0,
     "saturno.fuel": 0,
-    "saturno.hull": 16,
-    "urano.ice": 1,
+    "saturno.hull": 20,
+    "urano.ice": 0,
     "urano.fuel": 1,
     "urano.rare": 6,
-    "urano.cryo": 1,
+    "urano.cryo": 0,
     "netuno.ice": 0,
     "netuno.fuel": 100,
-    "netuno.fusion": 36,
-    "netuno.cryo": 8,
-    "netuno.exotic": 48
+    "netuno.fusion": 26,
+    "netuno.cryo": 21,
+    "netuno.exotic": 50
    },
    "why": {
     "lua.extrator": {
-     "operando": 93,
-     "full:ore": 7
+     "operando": 92,
+     "full:ore": 8
     },
     "lua.refinaria": {
      "operando": 93,
      "full:metal": 7
     },
     "lua.esc_gelo": {
-     "operando": 74,
-     "full:ice": 26
+     "operando": 70,
+     "full:ice": 30
     },
     "lua.eletrolisador": {
-     "operando": 70,
-     "full:fuel": 30
+     "operando": 67,
+     "full:fuel": 33
     },
     "lua.forja": {
      "operando": 92,
@@ -6336,7 +6439,7 @@
      "hold:metal": 2
     },
     "marte.fabrica": {
-     "operando": 79,
+     "operando": 78,
      "hold:metal": 2,
      "hold:alloy": 1,
      "full:comp": 19
@@ -6345,17 +6448,17 @@
      "operando": 100
     },
     "cinturao.refinaria": {
-     "operando": 48,
-     "full:metal": 52
+     "operando": 49,
+     "full:metal": 51
     },
     "cinturao.garimpo": {
      "operando": 100,
      "full:rare": 0
     },
     "cinturao.forja": {
-     "operando": 46,
+     "operando": 47,
      "hold:metal": 0,
-     "full:alloy": 54
+     "full:alloy": 53
     },
     "mercurio.extrator": {
      "operando": 99,
@@ -6366,19 +6469,19 @@
      "full:metal": 1
     },
     "mercurio.fotovoltaica": {
-     "operando": 89,
-     "full:cell": 5,
-     "no:rare": 6
+     "operando": 71,
+     "full:cell": 6,
+     "no:rare": 24
     },
     "mercurio.forja": {
      "operando": 99,
      "full:alloy": 1
     },
     "mercurio.fab_sat": {
-     "no:comp": 20,
-     "operando": 73,
+     "no:comp": 21,
+     "operando": 55,
      "full:sat": 5,
-     "no:cell": 1
+     "no:cell": 19
     },
     "venus.plataforma": {
      "operando": 100
@@ -6387,53 +6490,52 @@
      "operando": 100
     },
     "jupiter.ref_fusao": {
-     "operando": 25,
-     "no:gas": 20,
-     "full:fusion": 54
-    },
-    "jupiter.quimica": {
-     "operando": 7,
-     "no:gas": 17,
-     "full:fuel": 76
+     "operando": 39,
+     "no:gas": 15,
+     "full:fusion": 46
     },
     "saturno.esc_gelo": {
      "operando": 100
     },
     "saturno.eletrolisador": {
-     "operando": 8,
-     "full:fuel": 92
+     "operando": 10,
+     "full:fuel": 90
     },
     "saturno.estaleiro": {
-     "operando": 5,
-     "no:alloy": 30,
+     "no:alloy": 29,
+     "operando": 3,
      "hold:alloy": 4,
-     "no:comp": 2,
+     "no:comp": 5,
      "full:hull": 58
     },
     "urano.esc_gelo": {
      "operando": 100
     },
     "urano.criogenico": {
-     "operando": 26,
+     "operando": 19,
      "no:rare": 6,
-     "full:cryo": 68
+     "full:cryo": 74
     },
     "urano.eletrolisador": {
-     "operando": 81,
-     "full:fuel": 19
+     "operando": 88,
+     "full:fuel": 13
     },
     "netuno.esc_gelo": {
      "operando": 6,
-     "full:ice": 94
+     "full:ice": 68,
+     "energy": 26
     },
     "netuno.obs_profundo": {
-     "operando": 94,
-     "no:cryo": 6
+     "operando": 79,
+     "no:cryo": 15,
+     "hold:cryo": 4,
+     "energy": 2
     },
     "netuno.lab_anomalia": {
-     "operando": 35,
-     "no:fusion": 48,
-     "full:exotic": 17
+     "operando": 59,
+     "hold:cryo": 5,
+     "full:exotic": 36,
+     "no:cryo": 1
     }
    },
    "energy": {
@@ -6475,43 +6577,38 @@
      ],
      [
       40,
-      419,
-      174
+      462,
+      181
      ],
      [
       45,
-      539,
+      462,
       193
      ],
      [
       50,
-      539,
+      590,
       193
      ],
      [
       55,
       768,
-      205
+      201
      ],
      [
       60,
       768,
-      214
+      239
      ],
      [
       65,
       768,
-      214
+      243
      ],
      [
       70,
       768,
-      226
-     ],
-     [
-      75,
-      768,
-      226
+      243
      ]
     ],
     "marte": [
@@ -6543,47 +6640,42 @@
      [
       35,
       301,
-      204
+      181
      ],
      [
       40,
-      329,
-      191
+      363,
+      221
      ],
      [
       45,
-      423,
-      228
+      363,
+      235
      ],
      [
       50,
-      423,
+      463,
       235
      ],
      [
       55,
       603,
-      237
+      241
      ],
      [
       60,
       603,
-      237
+      261
      ],
      [
       65,
       603,
-      237
+      261
      ],
      [
       70,
       603,
-      256
-     ],
-     [
-      75,
-      603,
-      264
+      261
      ]
     ],
     "cinturao": [
@@ -6614,43 +6706,38 @@
      ],
      [
       40,
-      198,
-      72
+      218,
+      74
      ],
      [
       45,
-      255,
+      218,
       75
      ],
      [
       50,
-      255,
-      75
+      279,
+      180
      ],
      [
       55,
       363,
-      237
+      207
      ],
      [
       60,
       363,
-      237
+      220
      ],
      [
       65,
       363,
-      237
+      220
      ],
      [
       70,
       363,
-      252
-     ],
-     [
-      75,
-      363,
-      252
+      220
      ]
     ],
     "mercurio": [
@@ -6676,18 +6763,18 @@
      ],
      [
       40,
-      651,
-      226
+      718,
+      257
      ],
      [
       45,
-      838,
-      296
+      718,
+      260
      ],
      [
       50,
-      838,
-      296
+      916,
+      322
      ],
      [
       55,
@@ -6697,20 +6784,15 @@
      [
       60,
       1194,
-      324
+      332
      ],
      [
       65,
       1194,
-      336
-     ],
-     [
-      70,
-      1194,
       344
      ],
      [
-      75,
+      70,
       1194,
       344
      ]
@@ -6733,130 +6815,120 @@
      ],
      [
       40,
-      164,
+      181,
       48
      ],
      [
       45,
-      212,
+      181,
       48
      ],
      [
       50,
-      212,
-      60
+      232,
+      48
      ],
      [
       55,
       302,
-      60
+      48
      ],
      [
       60,
       302,
-      60
+      48
      ],
      [
       65,
       302,
-      60
+      48
      ],
      [
       70,
       302,
-      60
-     ],
-     [
-      75,
-      302,
-      60
+      48
      ]
     ],
     "jupiter": [
      [
       30,
-      125,
+      17,
       17
      ],
      [
       35,
-      418,
-      52
+      656,
+      62
      ],
      [
       40,
-      1218,
-      116
+      1407,
+      92
      ],
      [
       45,
-      1344,
-      116
+      1435,
+      92
      ],
      [
       50,
-      1344,
-      122
+      1586,
+      92
      ],
      [
       55,
-      1915,
-      122
+      2066,
+      113
      ],
      [
       60,
-      1915,
-      122
+      2066,
+      113
      ],
      [
       65,
-      1915,
-      122
+      2066,
+      113
      ],
      [
       70,
-      1915,
-      143
-     ],
-     [
-      75,
-      1915,
-      143
+      2066,
+      113
      ]
     ],
     "saturno": [
      [
-      45,
+      40,
       339,
-      73
+      71
+     ],
+     [
+      45,
+      507,
+      101
      ],
      [
       50,
-      843,
+      922,
       101
      ],
      [
       55,
       1201,
-      101
+      105
      ],
      [
       60,
       1201,
-      105
+      112
      ],
      [
       65,
       1201,
-      105
-     ],
-     [
-      70,
-      1201,
       112
      ],
      [
-      75,
+      70,
       1201,
       112
      ]
@@ -6864,60 +6936,55 @@
     "urano": [
      [
       50,
-      336,
+      368,
       47
      ],
      [
       55,
       479,
-      53
+      62
      ],
      [
       60,
       479,
-      74
+      62
      ],
      [
       65,
       479,
-      74
+      62
      ],
      [
       70,
       479,
-      74
-     ],
-     [
-      75,
-      479,
-      74
+      62
      ]
     ],
     "netuno": [
      [
-      60,
+      55,
       479,
       63
      ],
      [
-      65,
-      479,
+      60,
+      718,
       106
+     ],
+     [
+      65,
+      958,
+      148
      ],
      [
       70,
-      479,
-      106
-     ],
-     [
-      75,
-      479,
+      958,
       191
      ]
     ]
    },
    "data": {
-    "totalValue": 55254917.25
+    "totalValue": 52687131.14
    }
   }
  ]

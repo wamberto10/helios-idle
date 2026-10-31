@@ -459,7 +459,11 @@
   };
   U.brecipe = (el, a, m) => {
     const { def, bs } = bInfo(a[1], a[2], m); const n = Math.max(1, bs.n);
-    if (def.gen) { setH(el, `${A.rg('energy')} +${F.n(E.genOf(S, a[1], a[2], m, n, bs.lvl))} MW ${def.solar ? `<span class="dim">(luz solar ${F.pct(E.solarFactor(S, a[1], m) / m.genSolar * 1)})</span>` : ''}`); return; }
+    if (def.gen) {
+      const fu = bs.n ? E.fuelOf(def, bs) : 1, b = E.burnOf(def, n);
+      const burn = Object.keys(b).map((r) => ` <span class="dim">· queima</span> ${A.rg(r)} ${F.n(b[r] * 60, 1)}/min`).join('');
+      const low = fu < 0.999 ? ` · <span class="bad">${A.ic('warn', 14)} sem ${Object.keys(b).map((r) => D.res[r].name.toLowerCase()).join(', ')}: gerando ${F.pct(fu)}</span>` : '';
+      setH(el, `${A.rg('energy')} +${F.n(E.genOf(S, a[1], a[2], m, n, bs.lvl) * fu)} MW ${def.solar ? `<span class="dim">(luz solar ${F.pct(E.solarFactor(S, a[1], m) / m.genSolar * 1)})</span>` : ''}${burn}${low}`); return; }
     if (def.storage) { const cg = E.storeCargo(S, a[1]) - 1;
       setH(el, `+${F.pct(def.storage * n * D.levelYield(bs.lvl))} de armazenamento na região${cg > 0 ? ` · <span class="ok">+${F.pct(cg)} de carga nos cargueiros que saem daqui</span>` : bs.n && def.routeCargo ? ` <span class="dim">· no Nv ${def.routeCargoFrom}: +${F.pct(def.routeCargo)} de carga nos cargueiros</span>` : ''}`); return; }
     const ins = def.in ? Object.keys(def.in).map((r) => `${A.rg(r)} ${F.n(def.in[r] * n)}`).join(' + ') + ' → ' : '';
@@ -468,7 +472,7 @@
   };
   U.bstat = (el, a, m) => {
     const { def, bs, auto, T } = bInfo(a[1], a[2], m);
-    if (def.passive) { setT(el, def.gen ? 'Funciona continuamente' : 'Efeito permanente'); return; }
+    if (def.passive) { setT(el, def.burn ? 'Funciona enquanto houver ' + Object.keys(def.burn).map((r) => D.res[r].name.toLowerCase()).join(', ') + ' na região' : def.gen ? 'Funciona continuamente' : 'Efeito permanente'); return; }
     const r = Object.keys(def.out)[0]; const eff = auto ? (bs.eff !== undefined ? bs.eff : 1) : 1;
     const rate = bs.n ? def.out[r] * bs.n * E.yieldOf(def, bs, r, m) * (r === 'data' ? m.dataGain : 1) / T * eff : 0;
     setH(el, `Ciclo <b class="num">${F.dur(T)}</b> · ${auto ? '' : '<span class="dim">se operada: </span>'}<b class="num ${auto ? 'ok' : ''}">+${F.n(rate, rate < 10 ? 2 : undefined)}/s</b> ${r === 'data' ? 'dados' : D.res[r].name.toLowerCase().replace('dyson', 'Dyson')}`);
@@ -748,6 +752,7 @@
       <p class="small muted">Troca 1 ${A1} por 1 ${B1}. O total de unidades continua o mesmo e a região gera mais energia.</p>
       <div class="solar-swap">${A.bIcon(from)}<span class="small">${genCount(from, s.fromN)} · Nv ${s.fromLevel}</span><span aria-hidden="true" class="gold">→</span>${A.bIcon(s.to)}<span class="small">${genCount(s.to, s.toN)} · Nv ${s.toLevel}</span></div>
       ${s.fromN ? `<div class="solar-comparison num">${A.rg('energy')} ${F.n(s.generation, 1)} → <b>${F.n(s.after, 1)} MW</b><span class="ok">+${F.n(s.gain, 1)} MW</span></div>` : ''}
+      ${D.buildings[s.to].burn ? `<p class="small warn">O ${B1} queima ${Object.keys(D.buildings[s.to].burn).map((r) => A.rg(r) + ' ' + F.n(D.buildings[s.to].burn[r] * 60, 1) + ' ' + D.res[r].name.toLowerCase()).join(', ')} por minuto. Sem combustível na região, gera menos.</p>` : ''}
       ${level}${s.fromN ? `<div class="row wrap"><span class="small muted">Custo:</span>${costHTML(s.cost, reg)}</div>` : ''}${help}
       <div class="foot"><button class="btn ghost" data-a="close">Fechar</button><button class="btn gold" data-a="genswap|${rid}|${from}" data-k="gen-swap" ${s.can ? 'autofocus' : 'disabled'}>Trocar 1 ${A1.split(' ')[0].toLowerCase()}</button></div>`;
   }
@@ -1107,7 +1112,7 @@
     for (const rid of RO) for (const bid of Object.keys(D.regions[rid].build)) {
       const def = D.buildings[bid];
       for (const r in (def.out || {})) if (res[r]) res[r].made.push({ rid, bid });
-      for (const r in (def.in || {})) if (res[r] && !res[r].used.includes(bid)) res[r].used.push(bid);
+      for (const r in Object.assign({}, def.in, def.burn)) if (res[r] && !res[r].used.includes(bid)) res[r].used.push(bid);
     }
     for (const r in res) res[r].regions = [...new Set(res[r].made.map((x) => x.rid))];
     // ordem de desbloqueio: planeta e fase em que a primeira instalação que produz o recurso é liberada
